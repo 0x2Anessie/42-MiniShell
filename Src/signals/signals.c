@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fd-arco <fd-arco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:32:56 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/07/10 13:29:25 by fd-arco          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:21:50 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Include/minishell.h"
 
+/*
+	Simule un ctrl+c en affichant l'invite de commande a la ligne.
+	Réinitialise la ligne de commande actuelle pour readline.
+	Met le code d'erreur a 130, la sortie standart pour un process interrompu
+	par SIGINT.
+*/
 void	ctrl_c_handler(int sig)
 {
 	(void)sig;
@@ -22,6 +28,12 @@ void	ctrl_c_handler(int sig)
 	g_all.utils->err = 130;
 }
 
+/*
+	Simule un ctrl+c dans le cas où un heredoc est en cours de traitement.
+	Ferme le descripteur de fichier, affiche une nouvelle ligne et met que
+	la commande ne peut plus d'executer>
+	Met le code d'erreur a 130.
+*/
 void	ctrl_c_handler_here_doc(int sig)
 {
 	(void)sig;
@@ -32,6 +44,10 @@ void	ctrl_c_handler_here_doc(int sig)
 	g_all.utils->err = 130;
 }
 
+/*
+	Set 'ctrl_c_handler_here_doc' et 'ctrl_c_handler' comme gestionnaires de
+	signaux pour SIGINT.
+*/
 void	handle_sig(void)
 {
 	if (g_all.utils->is_here_doc)
@@ -49,6 +65,10 @@ void	sigint_process(int sig)
 	g_all.utils->err = 130;
 	ft_putchar('\n');
 }
+
+/*
+	Set des gestionnaires pour SIGINT et SIGQUIT.
+*/
 
 void	handle_process_signal(void)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fd-arco <fd-arco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:32:11 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/08/29 17:30:45 by fd-arco          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:54:37 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ char		*parse_para(char *tmp);
 char		*parse_quote(char *tmp);
 char		*parse_quote2(char *tmp);
 
-///////////////////////INIT_ENV////////////////////////////////////////
+///////////////////////////INIT_ENV//////////////////////////////////////
 t_exec		*init_env(char **env);
 t_env		*ft_get_env_lst(char **env);
 void		ft_envlst_add_back(t_env *lst, t_env *new);

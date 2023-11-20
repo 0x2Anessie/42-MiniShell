@@ -1,16 +1,10 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mhajji-b <mhajji-b@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/08 15:43:01 by fililafrapp       #+#    #+#              #
-#    Updated: 2023/08/29 15:05:15 by mhajji-b         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = minishell
 
-SRCS = $(addprefix Src/, main.c lexer/lexer_utils.c lexer/lex.c lexer/lexer.c parser/parser.c parser/parser2.c parser/rm_para_quote.c \
+CC = cc
+RM = rm -f
+CFLAGS = -g -g3 -Wall -Wextra -Werror
+
+SRCS = 			$(addprefix Src/, main.c lexer/lexer_utils.c lexer/lex.c lexer/lexer.c parser/parser.c parser/parser2.c parser/rm_para_quote.c \
 					parser/parser_utils.c init_env/init_env.c signals/signals.c init_exec/init_exec.c init_exec/init_exec_utils.c \
 					init_exec/init_export.c init_exec/init_fd.c exec/close_fd.c signals/signals2.c\
 					built_in/pwd.c built_in/echo.c built_in/echo_utils.c built_in/cd.c built_in/built_in_utils.c built_in/env.c\
@@ -20,35 +14,47 @@ SRCS = $(addprefix Src/, main.c lexer/lexer_utils.c lexer/lex.c lexer/lexer.c pa
 					built_in/export_create.c built_in/export_parsing_2.c built_in/env_things.c expander/malloc_expand.c \
 					expander/quoteandnode.c expander/expand.c expander/expand_len.c expander/splitandquote.c expander/state_quote.c parser/parser4.c \
 					built_in/echo2.c init_env/init_env2.c built_in/cd2.c built_in/cd3.c built_in/write_echo.c)	
-OBJ = $(SRCS:.c=.o)
 
-CC = cc
-RM = rm -f
-CFLAGS = -g -g3 -Wall -Wextra -Werror
+OBJ =			$(SRCS:.c=.o)
 
-NAME = Minishell
+all :			$(NAME)
+				@clear
+				@echo "   _____   __        __        __            __   __    ";
+				@echo "  /     \ |__| ____ |__| _____|  |__   ____ |  | |  |   ";
+				@echo " /  \ /  \|  |/    \|  |/  ___/  |  \_/ __ \|  | |  |   ";
+				@echo "/    Y    \  |   |  \  |\___ \|   Y  \  ___/|  |_|  |__ ";
+				@echo "\____|__  /__|___|  /__/____  >___|  /\_____>____/____/ ";
+				@echo "        \/        \/        \/     \/                   ";
 
-all : $(NAME)
-
-$(NAME) : $(OBJ)
-	cd Lib && make
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) Lib/lib42.a -I ./Lib/ -lreadline
-
-bonus : $(OBJ_BONUS)
-	cd Lib && make
-	$(CC) $(CFLAGS) -o $(NAME2) $(OBJ_BONUS) Lib/lib42.a -I ./Lib/ 
+$(NAME) : 		$(OBJ)
+				cd Lib && make
+				$(CC) $(CFLAGS) -o $(NAME) $(OBJ) Lib/lib42.a -I ./Lib/ -lreadline
 
 leak:
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
+				valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
 
 clean :
-	cd Lib && make clean
-	$(RM) $(OBJ)
-	$(RM) $(OBJ_BONUS)
+				cd Lib && make clean
+				$(RM) $(OBJ)
+				$(RM) $(OBJ_BONUS)
+				@clear
+				@echo "        /\                __              __                          ";
+				@echo "  ____  )/ ____   _______/  |_      ____ |  |   ____  _____    ____   ";
+				@echo "/  ___\  /  __ \ /  ___/\   __\   /  ___\|  | /  __ \ \__  \  /    \  ";
+				@echo "\  \___  \  ___/ \___ \  |  |     \  \___|  |_\  ___/ / __  \|   |  \ ";
+				@echo " \____ >  \____ >_____ > |__|      \____ >____/\____> ____  / ___|  / ";
+				@echo "                                                          \/      \/  ";
 
-fclean : clean
-	$(RM) $(NAME)
+fclean : 		clean
+				$(RM) $(NAME)
+				@clear
+				@echo "        /\                __        _____       __                         ";
+				@echo "  ____  )/ ____   _______/  |_    _/ ____\____ |  |   ____  _____    ____   ";
+				@echo "/  ___\  /  __ \ /  ___/\   __\   \  __\/  ___\|  | /  __ \ \__  \  /    \  ";
+				@echo "\  \___  \  ___/ \___ \  |  |      |  | \  \___|  |_\  ___/  / __ \|   |  \ ";
+				@echo " \____ >  \____> _____ > |__|      |__|  \____ >____/\____ > ____  /___|  / ";
+				@echo "                                                                 \/     \/  ";
 
-re : fclean all
+re :			fclean all
 
-.PHONY : all clean fclean re
+.PHONY :		all clean fclean re

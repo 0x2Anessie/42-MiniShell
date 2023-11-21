@@ -4,16 +4,26 @@ CC = cc
 RM = rm -f
 CFLAGS = -g -g3 -Wall -Wextra -Werror
 
-SRCS = 			$(addprefix Src/, main.c lexer/lexer_utils.c lexer/lex.c lexer/lexer.c parser/parser.c parser/parser2.c parser/rm_para_quote.c \
-					parser/parser_utils.c init_env/init_env.c signals/signals.c init_exec/init_exec.c init_exec/init_exec_utils.c \
-					init_exec/init_export.c init_exec/init_fd.c exec/close_fd.c signals/signals2.c\
-					built_in/pwd.c built_in/echo.c built_in/echo_utils.c built_in/cd.c built_in/built_in_utils.c built_in/env.c\
-					built_in/env_create.c built_in/export_parsing.c built_in/export_var_exist.c built_in/export.c built_in/export_checking.c\
-					init_exec/here_doc.c exec/child.c exec/exec_utils.c exec/prep_exec.c exec/redir_child.c \
-					expander/expand2.c built_in/ft_exit.c free_all/free1.c expander/expand_utils.c built_in/built_in_utils_2.c \
-					built_in/export_create.c built_in/export_parsing_2.c built_in/env_things.c expander/malloc_expand.c \
-					expander/quoteandnode.c expander/expand.c expander/expand_len.c expander/splitandquote.c expander/state_quote.c parser/parser4.c \
-					built_in/echo2.c init_env/init_env2.c built_in/cd2.c built_in/cd3.c built_in/write_echo.c)	
+SRCS = 			$(addprefix Src/, main.c \
+					lexer/lexer_utils.c lexer/lex.c lexer/lexer.c \
+					parser/parser.c parser/parser2.c parser/rm_para_quote.c parser/parser_utils.c \
+					parser/parser4.c \
+					init_env/init_env.c init_env/init_env2.c \
+					signals/signals.c signals/signals2.c \
+					init_exec/init_exec.c init_exec/init_exec_utils.c init_exec/here_doc.c \
+					init_exec/init_export.c init_exec/init_fd.c init_exec/here_doc.c \
+					exec/close_fd.c exec/child.c exec/exec_utils.c exec/prep_exec.c \
+					exec/redir_child.c \
+					built_in/pwd.c built_in/echo.c built_in/echo_utils.c built_in/cd.c \
+					built_in/built_in_utils.c built_in/env.c built_in/env_create.c \
+					built_in/export_parsing.c built_in/export_var_exist.c built_in/export.c \
+					built_in/export_checking.c built_in/ft_exit.c built_in/built_in_utils_2.c \
+					built_in/export_create.c built_in/export_parsing_2.c built_in/env_things.c \
+					built_in/echo2.c built_in/cd2.c built_in/cd3.c built_in/write_echo.c \
+					\
+					expander/expand2.c free_all/free1.c expander/expand_utils.c  \
+					expander/malloc_expand.c expander/quoteandnode.c expander/expand.c \
+					expander/expand_len.c expander/splitandquote.c expander/state_quote.c)	
 
 OBJ =			$(SRCS:.c=.o)
 

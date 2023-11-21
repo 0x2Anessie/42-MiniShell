@@ -6,72 +6,41 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:32:56 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/20 18:21:50 by acatusse         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:14:54 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Include/minishell.h"
 
 /*
-	Simule un ctrl+c en affichant l'invite de commande a la ligne.
-	Réinitialise la ligne de commande actuelle pour readline.
-	Met le code d'erreur a 130, la sortie standart pour un process interrompu
-	par SIGINT.
+	C'est le gestionnaire pour SIGINT, elle met a jour le code d'erreur a
+	130 et renvoie une nouvelle ligne.
 */
-void	ctrl_c_handler(int sig)
-{
-	(void)sig;
-	ft_putchar('\n');
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_all.utils->err = 130;
-}
-
-/*
-	Simule un ctrl+c dans le cas où un heredoc est en cours de traitement.
-	Ferme le descripteur de fichier, affiche une nouvelle ligne et met que
-	la commande ne peut plus d'executer>
-	Met le code d'erreur a 130.
-*/
-void	ctrl_c_handler_here_doc(int sig)
-{
-	(void)sig;
-	close(0);
-	write(2, "\n", 1);
-	g_all.utils->is_here_doc = 0;
-	g_all.utils->can_run = 0;
-	g_all.utils->err = 130;
-}
-
-/*
-	Set 'ctrl_c_handler_here_doc' et 'ctrl_c_handler' comme gestionnaires de
-	signaux pour SIGINT.
-*/
-void	handle_sig(void)
-{
-	if (g_all.utils->is_here_doc)
-		signal(SIGINT, &ctrl_c_handler_here_doc);
-	else
-	{
-		signal(SIGINT, &ctrl_c_handler);
-		signal(SIGQUIT, SIG_IGN);
-	}	
-}
-
-void	sigint_process(int sig)
+static void	sigint_handler(int sig)
 {
 	(void)sig;
 	g_all.utils->err = 130;
 	ft_putchar('\n');
+}
+
+/*
+	Gestionnaire de signaux pour SIGQUIT.
+	Definie le code d'erreur a 131, qui est habituellement associe a
+	l'interruption d'un processus par le signal SIGQUIT.
+*/
+static void	sigquit_handler(int sig)
+{
+	(void)sig;
+	g_all.utils->err = 131;
+	write(2, "Quit\n", 5);
 }
 
 /*
 	Set des gestionnaires pour SIGINT et SIGQUIT.
+	signal(le signal recu, &le handler qui va le gerer)
 */
-
 void	handle_process_signal(void)
 {
-	signal(SIGINT, &sigint_process);
-	signal(SIGQUIT, &sigquit_process);
+	signal(SIGINT, &sigint_handler);
+	signal(SIGQUIT, &sigquit_handler);
 }

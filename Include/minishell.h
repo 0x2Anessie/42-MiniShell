@@ -6,7 +6,7 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:32:11 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/20 15:54:37 by acatusse         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:31:01 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,8 @@ t_env		*ft_get_env_lst_i(t_env *final);
 ///////////////////////SIGNALS///////////////////////////////////////////
 void		handle_sig(void);
 void		handle_process_signal(void);
-void		ctrl_c_handler_here_doc(int sig);
+void		ctrl_c_handler_heredoc(int sig);
 void		ctrl_c_handler(int sig);
-void		sigquit_process(int sig);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////
 void		ft_init_exec(t_data *data);

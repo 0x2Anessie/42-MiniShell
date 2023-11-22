@@ -6,9 +6,11 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 13:29:26 by fd-arco           #+#    #+#             */
-/*   Updated: 2023/11/21 16:15:00 by acatusse         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:34:03 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// Definie la reaction du programme a un ctrl+c normal, et pendant un heredoc
 
 #include "../../Include/minishell.h"
 
@@ -31,7 +33,7 @@ void	ctrl_c_handler(int sig)
 /*
 	Simule un ctrl+c dans le cas où un heredoc est en cours de traitement.
 	Ferme le descripteur de fichier, affiche une nouvelle ligne et met que
-	la commande ne peut plus d'executer>
+	la commande ne peut plus d'executer.
 	Met le code d'erreur a 130.
 */
 void	ctrl_c_handler_heredoc(int sig)

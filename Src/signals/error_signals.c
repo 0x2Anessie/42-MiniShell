@@ -6,9 +6,11 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:32:56 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/21 16:14:54 by acatusse         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:31:37 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// Definie les retours d'erreur pour les signaux SIGINT et SIGQUIT
 
 #include "../../Include/minishell.h"
 

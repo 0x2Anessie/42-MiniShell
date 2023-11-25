@@ -3,48 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 14:11:16 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/20 21:38:43 by fililafrapp      ###   ########.fr       */
+/*   Created: 2023/06/20 21:38:04 by fililafrapp       #+#    #+#             */
+/*   Updated: 2023/11/25 12:18:39 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// env est determiné par le 3e argument du main "char **env", qui permet 
+// d'accéder aux variables globales définies par le système d'exploitation.
+
 #include "../../Include/minishell.h"
 
-int	ft_env_size(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
-
-t_env	*ft_new_env(char *env)
-{
-	t_env	*new;
-
-	new = ft_malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->content = ft_strdup(env);
-	new->next = NULL;
-	return (new);
-}
-
-void	ft_envlst_add_back(t_env *lst, t_env *new)
-{
-	t_env	*tmp;
-
-	tmp = lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-}
-
-void	malloc_single_node(char *str, t_env **env)
+/*
+	Utilisé dans la fonction if_no_env, il crée un nouveau noeud pour
+	une variable OLDPWD.
+*/
+void	no_env_node_init(char *str, t_env **env)
 {
 	t_env	*new_node;
 
@@ -59,29 +34,43 @@ void	malloc_single_node(char *str, t_env **env)
 	*env = new_node;
 }
 
-t_env	*ft_get_env_lst(char **env)
+/*
+	Est utilisée dans le cas où aucune variable d'environnement n'est passée
+	à Minishell. La fonction getwcd est utilisée pour trouver le répertoire
+	de travail courant (PWD). Ce path sera mit dans une variable temporaire
+	qui sera elle même mise dans un noeud renvoyé à init_env_list.
+	Sans variables d'environnement, certaines fonctionnalités de base du 
+	shell pourraient ne pas fonctionner correctement.
+*/
+t_env	*if_no_env(t_env *final)
 {
-	int		env_size;
-	int		i;
-	t_env	*new;
-	t_env	*final;
+	char	*tmp;
 
-	i = -1;
-	new = NULL;
-	final = NULL;
-	env_size = ft_env_size(env);
-	if (env_size == 0)
-	{
-		final = ft_get_env_lst_i(final);
-		return (final);
-	}
-	while (++i < env_size)
-	{
-		new = ft_new_env(env[i]);
-		if (!final)
-			final = new;
-		else
-			ft_envlst_add_back(final, new);
-	}
+	tmp = getcwd(NULL, 0);
+	tmp = ft_strjoin_2("OLDPWD=", tmp);
+	no_env_node_init(tmp, &final);
 	return (final);
+}
+
+/*
+	La liste chaînée d'environnement est stockée dans Utils.
+	Elle initialise env_lst et head_env_lst avec la liste
+	qu'on a créé puis initialise le code d'erreur, le heredoc
+	et ?ret? à 0.
+*/
+t_exec	*init_env(char **env)
+{
+	t_exec	*utils;
+
+	utils = ft_malloc(sizeof(t_exec));
+	if (!utils)
+		return (NULL);
+	utils->env_lst = NULL;
+	if (env)
+		utils->env_lst = init_env_list(env);
+	utils->head_env_lst = utils->env_lst;
+	utils->err = 0;
+	utils->ret = 0;
+	utils->is_here_doc = 0;
+	return (utils);
 }

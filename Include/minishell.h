@@ -6,7 +6,7 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:32:11 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/21 15:31:01 by acatusse         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:05:44 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,11 @@ char		*parse_quote2(char *tmp);
 
 ///////////////////////////INIT_ENV//////////////////////////////////////
 t_exec		*init_env(char **env);
-t_env		*ft_get_env_lst(char **env);
-void		ft_envlst_add_back(t_env *lst, t_env *new);
-t_env		*ft_new_env(char *env);
-int			ft_env_size(char **env);
-t_env		*ft_get_env_lst_i(t_env *final);
+t_env		*init_env_list(char **env);
+void		init_list(t_env *lst, t_env *new);
+t_env		*init_node(char *env);
+int			env_size(char **env);
+t_env		*if_no_env(t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
 void		handle_sig(void);
@@ -376,7 +376,7 @@ int			change_directory3(t_env *tmp);
 char		*get_old_pwd(t_env	*tmp);
 char		*get_pwd_env(t_env	*tmp);
 int			change_directory4(t_env *tmp);
-void		malloc_single_node(char *str, t_env **env);
+void		no_env_node_init(char *str, t_env **env);
 int			count_quote(char *str);
 void		get_words(t_lexer *lexer_lst, char **tab, int *i);
 void		process_echo(char **tab, int i);

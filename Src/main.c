@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:33:25 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/07/09 15:01:54 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/25 12:39:42 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	exit_error(char *str)
 	exit(1);
 }
 
+/*
+	Permet de transformer la liste chaînée des variables d'environnement
+	en un format de tableau, qui est plus conventionnel et facile à utiliser
+	dans certaines opérations.
+*/
 char	**get_new_env(t_env *env_lst)
 {
 	char	**new_env;
@@ -63,6 +68,18 @@ char	**get_new_env(t_env *env_lst)
 	return (new_env);
 }
 
+/*
+	Gère la boucle principale de l'invite de commande du shell. C'est la fonction
+	centrale qui gère l'interprétation et l'exécution des commandes entrées par 
+	l'utilisateur dans votre shell.
+	Vérifie si tmp (la commande entrée par l'utilisateur) est valide.
+	Utilise ft_lexer pour diviser la commande en tokens et ft_parser pour 
+	analyser ces tokens.
+	Utilise expand pour étendre les tokens si nécessaire (par exemple, 
+	remplacer les variables par leurs valeurs).
+	Prépare l'environnement d'exécution avec ft_init_exec et exécute la 
+	commande avec ft_prep_exec.
+*/
 void	prompt_loop(char *tmp, t_data data, char **env)
 {
 	t_lexer	*tmp_lex;

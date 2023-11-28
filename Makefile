@@ -35,11 +35,8 @@ bonus: 			$(OBJ_BONUS)
 				$(CC) $(CFLAGS) -o $(NAME2) $(OBJ_BONUS) Lib/lib42.a -I ./Lib/ 
 
 leak:
-<<<<<<< HEAD
-	valflechedind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
-=======
 				valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
->>>>>>> nessie
+
 
 clean:
 				cd Lib && make clean

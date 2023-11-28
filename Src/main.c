@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:33:25 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/07/09 15:01:54 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/17 13:40:34 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	main(int ac, char **av, char **env)
 	t_data	data;
 	char	*tmp;
 
+	printf(WELCOME_MSG);
 	if (ac != 1)
 		exit_error("bad number of arguments");
 	init_data(&data, ac, av, env);

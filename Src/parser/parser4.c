@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:30:52 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/20 21:31:20 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/23 12:44:28 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	stop_pand_slash(char *str, char c)
 	{
 		if ((str[0] == c && str[1] == '\0'))
 		{
-			printf("salut\n");
+			printf("salut22222\n");
 			return (0);
 		}
 		i++;
@@ -52,7 +52,7 @@ int	chevron_pipe(char *str)
 		{
 			if (str[i - 1] == '>' && str[i + 1] == '<')
 			{
-				write (2, "zsh: parse error near `|'\n", 27);
+				printf("TTTTTT zsh: parse error near `|'\n");
 				return (0);
 			}
 		}

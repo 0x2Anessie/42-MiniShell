@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:39:21 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/20 21:31:27 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/23 12:46:12 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_check_quotes(char *str, t_data *data)
 	}
 	if (data->squote == data->dquote)
 	{
-		write(2, "minishell: syntax error quote not closed\n", 41);
+		printf("minishell: syntax error quote not closed\n");
 		return (0);
 	}
 	return (1);
@@ -46,8 +46,8 @@ int	check_redir(char *str)
 	i = 0;
 	if (str[i + 1] == '\0')
 		return (0);
-	if ((str[i] == '>' && str[i + 1] == '>') || str[i] == '>'
-		|| (str[i] == '<' && str[i + 1] == '<'))
+	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '>' && str[i + 1] == '<')
+		|| (str[i] == '<' && str[i + 1] == '<') || (str[i] == '<' && str[i + 1] == '>'))
 	{
 		if (str[i + 2] == '\0')
 			return (0);
@@ -60,16 +60,21 @@ int	base_check(char *str)
 	int	i;
 
 	i = 0;
+	if (str[0] == '|' && str[1] == '|')
+	{
+		printf("minishell: syntax error near unexpected token `||'\n");
+		return (0);
+	}
 	if (str[0] == '|')
 	{
-		write (2, "zsh: parse error near `|'\n", 27);
+		printf("minishell:  syntax error near unexpected token `|'\n");
 		return (0);
 	}
 	if (str[i] == '<' || str[i] == '>')
 	{
 		if (!check_redir(str))
 		{
-			write(2, "syntax error near unexpected token\n", 35);
+			printf("1 syntax error near unexpected token\n");
 			return (0);
 		}
 	}
@@ -83,13 +88,13 @@ int	ft_cloporte(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if (tmp->token == GR || tmp->token == GR_DBE
-			|| tmp->token == LESS || tmp->token == LESS_DBE)
+		if (tmp->token == fleched || tmp->token == Dfleched || tmp->token == flechedg
+			|| tmp->token == flecheg || tmp->token == Dflecheg || tmp->token == flechegd)
 		{
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->word[0] == '\0')
 			{
-				write(2, "syntax error near unexpected token\n", 35);
+				printf("2 syntax error near unexpected token\n");
 				return (0);
 			}
 		}
@@ -113,7 +118,7 @@ int	ft_parser(t_data *data)
 		return (0);
 	if (!ft_tiret(data->line))
 		return (0);
-	if (!chevron_pipe(data->line))
+	if (!chevron_pipe(data->line)) // plus utile
 		return (0);
 	return (1);
 }

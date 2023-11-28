@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:00:00 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/16 15:26:46 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/23 12:34:00 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@ t_lexer	*ft_lexer_new(char *str)
 	return (new);
 }
 
-int	check_redir_error(t_lexer *tmp)
+int	check_redir_error(t_lexer *tmp) // je pense que ca sert a rein a tester
 {
 	int	i;
 
 	i = -1;
+	if (tmp->word[0] == '<')
+		if (tmp->word[i] != '>')
+				return (0);
 	if (tmp->word[0] == '>')
 		while (tmp->word[++i])
 			if (tmp->word[i] != '>')
@@ -50,23 +53,28 @@ t_token	which_redir(t_lexer *tmp)
 	if (!check_redir_error(tmp))
 	{
 		if (tmp->word[0] == '>' && tmp->word[1] == '\0')
-			return (GR);
+			return (fleched);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '\0')
-			return (LESS);
+			return (flecheg);
 		else if (tmp->word[0] == '>' && tmp->word[1] == '>')
-			return (GR_DBE);
+			return (Dfleched);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '<')
-			return (LESS_DBE);
+			return (Dflecheg);
+		else if (tmp->word[0] == '<' && tmp->word[1] == '>')
+			return (flechegd);
+		else if (tmp->word[0] == '>' && tmp->word[1] == '<')
+			return (flechedg);
 	}
 	return (-1);
 }
 
-void	truc(t_lexer *tmp, t_lexer *first)
+void	truc(t_lexer *tmp, t_lexer *first) 
 {	
 	if (first->token != CMD)
 		tmp->token = CMD;
 	else
 		tmp->token = ARG;
+	printf("cccccc111cccc\n");
 }
 
 int	ft_nombre_mots(char *str)

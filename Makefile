@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mhajji-b <mhajji-b@student.42.fr>          +#+  +:+       +#+         #
+#    By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/08 15:43:01 by fililafrapp       #+#    #+#              #
-#    Updated: 2023/08/29 15:05:15 by mhajji-b         ###   ########.fr        #
+#    Updated: 2023/11/23 10:29:34 by lgoure           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ bonus : $(OBJ_BONUS)
 	$(CC) $(CFLAGS) -o $(NAME2) $(OBJ_BONUS) Lib/lib42.a -I ./Lib/ 
 
 leak:
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
+	valflechedind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=rl_leaks.txt ./$(NAME)
 
 clean :
 	cd Lib && make clean

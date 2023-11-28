@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fd-arco <fd-arco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 16:59:15 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/24 16:51:09 by fd-arco          ###   ########.fr       */
+/*   Updated: 2023/11/17 13:18:05 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_in_hd(t_node *node, t_lexer *lex_lst)
 {
-	if (lex_lst && lex_lst->token == LESS_DBE \
+	if (lex_lst && lex_lst->token == Dflecheg \
 	&& lex_lst->next->token == LIMITOR)
 	{
 		if (node->in > 0)
@@ -40,7 +40,7 @@ void	get_in(t_node *node, t_lexer *lexer_lst)
 	node->in_fail = 0;
 	while (lexer_lst && lexer_lst->token != PIPE)
 	{
-		if (lexer_lst && lexer_lst->token == LESS \
+		if (lexer_lst && lexer_lst->token == flecheg \
 		&& lexer_lst->next->token == FD)
 		{
 			if (node->in > 0)
@@ -59,7 +59,7 @@ void	get_in(t_node *node, t_lexer *lexer_lst)
 
 void	get_out_append(t_node *node, t_lexer *lex_lst, int *has_out)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == GR_DBE \
+	if (lex_lst && lex_lst->next && lex_lst->token == Dfleched \
 	&& lex_lst->next->token == FD)
 	{
 		if (node->out > 0)
@@ -81,7 +81,7 @@ void	get_out_append(t_node *node, t_lexer *lex_lst, int *has_out)
 
 void	get_out_normal(t_node *node, t_lexer *lex_lst)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == GR \
+	if (lex_lst && lex_lst->next && lex_lst->token == fleched \
 	&& lex_lst->next->token == FD)
 	{
 		if (node->out > 0)

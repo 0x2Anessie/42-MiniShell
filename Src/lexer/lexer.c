@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:59:15 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/25 20:42:11 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/23 12:21:11 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,20 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 	{
 		if (tmp->i == 1)
 			first = tmp;
-		if (tmp->i == 1 && tmp->word[0] != '<' && tmp->word[0] != '>')
+		if (tmp->i == 1 && tmp->word[0] != '<' && tmp->word[0] != '>') // a gere inon token ";" "()" "&" sont considere comme des commandes 
 			tmp->token = CMD;
 		else if (tmp->i == 0)
 			tmp->token = PIPE;
 		else if (tmp->word[0] == '<' || tmp->word[0] == '>')
 			tmp->token = which_redir(tmp);
-		else if (tmp->prev->token == GR_DBE || tmp->prev->token == LESS
-			|| tmp->prev->token == GR)
+		// else if (tmp->prev->token == Dfleched || tmp->prev->token == flecheg
+		// 	|| tmp->prev->token == fleched)
+		else if (tmp->prev->token == Dfleched || tmp->prev->token == flecheg
+			|| tmp->prev->token == fleched || tmp->prev->token == flechegd)
 			tmp->token = FD;
-		else if (tmp->prev->token == LESS_DBE)
+		else if (tmp->prev->token == Dflecheg)
 			tmp->token = LIMITOR;
-		else if ((tmp->prev->token == FD || tmp->prev->token == LIMITOR)
+		else if ((tmp->prev->token == FD || tmp->prev->token == LIMITOR) // (echo ok <>| gerp ok)
 			&& (!tmp->next || tmp->next->word[0] == '|' || tmp->next))
 			truc(tmp, first);
 		else
@@ -74,19 +76,20 @@ int	get_word_in_list(char *str, int i, t_lexer **lexer_list, t_lexer *tmp)
 	k = 0;
 	j = 0;
 	state_at_zero(state);
-	ft_lexer4(str, &i, &j, state);
+	ft_lexer4(str, &i, &j, state); // len du prochain mon en verif les ' et "
 	word = ft_malloc(sizeof(char) * (j + 1));
 	if (!word)
 		return (0);
 	word[j] = '\0';
 	while (k < j)
 		word[k++] = str[x++];
-	ft_add_back_lexer(lexer_list, word);
-	get_data_in_node(lexer_list);
-	get_token_in_node(lexer_list, tmp);
+	ft_add_back_lexer(lexer_list, word); // aloue le memoire et ajoute le mot a le fin de la liste
+	get_data_in_node(lexer_list); // verif pipe 
+	get_token_in_node(lexer_list, tmp); //separe ARG CMD TOKEN 
 	return (j);
 }
 
+//boucle pour separer toute la ligne et une creer une structure pour chaque mots avec "le mot, ca valeur(ARG,TOKEN,CMD), i"
 void	ft_lexer2(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 {
 	int	j;
@@ -99,14 +102,14 @@ void	ft_lexer2(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 		while (data->line[i] == ' ' || \
 		(data->line[i] >= 9 && data->line[i] <= 14))
 			i++;
-		if (!data->line || !data->line[i])
+		if (!data->line || !data->line[i]) // plus de mot donc faut sortir et verif les token pour erreur
 		{
 			data->lexer_list = current;
 			get_token_in_node(&current, tmp);
 			return ;
 		}
 		j = get_word_in_list(data->line, i, &data->lexer_list,
-				tmp);
+				tmp); // renvoit la fin du mots
 		if (x == 0)
 			current = data->lexer_list;
 		i = i + j;
@@ -115,6 +118,7 @@ void	ft_lexer2(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 	data->lexer_list = current;
 }
 
+//init et ft_lexer2 fait tout
 void	ft_lexer(t_data *data)
 {
 	int		i;

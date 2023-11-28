@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:52:29 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/25 18:54:09 by fililafrapp      ###   ########.fr       */
+/*   Updated: 2023/11/23 12:44:15 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,17 @@ int	pipe_parse2(t_data *data)
 	while (tmp)
 	{
 		k = 0;
-		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|')
+		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|') // egale juste > 
 			|| (tmp->word[k] == '<' && tmp->word[k + 1] == '|'))
 		{
-			write (2, "zsh: parse error near `|'\n", 26);
+			printf("KKKKKK zsh: parse error near `|'\n");
 			k++;
 			return (0);
 		}
-		if (tmp->word[k] == '|' && tmp->word[k + 1] == '<')
+		if ((tmp->word[k] == '|' && tmp->word[k + 1] == '<')
+			|| (tmp->word[k] == '|' && tmp->word[k + 1] == '>')) // supp ou cree le doss
 		{
-			write (2, "zsh: no such file or directory\n", 32);
+			printf("zsh: no such file or directory\n");
 			k++;
 			return (0);
 		}
@@ -73,12 +74,12 @@ int	pipe_parse(t_data *data)
 		k = 0;
 		if (!ft_chevron(tmp->word, '<') || (!ft_chevron(tmp->word, '>')))
 		{
-			write(2, "syntax error near unexpected token\n", 35);
+			printf("3 syntax error near unexpected token\n");
 			return (0);
 		}
 		if (tmp->word[k] == '|' && tmp->word[k + 1] == '|')
 		{
-			write(2, "syntax error near unexpected token\n", 35);
+			printf("3 syntax error near unexpected token\n");
 			return (0);
 		}
 		if (!pipe_parse2(data))
@@ -96,17 +97,17 @@ int	ft_arrow2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if ((tmp->token == GR_DBE || tmp->token == GR))
+		if ((tmp->token == Dfleched || tmp->token == fleched))
 		{
-			if (tmp->next->token == LESS_DBE || tmp->next->token == LESS
-				|| tmp->next->token == GR_DBE || tmp->next->token == GR
+			if (tmp->next->token == Dflecheg || tmp->next->token == flecheg
+				|| tmp->next->token == Dfleched || tmp->next->token == fleched
 				|| tmp->next->token == PIPE)
 				return (0);
 		}
-		if (tmp->token == LESS_DBE || tmp->token == LESS)
+		if (tmp->token == Dflecheg || tmp->token == flecheg)
 		{
-			if (tmp->next->token == LESS_DBE || tmp->next->token == LESS
-				|| tmp->next->token == GR_DBE || tmp->next->token == GR
+			if (tmp->next->token == Dflecheg || tmp->next->token == flecheg
+				|| tmp->next->token == Dfleched || tmp->next->token == fleched
 				|| tmp->next->token == PIPE)
 				return (0);
 		}
@@ -127,7 +128,7 @@ int	ft_arrow(t_data *data)
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->token == PIPE || tmp->word[0] == '\0')
 			{
-				write(2, "syntax error near unexpected token\n", 35);
+				printf("6 syntax error near unexpected token\n");
 				return (0);
 			}
 		}
@@ -135,7 +136,7 @@ int	ft_arrow(t_data *data)
 	}
 	if (!ft_arrow2(data))
 	{
-		write(2, "syntax error near unexpected token\n", 35);
+		printf("4 syntax error near unexpected token\n");
 		return (0);
 	}
 	tmp = data->lexer_list;

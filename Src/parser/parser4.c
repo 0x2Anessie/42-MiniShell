@@ -10,7 +10,7 @@ int	stop_pand_slash(char *str, char c)
 	{
 		if ((str[0] == c && str[1] == '\0'))
 		{
-			printf("salut22222\n");
+			//printf("salut22222\n");
 			return (0);
 		}
 		i++;
@@ -18,7 +18,7 @@ int	stop_pand_slash(char *str, char c)
 	return (1);
 }
 
-int	ft_tiret(char *str)
+int	ft_tiret(char *str) // a corriger
 {
 	if (!stop_pand_slash(str, '/'))
 	{

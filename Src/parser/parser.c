@@ -99,9 +99,9 @@ int	ft_parser(t_data *data)
 		return (0);
 	if (!base_check(data->line))
 		return (0);
-	if (!pipe_parse(data))
+	if (!pipe_parse(data)) // juste pipe
 		return (0);
-	if (!ft_cloporte(data))
+	if (!ft_cloporte(data)) // si nul apres une fonction plus token
 		return (0);
 	if (!ft_arrow(data))
 		return (0);

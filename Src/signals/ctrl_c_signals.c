@@ -1,7 +1,7 @@
 
 // Definie la reaction du programme a un ctrl+c normal, et pendant un heredoc
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 /*
 	Simule un ctrl+c en affichant l'invite de commande a la ligne.

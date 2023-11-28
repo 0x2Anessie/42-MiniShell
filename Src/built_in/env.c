@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 char	*unset_var(t_lexer *lexer_lst)
 {

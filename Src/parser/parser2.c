@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	pipe_parse2(t_data *data)
 {

@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	change_directory4(t_env *tmp)
 {

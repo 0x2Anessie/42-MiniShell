@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 void	export_quotes(t_export *data)
 {

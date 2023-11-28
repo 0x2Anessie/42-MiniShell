@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 void	get_data_in_node(t_lexer **lexer_list)
 {

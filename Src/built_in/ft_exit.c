@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	is_valid_number2(int neg, char *str, int i)
 {

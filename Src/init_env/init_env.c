@@ -2,7 +2,7 @@
 // env est determiné par le 3e argument du main "char **env", qui permet 
 // d'accéder aux variables globales définies par le système d'exploitation.
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 /*
 	Utilisé dans la fonction if_no_env, il crée un nouveau noeud pour

@@ -1,7 +1,7 @@
 
 // Definie les retours d'erreur pour les signaux SIGINT et SIGQUIT
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 /*
 	C'est le gestionnaire pour SIGINT, elle met a jour le code d'erreur a

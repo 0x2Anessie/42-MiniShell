@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	ft_check_quotes(char *str, t_data *data)
 {

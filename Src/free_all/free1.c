@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	ft_exit_child(t_exec *utils, int *fd)
 {

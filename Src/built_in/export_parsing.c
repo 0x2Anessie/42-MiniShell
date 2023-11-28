@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 void	initialize_data(t_stringdata *data, char *str)
 {

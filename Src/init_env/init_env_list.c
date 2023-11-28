@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 /*
 	Utilisé dans la fonction init_env_list elle parcourt le tableau de chaînes

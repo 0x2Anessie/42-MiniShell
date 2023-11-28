@@ -9,7 +9,77 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-# define WELCOME_MSG "\033[93m╔════════════════════════════════════════════════════════════════════════════════╗\n║                                                                                ║\n\33[93m║\33[93m                 \033[31m█   █ █ █▄▀ ▄▀▄ █▀   █▀█ █▀▀ █▀ █▀▀ █▄░█ ▀█▀ █▀                \033[93m║\n║                 \033[31m█▄▄ █▄█ █▀▄ █▀█ ▄█   █▀▀ ██▄ ▄█ ██▄ █░▀█ ░█░ ▄█                \033[93m║\n║                                                                                ║\n║      \033[34m ███╗░░░███╗██╗███╗░░██╗██╗░██████╗██╗░░██╗███████╗██╗░░░░░██╗░░░░░       \033[93m║\n║      \033[34m ████╗░████║██║████╗░██║██║██╔════╝██║░░██║██╔════╝██║░░░░░██║░░░░░       \033[93m║\n║     \033[34m  ██╔████╔██║██║██╔██╗██║██║╚█████╗░███████║█████╗░░██║░░░░░██║░░░░░       \033[93m║\n║     \033[34m  ██║╚██╔╝██║██║██║╚████║██║░╚═══██╗██╔══██║██╔══╝░░██║░░░░░██║░░░░░       \033[93m║\n║     \033[34m  ██║░╚═╝░██║██║██║░╚███║██║██████╔╝██║░░██║███████╗███████╗███████╗       \033[93m║\n║      \033[34m ╚═╝░░░░░╚═╝╚═╝╚═╝░░╚══╝╚═╝╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚══════╝       \033[93m║\n║                                                                                ║\n╚════════════════════════════════════════════════════════════════════════════════╝\n\033[m"
+/*  MACRO ACTUELLEMENT UTILISER  */
+# define FAIL -1
+# define TRUE 1
+# define FALSE 0
+# define ZERO_INIT 0
+# define EXIT_SUCCESS 0
+# define FT_FAILURE_EXIT 0
+# define CHILD_PROCESS 0
+# define FORK_FAILURE -1
+# define FORWARD_OFFSET 1
+# define BACKWARD_OFFSET -1 
+# define SKIP_DOLLAR_QUESTION_MARK 2
+# define IDX_ADJUST -1
+# define EXIT_FAIL 1
+# define ERR_CODE_CMD_NOT_FOUND 127
+# define CHAR_IS_SPECIAL 1
+# define CHAR_IS_NOT_SPECIAL 0
+# define CHAR_IS_DOLLAR 0
+# define CHAR_IS_NOT_DOLLAR 1
+# define NEED_EXPAND 1
+# define NO_EXPAND 0
+# define QUOTED 1
+# define NOT_QUOTED 0
+# define EXPANSION_REQUIRED 1
+# define NO_ACTION_REQUIRED 0
+# define INVALID_PIPE -2
+# define OUT_FAIL 2
+# define TAB '\t'  // Tabulation horizontale
+# define SHIFT_OUT 14  // SO (Shift Out)
+# define TOKEN_IS_COMMAND 1
+# define TOKEN_IS_PIPE 0
+# define INFINITY_LOOP 1
+# define PERM_O_RW_G_R_OT_R 0644
+# define ERR_HEREDOC_EOF_WARNING "bash: warning: here-document delimited by \
+end-of-file (wanted `EOF')\n"
+# define HEREDOC_TEMP_FILE "here_doc.tmp"
+# define PERM_RWX_ALL 0777
+# define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
+# define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
+# define ERR_AMB_REDIRECT "bash: ambiguous redirect\n"
+# define OUT_FILE "Outfile"
+# define OUT_TO_FILE_FLAGS (O_CREAT | O_RDWR | O_TRUNC)
+# define CMD_NOT_FOUND 0
+# define CMD_FOUND 1
+# define SIGNAL_EXIT_OFFSET 128
+# define EXIT_STAT_CTRL_BACKSLSH_SIGQUIT (SIGNAL_EXIT_OFFSET + SIGQUIT)
+# define EXIT_STAT_CTRL_C_SIGINT (SIGNAL_EXIT_OFFSET + SIGINT)
+# define CTRL_C SIGINT
+# define CTRL_BACKSLSH SIGQUIT
+# define IGNORE_SIG_ACTION SIG_IGN
+# define PIPE_READ_END 0
+# define PIPE_WRITE_END 1
+# define APPND_TO_FILE_FLAGS (O_CREAT | O_RDWR | O_APPEND)
+# define HEREDOC_TMPFILE_FLAGS (O_CREAT | O_WRONLY | O_TRUNC)
+# define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
+# define WRITE_ERROR_MSG "write error"
+# define OLDPWD_PREFIX "OLDPWD="
+# define QUIT_MESSAGE "Quit\n"
+# define PWD_PREFIX "PWD="
+# define HOME_PREFIX "HOME="
+# define PATH_PREFIX "PATH="
+# define FT_NEWLINE "\n"
+
+/*  DEFINE CMD BUILING  */
+# define CMD_ECHO "echo"
+# define CMD_ENV_VARS "env"
+# define CMD_EXIT_SHELL "exit"
+# define CMD_UNSET_VARS "unset"
+# define CMD_EXPORT_VARS "export"
+# define CMD_CHANG_DIRCT "cd"
+# define CMD_PRINT_DIRCT "pwd"
 
 extern struct s_all	g_all;
 
@@ -17,12 +87,10 @@ typedef enum s_token
 {
 	CMD,
 	ARG,
-	fleched,
-	Dfleched,
-	flecheg,
-	Dflecheg,
-	flechegd,
-	flechedg,
+	GR,
+	GR_DBE,
+	LESS,
+	LESS_DBE,
 	FD,
 	LIMITOR,
 	PIPE,
@@ -154,19 +222,19 @@ typedef struct s_data
 }			t_data;
 
 ////////////////////////LEXER_LIST////////////////////////////////////
-void		ft_lexer(t_data *data);
+void		ft_init_lexer_process(t_data *data);
 int			ft_write_fd(char *str, int fd);
 int			get_word_in_list(char *str, int i, t_lexer **lexer_list,
 				t_lexer *tmp);
 void		get_token_in_node(t_lexer **lexer_list, t_lexer *tmp);
 void		get_data_in_node(t_lexer **lexer_list);
-void		ft_add_back_lexer(t_lexer **lexer_list, char *str);
-int			ft_nombre_mots(char *str);
+void		add_lexer_to_end(t_lexer **lexer_list, char *str);
+int			count_words_in_input(char *str);
 int			is_white_space(char c);
 t_token		which_redir(t_lexer *tmp);
 int			check_redir_error(t_lexer *tmp);
-t_lexer		*ft_lexer_new(char *str);
-void		truc(t_lexer *tmp, t_lexer *first);
+t_lexer		*create_new_lexer(char *str);
+void		assign_command_or_argument_token(t_lexer *tmp, t_lexer *first);
 void		print_lex(t_data *data);
 
 ///////////////////////PARSING/////////////////////////////////////////
@@ -188,33 +256,34 @@ char		*parse_para(char *tmp);
 char		*parse_quote(char *tmp);
 char		*parse_quote2(char *tmp);
 
-///////////////////////////INIT_ENV//////////////////////////////////////
+///////////////////////INIT_ENV////////////////////////////////////////
 t_exec		*init_env(char **env);
-t_env		*init_env_list(char **env);
-void		init_list(t_env *lst, t_env *new);
-t_env		*init_node(char *env);
-int			env_size(char **env);
-t_env		*if_no_env(t_env *final);
+t_env		*ft_get_env_lst(char **env);
+void		ft_envlst_add_back(t_env *lst, t_env *new);
+t_env		*ft_new_env(char *env);
+int			ft_env_size(char **env);
+t_env		*ft_get_env_lst_i(t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
 void		handle_sig(void);
 void		handle_process_signal(void);
-void		ctrl_c_handler_heredoc(int sig);
+void		ctrl_c_handler_here_doc(int sig);
 void		ctrl_c_handler(int sig);
+void		handle_ctrl_backslash(int sig);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////
 void		ft_init_exec(t_data *data);
 void		get_all_node(t_node *node, t_lexer *lexer_lst, t_exec *utils);
-void		get_out(t_node *node, t_lexer *lexer_lst);
-void		get_in(t_node *node, t_lexer *lexer_lst);
-void		get_in_hd(t_node *node, t_lexer *lex_lst);
+void		setup_output_redirection(t_node *node, t_lexer *lexer_lst);
+void		setup_input_redirection(t_node *node, t_lexer *lexer_lst);
+void		configure_here_doc_input(t_node *node, t_lexer *lex_lst);
 void		get_in_fail(t_node *node, t_lexer *lexer_lst);
-void		get_out_append(t_node *node, t_lexer *lex_lst, int *has_out);
+void		append_output_redirection(t_node *node, t_lexer *lex_lst, int *has_out);
 t_node		*ft_add_back_node(t_node *node_lst, t_node *new);
 int			nb_node(t_lexer *lexer_list);
 int			nb_cmd(t_lexer *lexer_list);
 int			has_cmd(t_lexer *lexer_lst);
-void		ft_here_doc(t_node *node, t_lexer *lexer_lst);
+void		manage_here_doc_process(t_node *node, t_lexer *lexer_lst);
 void		ft_read_input(t_node *node, t_lexer *lexer_lst);
 char		*ft_strdup(char *src);
 t_export	*get_export_list(t_export *export_lst);
@@ -281,11 +350,23 @@ int			cd_2(t_lexer *lexer_lst, char *path, char *old, int *i);
 void		write_echo(char **tab, int i);
 void		exec_chemin(t_lexer *lexer);
 
-///////////////////////////EXEC///////////////////////////////////////////
-void		ft_bzero(pid_t *pid, int nb_node);
-void		init_var(int *fd, int *y, int *wstatus);
+/* Déclarations des fonctions de command_analysis.c */
+int			is_command_equal(t_lexer *lexer_lst, const char *command, int command_length);
+int			is_built_in(t_lexer *lexer_lst);
+int			should_continue_execution(t_all *g_all, int *y);
+int			is_valid_redirection(t_node *node);
+t_lexer		*find_next_command(t_lexer *lexer_list);
+
+/* Déclarations des fonctions de command_execution.c */
+void		ft_exec_single_built_in(t_lexer *lexer_lst, int *fd);
+void		close_fds_if_needed(int *fd, int previous_fd);
+int			start_exec(int *fd, pid_t *pid, t_lexer *lex_lst, int *y);
+void		wait_child_processes(pid_t *pid, int *wstatus, int nb_node);
 void		ft_prep_exec(t_data *data);
-int			start_exec(int *fd, pid_t *pid, t_lexer *lex_lst, int *count);
+
+///////////////////////////EXEC///////////////////////////////////////////
+void		ft_bzero_pid_array(pid_t *pid, int nb_node);
+void		init_var(int *fd, int *y, int *wstatus);
 pid_t		ft_child(t_lexer *lexer_list, int *fd, int count, t_exec utils);
 char		**get_arg(t_lexer *lexer_list);
 int			check_path_exec(t_lexer *lexer, t_exec utils);
@@ -296,8 +377,6 @@ void		handle_in(t_exec utils, int count);
 int			ft_nb_arg(t_lexer *lexer_list);
 t_lexer		*go_next_cmd(t_lexer *lexer_list);
 int			verif_var_exist_export_2(t_exec *utils, char *str);
-int			is_built_in(t_lexer *lexer_lst);
-void		ft_exec_single_built_in(t_lexer *lexer_lst, int *fd);
 int			close_fd(void);
 int			close_pipe(int *fd);
 int			slashinlex(t_lexer *lexer);
@@ -311,15 +390,15 @@ int			word_not_found(char *w, t_quote *state);
 int			put_error_code(t_expand *exp);
 int			search_word(char *w, t_expand *exp, char *nv, t_quote *state);
 int			basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state);
-int			sign(char c, t_quote *st);
+int			is_special_syntax_character(char c, t_quote *st);
 int			need_expand_or_rm_quote(t_lexer **to_check, t_quote *state,
 				t_expand *exp);
 void		expand(t_quote *state, char **env, t_lexer *tmp);
-void		state_at_zero(t_quote *state);
+void		reset_quoting_state(t_quote *state);
 int			search_in_env_len(char *w, char **nv, t_quote *st, int *len);
-void		type_expantion(t_lexer **expnd, t_quote *st, char **nv,
+void		sum_expansion_length(t_lexer **expnd, t_quote *st, char **nv,
 				t_expand *exp);
-void		len_for_expand(t_lexer **exp, t_quote *st, char **env,
+void		expansion_length_for_word(t_lexer **exp, t_quote *st, char **env,
 				int *len);
 char		*malloc_for_expand(t_lexer **exp, t_quote *st, char **env);
 void		manage_expantion(t_lexer **expnd, t_quote *st, char **nv,
@@ -337,7 +416,7 @@ int			next_squote(char *cmd);
 int			next_dquote(char *cmd);
 int			next_squote_len(char *cmd, int i, t_quote *state);
 int			next_dquote_len(char *cmd, int i, t_quote *state);
-void		quoting_state(char c, t_quote *state);
+void		update_quoting_state(char c, t_quote *state);
 int			sep_word(char c);
 int			end_word(char *cmd, int i, t_quote *state);
 int			len_darr(char **arr);
@@ -347,8 +426,8 @@ char		*put_word_without_quote(char *old, char *nw, t_quote *state);
 
 /////////////////FREE
 int			ft_exit_child(t_exec *utils, int *fd);
-void		memory_check(void *add);
-void		*ft_malloc(size_t size);
+void		check_memory_allocation(void *add);
+void		*ft_malloc_with_tracking(size_t size);
 void		ft_free(void *add);
 void		ft_free_all(void);
 int			ft_len_nb(long n);
@@ -359,7 +438,7 @@ int			dollar_at_end(char *str);
 int			ft_tiret(char *str);
 int			chevron_pipe(char *str);
 void		rm_para_quote2(t_data *data);
-void		sigint_process(int signo);
+void		handle_ctrl_c(int signo);
 void		rm_pwd(void);
 void		find_old_pwd(t_env	*env);
 int			change_directory2(t_env *tmp);
@@ -368,11 +447,11 @@ int			change_directory3(t_env *tmp);
 char		*get_old_pwd(t_env	*tmp);
 char		*get_pwd_env(t_env	*tmp);
 int			change_directory4(t_env *tmp);
-void		no_env_node_init(char *str, t_env **env);
+void		malloc_single_node(char *str, t_env **env);
 int			count_quote(char *str);
 void		get_words(t_lexer *lexer_lst, char **tab, int *i);
 void		process_echo(char **tab, int i);
 void		exit_all(void);
-void		ft_lexer4(char *str, int *i, int *j, t_quote *state);
+void		process_lexer_input(char *str, int *i, int *j, t_quote *state);
 
 #endif

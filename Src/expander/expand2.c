@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	single_quote_expantion(char *word, t_expand *exp)
 {

@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	verif_var_exist_export(t_exec *utils, char *str)
 {

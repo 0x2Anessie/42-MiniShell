@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 void	simulate_echo(t_lexer *lexer_lst)
 {

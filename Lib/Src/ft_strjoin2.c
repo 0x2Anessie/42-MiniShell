@@ -1,5 +1,5 @@
 #include "../includes/lib.h"
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	strlen2(char *str)
 {

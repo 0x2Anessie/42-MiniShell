@@ -1,5 +1,5 @@
 
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 char	*ft_strcpy(char *dest, const char *src)
 {

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 16:32:11 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/17 15:58:59 by lgoure           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -200,20 +188,19 @@ char		*parse_para(char *tmp);
 char		*parse_quote(char *tmp);
 char		*parse_quote2(char *tmp);
 
-///////////////////////INIT_ENV////////////////////////////////////////
+///////////////////////////INIT_ENV//////////////////////////////////////
 t_exec		*init_env(char **env);
-t_env		*ft_get_env_lst(char **env);
-void		ft_envlst_add_back(t_env *lst, t_env *new);
-t_env		*ft_new_env(char *env);
-int			ft_env_size(char **env);
-t_env		*ft_get_env_lst_i(t_env *final);
+t_env		*init_env_list(char **env);
+void		init_list(t_env *lst, t_env *new);
+t_env		*init_node(char *env);
+int			env_size(char **env);
+t_env		*if_no_env(t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
 void		handle_sig(void);
 void		handle_process_signal(void);
-void		ctrl_c_handler_here_doc(int sig);
+void		ctrl_c_handler_heredoc(int sig);
 void		ctrl_c_handler(int sig);
-void		sigquit_process(int sig);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////
 void		ft_init_exec(t_data *data);
@@ -381,7 +368,7 @@ int			change_directory3(t_env *tmp);
 char		*get_old_pwd(t_env	*tmp);
 char		*get_pwd_env(t_env	*tmp);
 int			change_directory4(t_env *tmp);
-void		malloc_single_node(char *str, t_env **env);
+void		no_env_node_init(char *str, t_env **env);
 int			count_quote(char *str);
 void		get_words(t_lexer *lexer_lst, char **tab, int *i);
 void		process_echo(char **tab, int i);

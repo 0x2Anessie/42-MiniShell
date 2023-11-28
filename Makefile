@@ -1,22 +1,9 @@
-<<<<<<< HEAD
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/08 15:43:01 by fililafrapp       #+#    #+#              #
-#    Updated: 2023/11/23 10:29:34 by lgoure           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-=======
+
 NAME = minishell
 
 CC = cc
 RM = rm -f
 CFLAGS = -g -g3 -Wall -Wextra -Werror
->>>>>>> nessie
 
 SRCS = $(addprefix Src/, main.c lexer/lexer_utils.c lexer/lex.c lexer/lexer.c parser/parser.c parser/parser2.c parser/rm_para_quote.c \
 					parser/parser_utils.c init_env/init_env_list.c signals/error_signals.c init_exec/init_exec.c init_exec/init_exec_utils.c \

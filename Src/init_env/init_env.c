@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/20 21:38:04 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/25 12:18:39 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 // env est determiné par le 3e argument du main "char **env", qui permet 
 // d'accéder aux variables globales définies par le système d'exploitation.

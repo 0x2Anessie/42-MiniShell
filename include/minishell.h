@@ -81,18 +81,22 @@ end-of-file (wanted `EOF')\n"
 # define CMD_CHANG_DIRCT "cd"
 # define CMD_PRINT_DIRCT "pwd"
 
+# define WELCOME_MSG "\n\033[93m╔════════════════════════════════════════════════════════════════════════════╗\n║                                                                            ║\n\33[93m║\33[93m                  \033[31m▄▀▄ █▄ █ ▄▀▄ █ █▀    █   █ █ █▄▀ ▄▀▄ █▀                   \033[93m║\n║                  \033[31m█▀█ █ ▀█ █▀█ █ ▄█ ▄  █▄▄ █▄█ █▀▄ █▀█ ▄█                   \033[93m║\n║                                   \033[31m▄▀                                       \033[93m║\n║                                                                            \033[93m║\n║                 \033[31m█▀█ ▄▀▄ █ █ █      █▀▄ ▄▀▄ ▄▀▀ ▄▀▄ █▀▀ █                   \033[93m║\n║                 \033[31m█▀▀ █▀█ █▄█ █▄▄ ▄  █▀▄ █▀█ █▀▀ █▀█ ██▄ █▄▄                 \033[93m║\n║                                \033[31m▄▀                                          \033[93m║\n║                                                                            \033[93m║\n║                       \033[31m█▀█ █▀▄ █▀▀ █▀ █▀▀ █▄░█ ▀█▀ █▀                       \033[93m║\n║                       \033[31m█▀▀ █▀▄ ██▄ ▄█ ██▄ █░▀█ ░█░ ▄█                       \033[93m║\n║                                                                            \033[93m║\n║                                                                            \033[93m║\n║     \033[34m███╗░░░███╗██╗███╗░░██╗██╗░██████╗██╗░░██╗███████╗██╗░░░░░██╗░░░░░     \033[93m║\n║     \033[34m████╗░████║██║████╗░██║██║██╔════╝██║░░██║██╔════╝██║░░░░░██║░░░░░     \033[93m║\n║     \033[34m██╔████╔██║██║██╔██╗██║██║╚█████╗░███████║█████╗░░██║░░░░░██║░░░░░     \033[93m║\n║     \033[34m██║╚██╔╝██║██║██║╚████║██║░╚═══██╗██╔══██║██╔══╝░░██║░░░░░██║░░░░░     \033[93m║\n║     \033[34m██║░╚═╝░██║██║██║░╚███║██║██████╔╝██║░░██║███████╗███████╗███████╗     \033[93m║\n║     \033[34m╚═╝░░░░░╚═╝╚═╝╚═╝░░╚══╝╚═╝╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚══════╝     \033[93m║\n║                                                                            \033[93m║\n╚════════════════════════════════════════════════════════════════════════════╝\n\033[m"
+
 extern struct s_all	g_all;
 
 typedef enum s_token
 {
 	CMD,
 	ARG,
-	GR,
-	GR_DBE,
-	LESS,
-	LESS_DBE,
+	REDIRECT_OUT,
+	APPEND_OUT,
+	REDIRECT_IN,
+	HERE_DOC,
+	REDIRECT_INOUT,
+	REDIRECT_OUTIN,
 	FD,
-	LIMITOR,
+	DELIMITER,
 	PIPE,
 }			t_token;
 
@@ -258,18 +262,17 @@ char		*parse_quote2(char *tmp);
 
 ///////////////////////INIT_ENV////////////////////////////////////////
 t_exec		*init_env(char **env);
-t_env		*ft_get_env_lst(char **env);
-void		ft_envlst_add_back(t_env *lst, t_env *new);
-t_env		*ft_new_env(char *env);
-int			ft_env_size(char **env);
-t_env		*ft_get_env_lst_i(t_env *final);
+t_env		*create_env_list_from_array(char **env);
+void		ft_env_lst_add_to_end(t_env *lst, t_env *new);
+t_env		*create_and_init_env_var_node(char *env);
+int			env_size(char **env);
+t_env		*init_env_list_with_pwd_if_empty(t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
 void		handle_sig(void);
-void		handle_process_signal(void);
 void		ctrl_c_handler_here_doc(int sig);
 void		ctrl_c_handler(int sig);
-void		handle_ctrl_backslash(int sig);
+void		handle_process_signal(void);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////
 void		ft_init_exec(t_data *data);
@@ -438,7 +441,6 @@ int			dollar_at_end(char *str);
 int			ft_tiret(char *str);
 int			chevron_pipe(char *str);
 void		rm_para_quote2(t_data *data);
-void		handle_ctrl_c(int signo);
 void		rm_pwd(void);
 void		find_old_pwd(t_env	*env);
 int			change_directory2(t_env *tmp);
@@ -447,7 +449,7 @@ int			change_directory3(t_env *tmp);
 char		*get_old_pwd(t_env	*tmp);
 char		*get_pwd_env(t_env	*tmp);
 int			change_directory4(t_env *tmp);
-void		malloc_single_node(char *str, t_env **env);
+void		malloc_no_env_initial_node(char *str, t_env **env);
 int			count_quote(char *str);
 void		get_words(t_lexer *lexer_lst, char **tab, int *i);
 void		process_echo(char **tab, int i);

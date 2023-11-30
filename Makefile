@@ -1,15 +1,15 @@
 # Minishell Makefile with separate directory for object files
 
 NAME = minishell
-SRC_DIR = src
+SRC_DIR = srcs
 OBJ_DIR = objs
 
 # Définition des sources par répertoire
 SRC_LEXER = $(addprefix lexer/, lexer_utils.c lex.c lexer.c)
 SRC_PARSER = $(addprefix parser/, parser2.c parser4.c parser.c parser_utils.c \
         		rm_para_quote.c)
-SRC_INIT_ENV = $(addprefix init_env/, init_env2.c init_env.c)
-SRC_SIGNALS = $(addprefix signals/, signals2.c signals.c)
+SRC_INIT_ENV = $(addprefix init_env/, init_env_list.c init_env.c)
+SRC_SIGNALS = $(addprefix signals/, ctrl_c_signals.c error_signals.c)
 SRC_BUILT_IN = $(addprefix built_in/, built_in_utils_2.c built_in_utils.c \
 				cd2.c cd3.c cd.c echo2.c echo.c echo_utils.c env.c \
 				env_create.c env_things.c export.c export_checking.c \
@@ -53,7 +53,14 @@ TOTAL_FILES := $(words $(SRCS))
 CURRENT_FILE := 0
 
 # Main targets
-all: $(NAME)
+all: 			$(NAME)
+				@echo "               _____   __        __        __            __   __    ";
+				@echo "              /     \ |__| ____ |__| _____|  |__   ____ |  | |  |   ";
+				@echo "             /  \ /  \|  |/    \|  |/  ___/  |  \_/ __ \|  | |  |   ";
+				@echo "            /    Y    \  |   |  \  |\___ \|   Y  \  ___/|  |_|  |__ ";
+				@echo "            \____|__  /__|___|  /__/____  >___|  /\_____>____/____/ ";
+				@echo "                    \/        \/        \/     \/                   ";
+				@echo "                                                                    ";
 
 $(NAME): $(OBJS)
 	@cd Lib && make > /dev/null
@@ -94,7 +101,15 @@ clean:
 	@$(foreach obj,$(OBJS) $(DEPS),rm -f $(obj); $(call clean_progress);)
 	@rm -rf $(OBJ_DIR)
 	@$(call clean_progress) # This will now correctly show 100%
-	@echo ""
+	@echo "                                                                      ";
+	@echo "                                                                      ";
+	@echo "             /\                __              __                          ";
+	@echo "       ____  )/ ____   _______/  |_      ____ |  |   ____  _____    ____   ";
+	@echo "     /  ___\  /  __ \ /  ___/\   __\   /  ___\|  | /  __ \ \__  \  /    \  ";
+	@echo "     \  \___  \  ___/ \___ \  |  |     \  \___|  |_\  ___/ / __  \|   |  \ ";
+	@echo "      \____ >  \____ >_____ > |__|      \____ >____/\____> ____  / ___|  / ";
+	@echo "                                                               \/      \/  ";
+	@echo "                                                                      ";	
 
 # Fonction pour mettre à jour et afficher la barre de progression sur une seule ligne pour fclean
 define fclean_progress
@@ -112,7 +127,15 @@ fclean:
 	@$(MAKE) clean > /dev/null
 	@rm -f $(NAME)
 	@$(call fclean_progress)
-	@echo ""
+	@echo "                                                                            ";
+	@echo "                                                                            ";
+	@echo "          /\                __        _____       __                          ";
+	@echo "    ____  )/ ____   _______/  |_    _/ ____\____ |  |   ____  _____    ____   ";
+	@echo "  /  ___\  /  __ \ /  ___/\   __\   \  __\/  ___\|  | /  __ \ \__  \  /    \  ";
+	@echo "  \  \___  \  ___/ \___ \  |  |      |  | \  \___|  |_\  ___/  / __ \|   |  \ ";
+	@echo "   \____ >  \____> _____ > |__|      |__|  \____ >____/\____ > ____  /___|  / ";
+	@echo "                                                                   \/     \/  ";
+	@echo "                                                                      ";
 
 re: fclean all
 

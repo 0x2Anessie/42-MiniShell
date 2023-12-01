@@ -6,11 +6,11 @@
 /*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:30:52 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/12/01 12:51:50 by lgoure           ###   ########.fr       */
+/*   Updated: 2023/12/01 13:00:28 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../Include/minishell.h"
 
 int	stop_pand_slash(char *str, char c)
 {
@@ -29,7 +29,7 @@ int	stop_pand_slash(char *str, char c)
 	return (1);
 }
 
-int	ft_tiret(char *str) // a corriger
+int	ft_tiret(char *str) // a corect
 {
 	if (!stop_pand_slash(str, '/'))
 	{

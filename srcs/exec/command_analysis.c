@@ -1,0 +1,287 @@
+
+#include "../../include/minishell.h"
+
+/**
+ * @nom: is_command_equal
+ *
+ * @description:
+ *   Compare un mot de la liste de lexèmes avec une commande spécifiée pour vérifier 
+ *   si elles sont identiques en termes de contenu et de longueur. Cette fonction est 
+ *   essentielle pour identifier des commandes spécifiques dans un interpréteur de 
+ *   commandes ou un shell, assurant ainsi que les commandes entrées correspondent 
+ *   exactement à celles attendues, ni plus courtes ni plus longues.
+ *
+ * @paramètres:
+ *   - lexer_lst: Un pointeur vers t_lexer, représentant le lexème courant à comparer.
+ *   - command: Une chaîne de caractères constante représentant la commande à vérifier.
+ *   - command_length: Un entier indiquant la longueur de la commande à vérifier.
+ *
+ * @fonctionnement:
+ *   - Utilise ft_strncmp pour comparer le mot du lexème (lexer_lst->word) avec la 
+ *     commande donnée sur les 'command_length' premiers caractères.
+ *   - Utilise strlen2 pour vérifier que la longueur du mot du lexème est exactement 
+ *     égale à 'command_length'.
+ *   - Retourne 1 (vrai) si les deux conditions sont remplies, sinon 0 (faux).
+ *
+ * @valeur_de_retour:
+ *   - Retourne 1 si le mot du lexème est identique à la commande spécifiée en termes 
+ *     de contenu et de longueur.
+ *   - Retourne 0 dans le cas contraire.
+ *
+ * @erreurs_et_effets_de_bord:
+ *   - Si lexer_lst ou lexer_lst->word est NULL, le comportement est indéterminé.
+ *   - La fonction dépend de la validité de 'lexer_lst' et 'command'.
+ *
+ * @exemples_d'utilisation:
+ *   - is_command_equal(lexeme, "exit", 4) retournera 1 si lexeme->word est "exit".
+ *   - is_command_equal(lexeme, "echo", 4) retournera 0 si lexeme->word est "echoo".
+ *
+ * @dépendances:
+ *   - ft_strncmp: Compare les chaînes de caractères avec une limite de longueur.
+ *   - strlen2: Calcule la longueur d'une chaîne de caractères.
+ *
+ * @graphe_de_flux:
+ *   Début
+ *     |
+ *     v
+ *   ft_strncmp(lexer_lst->word, command, command_length) == 0 et 
+ *   strlen2(lexer_lst->word) == command_length ?
+ *     /        \
+ *   VRAI      FAUX
+ *     |          \
+ *     |           \
+ *     v            v
+ *   Retourner 1   Retourner 0
+ */
+int is_command_equal(t_lexer *lexer_lst, const char *command, int command_length)
+{
+	return (!ft_strncmp(lexer_lst->word, command, command_length) && 
+		   strlen2(lexer_lst->word) == command_length);
+}
+
+/**
+ * @fonction: is_built_in
+ * @brève_description: Détermine si un mot dans une liste de lexèmes représente une commande intégrée.
+ * 
+ * @param lexer_lst: Pointeur sur une structure t_lexer représentant la liste des lexèmes.
+ * 
+ * @description_détaillée:
+ *   La fonction 'is_built_in' est conçue pour identifier si le mot courant dans la liste des lexèmes ('lexer_lst')
+ *   correspond à l'une des commandes intégrées du shell. Elle effectue cette vérification en utilisant une série
+ *   de comparaisons avec les noms des commandes intégrées définies (comme 'pwd', 'echo', etc.).
+ *   
+ *   Pourquoi cette vérification est-elle nécessaire ?
+ *   - Filtrage des commandes : Dans un shell, il est crucial de distinguer les commandes intégrées des commandes 
+ *     systèmes externes. Cela permet au shell de les traiter correctement, en exécutant les commandes intégrées 
+ *     directement et en déléguant les autres au système.
+ *   - Optimisation de l'exécution : Les commandes intégrées sont généralement exécutées plus rapidement car elles 
+ *     ne nécessitent pas de créer un processus séparé.
+ *   - Respect de la logique du shell : Certaines commandes intégrées, comme 'cd', doivent être exécutées dans le 
+ *     contexte du shell actuel pour être efficaces, car elles modifient l'état du shell lui-même.
+ *
+ * @valeur_de_retour: 
+ *   Retourne 1 (vrai) si le mot correspond à une commande intégrée, 0 (faux) sinon.
+ *
+ * @erreurs_possibles_et_effets_de_bord: 
+ *   - Si 'lexer_lst' est NULL ou si 'lexer_lst->word' est NULL, la fonction retourne 0 sans effectuer de comparaisons.
+ *   - La fonction dépend des commandes intégrées définies et de leur correspondance exacte avec les mots dans 'lexer_lst'.
+ *
+ * @exemples_d'utilisation:
+ *   t_lexer lexer;
+ *   lexer.word = "echo";
+ *   int result = is_built_in(&lexer); // Résultat attendu : 1
+ *
+ * @dépendances: 
+ *   - is_command_equal() : Utilisée pour comparer le mot actuel avec chaque commande intégrée.
+ *   - CMD_PRINT_DIRCT, CMD_ECHO, etc. : Constantes représentant les noms des commandes intégrées.
+ *
+ * @graphe_de_flux:
+ *   Début
+ *     |
+ *     v
+ *   lexer_lst->word est NULL ?
+ *  /        \
+ * VRAI      FAUX
+ *  |         \
+ *  |          \
+ *  v           v
+ * Retourner 0  Comparer le mot avec les commandes intégrées
+ *              (PWD, ECHO, ENV, UNSET, CD, EXPORT, EXIT)
+ *              |
+ *              v
+ *            Retourner 1 si une correspondance est trouvée, sinon 0
+ */
+int is_built_in(t_lexer *lexer_lst)
+{
+	if (lexer_lst->word == NULL)
+		return (0);
+
+	return (is_command_equal(lexer_lst, CMD_PRINT_DIRCT, ft_strlen(CMD_PRINT_DIRCT)) ||
+		   is_command_equal(lexer_lst, CMD_ECHO, ft_strlen(CMD_ECHO)) ||
+		   is_command_equal(lexer_lst, CMD_ENV_VARS, ft_strlen(CMD_ENV_VARS)) ||
+		   is_command_equal(lexer_lst, CMD_UNSET_VARS, ft_strlen(CMD_UNSET_VARS)) ||
+		   is_command_equal(lexer_lst, CMD_CHANG_DIRCT, ft_strlen(CMD_CHANG_DIRCT)) ||
+		   is_command_equal(lexer_lst, CMD_EXPORT_VARS, ft_strlen(CMD_EXPORT_VARS)) ||
+		   is_command_equal(lexer_lst, CMD_EXIT_SHELL, ft_strlen(CMD_EXIT_SHELL)));
+}
+
+/**
+ * @fonction: should_continue_execution
+ * @brève_description: Détermine si l'exécution doit se poursuivre en fonction de l'état actuel.
+ * 
+ * @param g_all: Pointeur sur la structure t_all représentant l'état global du programme.
+ * @param y: Pointeur sur un entier utilisé dans la logique de contrôle de l'exécution.
+ * 
+ * @description_détaillée:
+ *   La fonction 'should_continue_execution' évalue plusieurs conditions pour décider si le 
+ *   processus d'exécution doit se poursuivre. Elle vérifie l'existence et l'état de 'node' 
+ *   dans 'g_all->utils', si 'node' a une commande à exécuter ('has_cmd'), et si 'can_run' 
+ *   dans 'g_all->utils' est vrai. De plus, elle incrémente la valeur pointée par 'y[1]' et 
+ *   vérifie si elle est supérieure ou égale à 0.
+ *   
+ *   Pourquoi cette vérification multi-conditionnelle ?
+ *   - Contrôle précis de l'exécution : Chacune de ces conditions joue un rôle clé dans la 
+ *     décision de continuer ou d'arrêter l'exécution, permettant une gestion fine du flux 
+ *     de contrôle.
+ *   - Gestion de l'état du programme : La vérification de l'état de différents composants 
+ *     de 'g_all' assure que l'exécution se poursuit uniquement si l'état du programme le 
+ *     permet.
+ *
+ * @valeur_de_retour: 
+ *   Retourne 1 (vrai) si toutes les conditions sont remplies pour continuer l'exécution, 0 (faux) sinon.
+ *
+ * @erreurs_possibles_et_effets_de_bord: 
+ *   - Si 'g_all' ou 'g_all->utils->node' est NULL, la fonction retournera 0.
+ *   - La modification de 'y[1]' a un effet de bord et doit être prise en compte dans le flux de contrôle.
+ *
+ * @exemples_d'utilisation:
+ *   t_all all;
+ *   int y[2] = {0, 0};
+ *   int result = should_continue_execution(&all, y); // Résultat attendu : 1 ou 0
+ *
+ * @dépendances: Aucune.
+ *
+ * @graphe_de_flux:
+ *   Début
+ *     |
+ *     v
+ *   g_all->utils->node existe et g_all->utils->node->has_cmd == 1 ?
+ *  /        \
+ * VRAI      FAUX
+ *  |         \
+ *  |          \
+ *  v           v
+ * y[1]++ >= 0 et g_all->utils->can_run ?  Retourner 0
+ *  /        \
+ * VRAI      FAUX
+ *  |         \
+ *  |          \
+ *  v           v
+ * Retourner 1  Retourner 0
+ */
+int should_continue_execution(t_all *g_all, int *y)
+{
+    return (g_all->utils->node && 
+           g_all->utils->node->has_cmd == 1 && 
+           ++y[1] >= 0 && 
+           g_all->utils->can_run);
+}
+
+/**
+ * @fonction: is_valid_redirection
+ * @brève_description: Évalue la validité d'une redirection pour un nœud donné.
+ * 
+ * @param node: Pointeur sur une structure t_node représentant le nœud à évaluer.
+ * 
+ * @description_détaillée:
+ *   La fonction 'is_valid_redirection' a pour but de déterminer si les paramètres de redirection 
+ *   d'un nœud spécifié ('node') sont valides. Cette évaluation se base sur deux critères :
+ *   - La validité de l'entrée ('in') du nœud, qui ne doit pas être égale à INVALID_PIPE.
+ *   - La validité de la sortie en cas d'échec ('out_fail'), qui ne doit pas être égale à OUT_FAIL.
+ *   
+ *   Pourquoi ces critères sont-ils importants ?
+ *   - Gestion des erreurs de redirection : Ces vérifications permettent de s'assurer que les 
+ *     redirections d'entrée et de sortie sont configurées correctement et peuvent être utilisées 
+ *     sans erreur.
+ *   - Fiabilité du flux de données : En confirmant la validité des redirections, on garantit un 
+ *     traitement correct des données entre les différents composants du système.
+ *
+ * @valeur_de_retour: 
+ *   Retourne 1 (vrai) si les conditions de validité sont remplies, 0 (faux) sinon.
+ *
+ * @erreurs_possibles_et_effets_de_bord: 
+ *   - Si 'node' est NULL, la fonction retournera 0, car elle ne peut pas vérifier la validité des redirections.
+ *   - La fonction se repose sur les valeurs prédéfinies de INVALID_PIPE et OUT_FAIL pour évaluer la validité.
+ *
+ * @exemples_d'utilisation:
+ *   t_node node;
+ *   node.in = 1;
+ *   node.out_fail = 0;
+ *   int result = is_valid_redirection(&node); // Résultat attendu : 1
+ *
+ * @dépendances: Aucune.
+ *
+ * @graphe_de_flux:
+ *   Début
+ *     |
+ *     v
+ *   node->in != INVALID_PIPE et node->out_fail != OUT_FAIL ?
+ *  /        \
+ * VRAI      FAUX
+ *  |         \
+ *  |          \
+ *  v           v
+ * Retourner 1  Retourner 0
+ */
+int is_valid_redirection(t_node *node)
+{
+    return (node->in != INVALID_PIPE && node->out_fail != OUT_FAIL);
+}
+
+/**
+ * @fonction: find_next_command
+ * @brève_description: Trouve la prochaine commande dans une liste de lexèmes.
+ * 
+ * @param lexer_list: Pointeur sur t_lexer, la liste de lexèmes à parcourir.
+ * 
+ * @description_détaillée:
+ *   La fonction 'find_next_command' parcourt une liste de lexèmes fournie ('lexer_list') pour
+ *   trouver le premier lexème dont le token est CMD (commande). Elle avance dans la liste en
+ *   vérifiant chaque élément jusqu'à ce qu'elle trouve un lexème avec un token de commande ou
+ *   atteigne la fin de la liste.
+ *   
+ *   Pourquoi cette recherche est-elle nécessaire ?
+ *   - Identification des commandes : Dans un interpréteur de commandes, il est essentiel d'identifier
+ *     les commandes distinctes pour les traiter correctement. Cette fonction facilite la segmentation
+ *     et l'analyse des commandes entrées par l'utilisateur.
+ *   - Préparation à l'exécution : En isolant les commandes, la fonction aide à préparer le système
+ *     pour exécuter chaque commande de manière ordonnée et structurée.
+ *
+ * @valeur_de_retour: 
+ *   Retourne un pointeur sur le premier lexème avec un token CMD trouvé, ou NULL si aucune commande n'est trouvée.
+ *
+ * @erreurs_possibles_et_effets_de_bord: 
+ *   - Si 'lexer_list' est NULL dès le départ, la fonction retournera immédiatement NULL.
+ *   - La fonction ne modifie pas la liste originale mais renvoie un pointeur vers un élément dans celle-ci.
+ *
+ * @exemples_d'utilisation:
+ *   t_lexer *lexer_list = initialisé avec des lexèmes ;
+ *   t_lexer *next_cmd = find_next_command(lexer_list); // Résultat attendu : pointeur vers le prochain CMD
+ *
+ * @dépendances: Aucune.
+ *
+ * @graphe_de_flux:
+ *   Début
+ *     |
+ *     v
+ *   Parcourir lexer_list jusqu'à trouver un lexème avec token == CMD ou atteindre la fin
+ *     |
+ *     v
+ *   Retourner le pointeur sur le lexème trouvé ou NULL si aucun CMD n'est trouvé
+ */
+t_lexer *find_next_command(t_lexer *lexer_list)
+{
+    while (lexer_list && lexer_list->token != CMD)
+        lexer_list = lexer_list->next;
+    return (lexer_list);
+}

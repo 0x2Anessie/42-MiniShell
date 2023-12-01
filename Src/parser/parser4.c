@@ -6,7 +6,11 @@
 /*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:30:52 by fililafrapp       #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/12/01 14:31:14 by lgoure           ###   ########.fr       */
+=======
+/*   Updated: 2023/11/28 17:42:11 by lgoure           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +33,11 @@ int	stop_pand_slash(char *str, char c)
 	return (1);
 }
 
-int	ft_tiret(char *str) // a modif
+<<<<<<< HEAD
+int	ft_tiret(char *str)
+=======
+int	ft_tiret(char *str) // a corect
+>>>>>>> main
 {
 	if (!stop_pand_slash(str, '/'))
 	{

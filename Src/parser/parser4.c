@@ -6,7 +6,7 @@
 /*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:30:52 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/23 12:44:28 by lgoure           ###   ########.fr       */
+/*   Updated: 2023/11/28 17:42:11 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	stop_pand_slash(char *str, char c)
 	return (1);
 }
 
-int	ft_tiret(char *str)
+int	ft_tiret(char *str) // a corect
 {
 	if (!stop_pand_slash(str, '/'))
 	{

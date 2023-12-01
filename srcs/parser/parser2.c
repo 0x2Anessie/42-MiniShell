@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:52:29 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/30 01:47:53 by raveriss         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:11:05 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	pipe_parse2(t_data *data)
 	return (1);
 }
 
-int	ft_chevron(char *str, char c)
+int	ft_chevron(char *str)
 {
 	int	i;
 	int	k;
@@ -50,7 +50,7 @@ int	ft_chevron(char *str, char c)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == '<' || str[i] == '>')
 		{
 			k++;
 		}
@@ -72,7 +72,7 @@ int	pipe_parse(t_data *data)
 	while (tmp)
 	{
 		k = 0;
-		if (!ft_chevron(tmp->word, '<') || (!ft_chevron(tmp->word, '>')))
+		if (!ft_chevron(tmp->word) || !ft_chevron(tmp->word))
 		{
 			printf("3 syntax error near unexpected token\n");
 			return (0);
@@ -97,17 +97,17 @@ int	ft_arrow2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if ((tmp->token == APPEND_OUT || tmp->token == REDIRECT_OUT))
+		if ((tmp->token == Dfleched || tmp->token == fleched))
 		{
-			if (tmp->next->token == HERE_DOC || tmp->next->token == REDIRECT_IN
-				|| tmp->next->token == APPEND_OUT || tmp->next->token == REDIRECT_OUT
+			if (tmp->next->token == HERE_DOC || tmp->next->token == flecheg
+				|| tmp->next->token == Dfleched || tmp->next->token == fleched
 				|| tmp->next->token == PIPE)
 				return (0);
 		}
-		if (tmp->token == HERE_DOC || tmp->token == REDIRECT_IN)
+		if (tmp->token == HERE_DOC || tmp->token == flecheg)
 		{
-			if (tmp->next->token == HERE_DOC || tmp->next->token == REDIRECT_IN
-				|| tmp->next->token == APPEND_OUT || tmp->next->token == REDIRECT_OUT
+			if (tmp->next->token == HERE_DOC || tmp->next->token == flecheg
+				|| tmp->next->token == Dfleched || tmp->next->token == fleched
 				|| tmp->next->token == PIPE)
 				return (0);
 		}

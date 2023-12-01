@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:59:15 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/30 01:47:53 by raveriss         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:51:53 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 			tmp->token = PIPE;
 		else if (tmp->word[0] == '<' || tmp->word[0] == '>')
 			tmp->token = which_redir(tmp);
-		// else if (tmp->prev->token == APPEND_OUT || tmp->prev->token == REDIRECT_IN
-		// 	|| tmp->prev->token == REDIRECT_OUT)
-		else if (tmp->prev->token == APPEND_OUT || tmp->prev->token == REDIRECT_IN
-			|| tmp->prev->token == REDIRECT_OUT || tmp->prev->token == REDIRECT_INOUT)
+		// else if (tmp->prev->token == Dfleched || tmp->prev->token == flecheg
+		// 	|| tmp->prev->token == fleched)
+		else if (tmp->prev->token == Dfleched || tmp->prev->token == flecheg
+			|| tmp->prev->token == fleched || tmp->prev->token == flechegd)
 			tmp->token = FD;
 		else if (tmp->prev->token == HERE_DOC)
 			tmp->token = DELIMITER;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:00:00 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/30 01:47:53 by raveriss         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:51:53 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ t_token	which_redir(t_lexer *tmp)
 	if (!check_redir_error(tmp))
 	{
 		if (tmp->word[0] == '>' && tmp->word[1] == '\0')
-			return (REDIRECT_OUT);
+			return (fleched);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '\0')
-			return (REDIRECT_IN);
+			return (flecheg);
 		else if (tmp->word[0] == '>' && tmp->word[1] == '>')
-			return (APPEND_OUT);
+			return (Dfleched);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '<')
 			return (HERE_DOC);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '>')
-			return (REDIRECT_INOUT);
+			return (flechegd);
 		else if (tmp->word[0] == '>' && tmp->word[1] == '<')
-			return (REDIRECT_OUTIN);
+			return (flechedg);
 	}
 	return (-1);
 }

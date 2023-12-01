@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 16:59:15 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/29 00:22:19 by raveriss         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:51:53 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
 	node->in_fail = 0;
 	while (lexer_lst && lexer_lst->token != PIPE)
 	{
-		if (lexer_lst && lexer_lst->token == REDIRECT_IN \
+		if (lexer_lst && lexer_lst->token == flecheg \
 		&& lexer_lst->next->token == FD)
 		{
 			if (node->in > 0)
@@ -218,7 +218,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
 }
 
 /**
- * @nom: append_output_redirection
+ * @nom: Dflechedput_redirection
  *
  * @description: Configure une redirection de sortie de type append pour un nœud de 
  *               commande, en fonction des lexèmes fournis. Cette opération est essentielle
@@ -231,7 +231,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
  *   - has_out: int *has_out, pointeur vers l'indicateur de présence de redirection de sortie.
  *
  * @fonctionnement:
- *   Vérifie si les lexèmes indiquent une redirection de sortie de type append (APPEND_OUT).
+ *   Vérifie si les lexèmes indiquent une redirection de sortie de type append (Dfleched).
  *   Si oui, ferme la sortie existante si ouverte, puis tente d'ouvrir le fichier de 
  *   redirection en mode append. En cas d'échec d'ouverture ou d'absence de nom de fichier,
  *   écrit un message d'erreur et met à jour l'indicateur d'échec (`out_fail`).
@@ -256,7 +256,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
  * @exemple_utilisation:
  *   t_node *node = create_node();
  *   t_lexer *lex_lst = create_lexer_list("commande >> fichier.txt");
- *   append_output_redirection(node, lex_lst, &node->has_out);
+ *   Dflechedput_redirection(node, lex_lst, &node->has_out);
  *
  * @dépendances: 
  *   - ft_write_fd pour écrire les messages d'erreur.
@@ -306,9 +306,9 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
  *  v
  * Fin
  */
-void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *has_out)
+void	Dflechedput_redirection(t_node *node, t_lexer *lex_lst, int *has_out)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == APPEND_OUT \
+	if (lex_lst && lex_lst->next && lex_lst->token == Dfleched \
 	&& lex_lst->next->token == FD)
 	{
 		if (node->out > 0)
@@ -340,7 +340,7 @@ void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *has_out)
  *   - lex_lst: t_lexer *lex_lst, pointeur vers le début de la liste de lexèmes.
  *
  * @fonctionnement:
- *   Vérifie si les lexèmes actuels indiquent une redirection de sortie standard (REDIRECT_OUT).
+ *   Vérifie si les lexèmes actuels indiquent une redirection de sortie standard (fleched).
  *   Si oui, ferme la sortie existante si elle est ouverte, puis tente d'ouvrir le fichier
  *   de redirection spécifié. Si l'ouverture échoue ou si le nom du fichier n'est pas donné,
  *   écrit un message d'erreur et met à jour l'indicateur d'échec de sortie (`out_fail`).
@@ -414,7 +414,7 @@ void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *has_out)
  */
 void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == REDIRECT_OUT \
+	if (lex_lst && lex_lst->next && lex_lst->token == fleched \
 	&& lex_lst->next->token == FD)
 	{
 		if (node->out > 0)
@@ -446,12 +446,12 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
  * @fonctionnement:
  *   Initialise les champs de redirection de sortie du nœud (`has_out`, `out`, `out_fail`).
  *   Parcourt la liste de lexèmes, appelant `normal_output_redirection` et 
- *   `append_output_redirection` pour chaque lexème. Si une redirection est présente
+ *   `Dflechedput_redirection` pour chaque lexème. Si une redirection est présente
  *   mais échoue, un message d'erreur est généré et les indicateurs de redirection
  *   sont réinitialisés. La boucle se poursuit jusqu'à la rencontre d'un token PIPE
  *   ou la fin de la liste.
  *   - `normal_output_redirection` gère les redirections de sortie normales.
- *   - `append_output_redirection` gère les redirections de sortie de type append.
+ *   - `Dflechedput_redirection` gère les redirections de sortie de type append.
  *
   * Pourquoi cette fonction est-elle importante ?
  *   La fonction `setup_output_redirection` est essentielle dans un environnement de shell 
@@ -484,7 +484,7 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
  *
  * @dépendances: 
  *   - normal_output_redirection
- *   - append_output_redirection
+ *   - Dflechedput_redirection
  *
  * @graphe_de_flux:
  *   Début
@@ -504,7 +504,7 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
  *  |     Appeler normal_output_redirection
  *  |        |
  *  |        v
- *  |     Appeler append_output_redirection
+ *  |     Appeler Dflechedput_redirection
  *  |        |
  *  |        v
  *  |     Redirection échouée ?
@@ -530,7 +530,7 @@ void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 	while (lex_lst && lex_lst->token != PIPE)
 	{
 		normal_output_redirection(node, lex_lst);
-		append_output_redirection(node, lex_lst, &node->has_out);
+		Dflechedput_redirection(node, lex_lst, &node->has_out);
 		if (node->has_out && node->out == -1
 			&& node->in != -2 && node->out_fail != 2)
 		{

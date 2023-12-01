@@ -89,12 +89,12 @@ typedef enum s_token
 {
 	CMD,
 	ARG,
-	REDIRECT_OUT,
-	APPEND_OUT,
-	REDIRECT_IN,
+	fleched,
+	Dfleched,
+	flecheg,
 	HERE_DOC,
-	REDIRECT_INOUT,
-	REDIRECT_OUTIN,
+	flechegd,
+	flechedg,
 	FD,
 	DELIMITER,
 	PIPE,
@@ -250,7 +250,7 @@ int			ft_check_quotes(char *str, t_data *data);
 int			ft_arrow(t_data *data);
 int			ft_arrow2(t_data *data);
 int			pipe_parse(t_data *data);
-int			ft_chevron(char *str, char c);
+int			ft_chevron(char *str);
 int			pipe_parse2(t_data *data);
 size_t		ft_strlen3(char const *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -281,7 +281,7 @@ void		setup_output_redirection(t_node *node, t_lexer *lexer_lst);
 void		setup_input_redirection(t_node *node, t_lexer *lexer_lst);
 void		configure_here_doc_input(t_node *node, t_lexer *lex_lst);
 void		get_in_fail(t_node *node, t_lexer *lexer_lst);
-void		append_output_redirection(t_node *node, t_lexer *lex_lst, int *has_out);
+void		Dflechedput_redirection(t_node *node, t_lexer *lex_lst, int *has_out);
 t_node		*ft_add_back_node(t_node *node_lst, t_node *new);
 int			nb_node(t_lexer *lexer_list);
 int			nb_cmd(t_lexer *lexer_list);

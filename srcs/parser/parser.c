@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:39:21 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/11/30 01:47:53 by raveriss         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:51:53 by lgoure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	ft_cloporte(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if (tmp->token == REDIRECT_OUT || tmp->token == APPEND_OUT || tmp->token == REDIRECT_OUTIN
-			|| tmp->token == REDIRECT_IN || tmp->token == HERE_DOC || tmp->token == REDIRECT_INOUT)
+		if (tmp->token == fleched || tmp->token == Dfleched || tmp->token == flechedg
+			|| tmp->token == flecheg || tmp->token == HERE_DOC || tmp->token == flechegd)
 		{
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->word[0] == '\0')

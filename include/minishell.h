@@ -54,8 +54,8 @@ end-of-file (wanted `EOF')\n"
 # define CMD_NOT_FOUND 0
 # define CMD_FOUND 1
 # define SIGNAL_EXIT_OFFSET 128
-# define EXIT_STAT_CTRL_BACKSLSH_SIGQUIT (SIGNAL_EXIT_OFFSET + SIGQUIT)
-# define EXIT_STAT_CTRL_C_SIGINT (SIGNAL_EXIT_OFFSET + SIGINT)
+# define CTRL_BACKSLASH_ERROR (SIGNAL_EXIT_OFFSET + SIGQUIT)
+# define CTRL_C_ERROR (SIGNAL_EXIT_OFFSET + SIGINT)
 # define CTRL_C SIGINT
 # define CTRL_BACKSLSH SIGQUIT
 # define IGNORE_SIG_ACTION SIG_IGN
@@ -70,7 +70,7 @@ end-of-file (wanted `EOF')\n"
 # define PWD_PREFIX "PWD="
 # define HOME_PREFIX "HOME="
 # define PATH_PREFIX "PATH="
-# define FT_NEWLINE "\n"
+# define NEWLINE "\n"
 
 /*  DEFINE CMD BUILING  */
 # define CMD_ECHO "echo"

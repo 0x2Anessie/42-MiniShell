@@ -1,4 +1,3 @@
-
 // Definie les retours d'erreur pour les signaux SIGINT et SIGQUIT
 
 #include "../../include/minishell.h"
@@ -23,48 +22,11 @@
  *   - Préservation du contexte d'erreur : La mise à jour de la variable 'err' dans 
  *     la structure 'g_all.utils' permet de garder une trace de l'interruption pour 
  *     une éventuelle gestion ultérieure des erreurs ou pour des fins de débogage.
- *
- * @paramètres:
- *   - sig: Le signal reçu, dans ce cas SIGINT (ignoré dans cette fonction).
- *
- * @fonctionnement:
- *   - Ignore le paramètre 'sig' (pour respecter la signature standard des gestionnaires 
- *     de signal).
- *   - Met à jour la variable 'err' de la structure globale 'g_all.utils' pour indiquer 
- *     que le programme a reçu un signal SIGINT.
- *   - Affiche un caractère de nouvelle ligne (NEWLINE) sur la sortie standard.
- *
- * @valeur_de_retour:
- *   Aucune valeur de retour (fonction void).
- *
- * @erreurs_et_effets_de_bord:
- *   - L'écriture du caractère de nouvelle ligne pourrait échouer, mais il n'y a pas 
- *     de gestion d'erreur spécifique dans cette fonction.
- *
- * @exemples_d'utilisation:
- *   - Configuré comme gestionnaire de signal pour SIGINT dans un programme qui 
- *     nécessite une gestion personnalisée des interruptions utilisateur.
- *
- * @dépendances:
- *   - g_all: Structure globale contenant l'état du programme.
- *   - ft_putchar: Fonction pour écrire un caractère sur la sortie standard.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Mise à jour de g_all.utils->err avec EXIT_STAT_CTRL_C_SIGINT
- *     |
- *     v
- *   Écriture de NEWLINE sur la sortie standard
- *     |
- *     v
- *   Fin
  */
 static void	handle_ctrl_c(int sig)
 {
 	(void)sig;
-	g_all.utils->err = EXIT_STAT_CTRL_C_SIGINT;
+	g_all.utils->err = CTRL_C_ERROR;
 	ft_putchar(NEWLINE);
 }
 
@@ -88,51 +50,12 @@ static void	handle_ctrl_c(int sig)
  *     structure 'g_all.utils', le programme peut garder une trace de la manière dont 
  *     il a été terminé, ce qui peut être utile pour le débogage ou la gestion des 
  *     erreurs.
- *
- * @paramètres:
- *   - sig: Le signal reçu, dans ce cas SIGQUIT (ignoré dans cette fonction).
- *
- * @fonctionnement:
- *   - Ignore le paramètre 'sig' (utilisé pour respecter la signature standard des 
- *     gestionnaires de signal).
- *   - Met à jour la variable 'err' de la structure globale 'g_all.utils' pour indiquer 
- *     que le programme a reçu un signal SIGQUIT.
- *   - Affiche un message QUIT_MESSAGE sur STDERR.
- *
- * @valeur_de_retour:
- *   Aucune valeur de retour (fonction void).
- *
- * @erreurs_et_effets_de_bord:
- *   - L'écriture sur STDERR pourrait échouer, mais il n'y a pas de gestion d'erreur 
- *     pour ce cas dans cette fonction.
- *
- * @exemples_d'utilisation:
- *   - Configuré comme gestionnaire de signal pour SIGQUIT dans le cadre d'un 
- *     interpréteur de commandes ou d'un programme similaire.
- *
- * @dépendances:
- *   - g_all: Structure globale contenant l'état du programme.
- *   - write: Fonction de la bibliothèque standard pour écrire dans un descripteur 
- *     de fichier.
- *   - ft_strlen: Fonction pour calculer la longueur d'une chaîne de caractères.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Mise à jour de g_all.utils->err avec EXIT_STAT_CTRL_BACKSLSH_SIGQUIT
- *     |
- *     v
- *   Écriture de QUIT_MESSAGE sur STDERR
- *     |
- *     v
- *   Fin
  */
 static void	handle_ctrl_backslash(int sig)
 {
 	(void)sig;
-	g_all.utils->err = EXIT_STAT_CTRL_BACKSLSH_SIGQUIT;
-	write(STDERR_FILENO, QUIT_MESSAGE, ft_strlen(QUIT_MESSAGE)) ;
+	g_all.utils->err = CTRL_BACKSLASH_ERROR;
+	write(1, "Quit\n", 5);
 }
 
 /**
@@ -155,46 +78,9 @@ static void	handle_ctrl_backslash(int sig)
  *   - Sécurité et stabilité : La gestion personnalisée des signaux contribue à la 
  *     stabilité de l'application en prévenant les terminaisons abruptes et en assurant 
  *     une fermeture propre des processus.
- *
- * @paramètres:
- *   Aucun paramètre d'entrée.
- *
- * @fonctionnement:
- *   - Appelle la fonction signal pour CTRL_C, en lui associant le gestionnaire 
- *     handle_ctrl_c.
- *   - Appelle la fonction signal pour CTRL_BACKSLSH, en lui associant le gestionnaire 
- *     handle_ctrl_backslash.
- *
- * @valeur_de_retour:
- *   Aucune valeur de retour (fonction void).
- *
- * @erreurs_et_effets_de_bord:
- *   - Si l'installation des gestionnaires de signaux échoue, le comportement par 
- *     défaut pour les signaux concernés reste en place.
- *
- * @exemples_d'utilisation:
- *   - Appelée au début d'un programme pour configurer les réactions personnalisées 
- *     aux signaux d'interruption et de terminaison.
- *
- * @dépendances:
- *   - signal: Fonction standard C pour la gestion des signaux.
- *   - handle_ctrl_c: Gestionnaire pour le signal CTRL-C.
- *   - handle_ctrl_backslash: Gestionnaire pour le signal CTRL-Backslash.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Configurer signal pour CTRL_C avec handle_ctrl_c
- *     |
- *     v
- *   Configurer signal pour CTRL_BACKSLSH avec handle_ctrl_backslash
- *     |
- *     v
- *   Fin
  */
 void	handle_process_signal(void)
 {
-	signal(CTRL_C, &handle_ctrl_c);
-	signal(CTRL_BACKSLSH, &handle_ctrl_backslash);
+	signal(SIGINT, &handle_ctrl_c);
+	signal(SIGQUIT, &handle_ctrl_backslash);
 }

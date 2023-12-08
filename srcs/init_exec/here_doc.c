@@ -72,7 +72,7 @@
  *                                                          |         |
  *                                                          v         v
  *   - Sortir de la boucle                                 - Écrire la ligne dans le fichier temporaire (ft_write_fd)
- *                                                          - Écrire un saut de ligne (FT_NEWLINE)
+ *                                                          - Écrire un saut de ligne (NEWLINE)
  *                                                          - Libérer la mémoire de la ligne lue
  *                                                          - Lire la ligne suivante
  *   |                                                     |
@@ -105,7 +105,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst)
 			if (strlen2(lexer_lst->next->word) == strlen2(g_all.utils->hd))
 				break ;
 		ft_write_fd(g_all.utils->hd, node->here_doc_fd);
-		ft_write_fd(FT_NEWLINE, node->here_doc_fd);
+		ft_write_fd(NEWLINE, node->here_doc_fd);
 		free(g_all.utils->hd);
 	}	
 	close(g_all.utils->dupin);

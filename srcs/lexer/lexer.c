@@ -25,6 +25,7 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 	tmp = *lexer_list;
 	while (tmp)
 	{
+		printf("on rentre\n");
 		if (tmp->i == 1)
 			first = tmp;
 		if (tmp->i == 1 && tmp->word[0] != '<' && tmp->word[0] != '>') // a gere inon token ";" "()" "&" sont considere comme des commandes 
@@ -45,11 +46,12 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 			assign_command_or_argument_token(tmp, first);
 		else
 			tmp->token = ARG;
+		printf("%d\n", tmp->token);
 		tmp = tmp->next;
 	}
 }
 
-int	get_word_in_list(char *str, int i, t_lexer **lexer_list, t_lexer *tmp)
+int	get_word_in_list(char *str, int i, t_data data, t_lexer *tmp)
 {
 	char	*word;
 	int		j;
@@ -57,24 +59,28 @@ int	get_word_in_list(char *str, int i, t_lexer **lexer_list, t_lexer *tmp)
 	int		x;
 	t_quote	*state;
 
-	state = ft_malloc_with_tracking(sizeof(t_quote));
+	state = ft_malloc_with_tracking(data, sizeof(t_quote));
 	if (!state)
 		return (0);
 	word = NULL;
 	x = i;
 	k = 0;
 	j = 0;
-	reset_quoting_state(state);
+	reset_quoting_state(state); // initialise les quote
 	process_lexer_input(str, &i, &j, state); // len du prochain mon en verif les ' et "
-	word = ft_malloc_with_tracking(sizeof(char) * (j + sizeof('\0')));
+	word = ft_malloc_with_tracking(data, sizeof(char) * (j + sizeof('\0')));
 	if (!word)
 		return (0);
 	word[j] = '\0';
 	while (k < j)
 		word[k++] = str[x++];
-	add_lexer_to_end(lexer_list, word); // aloue le memoire et ajoute le mot a le fin de la liste
-	get_data_in_node(lexer_list); // verif pipe 
-	get_token_in_node(lexer_list, tmp); //separe ARG CMD TOKEN 
+	printf("on est la\n");
+	add_lexer_to_end(data, word); // aloue le memoire et ajoute le mot a le fin de la liste
+	printf("on est al\n");
+	if (data.lexer_list)
+		printf("new plein\n");
+	get_data_in_node(&data.lexer_list); // verif pipe 
+	get_token_in_node(&data.lexer_list, tmp); //separe ARG CMD TOKEN 
 	return (j);
 }
 
@@ -95,12 +101,13 @@ void	process_input_string(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 		{
 			data->lexer_list = current;
 			get_token_in_node(&current, tmp);
+			printf("ok2\n");
 			return ;
 		}
-		j = get_word_in_list(data->line, i, &data->lexer_list,
-				tmp); // renvoit la fin du mots
 		if (x == 0)
 			current = data->lexer_list;
+		j = get_word_in_list(data->line, i, *data,
+				tmp); // renvoit la fin du mots et separe tout
 		i = i + j;
 		x++;
 	}

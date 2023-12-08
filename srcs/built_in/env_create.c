@@ -1,11 +1,11 @@
 
 #include "../../include/minishell.h"
 
-t_env	*create_node_str(char *str)
+t_env	*create_node_str(char *str, t_data data)
 {
 	t_env	*node;
 
-	node = ft_malloc_with_tracking(sizeof(t_env));
+	node = ft_malloc_with_tracking(data, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	node->content = str;
@@ -13,7 +13,7 @@ t_env	*create_node_str(char *str)
 	return (node);
 }
 
-void	lst_add_back(t_exec *utils, char *str)
+void	lst_add_back(t_exec *utils, char *str, t_data data)
 {
 	t_env	*current;
 	t_env	*head;
@@ -21,7 +21,7 @@ void	lst_add_back(t_exec *utils, char *str)
 	head = utils->head_env_lst;
 	if (head == NULL)
 	{
-		head = create_node_str(str);
+		head = create_node_str(str, data);
 	}
 	else
 	{
@@ -30,6 +30,6 @@ void	lst_add_back(t_exec *utils, char *str)
 		{
 			current = current->next;
 		}
-		current->next = create_node_str(str);
+		current->next = create_node_str(str, data);
 	}
 }

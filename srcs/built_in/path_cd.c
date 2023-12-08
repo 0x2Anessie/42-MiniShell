@@ -40,7 +40,7 @@
 // 	return (0);
 // }
 
-int	verif_oldpwd_export(char *str)
+int	verif_oldpwd_export(char *str, t_data data)
 {
 	t_export	*tmp;
 	char		*s1;
@@ -50,9 +50,9 @@ int	verif_oldpwd_export(char *str)
 	{
 		if (ft_strncmp(tmp->value, "OLDPWD=", ft_strlen_eguale("OLDPWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("OLDPWD=", str);
-			tmp->value = var_exist(s1);
-			tmp->value = case_egale(s1);
+			s1 = ft_strjoin_2("OLDPWD=", str, data);
+			tmp->value = var_exist(s1, data);
+			tmp->value = case_egale(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -60,7 +60,7 @@ int	verif_oldpwd_export(char *str)
 	return (0);
 }
 
-int	verif_pwd_export(char *str)
+int	verif_pwd_export(char *str, t_data data)
 {
 	t_export	*tmp;
 	char		*s1;
@@ -70,9 +70,9 @@ int	verif_pwd_export(char *str)
 	{
 		if (ft_strncmp(tmp->value, "PWD=", ft_strlen_eguale("PWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("PWD=", str);
-			tmp->value = var_exist(s1);
-			tmp->value = case_egale(s1);
+			s1 = ft_strjoin_2("PWD=", str, data);
+			tmp->value = var_exist(s1, data);
+			tmp->value = case_egale(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;

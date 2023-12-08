@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-void	simulate_echo(t_lexer *lexer_lst)
+void	simulate_echo(t_lexer *lexer_lst, t_data data)
 {
 	int			i;
 	char		**tab;
@@ -15,7 +15,7 @@ void	simulate_echo(t_lexer *lexer_lst)
 		lexer_lst = lexer_lst->next;
 		i++;
 	}
-	tab = ft_malloc_with_tracking(sizeof(char *) * (i + 1));
+	tab = ft_malloc_with_tracking(data, sizeof(char *) * (i + 1));
 	if (!tab)
 		return ;
 	lexer_lst = head;

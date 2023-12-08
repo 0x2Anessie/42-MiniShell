@@ -59,6 +59,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->ac = ac;
 	data->av = av;
 	data->env = env;
+	data->memory = NULL;
 	data->line = NULL;
 	data->allcommand = NULL;
 	data->envpaths = NULL;
@@ -135,7 +136,7 @@ void	exit_error(char *str)
  *
  * @exemples_d'utilisation:
  *   t_env *env_lst = build_env_list(envp);
- *   char **new_env = get_new_env(env_lst);
+ *   char **new_env = get_new_env(data, env_lst);
  *
  * @dependances: 
  *   - 'ft_malloc_with_tracking' pour l'allocation mémoire avec suivi.
@@ -170,7 +171,7 @@ void	exit_error(char *str)
  *  v
  * Fin
  */
-char	**get_new_env(t_env *env_lst)
+char	**get_new_env(t_data data, t_env *env_lst)
 {
 	char	**new_env;
 	int		i;
@@ -183,7 +184,7 @@ char	**get_new_env(t_env *env_lst)
 		i++;
 		env_lst = env_lst->next;
 	}
-	new_env = ft_malloc_with_tracking(sizeof(char *) * (i + 1));
+	new_env = ft_malloc_with_tracking(data, sizeof(char *) * (i + 1));
 	if (!new_env)
 		return (NULL);
 	new_env[i] = NULL;
@@ -285,7 +286,7 @@ void	prompt_loop(char *tmp, t_data data, char **env)
 
 	(void)env;
 	if (!tmp)
-		exit_all();
+		exit_all(data);
 	if (tmp && tmp[0])
 	{
 		data.line = tmp;
@@ -296,10 +297,11 @@ void	prompt_loop(char *tmp, t_data data, char **env)
 			return ;
 		}
 		tmp_lex = data.lexer_list;
-		new_env = get_new_env(g_all.utils->env_lst);
-		expand(data.quote, new_env, tmp_lex);
+		new_env = get_new_env(data, g_all.utils->env_lst);
+		expand(data.quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{
+			printf("good\n");
 			ft_init_exec(&data);
 			ft_prep_exec(&data);
 		}
@@ -385,12 +387,13 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 	char	*tmp;
-
 	printf(WELCOME_MSG);
+
 	if (ac != 1)
 		exit_error("bad number of arguments");
 	init_data(&data, ac, av, env);
-	g_all.utils = init_env(env);
+	printf("1\n");
+	g_all.utils = init_env(data, env);
 	tmp = NULL;
 	g_all.utils->export_lst = NULL;
 	while (42)

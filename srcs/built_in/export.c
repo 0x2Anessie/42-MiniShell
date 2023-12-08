@@ -37,31 +37,31 @@ int	export_parsing_66(t_lexer *tmp)
 	return (0);
 }
 
-void	process_word_and_add_export(t_lexer *tmp)
+void	process_word_and_add_export(t_lexer *tmp, t_data data)
 {
-	process_word(&(g_all.utils), tmp);
-	if (verif_var_exist_export(g_all.utils, tmp->word) == 0
+	process_word(&(g_all.utils), tmp, data);
+	if (verif_var_exist_export(g_all.utils, tmp->word, data) == 0
 		&& verif_equal(tmp->word, '=') == 0
 		&& verif_var_exist_export_2(g_all.utils, tmp->word) == 0)
-		lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+		lst_add_back_export(&(g_all.utils->export_lst), tmp->word, data);
 	else if (check_case(tmp->word)
-		&& verif_var_exist_export(g_all.utils, tmp->word) == 0)
+		&& verif_var_exist_export(g_all.utils, tmp->word, data) == 0)
 	{
-		tmp->word = case_egale(tmp->word);
-		if (verif_var_exist_export(g_all.utils, tmp->word) == 0)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+		tmp->word = case_egale(tmp->word, data);
+		if (verif_var_exist_export(g_all.utils, tmp->word, data) == 0)
+			lst_add_back_export(&(g_all.utils->export_lst), tmp->word, data);
 	}
-	else if (verif_var_exist_export(g_all.utils, tmp->word) == 0)
+	else if (verif_var_exist_export(g_all.utils, tmp->word, data) == 0)
 	{
-		if (verif_var_exist_export(g_all.utils, tmp->word) == 0
+		if (verif_var_exist_export(g_all.utils, tmp->word, data) == 0
 			&& verif_equal(tmp->word, '=') == 1)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
-		else if (verif_var_exist_export(g_all.utils, tmp->word) == 1)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+			lst_add_back_export(&(g_all.utils->export_lst), tmp->word, data);
+		else if (verif_var_exist_export(g_all.utils, tmp->word, data) == 1)
+			lst_add_back_export(&(g_all.utils->export_lst), tmp->word, data);
 	}
 }
 
-void	export_remaining(t_lexer *tmp)
+void	export_remaining(t_lexer *tmp, t_data data)
 {
 	if (export_parsing_66(tmp))
 		return ;
@@ -69,12 +69,12 @@ void	export_remaining(t_lexer *tmp)
 	while (tmp)
 	{
 		if (tmp->token == ARG)
-			process_word_and_add_export(tmp);
+			process_word_and_add_export(tmp, data);
 		tmp = tmp->next;
 	}
 }
 
-int	export_things(t_lexer *lexer_lst)
+int	export_things(t_lexer *lexer_lst, t_data data)
 {
 	t_lexer	*tmp;
 
@@ -92,7 +92,7 @@ int	export_things(t_lexer *lexer_lst)
 				&& tmp->next->token == ARG))
 		{
 			tmp = tmp->next;
-			export_remaining(tmp);
+			export_remaining(tmp, data);
 			break ;
 		}
 		tmp = tmp->next;

@@ -193,13 +193,13 @@ int	len_d_array(char *word, t_quote *state)
  *   Retourner arr
  *   Fin
  */
-char	**split_word(char *word, t_quote *state)
+char	**split_word(t_data data, char *word, t_quote *state)
 {
 	int		index;
 	int		j;
 	char	**arr;
 
-	arr = ft_malloc_with_tracking(sizeof(char *) * (len_d_array(word, state) + sizeof('\0')));
+	arr = ft_malloc_with_tracking(data, sizeof(char *) * (len_d_array(word, state) + sizeof('\0')));
 	if (!arr)
 		return (NULL);
 	index = ZERO_INIT;
@@ -210,7 +210,7 @@ char	**split_word(char *word, t_quote *state)
 	{
 		update_quoting_state(word[index], state);
 		if (on_word(word, index, state))
-			arr[j++] = malloc_word(&word[index], state);
+			arr[j++] = malloc_word(&word[index], state, data);
 		index++;
 	}
 	arr[j] = NULL;

@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	verif_var_exist_export(t_exec *utils, char *str)
+int	verif_var_exist_export(t_exec *utils, char *str, t_data data)
 {
 	t_export	*tmp;
 
@@ -14,7 +14,7 @@ int	verif_var_exist_export(t_exec *utils, char *str)
 		{
 			if (verif_equal(str, '=')
 				&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value)))
-			tmp->value = case_egale(str);
+			tmp->value = case_egale(str, data);
 			return (1);
 		}
 		tmp = tmp->next;

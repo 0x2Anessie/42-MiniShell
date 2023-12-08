@@ -180,29 +180,29 @@ t_node	*ft_add_back_node(t_node *node_lst, t_node *new)
  *     v
  *   Fin
  */
-void	get_all_node(t_node *node, t_lexer *lexer_lst, t_exec *utils)
+void	get_all_node(t_node *node, t_data data, t_exec *utils)
 {
 	int	index;
 
 	index = ZERO_INIT;
 	while (index < utils->nb_node)
 	{
-		node = ft_malloc_with_tracking(sizeof(t_node));
+		node = ft_malloc_with_tracking(data, sizeof(t_node));
 		if (!node)
 			return ;
 		node->index = index;
-		setup_input_redirection(node, lexer_lst);
-		setup_output_redirection(node, lexer_lst);
+		setup_input_redirection(node, data.lexer_list);
+		setup_output_redirection(node, data.lexer_list);
 		node->next = NULL;
-		node->has_cmd = has_cmd(lexer_lst);
+		node->has_cmd = has_cmd(data.lexer_list);
 		utils->node = ft_add_back_node(utils->node, node);
-		while (lexer_lst && lexer_lst->token != PIPE)
-			lexer_lst = lexer_lst->next;
-		if (lexer_lst)
-			lexer_lst = lexer_lst->next;
+		while (data.lexer_list && data.lexer_list->token != PIPE)
+			data.lexer_list = data.lexer_list->next;
+		if (data.lexer_list)
+			data.lexer_list = data.lexer_list->next;
 		index++;
 	}
-		lexer_lst = utils->head_lexer_lst;
+		data.lexer_list = utils->head_lexer_lst;
 }
 
 /**
@@ -311,11 +311,11 @@ void	ft_init_exec(t_data *data)
 	g_all.utils->env = data->env;
 	if (!(g_all.utils->export_lst))
 	{
-		g_all.utils->export_lst = get_export_list(g_all.utils->export_lst);
-		export_quotes(g_all.utils->export_lst);
+		g_all.utils->export_lst = get_export_list(*data, g_all.utils->export_lst);
+		export_quotes(g_all.utils->export_lst, *data);
 	}
 	node = NULL;
-	get_all_node(node, data->lexer_list, g_all.utils);
+	get_all_node(node, *data, g_all.utils);
 	g_all.utils->is_here_doc = ZERO_INIT;
 	handle_sig();
 	g_all.utils->head_node_lst = g_all.utils->node;

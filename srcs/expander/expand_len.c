@@ -334,25 +334,27 @@ int	search_in_env_len(char *word, char **env_var, t_quote *state, int *length)
  *                       Incrémenter 'index'
  * Fin
  */
-void	sum_expansion_length(t_lexer **expnd, t_quote *state, char **nv, t_expand *exp)
+//void	sum_expansion_length(t_lexer **expnd, t_quote *state, char **nv, t_expand *exp)
+
+void	sum_expansion_length(t_lexer **expnd, t_quote *st, t_expand *exp, t_data data)
 {
 	int	index;
 
 	index = ZERO_INIT;
 	while ((*expnd)->word[index])
 	{
-		update_quoting_state((*expnd)->word[index], state);
+		update_quoting_state((*expnd)->word[index], st);
 		if ((*expnd)->word[index] == '$')
 		{
 			if ((*expnd)->word[index + FORWARD_OFFSET] == '\0'
-				|| is_special_syntax_character((*expnd)->word[index + FORWARD_OFFSET], state))
+				|| is_special_syntax_character((*expnd)->word[index + FORWARD_OFFSET], st))
 				exp->str[exp->len++] = (*expnd)->word[index];
 			else if ((*expnd)->word[index + FORWARD_OFFSET] && ft_isdigit((*expnd)->word[index + FORWARD_OFFSET]))
 				index++;
-			else if (state->is_quote == 1 && state->sq_first == 1)
+			else if (st->is_quote == 1 && st->sq_first == 1)
 				index += single_quote_expantion(&(*expnd)->word[index], exp) IDX_ADJUST;
 			else
-				index += basic_expantion(&(*expnd)->word[index], exp, nv, state) IDX_ADJUST;
+				index += basic_expantion(&(*expnd)->word[index], exp, data.expand->nv, st) IDX_ADJUST;
 		}
 		else
 			exp->str[exp->len++] = (*expnd)->word[index];

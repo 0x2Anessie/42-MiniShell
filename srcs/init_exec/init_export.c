@@ -179,13 +179,13 @@ void	sort_export_lst(t_export **head_export)
  *                           v
  *                          Fin
  */
-t_export	*ft_new_export_node(t_export *new)
+t_export	*ft_new_export_node(t_data data,t_export *new)
 {
 	new = NULL;
-	new = (t_export *)ft_malloc_with_tracking(sizeof(t_export));
+	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
 	if (!new)
 		return (NULL);
-	new->value = ft_strdup(g_all.utils->env_lst->content);
+	new->value = ft_strdup(data, g_all.utils->env_lst->content);
 	new->next = NULL;
 	return (new);
 }
@@ -261,7 +261,7 @@ t_export	*ft_new_export_node(t_export *new)
  *             v
  *            Fin
  */
-t_export	*get_export_list(t_export *export_lst)
+t_export	*get_export_list(t_data data, t_export *export_lst)
 {
 	t_export	*new;
 	t_export	*current_new;
@@ -269,7 +269,7 @@ t_export	*get_export_list(t_export *export_lst)
 	current_new = NULL;
 	while (g_all.utils->env_lst)
 	{
-		new = ft_new_export_node(new);
+		new = ft_new_export_node(data, new);
 		if (!export_lst)
 		{
 			export_lst = new;

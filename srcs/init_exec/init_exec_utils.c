@@ -147,7 +147,7 @@ void	get_in_fail(t_node *node, t_lexer *lexer_lst)
  *                    v
  *   Fin
  */
-char	*ft_strdup(char *src)
+char	*ft_strdup(t_data data, char *src)
 {
 	int		index;
 	char	*dest;
@@ -157,7 +157,7 @@ char	*ft_strdup(char *src)
 		return (NULL);
 	while (src[index])
 		index++;
-	dest = ft_malloc_with_tracking(sizeof(char) * index + sizeof('\0'));
+	dest = ft_malloc_with_tracking(data, sizeof(char) * index + sizeof('\0'));
 	if (!dest)
 		return (NULL);
 	index = 0;

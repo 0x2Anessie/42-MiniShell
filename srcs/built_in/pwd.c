@@ -1,11 +1,11 @@
 
 #include "../../include/minishell.h"
 
-int	get_pwd(char *tab)
+int	get_pwd(char *tab, t_data data)
 {
 	char	**str;
 
-	str = ft_split(tab, ' ');
+	str = ft_split_mini(tab, ' ', data);
 	if (tab && strcmp(str[0], "pwd") == 0)
 	{
 		if (str[1] == NULL)

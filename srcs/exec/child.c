@@ -60,7 +60,7 @@
  *          v
  *       Retourner 'path'
  */
-char	**get_path(t_env *env_lst)
+char	**get_path(t_env *env_lst, t_data data)
 {
 	char	**path;
 
@@ -73,7 +73,7 @@ char	**get_path(t_env *env_lst)
 	{
 		if (!ft_strncmp(env_lst->content, PATH_PREFIX, ft_strlen(PATH_PREFIX)))
 		{
-			path = ft_split(env_lst->content + ft_strlen(PATH_PREFIX), ':');
+			path = ft_split_mini(env_lst->content + ft_strlen(PATH_PREFIX), ':', data);
 			return (path);
 		}
 		env_lst = env_lst->next;
@@ -146,7 +146,7 @@ char	**get_path(t_env *env_lst)
  *                    v
  *                  Retourner NULL
  */
-char	*get_cmd_path(char *cmd, t_env *env_lst)
+char	*get_cmd_path(char *cmd, t_env *env_lst, t_data data)
 {
 	int		index;
 	char	*tmp;
@@ -159,13 +159,13 @@ char	*get_cmd_path(char *cmd, t_env *env_lst)
 		return (cmd);
 	else if (access(cmd, X_OK) && *cmd == '/')
 		return (NULL);
-	path = get_path(env_lst);
+	path = get_path(env_lst, data);
 	if (path)
 	{
 		while (path && path[index])
 		{
-			tmp = ft_strjoin2(path[index], "/");
-			tmp = ft_strjoin2(tmp, cmd);
+			tmp = ft_strjoin2_mini(path[index], "/", data);
+			tmp = ft_strjoin2_mini(tmp, cmd, data);
 			if (!access(tmp, F_OK))
 				return (tmp);
 			index++;
@@ -229,9 +229,9 @@ char	*get_cmd_path(char *cmd, t_env *env_lst)
  *               v
  *             Fin
  */
-int	check_path_exec(t_lexer *lexer, t_exec utils)
+int	check_path_exec(t_lexer *lexer, t_exec utils, t_data data)
 {
-	if (!get_cmd_path(lexer->word, utils.env_lst))
+	if (!get_cmd_path(lexer->word, utils.env_lst, data))
 	{
 		write(STDERR_FILENO, lexer->word, strlen2(lexer->word));
 		write(STDERR_FILENO, ERR_MSG_CMD_NOT_FOUND, ft_strlen(ERR_MSG_CMD_NOT_FOUND));
@@ -317,23 +317,24 @@ int	check_path_exec(t_lexer *lexer, t_exec utils)
  *     v
  *   Fin
  */
-char	**get_arg(t_lexer *lexer_list)
+
+char	**get_arg(t_data data)
 {
 	char	**arg;
 	int		nb_arg;
 	int		index;
 
 	index = ZERO_INIT;
-	nb_arg = ft_nb_arg(lexer_list);
-	arg = ft_malloc_with_tracking(sizeof(char *) * (nb_arg + sizeof('\0')));
-	arg[index] = lexer_list->word;
-	while (lexer_list && lexer_list->token != ARG && lexer_list->token != PIPE)
-		lexer_list = lexer_list->next;
+	nb_arg = ft_nb_arg(data.lexer_list);
+	arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + sizeof('\0')));
+	arg[index] = data.lexer_list->word;
+	while (data.lexer_list && data.lexer_list->token != ARG && data.lexer_list->token != PIPE)
+		data.lexer_list = data.lexer_list->next;
 	index++;
-	while (lexer_list != NULL && index < nb_arg && lexer_list->token == ARG)
+	while (data.lexer_list != NULL && index < nb_arg && data.lexer_list->token == ARG)
 	{
-		arg[index] = lexer_list->word;
-		lexer_list = lexer_list->next;
+		arg[index] = data.lexer_list->word;
+		data.lexer_list = data.lexer_list->next;
 		index++;
 	}
 	arg[index] = NULL;
@@ -403,7 +404,7 @@ char	**get_arg(t_lexer *lexer_list)
  *                    v
  *                  Fin
  */
-pid_t	ft_child(t_lexer *lexer_list, int *fd, int count, t_exec utils)
+pid_t	ft_child(t_data data, int *fd, int count, t_exec utils)
 {
 	pid_t	pid;
 
@@ -415,7 +416,7 @@ pid_t	ft_child(t_lexer *lexer_list, int *fd, int count, t_exec utils)
 	}
 	if (pid == CHILD_PROCESS)
 	{
-		child_of_chill(lexer_list, fd, count, utils);
+		child_of_chill(data, fd, count, utils);
 	}
 	return (pid);
 }

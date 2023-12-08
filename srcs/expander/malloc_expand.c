@@ -57,11 +57,11 @@
  *   v
  *   Fin
  */
-char	*malloc_word_without_quote(int len, char *old, t_quote *state)
+char	*malloc_word_without_quote(int len, char *old, t_quote *state, t_data data)
 {
 	char	*nw;
 
-	nw = ft_malloc_with_tracking(sizeof(char) * (len + sizeof('\0')));
+	nw = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	if (!nw)
 		return (NULL);
 	return (put_word_without_quote(old, nw, state));
@@ -146,7 +146,7 @@ char	*malloc_word_without_quote(int len, char *old, t_quote *state)
  *   \--------------------------------/
  *   Fin
  */
-char	*remove_quote(char *old, t_quote *state)
+char	*remove_quote(char *old, t_quote *state, t_data data)
 {
 	int		i;
 	int		len;
@@ -166,7 +166,7 @@ char	*remove_quote(char *old, t_quote *state)
 			continue ;
 		len++;
 	}
-	return (malloc_word_without_quote(len, old, state));
+	return (malloc_word_without_quote(len, old, state, data));
 }
 
 /**
@@ -420,7 +420,7 @@ char	*copy_word(char *word, t_quote *state, char *str)
  *   Retourner le pointeur vers la nouvelle chaîne
  *   Fin
  */
-char	*malloc_word(char *word, t_quote *state)
+char	*malloc_word(char *word, t_quote *state, t_data data)
 {
 	char	*str;
 	int		i;
@@ -439,7 +439,7 @@ char	*malloc_word(char *word, t_quote *state)
 			j++;
 		}
 	}
-	str = ft_malloc_with_tracking(sizeof(char) * (j + sizeof('\0')));
+	str = ft_malloc_with_tracking(data, sizeof(char) * (j + sizeof('\0')));
 	if (!str)
 		return (NULL);
 	return (copy_word(word, state, str));

@@ -59,22 +59,22 @@
  *            v
  *        Réinitialiser lexer_lst à la tête de la liste
  */
-void ft_exec_single_built_in(t_lexer *lexer_lst, int *fd)
+void ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data data)
 {
     if (is_command_equal(lexer_lst, CMD_EXPORT_VARS, strlen(CMD_EXPORT_VARS)))
-        export_things(lexer_lst);
+        export_things(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_PRINT_DIRCT, strlen(CMD_PRINT_DIRCT)))
-        get_pwd(lexer_lst->word);
+        get_pwd(lexer_lst->word, data);
     else if (is_command_equal(lexer_lst, CMD_ECHO, strlen(CMD_ECHO)))
-        simulate_echo(lexer_lst);
+        simulate_echo(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_CHANG_DIRCT, strlen(CMD_CHANG_DIRCT)))
-        get_cd(lexer_lst);
+        get_cd(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_ENV_VARS, strlen(CMD_ENV_VARS)))
         unset_things(lexer_lst);
     else if (is_command_equal(lexer_lst, CMD_UNSET_VARS, strlen(CMD_UNSET_VARS)))
         unset_things(lexer_lst);
     else if (is_command_equal(lexer_lst, CMD_EXIT_SHELL, strlen(CMD_EXIT_SHELL)))
-        ft_exit(lexer_lst, fd);
+        ft_exit(lexer_lst, fd, data);
 
     if (g_all.utils->node->out > 0)
         close(g_all.utils->node->out);
@@ -245,23 +245,23 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Retourner 1
  * Fin
  */
-int	start_exec(int *fd, pid_t *pid, t_lexer *lex_lst, int *y)
+int	start_exec(int *fd, pid_t *pid, t_data data, int *y)
 {
-	lex_lst = g_all.utils->head_lexer_lst;
+	data.lexer_list = g_all.utils->head_lexer_lst;
 	while (should_continue_execution(&g_all, y))
 	{
-		lex_lst = find_next_command(lex_lst);
+		data.lexer_list = find_next_command(data.lexer_list);
 		g_all.utils->previous_fd = fd[0];
 		if (g_all.utils->nb_cmd >= 1 && pipe(fd) < 0)
 			return (0);
 		if (is_valid_redirection(g_all.utils->node))
 		{
-			if ((is_built_in(lex_lst)) && g_all.utils->nb_cmd == 1)
-				ft_exec_single_built_in(lex_lst, fd);
+			if ((is_built_in(data.lexer_list)) && g_all.utils->nb_cmd == 1)
+				ft_exec_single_built_in(data.lexer_list, fd, data);
 			else
-				pid[y[0]++] = ft_child(lex_lst, fd, y[1], *(g_all.utils));
+				pid[y[0]++] = ft_child(data, fd, y[1], *(g_all.utils));
 		}
-		lex_lst = go_next_cmd(lex_lst);
+		data.lexer_list = go_next_cmd(data.lexer_list);
 		close_fds_if_needed(fd, g_all.utils->previous_fd);
 		g_all.utils->node = g_all.utils->node->next;
 	}
@@ -465,12 +465,12 @@ void	ft_prep_exec(t_data *data)
 	int		y[2];
 
 	init_var(fd, y, &wstatus);
-	pid = ft_malloc_with_tracking(sizeof(pid_t) * (g_all.utils->nb_node));
+	pid = ft_malloc_with_tracking(*data, sizeof(pid_t) * (g_all.utils->nb_node));
 	if (!pid)
 		return ;
 	ft_bzero_pid_array(pid, g_all.utils->nb_node);
 	handle_process_signal();
-	if (!start_exec(fd, pid, data->lexer_list, y))
+	if (!start_exec(fd, pid, *data, y))
 		perror("Pipe ");
 	if (is_built_in(data->lexer_list) && g_all.utils->nb_cmd == 1 && close_fd())
 		return ;

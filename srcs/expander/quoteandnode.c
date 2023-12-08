@@ -66,7 +66,7 @@
  * sur 'str'
  * Fin
  */
-char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env)
+char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data data)
 {
 	int		len;
 	char	*str;
@@ -76,7 +76,7 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env)
 	if ((*exp)->word[0] && (*exp)->word[0] == '$' && !(*exp)->word[1])
 		len++;
 	expansion_length_for_word(exp, st, env, &len);
-	str = ft_malloc_with_tracking(sizeof(char) * (len + sizeof('\0')));
+	str = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	if (!str)
 		return (NULL);
 	return (str);
@@ -170,27 +170,50 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env)
  *   v
  * Fin
  */
-void	manage_expantion(t_lexer **expnd, t_quote *st, char **nv, t_expand *exp)
+// void	manage_expantion(t_lexer **expnd, t_quote *st, char **nv, t_expand *exp)
+// {	
+// 	char	**expanded;
+
+// 	exp->len = ZERO_INIT;
+// 	g_all.utils->error = ft_itoa(data, g_all.utils->err);
+// 	exp->str = malloc_for_expand(expnd, st, nv);
+// 	if (!exp->str)
+// 		return ;
+// 	st->is_quote = ZERO_INIT;
+// 	st->is_dquote = ZERO_INIT;
+// 	sum_expansion_length(expnd, st, nv, exp);
+// 	exp->str[exp->len] = '\0';
+// 	if (exp->need_expand == 1 && exp->quote == 0)
+// 		expanded = split_word(data, exp->str, st);
+// 	else
+// 	{
+// 		(*expnd)->word = remove_quote(exp->str, st);
+// 		return ;
+// 	}
+// 	replace_old_node(expnd, expanded);
+// }
+
+void	manage_expantion(t_lexer **expnd, t_quote *st, t_data data, t_expand *exp)
 {	
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
-	g_all.utils->error = ft_itoa(g_all.utils->err);
-	exp->str = malloc_for_expand(expnd, st, nv);
+	g_all.utils->error = ft_itoa_mini(data, g_all.utils->err);
+	exp->str = malloc_for_expand(expnd, st, data.expand->nv, data);
 	if (!exp->str)
 		return ;
 	st->is_quote = ZERO_INIT;
 	st->is_dquote = ZERO_INIT;
-	sum_expansion_length(expnd, st, nv, exp);
+	sum_expansion_length(expnd, st, exp, data);
 	exp->str[exp->len] = '\0';
 	if (exp->need_expand == 1 && exp->quote == 0)
-		expanded = split_word(exp->str, st);
+		expanded = split_word(data, exp->str, st);
 	else
 	{
-		(*expnd)->word = remove_quote(exp->str, st);
+		(*expnd)->word = remove_quote(exp->str, st, data);
 		return ;
 	}
-	replace_old_node(expnd, expanded);
+	replace_old_node(expnd, expanded, data);
 }
 
 /**
@@ -273,7 +296,7 @@ void	manage_expantion(t_lexer **expnd, t_quote *st, char **nv, t_expand *exp)
  *   v
  * Fin
  */
-void	add_back_new_node(char **insert, t_lexer *back, t_lexer *next, int len)
+void	add_back_new_node(char **insert, t_lexer *back, t_data data, int len)
 {
 	int		i;
 	t_lexer	*tmp;
@@ -281,17 +304,17 @@ void	add_back_new_node(char **insert, t_lexer *back, t_lexer *next, int len)
 	i = ZERO_INIT;
 	while (++i < len)
 	{
-		tmp = ft_malloc_with_tracking(sizeof(t_lexer) * (1));
+		tmp = ft_malloc_with_tracking(data, sizeof(t_lexer) * (1));
 		if (!tmp)
 			return ;
 		if (back)
 			back->next = tmp;
-		if (next)
-			next->prev = tmp;
+		if (data.lexer_list->next)
+			data.lexer_list->next->prev = tmp;
 		tmp->prev = back;
-		tmp->next = next;
+		tmp->next = data.lexer_list->next;
 		tmp->token = ARG;
-		tmp->word = ft_strdup(insert[i]);
+		tmp->word = ft_strdup(data, insert[i]);
 		back = tmp;
 	}
 }
@@ -351,7 +374,7 @@ void	add_back_new_node(char **insert, t_lexer *back, t_lexer *next, int len)
  * des nœuds supplémentaires
  * pour les éléments restants
  */
-void	replace_old_node(t_lexer **old_node, char **to_insert)
+void	replace_old_node(t_lexer **old_node, char **to_insert, t_data data)
 {
 	int		len;
 	t_lexer	*back;
@@ -360,11 +383,11 @@ void	replace_old_node(t_lexer **old_node, char **to_insert)
 	len = len_darr(to_insert);
 	back = (*old_node)->prev;
 	next = (*old_node)->next;
-	(*old_node)->word = ft_strdup(to_insert[0]);
+	(*old_node)->word = ft_strdup(data, to_insert[0]);
 	if (len > 1)
 	{
 		back = (*old_node);
-		add_back_new_node(to_insert, back, next, len);
+		add_back_new_node(to_insert, back, data, len);
 	}
 }
 

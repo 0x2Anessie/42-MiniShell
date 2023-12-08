@@ -1,11 +1,11 @@
 
 #include "../../include/minishell.h"
 
-t_lexer	*create_new_lexer(char *str)
+t_lexer	*create_new_lexer(t_data data, char *str)
 {
 	t_lexer	*new;
 
-	new = ft_malloc_with_tracking(sizeof(t_lexer));
+	new = ft_malloc_with_tracking(data, sizeof(t_lexer));
 	if (!new)
 		return (NULL);
 	new->word = str;

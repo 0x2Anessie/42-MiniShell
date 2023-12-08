@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	ft_exit_child(t_exec *utils, int *fd)
+int	ft_exit_child(t_exec *utils, int *fd, t_data data)
 {
 	int	k;
 
@@ -9,11 +9,11 @@ int	ft_exit_child(t_exec *utils, int *fd)
 	if (fd)
 		close_pipe(fd);
 	close_fd();
-	ft_free_all();
+	ft_free_all(data);
 	exit(k);
 }
 
-void	check_memory_allocation(void *add)
+void	check_memory_allocation(t_data data, void *add)
 {
 	t_memory	*mem;
 	t_memory	*tmp;
@@ -23,35 +23,35 @@ void	check_memory_allocation(void *add)
 		return ;
 	mem->add = add;
 	mem->next = NULL;
-	if (g_all.d_mem == NULL)
-		g_all.d_mem = mem;
+	if (data.memory == NULL)
+		data.memory = mem;
 	else
 	{
-		tmp = g_all.d_mem;
+		tmp = data.memory;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = mem;
 	}	
 }
 
-void	*ft_malloc_with_tracking(size_t size)
+void	*ft_malloc_with_tracking(t_data data, size_t size)
 {
 	void	*add;
 
 	add = malloc(size);
 	if (!add)
 		return (NULL);
-	check_memory_allocation(add);
+	check_memory_allocation(data, add);
 	return (add);
 }
 
-void	ft_free(void *add)
+void	ft_free(void *add, t_data data)
 {
 	t_memory	*tmp;
 	t_memory	*ex;
 	t_memory	*next;
 
-	tmp = g_all.d_mem;
+	tmp = data.memory;
 	ex = NULL;
 	while (tmp)
 	{
@@ -64,7 +64,7 @@ void	ft_free(void *add)
 			if (ex)
 				ex->next = next;
 			else
-				g_all.d_mem = next;
+				data.memory = next;
 			return ;
 		}
 		ex = tmp;
@@ -72,12 +72,12 @@ void	ft_free(void *add)
 	}
 }
 
-void	ft_free_all(void)
+void	ft_free_all(t_data data)
 {
 	t_memory	*tmp;
 	t_memory	*next;
 
-	tmp = g_all.d_mem;
+	tmp = data.memory;
 	while (tmp)
 	{
 		next = tmp->next;

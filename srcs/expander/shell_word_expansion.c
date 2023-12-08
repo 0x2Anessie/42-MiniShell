@@ -224,7 +224,7 @@ static int	is_dollr_quot_apstrph(char *word)
  *               Retourne
  *               NO_ACTION_REQUIRED
  */
-int	need_expand_or_rm_quote(t_lexer **to_check, t_quote *state, t_expand *exp)
+int	need_expand_or_rm_quote(t_lexer **to_check, t_quote *state, t_expand *exp, t_data data)
 {
 	int		index;
 
@@ -242,7 +242,7 @@ int	need_expand_or_rm_quote(t_lexer **to_check, t_quote *state, t_expand *exp)
 		index++;
 	}
 	if (exp->need_expand == NO_EXPAND && exp->quote == QUOTED)
-		(*to_check)->word = remove_quote((*to_check)->word, state);
+		(*to_check)->word = remove_quote((*to_check)->word, state, data);
 	else
 		return (EXPANSION_REQUIRED);
 	return (NO_ACTION_REQUIRED);
@@ -381,16 +381,17 @@ int	dollar_at_end(char *str)
  *     v
  *   Fin
  */
-void	expand(t_quote *state, char **env, t_lexer *tmp)
+void	expand(t_quote *state, char **env, t_lexer *tmp, t_data data)
 {
 	t_lexer		*save;
 	t_expand	*exp;
 
-	state = ft_malloc_with_tracking(sizeof(t_quote));
+	data.expand->nv = env;
+	state = ft_malloc_with_tracking(data, sizeof(t_quote));
 	if (!state)
 		return ;
 	reset_quoting_state(state);
-	exp = ft_malloc_with_tracking(sizeof(t_expand));
+	exp = ft_malloc_with_tracking(data, sizeof(t_expand));
 	if (!exp)
 		return ;
 	while (tmp)
@@ -402,8 +403,8 @@ void	expand(t_quote *state, char **env, t_lexer *tmp)
 			reset_quoting_state(state);
 			if (!dollar_at_end(save->word))
 				continue ;
-			if (need_expand_or_rm_quote(&save, state, exp))
-				manage_expantion(&save, state, env, exp);
+			if (need_expand_or_rm_quote(&save, state, exp, data))
+				manage_expantion(&save, state, data, exp);
 		}
 		else
 			tmp = tmp->next;

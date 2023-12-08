@@ -141,14 +141,14 @@ int	env_size(char **env)
  *              v
  *           Retourner 'new'
  */
-t_env	*create_and_init_env_var_node(char *env)
+t_env	*create_and_init_env_var_node(t_data data, char *env)
 {
 	t_env	*new;
 
-	new = ft_malloc_with_tracking(sizeof(t_env));
+	new = ft_malloc_with_tracking(data, sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->content = ft_strdup(env);
+	new->content = ft_strdup(data, env);
 	new->next = NULL;
 	return (new);
 }
@@ -324,7 +324,7 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *    v
  *   Retourner final
  */
-t_env	*create_env_list_from_array(char **env)
+t_env	*create_env_list_from_array(t_data data, char **env)
 {
 	int		env_nb;
 	int		i;
@@ -337,12 +337,12 @@ t_env	*create_env_list_from_array(char **env)
 	env_nb = env_size(env);
 	if (env_nb == 0)
 	{
-		final = init_env_list_with_pwd_if_empty(final);
+		final = init_env_list_with_pwd_if_empty(data, final);
 		return (final);
 	}
 	while (++i < env_nb)
 	{
-		new = create_and_init_env_var_node(env[i]);
+		new = create_and_init_env_var_node(data, env[i]);
 		if (!final)
 			final = new;
 		else

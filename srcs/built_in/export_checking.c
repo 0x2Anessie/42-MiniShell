@@ -1,18 +1,18 @@
 
 #include "../../include/minishell.h"
 
-void	export_quotes(t_export *data)
+void	export_quotes(t_export *don, t_data data)
 {
 	t_export	*tmp;
 
-	tmp = data;
+	tmp = don;
 	while (tmp)
 	{
 		if (check_case(tmp->value) && check_case_2(tmp->value))
-			tmp->value = case_egale(tmp->value);
+			tmp->value = case_egale(tmp->value, data);
 		tmp = tmp->next;
 	}
-	tmp = data;
+	tmp = don;
 }
 
 int	check_case_2(char *str)
@@ -43,12 +43,12 @@ int	check_case(char *str)
 	return (0);
 }
 
-void	process_word(t_exec **utils, t_lexer *tmp)
+void	process_word(t_exec **utils, t_lexer *tmp, t_data data)
 {
 	remove_double_quotes(tmp->word);
 	remove_single_quotes(tmp->word);
 	if (verif_equal(tmp->word, '=') && verif_var_exist(*utils, tmp->word) == 0)
 	{
-		lst_add_back(*utils, tmp->word);
+		lst_add_back(*utils, tmp->word, data);
 	}
 }

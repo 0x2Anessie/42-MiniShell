@@ -8,7 +8,7 @@
 	Utilisé dans la fonction init_env_list_with_pwd_if_empty, il crée un nouveau noeud pour
 	une variable OLDPWD.
 */
-void	malloc_no_env_initial_node(char *str, t_env **env)
+void	malloc_no_env_initial_node(t_data data, char *str, t_env **env)
 {
 	t_env	*new_node;
 
@@ -18,7 +18,7 @@ void	malloc_no_env_initial_node(char *str, t_env **env)
 		perror(ERR_MEMORY_ALLOCATION);
 		return ;
 	}
-	new_node->content = ft_strdup(str);
+	new_node->content = ft_strdup(data, str);
 	new_node->next = NULL;
 	*env = new_node;
 }
@@ -31,13 +31,13 @@ void	malloc_no_env_initial_node(char *str, t_env **env)
 	Sans variables d'environnement, certaines fonctionnalités de base du 
 	shell pourraient ne pas fonctionner correctement.
 */
-t_env	*init_env_list_with_pwd_if_empty(t_env *final)
+t_env	*init_env_list_with_pwd_if_empty(t_data data, t_env *final)
 {
 	char	*tmp;
 
 	tmp = getcwd(NULL, 0);
-	tmp = ft_strjoin_2(OLDPWD_PREFIX, tmp);
-	malloc_no_env_initial_node(tmp, &final);
+	tmp = ft_strjoin_2(OLDPWD_PREFIX, tmp, data);
+	malloc_no_env_initial_node(data, tmp, &final);
 	return (final);
 }
 
@@ -119,16 +119,16 @@ t_env	*init_env_list_with_pwd_if_empty(t_env *final)
  *            v
  *         Retourner 'utils'
  */
-t_exec	*init_env(char **env)
+t_exec	*init_env(t_data data, char **env)
 {
 	t_exec	*utils;
 
-	utils = ft_malloc_with_tracking(sizeof(t_exec));
+	utils = ft_malloc_with_tracking(data, sizeof(t_exec));
 	if (!utils)
 		return (NULL);
 	utils->env_lst = NULL;
 	if (env)
-		utils->env_lst = create_env_list_from_array(env);
+		utils->env_lst = create_env_list_from_array(data, env);
 	utils->head_env_lst = utils->env_lst;
 	utils->err = ZERO_INIT;
 	utils->ret = ZERO_INIT;

@@ -41,25 +41,25 @@ int	procc_in_echo(char **tab, int i, int j)
 	return (0);
 }
 
-void	child_of_chill(t_lexer *lexer_list, int *fd, int count, t_exec utils)
+void	child_of_chill(t_data data, int *fd, int count, t_exec utils)
 {
 	handle_in(utils, count);
 	handle_out(utils, fd, count);
-	if (is_built_in(lexer_list))
+	if (is_built_in(data.lexer_list))
 	{
-		ft_exec_single_built_in(lexer_list, fd);
-		ft_exit_child(g_all.utils, fd);
+		ft_exec_single_built_in(data.lexer_list, fd, data);
+		ft_exit_child(g_all.utils, fd, data);
 	}
-	if (!slashinlex(lexer_list))
-		exec_chemin(lexer_list);
-	else if (!check_path_exec(lexer_list, utils))
+	if (!slashinlex(data.lexer_list))
+		exec_chemin(data);
+	else if (!check_path_exec(data.lexer_list, utils, data))
 	{
-		if (execve(get_cmd_path(lexer_list->word, utils.env_lst), \
-		get_arg(lexer_list), utils.env) == -1)
-			perror(lexer_list->word);
+		if (execve(get_cmd_path(data.lexer_list->word, utils.env_lst, data), \
+		get_arg(data), utils.env) == -1)
+			perror(data.lexer_list->word);
 	}
 	g_all.utils->err = ERR_CODE_CMD_NOT_FOUND;
-	ft_exit_child(g_all.utils, fd);
+	ft_exit_child(g_all.utils, fd, data);
 }
 
 int	slashinlex(t_lexer *lexer)
@@ -73,9 +73,9 @@ int	slashinlex(t_lexer *lexer)
 	return (1);
 }
 
-void	exec_chemin(t_lexer *lexer)
+void	exec_chemin(t_data data)
 {
-	if (execve(lexer->word, \
-		get_arg(lexer), g_all.utils->env) == -1)
-		perror(lexer->word);
+	if (execve(data.lexer_list->word, \
+		get_arg(data), g_all.utils->env) == -1)
+		perror(data.lexer_list->word);
 }

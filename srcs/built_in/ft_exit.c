@@ -41,14 +41,14 @@ int	is_valid_number(char *str)
 	return (is_valid_number2(neg, str, i));
 }
 
-void	free_res(int *fd)
+void	free_res(int *fd, t_data data)
 {
 	close_pipe(fd);
 	close_fd();
-	ft_free_all();
+	ft_free_all(data);
 }
 
-void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code)
+void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data data)
 {
 	if (lex->next->next)
 	{
@@ -58,12 +58,12 @@ void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code)
 	else
 	{
 		exit_code = ft_atoll(lex->next->word);
-		free_res(fd);
+		free_res(fd, data);
 		exit (exit_code);
 	}
 }
 
-void	ft_exit(t_lexer *lex, int *fd)
+void	ft_exit(t_lexer *lex, int *fd, t_data data)
 {
 	unsigned char	exit_code;
 
@@ -76,15 +76,15 @@ void	ft_exit(t_lexer *lex, int *fd)
 		{
 			ft_printf("bash: exit: %s: numeric argument required\n", \
 			lex->next->word);
-			free_res(fd);
+			free_res(fd, data);
 			exit(2);
 		}
 		else
-			ft_exit2(lex, fd, exit_code);
+			ft_exit2(lex, fd, exit_code, data);
 	}
 	else
 	{
-		free_res(fd);
+		free_res(fd, data);
 		exit (exit_code);
 	}
 }

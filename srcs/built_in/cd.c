@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	verif_pwd(char *str)
+int	verif_pwd(char *str, t_data data)
 {
 	t_env	*tmp;
 	char	*s1;
@@ -13,8 +13,8 @@ int	verif_pwd(char *str)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen_eguale("PWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("PWD=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("PWD=", str, data);
+			tmp->content = var_exist(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -46,7 +46,7 @@ char	*get_old_pwd(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_home(char *str)
+int	verif_home(char *str, t_data data)
 {
 	t_env	*tmp;
 	char	*s1;
@@ -56,8 +56,8 @@ int	verif_home(char *str)
 	{
 		if (ft_strncmp(tmp->content, "HOME=", ft_strlen_eguale("HOME=")) == 0)
 		{
-			s1 = ft_strjoin_2("HOME=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("HOME=", str, data);
+			tmp->content = var_exist(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;

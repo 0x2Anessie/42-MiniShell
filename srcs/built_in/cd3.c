@@ -35,7 +35,7 @@ char	*get_pwd_env(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_oldpwd(char *str)
+int	verif_oldpwd(char *str, t_data data)
 {
 	t_env	*tmp;
 	char	*s1;
@@ -46,8 +46,8 @@ int	verif_oldpwd(char *str)
 		if (ft_strncmp(tmp->content, "OLDPWD=",
 				ft_strlen_eguale("OLDPWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("OLDPWD=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("OLDPWD=", str, data);
+			tmp->content = var_exist(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;

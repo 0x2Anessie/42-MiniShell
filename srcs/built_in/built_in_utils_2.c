@@ -13,7 +13,7 @@ int	ft_strlen4(char *s)
 	return (i);
 }
 
-char	*ft_strjoin4(char *s1, char *s2, t_data data)
+char	*ft_strjoin4(char *s1, char *s2, t_data *data)
 {
 	char	*s3;
 	int		i;
@@ -49,7 +49,7 @@ size_t	ft_strlen_eguale(char *str)
 	return (i);
 }
 
-char	*ft_strjoin_2(char *s1, char *s2, t_data data)
+char	*ft_strjoin_2(char *s1, char *s2, t_data *data)
 {
 	int		i;
 	int		j;

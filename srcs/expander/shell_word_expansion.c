@@ -224,7 +224,7 @@ static int	is_dollr_quot_apstrph(char *word)
  *               Retourne
  *               NO_ACTION_REQUIRED
  */
-int	need_expand_or_rm_quote(t_lexer **to_check, t_quote *state, t_expand *exp, t_data data)
+int	need_expand_or_rm_quote(t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 {
 	int		index;
 
@@ -381,12 +381,12 @@ int	dollar_at_end(char *str)
  *     v
  *   Fin
  */
-void	expand(t_quote *state, char **env, t_lexer *tmp, t_data data)
+void	expand(t_quote *state, char **env, t_lexer *tmp, t_data *data)
 {
 	t_lexer		*save;
 	t_expand	*exp;
 
-	data.expand->nv = env;
+	data->expand->nv = env;
 	state = ft_malloc_with_tracking(data, sizeof(t_quote));
 	if (!state)
 		return ;

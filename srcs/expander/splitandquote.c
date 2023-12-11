@@ -193,7 +193,7 @@ int	len_d_array(char *word, t_quote *state)
  *   Retourner arr
  *   Fin
  */
-char	**split_word(t_data data, char *word, t_quote *state)
+char	**split_word(t_data *data, char *word, t_quote *state)
 {
 	int		index;
 	int		j;

@@ -147,7 +147,7 @@ void	get_in_fail(t_node *node, t_lexer *lexer_lst)
  *                    v
  *   Fin
  */
-char	*ft_strdup(t_data data, char *src)
+char	*ft_strdup(t_data *data, char *src)
 {
 	int		index;
 	char	*dest;

@@ -45,7 +45,7 @@ char	*ft_put_word_in_malloc(char *s, char c, char *tab)
 	return (tab);
 }
 
-char	**ft_malloc_word(char **tab, char *s, char c, t_data data)
+char	**ft_malloc_word(char **tab, char *s, char c, t_data *data)
 {
 	int	i;
 	int	j;
@@ -73,7 +73,7 @@ char	**ft_malloc_word(char **tab, char *s, char c, t_data data)
 	return (tab);
 }
 
-char	**ft_split_mini(char const *s, char c, t_data data)
+char	**ft_split_mini(char const *s, char c, t_data *data)
 {
 	char	**tab;
 	int		word_count;

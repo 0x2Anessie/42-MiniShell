@@ -16,7 +16,7 @@ t_all	g_all;
  *   sont correctement configurées dès le début.
  *
  * @paramètres:
- *   - data: t_data *data, pointeur vers la structure de données à initialiser.
+ *   - data: t_data &data, pointeur vers la structure de données à initialiser.
  *   - ac: int ac, le nombre d'arguments de la ligne de commande.
  *   - av: char **av, les arguments de la ligne de commande.
  *   - env: char **env, les variables d'environnement.
@@ -34,7 +34,7 @@ t_all	g_all;
  *   - La fonction ne génère pas d'erreur mais repose sur la validité des pointeurs fournis.
  *
  * @exemples_d'utilisation:
- *   t_data data;
+ *   t_data *data;
  *   init_data(&data, argc, argv, environ);
  *
  * @dependances: Aucune.
@@ -171,7 +171,7 @@ void	exit_error(char *str)
  *  v
  * Fin
  */
-char	**get_new_env(t_data data, t_env *env_lst)
+char	**get_new_env(t_data *data, t_env *env_lst)
 {
 	char	**new_env;
 	int		i;
@@ -221,7 +221,7 @@ char	**get_new_env(t_data data, t_env *env_lst)
  *
  * @paramètres:
  *   - tmp: char *tmp, ligne de commande saisie par l'utilisateur.
- *   - data: t_data data, structure contenant les informations et les listes pour le traitement de la commande.
+ *   - data: t_data &data, structure contenant les informations et les listes pour le traitement de la commande.
  *   - env: char **env, environnement du programme sous forme de tableau de chaînes de caractères.
  *
  * @valeur_de_retour: 
@@ -233,7 +233,7 @@ char	**get_new_env(t_data data, t_env *env_lst)
  *
  * @exemples_d'utilisation:
  *   char *command = readline("minishell$ ");
- *   t_data data;
+ *   t_data *data;
  *   prompt_loop(command, data, env);
  *
  * @dependances: 
@@ -279,7 +279,7 @@ char	**get_new_env(t_data data, t_env *env_lst)
  * et préparation 
  * pour exécution
  */
-void	prompt_loop(char *tmp, t_data data, char **env)
+void	prompt_loop(char *tmp, t_data *data, char **env)
 {
 	t_lexer	*tmp_lex;
 	char	**new_env;
@@ -289,21 +289,23 @@ void	prompt_loop(char *tmp, t_data data, char **env)
 		exit_all(data);
 	if (tmp && tmp[0])
 	{
-		data.line = tmp;
-		ft_init_lexer_process(&data);
-		if (!ft_parser(&data))
+		data->line = tmp;
+		ft_init_lexer_process(data);
+		if (!ft_parser(data))
 		{
 			g_all.utils->err = 2;
 			return ;
 		}
-		tmp_lex = data.lexer_list;
+		tmp_lex = data->lexer_list;
+		if (data->lexer_list)
+			printf("cool\n");
 		new_env = get_new_env(data, g_all.utils->env_lst);
-		expand(data.quote, new_env, tmp_lex, data);
+		expand(data->quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{
 			printf("good\n");
-			ft_init_exec(&data);
-			ft_prep_exec(&data);
+			ft_init_exec(data);
+			ft_prep_exec(data);
 		}
 	}
 }
@@ -393,7 +395,7 @@ int	main(int ac, char **av, char **env)
 		exit_error("bad number of arguments");
 	init_data(&data, ac, av, env);
 	printf("1\n");
-	g_all.utils = init_env(data, env);
+	g_all.utils = init_env(&data, env);
 	tmp = NULL;
 	g_all.utils->export_lst = NULL;
 	while (42)
@@ -403,6 +405,6 @@ int	main(int ac, char **av, char **env)
 		handle_sig();
 		tmp = readline("minishell$ ");
 		add_history(tmp);
-		prompt_loop(tmp, data, env);
+		prompt_loop(tmp, &data, env);
 	}
 }

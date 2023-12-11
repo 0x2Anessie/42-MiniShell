@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-char	*parse_quote(t_data data, char *tmp)
+char	*parse_quote(t_data *data, char *tmp)
 {
 	int	len;
 
@@ -17,7 +17,7 @@ char	*parse_quote(t_data data, char *tmp)
 	return (tmp);
 }
 
-char	*parse_quote2(t_data data, char *tmp)
+char	*parse_quote2(t_data *data, char *tmp)
 {
 	int	len;
 
@@ -31,7 +31,7 @@ char	*parse_quote2(t_data data, char *tmp)
 	return (tmp);
 }
 
-char	*parse_para(t_data data, char *tmp)
+char	*parse_para(t_data *data, char *tmp)
 {
 	int	len;
 
@@ -51,8 +51,8 @@ void	rm_para_quote(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(*data, tmp->word);
-		tmp->word = parse_quote(*data, tmp->word);
+		tmp->word = parse_para(data, tmp->word);
+		tmp->word = parse_quote(data, tmp->word);
 		tmp = tmp->next;
 	}
 }
@@ -64,8 +64,8 @@ void	rm_para_quote2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(*data, tmp->word);
-		tmp->word = parse_quote2(*data, tmp->word);
+		tmp->word = parse_para(data, tmp->word);
+		tmp->word = parse_quote2(data, tmp->word);
 		tmp = tmp->next;
 	}
 }

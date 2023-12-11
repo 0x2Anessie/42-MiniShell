@@ -8,7 +8,7 @@
 	Utilisé dans la fonction init_env_list_with_pwd_if_empty, il crée un nouveau noeud pour
 	une variable OLDPWD.
 */
-void	malloc_no_env_initial_node(t_data data, char *str, t_env **env)
+void	malloc_no_env_initial_node(t_data *data, char *str, t_env **env)
 {
 	t_env	*new_node;
 
@@ -31,7 +31,7 @@ void	malloc_no_env_initial_node(t_data data, char *str, t_env **env)
 	Sans variables d'environnement, certaines fonctionnalités de base du 
 	shell pourraient ne pas fonctionner correctement.
 */
-t_env	*init_env_list_with_pwd_if_empty(t_data data, t_env *final)
+t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final)
 {
 	char	*tmp;
 
@@ -119,7 +119,7 @@ t_env	*init_env_list_with_pwd_if_empty(t_data data, t_env *final)
  *            v
  *         Retourner 'utils'
  */
-t_exec	*init_env(t_data data, char **env)
+t_exec	*init_env(t_data *data, char **env)
 {
 	t_exec	*utils;
 

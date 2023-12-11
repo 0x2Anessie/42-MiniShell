@@ -57,7 +57,7 @@
  *   v
  *   Fin
  */
-char	*malloc_word_without_quote(int len, char *old, t_quote *state, t_data data)
+char	*malloc_word_without_quote(int len, char *old, t_quote *state, t_data *data)
 {
 	char	*nw;
 
@@ -146,7 +146,7 @@ char	*malloc_word_without_quote(int len, char *old, t_quote *state, t_data data)
  *   \--------------------------------/
  *   Fin
  */
-char	*remove_quote(char *old, t_quote *state, t_data data)
+char	*remove_quote(char *old, t_quote *state, t_data *data)
 {
 	int		i;
 	int		len;
@@ -420,7 +420,7 @@ char	*copy_word(char *word, t_quote *state, char *str)
  *   Retourner le pointeur vers la nouvelle chaîne
  *   Fin
  */
-char	*malloc_word(char *word, t_quote *state, t_data data)
+char	*malloc_word(char *word, t_quote *state, t_data *data)
 {
 	char	*str;
 	int		i;

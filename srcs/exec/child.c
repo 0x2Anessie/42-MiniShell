@@ -60,7 +60,7 @@
  *          v
  *       Retourner 'path'
  */
-char	**get_path(t_env *env_lst, t_data data)
+char	**get_path(t_env *env_lst, t_data *data)
 {
 	char	**path;
 
@@ -146,7 +146,7 @@ char	**get_path(t_env *env_lst, t_data data)
  *                    v
  *                  Retourner NULL
  */
-char	*get_cmd_path(char *cmd, t_env *env_lst, t_data data)
+char	*get_cmd_path(char *cmd, t_env *env_lst, t_data *data)
 {
 	int		index;
 	char	*tmp;
@@ -229,7 +229,7 @@ char	*get_cmd_path(char *cmd, t_env *env_lst, t_data data)
  *               v
  *             Fin
  */
-int	check_path_exec(t_lexer *lexer, t_exec utils, t_data data)
+int	check_path_exec(t_lexer *lexer, t_exec utils, t_data *data)
 {
 	if (!get_cmd_path(lexer->word, utils.env_lst, data))
 	{
@@ -318,23 +318,23 @@ int	check_path_exec(t_lexer *lexer, t_exec utils, t_data data)
  *   Fin
  */
 
-char	**get_arg(t_data data)
+char	**get_arg(t_data *data)
 {
 	char	**arg;
 	int		nb_arg;
 	int		index;
 
 	index = ZERO_INIT;
-	nb_arg = ft_nb_arg(data.lexer_list);
+	nb_arg = ft_nb_arg(data->lexer_list);
 	arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + sizeof('\0')));
-	arg[index] = data.lexer_list->word;
-	while (data.lexer_list && data.lexer_list->token != ARG && data.lexer_list->token != PIPE)
-		data.lexer_list = data.lexer_list->next;
+	arg[index] = data->lexer_list->word;
+	while (data->lexer_list && data->lexer_list->token != ARG && data->lexer_list->token != PIPE)
+		data->lexer_list = data->lexer_list->next;
 	index++;
-	while (data.lexer_list != NULL && index < nb_arg && data.lexer_list->token == ARG)
+	while (data->lexer_list != NULL && index < nb_arg && data->lexer_list->token == ARG)
 	{
-		arg[index] = data.lexer_list->word;
-		data.lexer_list = data.lexer_list->next;
+		arg[index] = data->lexer_list->word;
+		data->lexer_list = data->lexer_list->next;
 		index++;
 	}
 	arg[index] = NULL;
@@ -404,7 +404,7 @@ char	**get_arg(t_data data)
  *                    v
  *                  Fin
  */
-pid_t	ft_child(t_data data, int *fd, int count, t_exec utils)
+pid_t	ft_child(t_data *data, int *fd, int count, t_exec utils)
 {
 	pid_t	pid;
 

@@ -35,7 +35,7 @@ char	*get_pwd_env(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_oldpwd(char *str, t_data data)
+int	verif_oldpwd(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;

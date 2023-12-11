@@ -14,7 +14,7 @@ char	*ft_strcpy(char *dest, const char *src)
 	return (dest_start);
 }
 
-char	*add_quotes_string(char *str, t_data data)
+char	*add_quotes_string(char *str, t_data *data)
 {
 	size_t	len;
 	char	*quoted_str;
@@ -31,7 +31,7 @@ char	*add_quotes_string(char *str, t_data data)
 	return (quoted_str);
 }
 
-char	*join_them(char *str, int i, int flag, t_data data)
+char	*join_them(char *str, int i, int flag, t_data *data)
 {
 	char	*tmp;
 
@@ -55,7 +55,7 @@ char	*join_them(char *str, int i, int flag, t_data data)
 	return (str);
 }
 
-char	*case_egale(char *str, t_data data)
+char	*case_egale(char *str, t_data *data)
 {
 	int		i;
 	int		flag;
@@ -75,7 +75,7 @@ char	*case_egale(char *str, t_data data)
 	return (str);
 }
 
-void	exit_all(t_data data)
+void	exit_all(t_data *data)
 {
 	ft_write_fd("exit\n", 1);
 	ft_free_all(data);

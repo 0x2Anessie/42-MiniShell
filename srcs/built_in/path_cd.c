@@ -40,7 +40,7 @@
 // 	return (0);
 // }
 
-int	verif_oldpwd_export(char *str, t_data data)
+int	verif_oldpwd_export(char *str, t_data *data)
 {
 	t_export	*tmp;
 	char		*s1;
@@ -60,7 +60,7 @@ int	verif_oldpwd_export(char *str, t_data data)
 	return (0);
 }
 
-int	verif_pwd_export(char *str, t_data data)
+int	verif_pwd_export(char *str, t_data *data)
 {
 	t_export	*tmp;
 	char		*s1;

@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	verif_var_exist_export(t_exec *utils, char *str, t_data data)
+int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 {
 	t_export	*tmp;
 

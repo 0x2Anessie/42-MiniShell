@@ -41,14 +41,14 @@ int	is_valid_number(char *str)
 	return (is_valid_number2(neg, str, i));
 }
 
-void	free_res(int *fd, t_data data)
+void	free_res(int *fd, t_data *data)
 {
 	close_pipe(fd);
 	close_fd();
 	ft_free_all(data);
 }
 
-void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data data)
+void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
 {
 	if (lex->next->next)
 	{
@@ -63,7 +63,7 @@ void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data data)
 	}
 }
 
-void	ft_exit(t_lexer *lex, int *fd, t_data data)
+void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 {
 	unsigned char	exit_code;
 

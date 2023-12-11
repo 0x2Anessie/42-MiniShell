@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-void	export_quotes(t_export *don, t_data data)
+void	export_quotes(t_export *don, t_data *data)
 {
 	t_export	*tmp;
 
@@ -43,7 +43,7 @@ int	check_case(char *str)
 	return (0);
 }
 
-void	process_word(t_exec **utils, t_lexer *tmp, t_data data)
+void	process_word(t_exec **utils, t_lexer *tmp, t_data *data)
 {
 	remove_double_quotes(tmp->word);
 	remove_single_quotes(tmp->word);

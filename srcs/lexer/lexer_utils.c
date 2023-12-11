@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-t_lexer	*create_new_lexer(t_data data, char *str)
+t_lexer	*create_new_lexer(t_data *data, char *str)
 {
 	t_lexer	*new;
 

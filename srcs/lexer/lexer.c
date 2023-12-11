@@ -25,7 +25,6 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 	tmp = *lexer_list;
 	while (tmp)
 	{
-		printf("on rentre\n");
 		if (tmp->i == 1)
 			first = tmp;
 		if (tmp->i == 1 && tmp->word[0] != '<' && tmp->word[0] != '>') // a gere inon token ";" "()" "&" sont considere comme des commandes 
@@ -46,12 +45,11 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 			assign_command_or_argument_token(tmp, first);
 		else
 			tmp->token = ARG;
-		printf("%d\n", tmp->token);
 		tmp = tmp->next;
 	}
 }
 
-int	get_word_in_list(char *str, int i, t_data data, t_lexer *tmp)
+int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 {
 	char	*word;
 	int		j;
@@ -74,13 +72,11 @@ int	get_word_in_list(char *str, int i, t_data data, t_lexer *tmp)
 	word[j] = '\0';
 	while (k < j)
 		word[k++] = str[x++];
-	printf("on est la\n");
 	add_lexer_to_end(data, word); // aloue le memoire et ajoute le mot a le fin de la liste
-	printf("on est al\n");
-	if (data.lexer_list)
-		printf("new plein\n");
-	get_data_in_node(&data.lexer_list); // verif pipe 
-	get_token_in_node(&data.lexer_list, tmp); //separe ARG CMD TOKEN 
+	get_data_in_node(&data->lexer_list); // verif pipe 
+	get_token_in_node(&data->lexer_list, tmp); //separe ARG CMD TOKEN 
+	if (data->lexer_list)
+		printf("niveau 2\n");
 	return (j);
 }
 
@@ -100,18 +96,21 @@ void	process_input_string(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 		if (!data->line || !data->line[i]) // plus de mot donc faut sortir et verif les token pour erreur
 		{
 			data->lexer_list = current;
-			get_token_in_node(&current, tmp);
-			printf("ok2\n");
+			get_token_in_node(&current, tmp);y
+			if (data->lexer_list)
+				printf("niveau 1\n");
 			return ;
 		}
 		if (x == 0)
 			current = data->lexer_list;
-		j = get_word_in_list(data->line, i, *data,
+		j = get_word_in_list(data->line, i, data,
 				tmp); // renvoit la fin du mots et separe tout
 		i = i + j;
 		x++;
 	}
 	data->lexer_list = current;
+	if (data->lexer_list)
+		printf("niveau 1\n");
 }
 
 //init et process_input_string fait tout
@@ -127,4 +126,6 @@ void	ft_init_lexer_process(t_data *data)
 	data->nb_mots = count_words_in_input(data->line);
 	i = ZERO_INIT;
 	process_input_string(data, tmp, current, i);
+	if (data->lexer_list)
+		printf("niveau 0\n");
 }

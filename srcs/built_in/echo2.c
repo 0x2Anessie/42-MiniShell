@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-void	simulate_echo(t_lexer *lexer_lst, t_data data)
+void	simulate_echo(t_lexer *lexer_lst, t_data *data)
 {
 	int			i;
 	char		**tab;

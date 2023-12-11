@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	get_pwd(char *tab, t_data data)
+int	get_pwd(char *tab, t_data *data)
 {
 	char	**str;
 

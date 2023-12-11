@@ -59,7 +59,7 @@
  *            v
  *        Réinitialiser lexer_lst à la tête de la liste
  */
-void ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data data)
+void ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
 {
     if (is_command_equal(lexer_lst, CMD_EXPORT_VARS, strlen(CMD_EXPORT_VARS)))
         export_things(lexer_lst, data);
@@ -245,23 +245,23 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Retourner 1
  * Fin
  */
-int	start_exec(int *fd, pid_t *pid, t_data data, int *y)
+int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
 {
-	data.lexer_list = g_all.utils->head_lexer_lst;
+	data->lexer_list = g_all.utils->head_lexer_lst;
 	while (should_continue_execution(&g_all, y))
 	{
-		data.lexer_list = find_next_command(data.lexer_list);
+		data->lexer_list = find_next_command(data->lexer_list);
 		g_all.utils->previous_fd = fd[0];
 		if (g_all.utils->nb_cmd >= 1 && pipe(fd) < 0)
 			return (0);
 		if (is_valid_redirection(g_all.utils->node))
 		{
-			if ((is_built_in(data.lexer_list)) && g_all.utils->nb_cmd == 1)
-				ft_exec_single_built_in(data.lexer_list, fd, data);
+			if ((is_built_in(data->lexer_list)) && g_all.utils->nb_cmd == 1)
+				ft_exec_single_built_in(data->lexer_list, fd, data);
 			else
 				pid[y[0]++] = ft_child(data, fd, y[1], *(g_all.utils));
 		}
-		data.lexer_list = go_next_cmd(data.lexer_list);
+		data->lexer_list = go_next_cmd(data->lexer_list);
 		close_fds_if_needed(fd, g_all.utils->previous_fd);
 		g_all.utils->node = g_all.utils->node->next;
 	}
@@ -400,7 +400,7 @@ void	wait_child_processes(pid_t *pid, int *wstatus, int nb_node)
  *   - Les appels à 'start_exec' et 'wait_child_processes' peuvent influencer l'état global et les ressources du système.
  *
  * @exemples_d'utilisation:
- *   t_data data;
+ *   t_data *data;
  *   ft_prep_exec(&data); // Prépare et exécute les commandes en fonction des données fournies dans 'data'
  *
  * @dépendances:
@@ -465,12 +465,12 @@ void	ft_prep_exec(t_data *data)
 	int		y[2];
 
 	init_var(fd, y, &wstatus);
-	pid = ft_malloc_with_tracking(*data, sizeof(pid_t) * (g_all.utils->nb_node));
+	pid = ft_malloc_with_tracking(data, sizeof(pid_t) * (g_all.utils->nb_node));
 	if (!pid)
 		return ;
 	ft_bzero_pid_array(pid, g_all.utils->nb_node);
 	handle_process_signal();
-	if (!start_exec(fd, pid, *data, y))
+	if (!start_exec(fd, pid, data, y))
 		perror("Pipe ");
 	if (is_built_in(data->lexer_list) && g_all.utils->nb_cmd == 1 && close_fd())
 		return ;

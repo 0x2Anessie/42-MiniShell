@@ -162,7 +162,7 @@ int	ft_len_nb(long n)
  *     v
  *   Fin
  */
-char	*ft_is_neg_mini(t_data data, char *res, long n, int length)
+char	*ft_is_neg_mini(t_data *data, char *res, long n, int length)
 {
 	n = n * (-1);
 	res = ft_malloc_with_tracking(data, sizeof(char) * length + sizeof('-') + sizeof('\0'));
@@ -250,7 +250,7 @@ char	*ft_is_neg_mini(t_data data, char *res, long n, int length)
  *     v
  *   Fin
  */
-char	*ft_itoa_mini(t_data data, int n)
+char	*ft_itoa_mini(t_data *data, int n)
 {
 	long	nb;
 	int		index;

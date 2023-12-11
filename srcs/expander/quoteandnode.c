@@ -66,7 +66,7 @@
  * sur 'str'
  * Fin
  */
-char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data data)
+char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data *data)
 {
 	int		len;
 	char	*str;
@@ -193,13 +193,13 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data data)
 // 	replace_old_node(expnd, expanded);
 // }
 
-void	manage_expantion(t_lexer **expnd, t_quote *st, t_data data, t_expand *exp)
+void	manage_expantion(t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 {	
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
 	g_all.utils->error = ft_itoa_mini(data, g_all.utils->err);
-	exp->str = malloc_for_expand(expnd, st, data.expand->nv, data);
+	exp->str = malloc_for_expand(expnd, st, data->expand->nv, data);
 	if (!exp->str)
 		return ;
 	st->is_quote = ZERO_INIT;
@@ -296,7 +296,7 @@ void	manage_expantion(t_lexer **expnd, t_quote *st, t_data data, t_expand *exp)
  *   v
  * Fin
  */
-void	add_back_new_node(char **insert, t_lexer *back, t_data data, int len)
+void	add_back_new_node(char **insert, t_lexer *back, t_data *data, int len)
 {
 	int		i;
 	t_lexer	*tmp;
@@ -309,10 +309,10 @@ void	add_back_new_node(char **insert, t_lexer *back, t_data data, int len)
 			return ;
 		if (back)
 			back->next = tmp;
-		if (data.lexer_list->next)
-			data.lexer_list->next->prev = tmp;
+		if (data->lexer_list->next)
+			data->lexer_list->next->prev = tmp;
 		tmp->prev = back;
-		tmp->next = data.lexer_list->next;
+		tmp->next = data->lexer_list->next;
 		tmp->token = ARG;
 		tmp->word = ft_strdup(data, insert[i]);
 		back = tmp;
@@ -374,7 +374,7 @@ void	add_back_new_node(char **insert, t_lexer *back, t_data data, int len)
  * des nœuds supplémentaires
  * pour les éléments restants
  */
-void	replace_old_node(t_lexer **old_node, char **to_insert, t_data data)
+void	replace_old_node(t_lexer **old_node, char **to_insert, t_data *data)
 {
 	int		len;
 	t_lexer	*back;

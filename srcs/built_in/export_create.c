@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-t_export	*create_node_str_export(char *str, t_data data)
+t_export	*create_node_str_export(char *str, t_data *data)
 {
 	t_export	*node;
 
@@ -14,7 +14,7 @@ t_export	*create_node_str_export(char *str, t_data data)
 	return (node);
 }
 
-void	lst_add_back_export(t_export **head, char *str, t_data data)
+void	lst_add_back_export(t_export **head, char *str, t_data *data)
 {
 	t_export	*current;
 

@@ -13,7 +13,7 @@ int	change_directory4(t_env *tmp)
 	return (1);
 }
 
-char	*var_exist(char *str, t_data data)
+char	*var_exist(char *str, t_data *data)
 {
 	int		i;
 	int		flag;
@@ -40,7 +40,7 @@ char	*var_exist(char *str, t_data data)
 	return (str);
 }
 
-void	get_cd(t_lexer *lexer_lst, t_data data)
+void	get_cd(t_lexer *lexer_lst, t_data *data)
 {
 	t_env	*env;
 	int		i;
@@ -80,13 +80,13 @@ int	wrong_cd(t_lexer *lexer_lst)
 	return (1);
 }
 
-int	cd_2(t_data data, char *path, char *old, int *i)
+int	cd_2(t_data *data, char *path, char *old, int *i)
 {
-	if (((ft_strcmp(data.lexer_list->word, "cd") == 0)
-			&& data.lexer_list->next->word))
+	if (((ft_strcmp(data->lexer_list->word, "cd") == 0)
+			&& data->lexer_list->next->word))
 	{			
-		if (data.lexer_list->next)
-				data.lexer_list = data.lexer_list->next;
+		if (data->lexer_list->next)
+				data->lexer_list = data->lexer_list->next;
 		old = getcwd(old, *i);
 		if (!old)
 		{
@@ -95,9 +95,9 @@ int	cd_2(t_data data, char *path, char *old, int *i)
 		}
 		else
 			verif_oldpwd(old, data);
-		if (!wrong_cd(data.lexer_list))
+		if (!wrong_cd(data->lexer_list))
 			return (0);
-		if (change_directory(data.lexer_list->word))
+		if (change_directory(data->lexer_list->word))
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);

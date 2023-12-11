@@ -141,7 +141,7 @@ int	env_size(char **env)
  *              v
  *           Retourner 'new'
  */
-t_env	*create_and_init_env_var_node(t_data data, char *env)
+t_env	*create_and_init_env_var_node(t_data *data, char *env)
 {
 	t_env	*new;
 
@@ -324,7 +324,7 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *    v
  *   Retourner final
  */
-t_env	*create_env_list_from_array(t_data data, char **env)
+t_env	*create_env_list_from_array(t_data *data, char **env)
 {
 	int		env_nb;
 	int		i;

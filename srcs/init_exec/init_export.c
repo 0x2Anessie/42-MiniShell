@@ -179,7 +179,7 @@ void	sort_export_lst(t_export **head_export)
  *                           v
  *                          Fin
  */
-t_export	*ft_new_export_node(t_data data,t_export *new)
+t_export	*ft_new_export_node(t_data *data,t_export *new)
 {
 	new = NULL;
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
@@ -261,7 +261,7 @@ t_export	*ft_new_export_node(t_data data,t_export *new)
  *             v
  *            Fin
  */
-t_export	*get_export_list(t_data data, t_export *export_lst)
+t_export	*get_export_list(t_data *data, t_export *export_lst)
 {
 	t_export	*new;
 	t_export	*current_new;

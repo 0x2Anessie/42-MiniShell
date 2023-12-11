@@ -11,7 +11,7 @@ size_t	ft_strlen3_mini(char const *s)
 	return (i);
 }
 
-char	*ft_substr(t_data data, char const *s, unsigned int start, size_t len)
+char	*ft_substr(t_data *data, char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*nouveau;

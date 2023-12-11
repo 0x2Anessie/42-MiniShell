@@ -11,7 +11,7 @@ int	ft_strlen3(char *s)
 	return (i);
 }
 
-void	ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data data)
+void	ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data *data)
 {
 	char	*s;
 	char	*final;

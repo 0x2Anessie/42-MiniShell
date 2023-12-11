@@ -15,7 +15,7 @@ int	strlen2(char *str)
 	return (0);
 }
 
-char	*ft_strjoin2_mini(char *s1, char *s2, t_data data)
+char	*ft_strjoin2_mini(char *s1, char *s2, t_data *data)
 {
 	char	*s3;
 	int		i;

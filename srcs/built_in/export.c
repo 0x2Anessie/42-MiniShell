@@ -37,7 +37,7 @@ int	export_parsing_66(t_lexer *tmp)
 	return (0);
 }
 
-void	process_word_and_add_export(t_lexer *tmp, t_data data)
+void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 {
 	process_word(&(g_all.utils), tmp, data);
 	if (verif_var_exist_export(g_all.utils, tmp->word, data) == 0
@@ -61,7 +61,7 @@ void	process_word_and_add_export(t_lexer *tmp, t_data data)
 	}
 }
 
-void	export_remaining(t_lexer *tmp, t_data data)
+void	export_remaining(t_lexer *tmp, t_data *data)
 {
 	if (export_parsing_66(tmp))
 		return ;
@@ -74,7 +74,7 @@ void	export_remaining(t_lexer *tmp, t_data data)
 	}
 }
 
-int	export_things(t_lexer *lexer_lst, t_data data)
+int	export_things(t_lexer *lexer_lst, t_data *data)
 {
 	t_lexer	*tmp;
 

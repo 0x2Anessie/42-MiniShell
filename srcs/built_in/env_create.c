@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-t_env	*create_node_str(char *str, t_data data)
+t_env	*create_node_str(char *str, t_data *data)
 {
 	t_env	*node;
 
@@ -13,7 +13,7 @@ t_env	*create_node_str(char *str, t_data data)
 	return (node);
 }
 
-void	lst_add_back(t_exec *utils, char *str, t_data data)
+void	lst_add_back(t_exec *utils, char *str, t_data *data)
 {
 	t_env	*current;
 	t_env	*head;

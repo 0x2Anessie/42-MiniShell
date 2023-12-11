@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	verif_pwd(char *str, t_data data)
+int	verif_pwd(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;
@@ -46,7 +46,7 @@ char	*get_old_pwd(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_home(char *str, t_data data)
+int	verif_home(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;

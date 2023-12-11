@@ -378,11 +378,9 @@ void	replace_old_node(t_lexer **old_node, char **to_insert, t_data *data)
 {
 	int		len;
 	t_lexer	*back;
-	t_lexer	*next;
 
 	len = len_darr(to_insert);
 	back = (*old_node)->prev;
-	next = (*old_node)->next;
 	(*old_node)->word = ft_strdup(data, to_insert[0]);
 	if (len > 1)
 	{

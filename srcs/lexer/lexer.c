@@ -96,7 +96,7 @@ void	process_input_string(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 		if (!data->line || !data->line[i]) // plus de mot donc faut sortir et verif les token pour erreur
 		{
 			data->lexer_list = current;
-			get_token_in_node(&current, tmp);y
+			get_token_in_node(&current, tmp);
 			if (data->lexer_list)
 				printf("niveau 1\n");
 			return ;

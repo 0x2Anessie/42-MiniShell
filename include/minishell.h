@@ -155,7 +155,6 @@ typedef struct s_quote
 typedef struct s_expand
 {
 	char	*str;
-	char	**nv;
 	int		len;
 	int		found;
 	int		need_expand;
@@ -215,6 +214,7 @@ typedef struct s_data
 	int			nb_mots;
 	char		**av;
 	char		**env;
+	char		**nv;
 	char		*line;
 	int			index;
 	char		**allcommand;

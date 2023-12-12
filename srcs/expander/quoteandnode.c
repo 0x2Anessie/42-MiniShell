@@ -199,7 +199,7 @@ void	manage_expantion(t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 
 	exp->len = ZERO_INIT;
 	g_all.utils->error = ft_itoa_mini(data, g_all.utils->err);
-	exp->str = malloc_for_expand(expnd, st, data->expand->nv, data);
+	exp->str = malloc_for_expand(expnd, st, data->nv, data);
 	if (!exp->str)
 		return ;
 	st->is_quote = ZERO_INIT;

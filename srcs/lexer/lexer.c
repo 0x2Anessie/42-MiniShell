@@ -75,8 +75,6 @@ int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 	add_lexer_to_end(data, word); // aloue le memoire et ajoute le mot a le fin de la liste
 	get_data_in_node(&data->lexer_list); // verif pipe 
 	get_token_in_node(&data->lexer_list, tmp); //separe ARG CMD TOKEN 
-	if (data->lexer_list)
-		printf("niveau 2\n");
 	return (j);
 }
 
@@ -97,20 +95,15 @@ void	process_input_string(t_data *data, t_lexer *tmp, t_lexer *current, int i)
 		{
 			data->lexer_list = current;
 			get_token_in_node(&current, tmp);
-			if (data->lexer_list)
-				printf("niveau 1\n");
 			return ;
 		}
+		j = get_word_in_list(data->line, i, data, tmp); // renvoit la fin du mots et separe tout
 		if (x == 0)
 			current = data->lexer_list;
-		j = get_word_in_list(data->line, i, data,
-				tmp); // renvoit la fin du mots et separe tout
 		i = i + j;
 		x++;
 	}
 	data->lexer_list = current;
-	if (data->lexer_list)
-		printf("niveau 1\n");
 }
 
 //init et process_input_string fait tout
@@ -126,6 +119,4 @@ void	ft_init_lexer_process(t_data *data)
 	data->nb_mots = count_words_in_input(data->line);
 	i = ZERO_INIT;
 	process_input_string(data, tmp, current, i);
-	if (data->lexer_list)
-		printf("niveau 0\n");
 }

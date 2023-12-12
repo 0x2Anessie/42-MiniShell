@@ -297,15 +297,13 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 			return ;
 		}
 		tmp_lex = data->lexer_list;
-		if (data->lexer_list)
-			printf("cool\n");
 		new_env = get_new_env(data, g_all.utils->env_lst);
 		expand(data->quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{
-			printf("good\n");
 			ft_init_exec(data);
 			ft_prep_exec(data);
+			printf("so_good\n");
 		}
 	}
 }
@@ -394,7 +392,6 @@ int	main(int ac, char **av, char **env)
 	if (ac != 1)
 		exit_error("bad number of arguments");
 	init_data(&data, ac, av, env);
-	printf("1\n");
 	g_all.utils = init_env(&data, env);
 	tmp = NULL;
 	g_all.utils->export_lst = NULL;

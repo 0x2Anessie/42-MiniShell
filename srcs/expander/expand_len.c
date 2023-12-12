@@ -354,7 +354,7 @@ void	sum_expansion_length(t_lexer **expnd, t_quote *st, t_expand *exp, t_data *d
 			else if (st->is_quote == 1 && st->sq_first == 1)
 				index += single_quote_expantion(&(*expnd)->word[index], exp) IDX_ADJUST;
 			else
-				index += basic_expantion(&(*expnd)->word[index], exp, data->expand->nv, st) IDX_ADJUST;
+				index += basic_expantion(&(*expnd)->word[index], exp, data->nv, st) IDX_ADJUST;
 		}
 		else
 			exp->str[exp->len++] = (*expnd)->word[index];

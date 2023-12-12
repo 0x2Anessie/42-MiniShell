@@ -70,7 +70,7 @@ end-of-file (wanted `EOF')\n"
 # define PWD_PREFIX "PWD="
 # define HOME_PREFIX "HOME="
 # define PATH_PREFIX "PATH="
-# define NEWLINE "\n"
+# define FT_NEWLINE "\n"
 
 /*  DEFINE CMD BUILING  */
 # define CMD_ECHO "echo"
@@ -269,9 +269,11 @@ int			env_size(char **env);
 t_env		*init_env_list_with_pwd_if_empty(t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
-void		handle_sig(void);
-void		ctrl_c_handler_here_doc(int sig);
 void		ctrl_c_handler(int sig);
+void		ctrl_c_handler_here_doc(int sig);
+void		handle_ctrl_c(int sig);
+void		handle_ctrl_backslash(int sig);
+void		handle_sig(void);
 void		handle_process_signal(void);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////

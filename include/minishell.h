@@ -54,8 +54,8 @@ end-of-file (wanted `EOF')\n"
 # define CMD_NOT_FOUND 0
 # define CMD_FOUND 1
 # define SIGNAL_EXIT_OFFSET 128
-# define EXIT_STAT_CTRL_BACKSLSH_SIGQUIT (SIGNAL_EXIT_OFFSET + SIGQUIT)
-# define EXIT_STAT_CTRL_C_SIGINT (SIGNAL_EXIT_OFFSET + SIGINT)
+# define CTRL_BACKSLASH_ERROR (SIGNAL_EXIT_OFFSET + SIGQUIT)
+# define CTRL_C_ERROR (SIGNAL_EXIT_OFFSET + SIGINT)
 # define CTRL_C SIGINT
 # define CTRL_BACKSLSH SIGQUIT
 # define IGNORE_SIG_ACTION SIG_IGN
@@ -228,6 +228,8 @@ typedef struct s_data
 
 }			t_data;
 
+extern unsigned int globi;
+
 ////////////////////////LEXER_LIST////////////////////////////////////
 void		ft_init_lexer_process(t_data *data);
 int			ft_write_fd(char *str, int fd);
@@ -274,9 +276,11 @@ int			env_size(char **env);
 t_env		*init_env_list_with_pwd_if_empty(t_data *data, t_env *final);
 
 ///////////////////////SIGNALS///////////////////////////////////////////
-void		handle_sig(void);
-void		ctrl_c_handler_here_doc(int sig);
 void		ctrl_c_handler(int sig);
+void		ctrl_c_handler_here_doc(int sig);
+void		handle_ctrl_c(int sig);
+void		handle_ctrl_backslash(int sig);
+void		handle_sig(void);
 void		handle_process_signal(void);
 
 ///////////////////////INIT_EXEC/////////////////////////////////////////

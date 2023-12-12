@@ -25,7 +25,7 @@ void	display_pwd(void)
 	{
 		ft_printf("error retrieving current directory: " \
 		"No such file or directory\n");
-		g_all.utils->err = 1;
+		globi = 1;
 		free(tmp);
 		return ;
 	}
@@ -38,7 +38,7 @@ void	display_pwd(void)
 	{
 		printf("%s\n", tmp);
 	}
-	g_all.utils->err = 0;
+	globi = 0;
 	free(tmp);
 }
 
@@ -52,7 +52,7 @@ void	display_pwd_error(void)
 	{
 		printf("pwd: too many arguments");
 	}
-	g_all.utils->err = 1;
+	globi = 1;
 }
 
 void	find_old_pwd(t_env *env)

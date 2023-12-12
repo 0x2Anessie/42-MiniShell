@@ -281,7 +281,7 @@ int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
  *   La fonction 'wait_child_processes' parcourt un tableau de PID de processus enfants et attend 
  *   leur terminaison. Pour chaque PID valide (supérieur à 0), elle appelle 'waitpid' pour attendre 
  *   la fin du processus correspondant. Si un processus se termine normalement, elle met à jour 
- *   'g_all.utils->err' avec le code de sortie du processus.
+ *   'globi' avec le code de sortie du processus.
  *   
  *   Pourquoi attendre les processus enfants ?
  *   - Prévention des processus zombies : Attendre les processus enfants permet de libérer les ressources 
@@ -339,7 +339,7 @@ int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
  *   |          |         |
  *   |          |         |
  *   |          v         v
- *   |         Passer à  Mettre à jour 'g_all.utils->err' avec WEXITSTATUS(*wstatus)
+ *   |         Passer à  Mettre à jour 'globi' avec WEXITSTATUS(*wstatus)
  *   |         l'index    |
  *   |         suivant    |
  *   |                     |
@@ -368,7 +368,7 @@ void	wait_child_processes(pid_t *pid, int *wstatus, int nb_node)
         {
             waitpid(pid[index], wstatus, 0);
             if (WIFEXITED(*wstatus))
-                g_all.utils->err = WEXITSTATUS(*wstatus);
+                globi = WEXITSTATUS(*wstatus);
         }
         index++;
         nb_node--;

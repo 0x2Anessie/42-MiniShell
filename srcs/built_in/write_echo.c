@@ -23,7 +23,7 @@ int	procc_in_echo(char **tab, int i, int j)
 		{
 			if (ft_write_fd(" ", g_all.utils->node->out))
 			{
-				g_all.utils->err = 1;
+				globi = 1;
 				return (-1);
 			}
 			ft_write_fd(tab[i++], g_all.utils->node->out);
@@ -32,7 +32,7 @@ int	procc_in_echo(char **tab, int i, int j)
 		{
 			if (ft_write_fd(tab[i++], g_all.utils->node->out))
 			{
-				g_all.utils->err = 1;
+				globi = 1;
 				return (-1);
 			}
 			j++;
@@ -58,7 +58,7 @@ void	child_of_chill(t_data *data, int *fd, int count, t_exec utils)
 		get_arg(data), utils.env) == -1)
 			perror(data->lexer_list->word);
 	}
-	g_all.utils->err = ERR_CODE_CMD_NOT_FOUND;
+	globi = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(g_all.utils, fd, data);
 }
 

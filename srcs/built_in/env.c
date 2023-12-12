@@ -88,6 +88,6 @@ int	unset_things(t_lexer *lexer_lst)
 			remove_node_export(g_all.utils->var);
 		}
 	}
-	g_all.utils->err = 0;
+	globi = 0;
 	return (0);
 }

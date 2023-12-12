@@ -7,7 +7,7 @@ int	change_directory4(t_env *tmp)
 	if (chdir(get_pwd_env(tmp) + 4) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
@@ -74,7 +74,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 	if (lexer_lst->next)
 	{
 		write (2, "bash: cd: trop d'arguments\n", 27);
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
@@ -101,7 +101,7 @@ int	cd_2(t_data *data, char *path, char *old, int *i)
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);
-			g_all.utils->err = 0;
+			globi = 0;
 		}
 	}
 	return (1);

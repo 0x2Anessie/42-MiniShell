@@ -22,7 +22,7 @@ void	print_export(t_export *export_lst)
 		current = current->next;
 	}
 	current = export_lst;
-	g_all.utils->err = 0;
+	globi = 0;
 }
 
 int	export_parsing_66(t_lexer *tmp)

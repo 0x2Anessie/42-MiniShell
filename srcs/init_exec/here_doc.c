@@ -105,7 +105,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst)
 			if (strlen2(lexer_lst->next->word) == strlen2(g_all.utils->hd))
 				break ;
 		ft_write_fd(g_all.utils->hd, node->here_doc_fd);
-		ft_write_fd(FT_NEWLINE, node->here_doc_fd);
+		ft_write_fd("\n", node->here_doc_fd);
 		free(g_all.utils->hd);
 	}	
 	close(g_all.utils->dupin);

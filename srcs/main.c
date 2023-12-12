@@ -228,7 +228,7 @@ char	**get_new_env(t_env *env_lst)
  *
  * @erreurs_possibles_et_effets_de_bord: 
  *   - Termine le programme si 'tmp' est NULL.
- *   - Met à jour 'g_all.utils->err' en cas d'erreur de parsing.
+ *   - Met à jour 'globi' en cas d'erreur de parsing.
  *
  * @exemples_d'utilisation:
  *   char *command = readline("minishell$ ");
@@ -265,7 +265,7 @@ char	**get_new_env(t_env *env_lst)
  *     OUI       NON
  *      |         |
  *      v         v
- *    Expansion Mise à jour de 'g_all.utils->err', 
+ *    Expansion Mise à jour de 'globi', 
  *    des variables  fin de la fonction
  *      |
  *      v
@@ -292,7 +292,7 @@ void	prompt_loop(char *tmp, t_data data, char **env)
 		ft_init_lexer_process(&data);
 		if (!ft_parser(&data))
 		{
-			g_all.utils->err = 2;
+			globi = 2;
 			return ;
 		}
 		tmp_lex = data.lexer_list;

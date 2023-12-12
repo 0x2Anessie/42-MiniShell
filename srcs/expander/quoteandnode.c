@@ -127,7 +127,7 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env)
  * Initialiser la longueur d'expansion dans 'exp->len' à ZERO_INIT
  *   |
  *   v
- * Convertir l'erreur de 'g_all.utils->err' en chaîne de caractères
+ * Convertir l'erreur de 'globi' en chaîne de caractères
  *   |
  *   v
  * Allouer de la mémoire pour la chaîne d'expansion 'exp->str'
@@ -175,7 +175,7 @@ void	manage_expantion(t_lexer **expnd, t_quote *st, char **nv, t_expand *exp)
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
-	g_all.utils->error = ft_itoa(g_all.utils->err);
+	g_all.utils->error = ft_itoa(globi);
 	exp->str = malloc_for_expand(expnd, st, nv);
 	if (!exp->str)
 		return ;

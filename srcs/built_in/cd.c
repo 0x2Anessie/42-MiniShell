@@ -70,7 +70,7 @@ int	change_directory2(t_env *tmp)
 	if (chdir(get_home(tmp) + 5) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);

@@ -53,7 +53,7 @@ void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code)
 	if (lex->next->next)
 	{
 		ft_printf("bash: exit: too many arguments\n");
-		g_all.utils->err = 1;
+		globi = 1;
 	}
 	else
 	{

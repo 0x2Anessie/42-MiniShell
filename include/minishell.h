@@ -225,6 +225,8 @@ typedef struct s_data
 
 }			t_data;
 
+extern unsigned int globi;
+
 ////////////////////////LEXER_LIST////////////////////////////////////
 void		ft_init_lexer_process(t_data *data);
 int			ft_write_fd(char *str, int fd);

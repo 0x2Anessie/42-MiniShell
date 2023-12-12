@@ -6,7 +6,7 @@ int	change_directory(char *dir)
 	if (chdir(dir) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
@@ -17,7 +17,7 @@ int	change_directory3(t_env *tmp)
 	if (chdir(get_old_pwd(tmp) + 7) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);

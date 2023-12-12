@@ -58,7 +58,7 @@ void	process_echo(char **tab, int i)
 	}
 	else
 		process_echo_2(tab, i);
-	g_all.utils->err = 0;
+	globi = 0;
 }
 
 void	process_echo_2(char **tab, int i)

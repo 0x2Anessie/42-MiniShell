@@ -116,11 +116,11 @@ int is_built_in(t_lexer *lexer_lst)
 	if (lexer_lst->word == NULL)
 		return (0);
 	return (is_command_equal(lexer_lst, CMD_PRINT_DIRCT, ft_strlen(CMD_PRINT_DIRCT)) ||
-		   is_command_equal(lexer_lst, CMD_ECHO, ft_strlen(CMD_ECHO)) ||
-		   is_command_equal(lexer_lst, CMD_ENV_VARS, ft_strlen(CMD_ENV_VARS)) ||
-		   is_command_equal(lexer_lst, CMD_UNSET_VARS, ft_strlen(CMD_UNSET_VARS)) ||
-		   is_command_equal(lexer_lst, CMD_CHANG_DIRCT, ft_strlen(CMD_CHANG_DIRCT)) ||
-		   is_command_equal(lexer_lst, CMD_EXPORT_VARS, ft_strlen(CMD_EXPORT_VARS)) ||
+		   is_command_equal(lexer_lst, CMD_ECHO, ft_strlen(CMD_ECHO)) || 
+		   is_command_equal(lexer_lst, CMD_ENV_VARS, ft_strlen(CMD_ENV_VARS)) || 
+		   is_command_equal(lexer_lst, CMD_UNSET_VARS, ft_strlen(CMD_UNSET_VARS)) || 
+		   is_command_equal(lexer_lst, CMD_CHANG_DIRCT, ft_strlen(CMD_CHANG_DIRCT)) || 
+		   is_command_equal(lexer_lst, CMD_EXPORT_VARS, ft_strlen(CMD_EXPORT_VARS)) || 
 		   is_command_equal(lexer_lst, CMD_EXIT_SHELL, ft_strlen(CMD_EXIT_SHELL)));
 }
 

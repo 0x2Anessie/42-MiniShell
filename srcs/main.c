@@ -303,7 +303,6 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		{
 			ft_init_exec(data);
 			ft_prep_exec(data);
-			printf("so_good\n");
 		}
 	}
 }

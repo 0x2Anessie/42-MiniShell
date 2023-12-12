@@ -472,9 +472,8 @@ void	ft_prep_exec(t_data *data)
 	handle_process_signal();
 	if (!start_exec(fd, pid, data, y))
 		perror("Pipe ");
-	if (is_built_in(data->lexer_list) && g_all.utils->nb_cmd == 1 && close_fd())
-		return ;
-	printf("good\n");
+	// if (is_built_in(data->lexer_list) && g_all.utils->nb_cmd == 1 && close_fd())
+	// 	return ;
 	wait_child_processes(pid, &wstatus, g_all.utils->nb_node);
 	close_fd();
 }

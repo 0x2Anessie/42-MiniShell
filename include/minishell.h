@@ -202,7 +202,7 @@ typedef struct s_memory
 typedef struct s_all
 {
 	t_exec		*utils;
-	t_memory	*d_mem;
+//	t_memory	*d_mem;
 }				t_all;
 
 typedef struct s_data

@@ -4,6 +4,7 @@
 #include <readline/history.h>
 
 t_all	g_all;
+unsigned int globi = 0;
 
 /**
  * @nom: init_data

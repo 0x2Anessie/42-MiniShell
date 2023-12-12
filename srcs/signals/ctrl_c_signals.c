@@ -1,4 +1,3 @@
-
 // Definie la reaction du programme a un ctrl+c normal, et pendant un heredoc
 
 #include "../../include/minishell.h"

@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strjoin2.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fililafrappe <fililafrappe@student.42.f    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 21:33:03 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/06/08 16:09:33 by fililafrapp      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/lib.h"
-#include "../../Include/minishell.h"
+#include "../../include/minishell.h"
 
 int	strlen2(char *str)
 {
@@ -27,7 +15,7 @@ int	strlen2(char *str)
 	return (0);
 }
 
-char	*ft_strjoin2(char *s1, char *s2)
+char	*ft_strjoin2_mini(char *s1, char *s2, t_data *data)
 {
 	char	*s3;
 	int		i;
@@ -37,7 +25,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 	j = -1;
 	if (!s1 && !s2)
 		return (NULL);
-	s3 = ft_malloc(sizeof(char) * (strlen2(s1) + strlen2(s2) + 1));
+	s3 = ft_malloc_with_tracking(data, sizeof(char) * (strlen2(s1) + strlen2(s2) + 1));
 	if (!s3)
 		return (NULL);
 	while (s1[++j])

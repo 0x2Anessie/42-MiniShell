@@ -1,16 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fd-arco <fd-arco@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 23:55:03 by fililafrapp       #+#    #+#             */
-/*   Updated: 2023/03/30 17:54:32 by fd-arco          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/lib.h"
+#include "../../include/minishell.h"
 
 int	ft_strlen3(char *s)
 {
@@ -22,15 +11,15 @@ int	ft_strlen3(char *s)
 	return (i);
 }
 
-void	ft_putstr_fd(char *s1, char *s2, int fd)
+void	ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data *data)
 {
 	char	*s;
 	char	*final;
 
 	if (s2)
 	{
-		s = ft_strjoin2(s1, s2);
-		final = ft_strjoin2(s, "\n");
+		s = ft_strjoin2_mini(s1, s2, data);
+		final = ft_strjoin2_mini(s, "\n", data);
 		write (fd, final, ft_strlen3(final));
 		free (s);
 		free (final);

@@ -87,14 +87,14 @@
  *  v
  * Fin
  */
-void	configure_here_doc_input(t_node *node, t_lexer *lex_lst)
+void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
 {
 	if (lex_lst && lex_lst->token == HERE_DOC \
 	&& lex_lst->next->token == DELIMITER)
 	{
 		if (node->in > 0)
 			close (node->in);
-		manage_here_doc_process(node, lex_lst);
+		manage_here_doc_process(node, lex_lst, data);
 		if (!access(node->here_doc, F_OK))
 		{
 			node->in = open(node->here_doc, O_RDONLY);
@@ -183,7 +183,7 @@ void	configure_here_doc_input(t_node *node, t_lexer *lex_lst)
  *     v
  *   Fin
  */
-void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
+void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
 	node->in = -1;
 	node->in_fail = 0;
@@ -201,7 +201,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst)
 			else
 				get_in_fail(node, lexer_lst);
 		}
-		configure_here_doc_input(node, lexer_lst);
+		configure_here_doc_input(node, lexer_lst, data);
 		lexer_lst = lexer_lst->next;
 	}
 }

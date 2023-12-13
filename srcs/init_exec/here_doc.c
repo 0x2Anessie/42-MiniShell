@@ -84,32 +84,32 @@
  *   v
  *   Fin
  */
-void	ft_read_input(t_node *node, t_lexer *lexer_lst)
+void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	g_all.utils->dupin = dup(0);
+	data->utils->dupin = dup(0);
 	while (INFINITY_LOOP)
 	{
-		g_all.utils->hd = readline("> ");
-		if (!g_all.utils->hd && g_all.utils->can_run)
+		data->utils->hd = readline("> ");
+		if (!data->utils->hd && data->utils->can_run)
 		{
 			write (STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, ft_strlen(ERR_HEREDOC_EOF_WARNING));
 			break ;
 		}
-		if (!g_all.utils->can_run)
+		if (!data->utils->can_run)
 		{
-			dup2(g_all.utils->dupin, STDIN_FILENO);
+			dup2(data->utils->dupin, STDIN_FILENO);
 			break ;
 		}
-		if (!ft_strncmp(lexer_lst->next->word, g_all.utils->hd, \
+		if (!ft_strncmp(lexer_lst->next->word, data->utils->hd, \
 		strlen2(lexer_lst->next->word)))
-			if (strlen2(lexer_lst->next->word) == strlen2(g_all.utils->hd))
+			if (strlen2(lexer_lst->next->word) == strlen2(data->utils->hd))
 				break ;
-		ft_write_fd(g_all.utils->hd, node->here_doc_fd);
+		ft_write_fd(data->utils->hd, node->here_doc_fd);
 		ft_write_fd("\n", node->here_doc_fd);
-		free(g_all.utils->hd);
+		free(data->utils->hd);
 	}	
-	close(g_all.utils->dupin);
-	free(g_all.utils->hd);
+	close(data->utils->dupin);
+	free(data->utils->hd);
 }
 
 /**
@@ -190,16 +190,16 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst)
  *   v           v
  *   Fin         Fin
  */
-void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst)
+void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	g_all.utils->is_here_doc = 1;
-	handle_sig();
+	data->utils->is_here_doc = 1;
+	handle_sig(data);
 	node->here_doc = HEREDOC_TEMP_FILE;
 	node->here_doc_fd = open(node->here_doc, HEREDOC_TMPFILE_FLAGS, PERM_RWX_ALL);
 	if (node->here_doc_fd < 0)
 		return ;
-	ft_read_input(node, lexer_lst);
-	g_all.utils->is_here_doc = 0;
-	handle_sig();
+	ft_read_input(node, lexer_lst, data);
+	data->utils->is_here_doc = 0;
+	handle_sig(data);
 	close(node->here_doc_fd);
 }

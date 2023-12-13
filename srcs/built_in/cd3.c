@@ -12,9 +12,9 @@ int	change_directory(char *dir)
 	return (1);
 }
 
-int	change_directory3(t_env *tmp)
+int	change_directory3(t_env *tmp, t_data *data)
 {
-	if (chdir(get_old_pwd(tmp) + 7) == -1)
+	if (chdir(get_old_pwd(tmp, data) + 7) == -1)
 	{
 		perror("chdir");
 		globi = 1;
@@ -23,9 +23,9 @@ int	change_directory3(t_env *tmp)
 	return (1);
 }
 
-char	*get_pwd_env(t_env	*tmp)
+char	*get_pwd_env(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("PWD=", tmp->content, 4))
@@ -40,7 +40,7 @@ int	verif_oldpwd(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "OLDPWD=",

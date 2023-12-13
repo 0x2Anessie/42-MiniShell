@@ -185,7 +185,7 @@ t_export	*ft_new_export_node(t_data *data,t_export *new)
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
 	if (!new)
 		return (NULL);
-	new->value = ft_strdup(data, g_all.utils->env_lst->content);
+	new->value = ft_strdup(data, data->utils->env_lst->content);
 	new->next = NULL;
 	return (new);
 }
@@ -267,7 +267,7 @@ t_export	*get_export_list(t_data *data, t_export *export_lst)
 	t_export	*current_new;
 
 	current_new = NULL;
-	while (g_all.utils->env_lst)
+	while (data->utils->env_lst)
 	{
 		new = ft_new_export_node(data, new);
 		if (!export_lst)
@@ -280,9 +280,9 @@ t_export	*get_export_list(t_data *data, t_export *export_lst)
 			current_new->next = new;
 			current_new = current_new->next;
 		}
-		g_all.utils->env_lst = g_all.utils->env_lst->next;
+		data->utils->env_lst = data->utils->env_lst->next;
 	}
 	sort_export_lst(&export_lst);
-	g_all.utils->env_lst = g_all.utils->head_env_lst;
+	data->utils->env_lst = data->utils->head_env_lst;
 	return (export_lst);
 }

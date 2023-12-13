@@ -12,13 +12,13 @@ void	ctrl_c_handler(int sig)
 	globi = 130;
 }
 
-void	ctrl_c_handler_here_doc(int sig)
+void	ctrl_c_handler_here_doc(int sig, t_data *data)
 {
 	(void)sig;
 	close(0);
 	ft_putchar('\n');
-	g_all.utils->is_here_doc = 0;
-	g_all.utils->can_run = 0;
+	data->utils->is_here_doc = 0;
+	data->utils->can_run = 0;
 	globi = 130;
 }
 
@@ -36,11 +36,17 @@ void	handle_ctrl_backslash(int sig)
 	write(1, "Quit\n", 5);
 }
 
-void	handle_sig(void)
+void	handle_sig(t_data *data)
 {
-	if (g_all.utils->is_here_doc)
+	if (data->utils->is_here_doc)
 	{
-		signal(SIGINT, &ctrl_c_handler_here_doc);
+		//(void)sig;
+		close(0);
+		ft_putchar('\n');
+		data->utils->is_here_doc = 0;
+		data->utils->can_run = 0;
+		globi = 130;
+		//signal(SIGINT, &ctrl_c_handler_here_doc);
 	}
 	else
 	{

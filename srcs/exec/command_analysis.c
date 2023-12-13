@@ -128,14 +128,14 @@ int is_built_in(t_lexer *lexer_lst)
  * @fonction: should_continue_execution
  * @brève_description: Détermine si l'exécution doit se poursuivre en fonction de l'état actuel.
  * 
- * @param g_all: Pointeur sur la structure t_all représentant l'état global du programme.
+ * @paramdata: Pointeur sur la structure t_all représentant l'état global du programme.
  * @param y: Pointeur sur un entier utilisé dans la logique de contrôle de l'exécution.
  * 
  * @description_détaillée:
  *   La fonction 'should_continue_execution' évalue plusieurs conditions pour décider si le 
  *   processus d'exécution doit se poursuivre. Elle vérifie l'existence et l'état de 'node' 
- *   dans 'g_all->utils', si 'node' a une commande à exécuter ('has_cmd'), et si 'can_run' 
- *   dans 'g_all->utils' est vrai. De plus, elle incrémente la valeur pointée par 'y[1]' et 
+ *   dans data->utils', si 'node' a une commande à exécuter ('has_cmd'), et si 'can_run' 
+ *   dans data->utils' est vrai. De plus, elle incrémente la valeur pointée par 'y[1]' et 
  *   vérifie si elle est supérieure ou égale à 0.
  *   
  *   Pourquoi cette vérification multi-conditionnelle ?
@@ -143,14 +143,14 @@ int is_built_in(t_lexer *lexer_lst)
  *     décision de continuer ou d'arrêter l'exécution, permettant une gestion fine du flux 
  *     de contrôle.
  *   - Gestion de l'état du programme : La vérification de l'état de différents composants 
- *     de 'g_all' assure que l'exécution se poursuit uniquement si l'état du programme le 
+ *     de data' assure que l'exécution se poursuit uniquement si l'état du programme le 
  *     permet.
  *
  * @valeur_de_retour: 
  *   Retourne 1 (vrai) si toutes les conditions sont remplies pour continuer l'exécution, 0 (faux) sinon.
  *
  * @erreurs_possibles_et_effets_de_bord: 
- *   - Si 'g_all' ou 'g_all->utils->node' est NULL, la fonction retournera 0.
+ *   - Si data' ou data->utils->node' est NULL, la fonction retournera 0.
  *   - La modification de 'y[1]' a un effet de bord et doit être prise en compte dans le flux de contrôle.
  *
  * @exemples_d'utilisation:
@@ -164,13 +164,13 @@ int is_built_in(t_lexer *lexer_lst)
  *   Début
  *     |
  *     v
- *   g_all->utils->node existe et g_all->utils->node->has_cmd == 1 ?
+ *  data->utils->node existe etdata->utils->node->has_cmd == 1 ?
  *  /        \
  * VRAI      FAUX
  *  |         \
  *  |          \
  *  v           v
- * y[1]++ >= 0 et g_all->utils->can_run ?  Retourner 0
+ * y[1]++ >= 0 etdata->utils->can_run ?  Retourner 0
  *  /        \
  * VRAI      FAUX
  *  |         \
@@ -178,12 +178,12 @@ int is_built_in(t_lexer *lexer_lst)
  *  v           v
  * Retourner 1  Retourner 0
  */
-int should_continue_execution(t_all *g_all, int *y)
+int should_continue_execution(t_data *data, int *y)
 {
-    return (g_all->utils->node && 
-           g_all->utils->node->has_cmd == 1 && 
+    return (data->utils->node && 
+        data->utils->node->has_cmd == 1 && 
            ++y[1] >= 0 && 
-           g_all->utils->can_run);
+        data->utils->can_run);
 }
 
 /**

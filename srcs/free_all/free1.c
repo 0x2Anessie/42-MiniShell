@@ -8,7 +8,7 @@ int	ft_exit_child(t_exec *utils, int *fd, t_data *data)
 	k = utils->err;
 	if (fd)
 		close_pipe(fd);
-	close_fd();
+	close_fd(data);
 	ft_free_all(data);
 	exit(k);
 }

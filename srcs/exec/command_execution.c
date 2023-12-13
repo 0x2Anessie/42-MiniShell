@@ -24,7 +24,7 @@
  *
  * @erreurs_possibles_et_effets_de_bord:
  *   - Si 'lexer_lst' est NULL, les fonctions spécifiques aux commandes intégrées ne seront pas appelées.
- *   - La fermeture du descripteur de fichier (si 'g_all.utils->node->out > 0') doit être gérée avec soin pour
+ *   - La fermeture du descripteur de fichier (si 'data->utils->node->out > 0') doit être gérée avec soin pour
  *     éviter des fuites de ressources.
  *
  * @exemples_d'utilisation:
@@ -36,7 +36,7 @@
  * @dépendances:
  *   - is_command_equal() : Pour comparer les commandes.
  *   - export_things(), get_pwd(), simulate_echo(), etc. : Fonctions spécifiques aux commandes intégrées.
- *   - g_all.utils->node : Pour gérer les descripteurs de fichiers.
+ *   - data->utils->node : Pour gérer les descripteurs de fichiers.
  *
  * @graphe_de_flux:
  *   Début
@@ -70,15 +70,15 @@ void ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
     else if (is_command_equal(lexer_lst, CMD_CHANG_DIRCT, strlen(CMD_CHANG_DIRCT)))
         get_cd(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_ENV_VARS, strlen(CMD_ENV_VARS)))
-        unset_things(lexer_lst);
+        unset_things(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_UNSET_VARS, strlen(CMD_UNSET_VARS)))
-        unset_things(lexer_lst);
+        unset_things(lexer_lst, data);
     else if (is_command_equal(lexer_lst, CMD_EXIT_SHELL, strlen(CMD_EXIT_SHELL)))
         ft_exit(lexer_lst, fd, data);
 
-    if (g_all.utils->node->out > 0)
-        close(g_all.utils->node->out);
-    lexer_lst = g_all.utils->head_lexer_lst;
+    if (data->utils->node->out > 0)
+        close(data->utils->node->out);
+    lexer_lst = data->utils->head_lexer_lst;
 }
 
 /**
@@ -168,7 +168,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  *
  * @erreurs_possibles_et_effets_de_bord: 
  *   - Si une commande intégrée échoue ou si 'pipe(fd)' renvoie une erreur, la fonction retourne 0.
- *   - La modification des valeurs de 'lex_lst' et 'g_all.utils->node' a un effet sur l'état global du programme.
+ *   - La modification des valeurs de 'lex_lst' et 'data->utils->node' a un effet sur l'état global du programme.
  *
  * @exemples_d'utilisation:
  *   int fd[2], y[2] = {0, 0};
@@ -183,7 +183,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Début
  *   |
  *   v
- * Initialiser lex_lst avec la tête de la liste de lexèmes globale (g_all.utils->head_lexer_lst)
+ * Initialiser lex_lst avec la tête de la liste de lexèmes globale (data->utils->head_lexer_lst)
  *   |
  *   v
  * Entrer dans la boucle tant que should_continue_execution retourne vrai
@@ -192,10 +192,10 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Trouver la prochaine commande avec find_next_command
  *   |
  *   v
- * Initialiser g_all.utils->previous_fd avec fd[0]
+ * Initialiser data->utils->previous_fd avec fd[0]
  *   |
  *   v
- * g_all.utils->nb_cmd >= 1 et pipe(fd) échoue ?
+ * data->utils->nb_cmd >= 1 et pipe(fd) échoue ?
  *  /       \
  * OUI      NON
  *  |         |
@@ -204,7 +204,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Retourner 0  Continuer l'exécution
  *   |
  *   v
- * is_valid_redirection de g_all.utils->node est vrai ?
+ * is_valid_redirection de data->utils->node est vrai ?
  *  /       \
  * OUI      NON
  *  |         |
@@ -214,7 +214,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * l'exécution
  *   |
  *   v
- * (is_built_in(lex_lst)) et (g_all.utils->nb_cmd == 1) ?
+ * (is_built_in(lex_lst)) et (data->utils->nb_cmd == 1) ?
  *  /       \
  * OUI      NON
  *  |         |
@@ -230,7 +230,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Fermer les descripteurs de fichiers ouverts avec close_fds_if_needed
  *   |
  *   v
- * Passer au nœud suivant dans g_all.utils->node
+ * Passer au nœud suivant dans data->utils->node
  *   |
  *   v
  * Retour à la condition de la boucle (should_continue_execution)
@@ -247,23 +247,23 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  */
 int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
 {
-	data->lexer_list = g_all.utils->head_lexer_lst;
-	while (should_continue_execution(&g_all, y))
+	data->lexer_list = data->utils->head_lexer_lst;
+	while (should_continue_execution(data, y))
 	{
 		data->lexer_list = find_next_command(data->lexer_list);
-		g_all.utils->previous_fd = fd[0];
-		if (g_all.utils->nb_cmd >= 1 && pipe(fd) < 0)
+		data->utils->previous_fd = fd[0];
+		if (data->utils->nb_cmd >= 1 && pipe(fd) < 0)
 			return (0);
-		if (is_valid_redirection(g_all.utils->node))
+		if (is_valid_redirection(data->utils->node))
 		{
-			if ((is_built_in(data->lexer_list)) && g_all.utils->nb_cmd == 1)
+			if ((is_built_in(data->lexer_list)) && data->utils->nb_cmd == 1)
 				ft_exec_single_built_in(data->lexer_list, fd, data);
 			else
-				pid[y[0]++] = ft_child(data, fd, y[1], *(g_all.utils));
+				pid[y[0]++] = ft_child(data, fd, y[1], *(data->utils));
 		}
 		data->lexer_list = go_next_cmd(data->lexer_list);
-		close_fds_if_needed(fd, g_all.utils->previous_fd);
-		g_all.utils->node = g_all.utils->node->next;
+		close_fds_if_needed(fd, data->utils->previous_fd);
+		data->utils->node = data->utils->node->next;
 	}
 	close_pipe(fd);
 	return (1);
@@ -293,7 +293,7 @@ int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
  *
  * @erreurs_possibles_et_effets_de_bord:
  *   - Si 'pid' est NULL, la fonction retourne immédiatement sans attendre aucun processus.
- *   - La fonction dépend de 'g_all.utils->can_run' et 'g_all.utils->nb_cmd' pour déterminer si elle 
+ *   - La fonction dépend de 'data->utils->can_run' et 'data->utils->nb_cmd' pour déterminer si elle 
  *     doit continuer à attendre les processus.
  *
  * @exemples_d'utilisation:
@@ -320,7 +320,7 @@ int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
  *   |         |
  *   |         v
  *   |       Entrer dans la boucle tant que 'nb_node' > 0, 
- *   |       'g_all.utils->can_run' et 'g_all.utils->nb_cmd' sont vrais
+ *   |       'data->utils->can_run' et 'data->utils->nb_cmd' sont vrais
  *   |         |
  *   |         v
  *   |       pid[index] est-il supérieur à 0 ?
@@ -355,14 +355,14 @@ int	start_exec(int *fd, pid_t *pid, t_data *data, int *y)
  *   v
  * Fin
  */
-void	wait_child_processes(pid_t *pid, int *wstatus, int nb_node)
+void	wait_child_processes(pid_t *pid, int *wstatus, int nb_node, t_data *data)
 {
     int index;
 
 	index = ZERO_INIT;
     if (!pid)
         return;
-    while (nb_node > 0 && g_all.utils->can_run && g_all.utils->nb_cmd)
+    while (nb_node > 0 && data->utils->can_run && data->utils->nb_cmd)
     {
         if (pid[index] > 0)
         {
@@ -438,7 +438,7 @@ void	wait_child_processes(pid_t *pid, int *wstatus, int nb_node)
  *         |         |
  *         v         v
  *       Afficher   Est-ce une commande intégrée unique ?
- *       l'erreur    avec 'is_built_in' et 'g_all.utils->nb_cmd'
+ *       l'erreur    avec 'is_built_in' et 'data->utils->nb_cmd'
  *          |        /       \
  *          |      NON       OUI
  *          |        |         |
@@ -465,15 +465,15 @@ void	ft_prep_exec(t_data *data)
 	int		y[2];
 
 	init_var(fd, y, &wstatus);
-	pid = ft_malloc_with_tracking(data, sizeof(pid_t) * (g_all.utils->nb_node));
+	pid = ft_malloc_with_tracking(data, sizeof(pid_t) * (data->utils->nb_node));
 	if (!pid)
 		return ;
-	ft_bzero_pid_array(pid, g_all.utils->nb_node);
+	ft_bzero_pid_array(pid, data->utils->nb_node);
 	handle_process_signal();
 	if (!start_exec(fd, pid, data, y))
 		perror("Pipe ");
-	// if (is_built_in(data->lexer_list) && g_all.utils->nb_cmd == 1 && close_fd())
-	// 	return ;
-	wait_child_processes(pid, &wstatus, g_all.utils->nb_node);
-	close_fd();
+	// if (is_built_in(data->lexer_list) && data->utils->nb_cmd == 1 && close_fd())
+	// 	return ;     ?????????????????? pourquoi
+	wait_child_processes(pid, &wstatus, data->utils->nb_node, data);
+	close_fd(data);
 }

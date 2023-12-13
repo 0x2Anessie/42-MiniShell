@@ -3,7 +3,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_all	g_all;
 unsigned int globi = 0;
 
 /**
@@ -61,6 +60,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->av = av;
 	data->env = env;
 	data->memory = NULL;
+	data->utils = NULL;
 	data->line = NULL;
 	data->allcommand = NULL;
 	data->envpaths = NULL;
@@ -298,7 +298,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 			return ;
 		}
 		tmp_lex = data->lexer_list;
-		new_env = get_new_env(data, g_all.utils->env_lst);
+		new_env = get_new_env(data, data->utils->env_lst);
 		expand(data->quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{
@@ -392,14 +392,14 @@ int	main(int ac, char **av, char **env)
 	if (ac != 1)
 		exit_error("bad number of arguments");
 	init_data(&data, ac, av, env);
-	g_all.utils = init_env(&data, env);
+	data.utils = init_env(&data, env);
 	tmp = NULL;
-	g_all.utils->export_lst = NULL;
+	data.utils->export_lst = NULL;
 	while (42)
 	{
 		free(tmp);
 		tmp = NULL;
-		handle_sig();
+		handle_sig(&data);
 		tmp = readline("minishell$ ");
 		add_history(tmp);
 		prompt_loop(tmp, &data, env);

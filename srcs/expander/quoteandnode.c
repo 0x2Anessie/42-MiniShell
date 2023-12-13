@@ -71,11 +71,13 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data *data)
 	int		len;
 	char	*str;
 
-	len = ZERO_INIT;
+	// data->env = env; icccccccccccccccccccccccciiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+	env = NULL;
+	len = ZERO_INIT; 
 	st->found = ZERO_INIT;
 	if ((*exp)->word[0] && (*exp)->word[0] == '$' && !(*exp)->word[1])
 		len++;
-	expansion_length_for_word(exp, st, env, &len);
+	expansion_length_for_word(exp, st, data, &len);
 	str = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	if (!str)
 		return (NULL);
@@ -175,7 +177,7 @@ char	*malloc_for_expand(t_lexer **exp, t_quote *st, char **env, t_data *data)
 // 	char	**expanded;
 
 // 	exp->len = ZERO_INIT;
-// 	g_all.utils->error = ft_itoa(data, g_all.utils->err);
+// 	data->utils->error = ft_itoa(data, data->utils->err);
 // 	exp->str = malloc_for_expand(expnd, st, nv);
 // 	if (!exp->str)
 // 		return ;
@@ -198,7 +200,7 @@ void	manage_expantion(t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
-	g_all.utils->error = ft_itoa_mini(data, globi);
+	data->utils->error = ft_itoa_mini(data, globi);
 	exp->str = malloc_for_expand(expnd, st, data->nv, data);
 
 	if (!exp->str)

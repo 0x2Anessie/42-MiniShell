@@ -163,7 +163,7 @@ int	word_not_found(char *w, t_quote *state)
  * @param exp: t_expand *exp, pointeur vers la structure d'expansion à mettre à jour.
  * 
  * @description_détaillée:
- *   La fonction 'put_error_code' ajoute le code d'erreur stocké dans 'g_all.utils->error' 
+ *   La fonction 'put_error_code' ajoute le code d'erreur stocké dans 'data->utils->error' 
  *   à la chaîne de caractères dans la structure 'exp'. Elle parcourt le code d'erreur 
  *   caractère par caractère et les ajoute à 'exp->str', en mettant à jour 'exp->len' 
  *   pour chaque caractère ajouté. Cette fonction est utilisée principalement dans le 
@@ -187,7 +187,7 @@ int	word_not_found(char *w, t_quote *state)
  * @exemples_d'utilisation:
  *   t_expand exp;
  *   init_expand_structure(&exp);
- *   g_all.utils->error = "127";
+ *   data->utils->error = "127";
  *   int position = put_error_code(&exp);
  *
  * @dépendances: 
@@ -200,7 +200,7 @@ int	word_not_found(char *w, t_quote *state)
  *   - Initialiser la variable 'i' à -1
  *   |
  *   v
- *   Entrer dans une boucle pour parcourir 'g_all.utils->error'
+ *   Entrer dans une boucle pour parcourir 'data->utils->error'
  *     |
  *     v
  *   - Vérifier si la fin du code d'erreur est atteinte
@@ -216,13 +216,13 @@ int	word_not_found(char *w, t_quote *state)
  *   v
  *   Fin
  */
-int	put_error_code(t_expand *exp)
+int	put_error_code(t_expand *exp, t_data *data)
 {
 	int	i;
 
 	i = -1;
-	while (g_all.utils->error[++i])
-		exp->str[exp->len++] = g_all.utils->error[i];
+	while (data->utils->error[++i])
+		exp->str[exp->len++] = data->utils->error[i];
 	exp->found = 1;
 	return (2);
 }
@@ -295,7 +295,7 @@ int	put_error_code(t_expand *exp)
  *   v
  *   Fin
  */
-int	search_word(char *w, t_expand *exp, char *nv, t_quote *state)
+int	search_word(char *w, t_expand *exp, t_data *data, t_quote *state)
 {
 	int	i;
 	int	y;
@@ -303,16 +303,16 @@ int	search_word(char *w, t_expand *exp, char *nv, t_quote *state)
 	i = -1;
 	y = 0;
 	if (w[1] == '?')
-		return (put_error_code(exp));
+		return (put_error_code(exp, data));
 	i = 0;
-	while (w[i++] && nv[y] && w[i] == nv[y] && w[i] != '=')
+	while (w[i++] && data->nv[data->x][y] && w[i] == data->nv[data->x][y] && w[i] != '=')
 		y++;
 	if ((w[i] == '\0' || w[i] == '$' || is_special_syntax_character(w[i], state))
-		&& nv[y] && nv[y] == '=')
+		&& data->nv[data->x][y] && data->nv[data->x][y] == '=')
 	{
 		exp->found = 1;
-		while (nv[++y])
-			exp->str[exp->len++] = nv[y];
+		while (data->nv[data->x][++y])
+			exp->str[exp->len++] = data->nv[data->x][y];
 		return (i);
 	}
 	return (i);
@@ -399,24 +399,23 @@ int	search_word(char *w, t_expand *exp, char *nv, t_quote *state)
  *   v
  *   Fin
  */
-int	basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state)
+int	basic_expantion(char *w, t_expand *exp, t_data *data, t_quote *state)
 {
 	int	i;
-	int	x;
 	int	y;
 
 	i = 1;
-	x = -1;
+	data->x = -1;
 	exp->found = ZERO_INIT;
-	while (nv[++x])
+	while (data->nv[++data->x])
 	{
 		y = 0;
 		i = 1;
 		if (w[i] == '?')
-			return (search_word(w, exp, nv[x], state));
-		if (w[i] == nv[x][y])
+			return (search_word(w, exp, data, state));
+		if (w[i] == data->nv[data->x][y])
 		{
-			i = search_word(w, exp, nv[x], state);
+			i = search_word(w, exp, data, state);
 			if (exp->found == 1)
 				return (i);
 		}

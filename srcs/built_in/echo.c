@@ -16,12 +16,12 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void	simu_echo(char **tab, int i)
+void	simu_echo(char **tab, int i, t_data *data)
 {
 	i = i + 2;
-	if (g_all.utils->node->out > 0)
-		write_echo(tab, i);
-	else if (!g_all.utils->node->out_fail)
+	if (data->utils->node->out > 0)
+		write_echo(tab, i, data);
+	else if (!data->utils->node->out_fail)
 	{
 		while (tab[i])
 		{
@@ -45,28 +45,28 @@ void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 	}
 }
 
-void	process_echo(char **tab, int i)
+void	process_echo(char **tab, int i, t_data *data)
 {
 	int	j;
 
 	j = 0;
-	if (g_all.utils->node->out > 0)
+	if (data->utils->node->out > 0)
 	{
-		if (procc_in_echo(tab, i, j) == -1)
+		if (procc_in_echo(tab, i, j, data) == -1)
 			return ;
-		ft_write_fd("\n", g_all.utils->node->out);
+		ft_write_fd("\n", data->utils->node->out);
 	}
 	else
-		process_echo_2(tab, i);
+		process_echo_2(tab, i, data);
 	globi = 0;
 }
 
-void	process_echo_2(char **tab, int i)
+void	process_echo_2(char **tab, int i, t_data *data)
 {
 	int	j;
 
 	j = 0;
-	if (!g_all.utils->node->out_fail)
+	if (!data->utils->node->out_fail)
 	{
 		while (tab[i])
 		{

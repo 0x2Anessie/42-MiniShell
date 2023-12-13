@@ -6,7 +6,7 @@ int	verif_pwd(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	if (str == NULL)
 		return (0);
 	while (tmp)
@@ -22,9 +22,9 @@ int	verif_pwd(char *str, t_data *data)
 	return (0);
 }
 
-char	*get_home(t_env	*tmp)
+char	*get_home(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("HOME=", tmp->content, 5))
@@ -34,9 +34,9 @@ char	*get_home(t_env	*tmp)
 	return (NULL);
 }
 
-char	*get_old_pwd(t_env	*tmp)
+char	*get_old_pwd(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("OLDPWD=", tmp->content, 6))
@@ -51,7 +51,7 @@ int	verif_home(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "HOME=", ft_strlen_eguale("HOME=")) == 0)
@@ -65,9 +65,9 @@ int	verif_home(char *str, t_data *data)
 	return (0);
 }
 
-int	change_directory2(t_env *tmp)
+int	change_directory2(t_env *tmp, t_data *data)
 {
-	if (chdir(get_home(tmp) + 5) == -1)
+	if (chdir(get_home(tmp, data) + 5) == -1)
 	{
 		perror("chdir");
 		globi = 1;

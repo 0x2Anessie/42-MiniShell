@@ -1,10 +1,10 @@
 
 #include "../../include/minishell.h"
 
-int	change_directory4(t_env *tmp)
+int	change_directory4(t_env *tmp, t_data *data)
 {
-	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp) + 4);
-	if (chdir(get_pwd_env(tmp) + 4) == -1)
+	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp, data) + 4);
+	if (chdir(get_pwd_env(tmp, data) + 4) == -1)
 	{
 		perror("chdir");
 		globi = 1;
@@ -50,13 +50,13 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	i = 0;
 	path = NULL;
 	old = NULL;
-	env = g_all.utils->env_lst;
+	env = data->utils->env_lst;
 	if (lexer_lst)
 	{
 		if ((ft_strcmp(lexer_lst->word, "cd") == 0)
 			&& lexer_lst->next == NULL)
 		{
-			if (change_directory2(env))
+			if (change_directory2(env, data))
 			{
 				path = getcwd(path, i);
 				verif_home(path, data);
@@ -66,7 +66,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 		if (cd_2(data, path, old, &i) == 0)
 			return ;
 	}
-	lexer_lst = g_all.utils->head_lexer_lst;
+	lexer_lst = data->utils->head_lexer_lst;
 }
 
 int	wrong_cd(t_lexer *lexer_lst)
@@ -90,7 +90,7 @@ int	cd_2(t_data *data, char *path, char *old, int *i)
 		old = getcwd(old, *i);
 		if (!old)
 		{
-			find_old_pwd(g_all.utils->env_lst);
+			find_old_pwd(data->utils->env_lst, data);
 			return (0);
 		}
 		else

@@ -44,7 +44,7 @@ int	is_valid_number(char *str)
 void	free_res(int *fd, t_data *data)
 {
 	close_pipe(fd);
-	close_fd();
+	close_fd(data);
 	ft_free_all(data);
 }
 
@@ -68,7 +68,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 	unsigned char	exit_code;
 
 	exit_code = 0;
-	if (g_all.utils->nb_cmd == 1)
+	if (data->utils->nb_cmd == 1)
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{

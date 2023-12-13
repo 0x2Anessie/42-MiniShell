@@ -1,36 +1,36 @@
 
 #include "../../include/minishell.h"
 
-void	write_echo(char **tab, int i)
+void	write_echo(char **tab, int i, t_data *data)
 {
 	while (tab[i])
 	{
 		if (ft_strcmp(tab[i], "-n"))
 		{
-			ft_write_fd(tab[i], g_all.utils->node->out);
+			ft_write_fd(tab[i], data->utils->node->out);
 			if (tab[i + 1])
-				ft_write_fd(" ", g_all.utils->node->out);
+				ft_write_fd(" ", data->utils->node->out);
 		}
 		i++;
 	}
 }
 
-int	procc_in_echo(char **tab, int i, int j)
+int	procc_in_echo(char **tab, int i, int j, t_data *data)
 {
 	while (tab[i])
 	{
 		if (j)
 		{
-			if (ft_write_fd(" ", g_all.utils->node->out))
+			if (ft_write_fd(" ", data->utils->node->out))
 			{
 				globi = 1;
 				return (-1);
 			}
-			ft_write_fd(tab[i++], g_all.utils->node->out);
+			ft_write_fd(tab[i++], data->utils->node->out);
 		}
 		else
 		{
-			if (ft_write_fd(tab[i++], g_all.utils->node->out))
+			if (ft_write_fd(tab[i++], data->utils->node->out))
 			{
 				globi = 1;
 				return (-1);
@@ -48,7 +48,7 @@ void	child_of_chill(t_data *data, int *fd, int count, t_exec utils)
 	if (is_built_in(data->lexer_list))
 	{
 		ft_exec_single_built_in(data->lexer_list, fd, data);
-		ft_exit_child(g_all.utils, fd, data);
+		ft_exit_child(data->utils, fd, data);
 	}
 	if (!slashinlex(data->lexer_list))
 		exec_chemin(data);
@@ -59,7 +59,7 @@ void	child_of_chill(t_data *data, int *fd, int count, t_exec utils)
 			perror(data->lexer_list->word);
 	}
 	globi = ERR_CODE_CMD_NOT_FOUND;
-	ft_exit_child(g_all.utils, fd, data);
+	ft_exit_child(data->utils, fd, data);
 }
 
 int	slashinlex(t_lexer *lexer)
@@ -76,6 +76,6 @@ int	slashinlex(t_lexer *lexer)
 void	exec_chemin(t_data *data)
 {
 	if (execve(data->lexer_list->word, \
-		get_arg(data), g_all.utils->env) == -1)
+		get_arg(data), data->utils->env) == -1)
 		perror(data->lexer_list->word);
 }

@@ -354,7 +354,7 @@ void	sum_expansion_length(t_lexer **expnd, t_quote *st, t_expand *exp, t_data *d
 			else if (st->is_quote == 1 && st->sq_first == 1)
 				index += single_quote_expantion(&(*expnd)->word[index], exp) IDX_ADJUST;
 			else
-				index += basic_expantion(&(*expnd)->word[index], exp, data->nv, st) IDX_ADJUST;
+				index += basic_expantion(&(*expnd)->word[index], exp, data, st) IDX_ADJUST;
 		}
 		else
 			exp->str[exp->len++] = (*expnd)->word[index];
@@ -437,7 +437,7 @@ void	sum_expansion_length(t_lexer **expnd, t_quote *st, t_expand *exp, t_data *d
  *  v
  * Fin de la fonction
  */
-void	expansion_length_for_word(t_lexer **exp, t_quote *state, char **env, int *expanded_length)
+void	expansion_length_for_word(t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 {
 	int	index;
 
@@ -449,11 +449,11 @@ void	expansion_length_for_word(t_lexer **exp, t_quote *state, char **env, int *e
 		{
 			if ((*exp)->word[index + FORWARD_OFFSET] && (*exp)->word[index + FORWARD_OFFSET] == '?')
 			{
-				(*expanded_length) += ft_strlen(g_all.utils->error);
+				(*expanded_length) += ft_strlen(data->utils->error);
 				index += SKIP_DOLLAR_QUESTION_MARK;
 			}
 			else
-				index += search_in_env_len(&(*exp)->word[index], env, state, expanded_length);
+				index += search_in_env_len(&(*exp)->word[index], data->env, state, expanded_length);
 			if (state->found == 0 && (*exp)->word[index] && is_special_syntax_character((*exp)->word[index], state))
 				(*expanded_length)++;
 		}

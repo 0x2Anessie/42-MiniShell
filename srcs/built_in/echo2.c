@@ -22,7 +22,7 @@ void	simulate_echo(t_lexer *lexer_lst, t_data *data)
 	i = 0;
 	get_words(lexer_lst, tab, &i);
 	tab[i] = NULL;
-	simulate_echo_3(tab);
+	simulate_echo_3(tab, data);
 }
 
 int	ft_truc(char *str)
@@ -41,7 +41,7 @@ int	ft_truc(char *str)
 	return (i);
 }
 
-void	simulate_echo_3(char **tab)
+void	simulate_echo_3(char **tab, t_data *data)
 {
 	int	i;
 	int	ncount;
@@ -51,14 +51,14 @@ void	simulate_echo_3(char **tab)
 		ncount = ft_truc(tab[i + 1]);
 	if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], "echo")
 		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')
-		process_echo(tab, ++i);
+		process_echo(tab, ++i, data);
 	else if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], "echo")
 		&& ncount)
-		simu_echo(tab, i);
+		simu_echo(tab, i, data);
 	else
 	{
-		if (g_all.utils->node->out > 0)
-			ft_write_fd("\n", g_all.utils->node->out);
+		if (data->utils->node->out > 0)
+			ft_write_fd("\n", data->utils->node->out);
 		else
 			printf("\n");
 	}

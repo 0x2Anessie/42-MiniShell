@@ -1,8 +1,0 @@
-include
-Lib
-Makefile
-minishell
-objs
-ok
-rl_leaks.txt
-srcs

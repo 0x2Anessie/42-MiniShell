@@ -6,7 +6,7 @@
 // 	t_env	*tmp;
 // 	char	*s1;
 
-// 	tmp = g_all.utils->env_lst;
+// 	tmp = data->utils->env_lst;
 // 	while (tmp)
 // 	{
 // 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen_eguale("PWD=")) == 0)
@@ -25,7 +25,7 @@
 // 	t_env	*tmp;
 // 	char	*s1;
 
-// 	tmp = g_all.utils->env_lst;
+// 	tmp = data->utils->env_lst;
 // 	while (tmp)
 // 	{
 // 		if (ft_strncmp(tmp->content, "OLDPWD=",
@@ -45,7 +45,7 @@ int	verif_oldpwd_export(char *str, t_data *data)
 	t_export	*tmp;
 	char		*s1;
 
-	tmp = g_all.utils->export_lst;
+	tmp = data->utils->export_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->value, "OLDPWD=", ft_strlen_eguale("OLDPWD=")) == 0)
@@ -65,7 +65,7 @@ int	verif_pwd_export(char *str, t_data *data)
 	t_export	*tmp;
 	char		*s1;
 
-	tmp = g_all.utils->export_lst;
+	tmp = data->utils->export_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->value, "PWD=", ft_strlen_eguale("PWD=")) == 0)

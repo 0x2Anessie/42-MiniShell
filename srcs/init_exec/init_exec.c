@@ -191,7 +191,7 @@ void	get_all_node(t_node *node, t_data *data, t_exec *utils)
 		if (!node)
 			return ;
 		node->index = index;
-		setup_input_redirection(node, data->lexer_list);
+		setup_input_redirection(node, data->lexer_list, data);
 		setup_output_redirection(node, data->lexer_list);
 		node->next = NULL;
 		node->has_cmd = has_cmd(data->lexer_list);
@@ -301,22 +301,22 @@ void	ft_init_exec(t_data *data)
 {
 	t_node	*node;
 
-	g_all.utils->node = NULL;
-	g_all.utils->is_here_doc = 1;
-	g_all.utils->can_run = 1;
-	g_all.utils->hd = NULL;
-	g_all.utils->nb_cmd = nb_cmd(data->lexer_list);
-	g_all.utils->nb_node = nb_node(data->lexer_list);
-	g_all.utils->head_lexer_lst = data->lexer_list;
-	g_all.utils->env = data->env;
-	if (!(g_all.utils->export_lst))
+	data->utils->node = NULL;
+	data->utils->is_here_doc = 1;
+	data->utils->can_run = 1;
+	data->utils->hd = NULL;
+	data->utils->nb_cmd = nb_cmd(data->lexer_list);
+	data->utils->nb_node = nb_node(data->lexer_list);
+	data->utils->head_lexer_lst = data->lexer_list;
+	data->utils->env = data->env;
+	if (!(data->utils->export_lst))
 	{
-		g_all.utils->export_lst = get_export_list(data, g_all.utils->export_lst);
-		export_quotes(g_all.utils->export_lst, data);
+		data->utils->export_lst = get_export_list(data, data->utils->export_lst);
+		export_quotes(data->utils->export_lst, data);
 	}
 	node = NULL;
-	get_all_node(node, data, g_all.utils);
-	g_all.utils->is_here_doc = ZERO_INIT;
-	handle_sig();
-	g_all.utils->head_node_lst = g_all.utils->node;
+	get_all_node(node, data, data->utils);
+	data->utils->is_here_doc = ZERO_INIT;
+	handle_sig(data);
+	data->utils->head_node_lst = data->utils->node;
 }

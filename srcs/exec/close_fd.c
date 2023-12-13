@@ -101,7 +101,7 @@ int	close_pipe(int *fd)
  *   Début
  *     |
  *     v
- *   Initialiser avec la tête de la liste de nœuds (g_all.utils->head_node_lst)
+ *   Initialiser avec la tête de la liste de nœuds (data->utils->head_node_lst)
  *     |
  *     v
  *   Parcourir chaque nœud dans la liste
@@ -135,16 +135,16 @@ int	close_pipe(int *fd)
  *       v
  *     Fin
  */
-int	close_fd(void)
+int	close_fd(t_data *data)
 {
-	g_all.utils->node = g_all.utils->head_node_lst;
-	while (g_all.utils->node)
+	data->utils->node = data->utils->head_node_lst;
+	while (data->utils->node)
 	{
-		if (g_all.utils->node->in > 1)
-			close(g_all.utils->node->in);
-		if (g_all.utils->node->out > 1)
-			close(g_all.utils->node->out);
-		g_all.utils->node = g_all.utils->node->next;
+		if (data->utils->node->in > 1)
+			close(data->utils->node->in);
+		if (data->utils->node->out > 1)
+			close(data->utils->node->out);
+		data->utils->node = data->utils->node->next;
 	}
 	return (1);
 }

@@ -1,6 +1,12 @@
 
 #include "../../include/minishell.h"
 
+/*
+	cette fonction cree un nouveau noeud pour la liste des variable exporter
+	alloue de la memoire pour un nouveau noeudt_export
+	initialise le noeud et retourne le noeud cree si il y eu un probleme
+*/
+
 t_export	*create_node_str_export(char *str, t_data *data)
 {
 	t_export	*node;
@@ -13,6 +19,11 @@ t_export	*create_node_str_export(char *str, t_data *data)
 	}
 	return (node);
 }
+
+/*
+	ajoute un nouveau noeud a la fin de la liste, sauf si c'est le premier elle cree
+	avec create_node_str et en fait la premiere 
+*/
 
 void	lst_add_back_export(t_export **head, char *str, t_data *data)
 {

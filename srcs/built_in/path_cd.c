@@ -40,6 +40,14 @@
 // 	return (0);
 // }
 
+/*
+	l'objectif de cette fonction est de mettre a jour la valeur de la variable
+	d'env OLDPWD
+	on verifi d'abord si l'element actuel est bien la variable OLDPWD
+	si oui s1 est mis a jour avec la nouvelle valeur de OLDPWD est retourne 1
+	sinon 0
+*/
+
 int	verif_oldpwd_export(char *str, t_data *data)
 {
 	t_export	*tmp;
@@ -51,7 +59,7 @@ int	verif_oldpwd_export(char *str, t_data *data)
 		if (ft_strncmp(tmp->value, "OLDPWD=", ft_strlen_eguale("OLDPWD=")) == 0)
 		{
 			s1 = ft_strjoin_2("OLDPWD=", str, data);
-			tmp->value = var_exist(s1, data);
+			tmp->value = create_new_var(s1, data);
 			tmp->value = case_egale(s1, data);
 			return (1);
 		}
@@ -59,6 +67,10 @@ int	verif_oldpwd_export(char *str, t_data *data)
 	}
 	return (0);
 }
+
+/*
+	la meme chose pour pwd
+*/
 
 int	verif_pwd_export(char *str, t_data *data)
 {
@@ -71,7 +83,7 @@ int	verif_pwd_export(char *str, t_data *data)
 		if (ft_strncmp(tmp->value, "PWD=", ft_strlen_eguale("PWD=")) == 0)
 		{
 			s1 = ft_strjoin_2("PWD=", str, data);
-			tmp->value = var_exist(s1, data);
+			tmp->value = create_new_var(s1, data);
 			tmp->value = case_egale(s1, data);
 			return (1);
 		}

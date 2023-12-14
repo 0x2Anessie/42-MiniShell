@@ -1,7 +1,15 @@
 
 #include "../../include/minishell.h"
 
-void	write_echo(char **tab, int i)
+/*
+	ecri dans la sortie les argument apres verif qu'il soit pas un -n
+	puis ecrit un espace
+	entre les argument
+	elle est utiliser quand echo doit etre afficher ailleurs que dans
+	la sorti standard
+*/
+
+void	write_echo_fd(char **tab, int i)
 {
 	while (tab[i])
 	{
@@ -15,7 +23,14 @@ void	write_echo(char **tab, int i)
 	}
 }
 
-int	procc_in_echo(char **tab, int i, int j)
+/*
+	elle est apeller dans process_echo si il y a besoin d'use une sorti special
+	si j n'est pas nul la fonction va ecrire un space pour separer les argument
+	et n'ecrit rien si j est nul
+	procc_in_echo_fd ecrit les argument de echo si il y a besoin d'une redirection
+*/
+
+int	procc_in_echo_fd(char **tab, int i, int j)
 {
 	while (tab[i])
 	{

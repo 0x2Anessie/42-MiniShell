@@ -1,6 +1,10 @@
 
 #include "../../include/minishell.h"
 
+/*
+	check si le nombre est superieur a 19 ou au long long puis renvoie une
+	erreur si cest le cas
+*/
 int	is_valid_number2(int neg, char *str, int i)
 {
 	if (str[0] == '+' || str[0] == '-')
@@ -18,6 +22,8 @@ int	is_valid_number2(int neg, char *str, int i)
 	}
 	return (0);
 }
+
+// gere le + et -  lui et celle d'avant serve a verifier le nb du code d'erreur
 
 int	is_valid_number(char *str)
 {
@@ -41,6 +47,8 @@ int	is_valid_number(char *str)
 	return (is_valid_number2(neg, str, i));
 }
 
+// ferme les pipes et descripteurs de fichier ouvert avant l'exit
+
 void	free_res(int *fd, t_data *data)
 {
 	close_pipe(fd);
@@ -48,7 +56,9 @@ void	free_res(int *fd, t_data *data)
 	ft_free_all(data);
 }
 
-void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
+// check i il y a trop d'argument et sinons'occupe de sortir
+
+void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
 {
 	if (lex->next->next)
 	{
@@ -62,7 +72,11 @@ void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
 		exit (exit_code);
 	}
 }
-
+/*
+	fait l'exit, affiche exit si c le seul shell en cour d'execution puis verifie si le code
+	de sorti est correct puis envoie a exit_with_code pour quitter avec le bon code de sorti ou 0 si
+	aucun code specifier
+*/
 void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 {
 	unsigned char	exit_code;
@@ -80,7 +94,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 			exit(2);
 		}
 		else
-			ft_exit2(lex, fd, exit_code, data);
+			ft_exit_with_code(lex, fd, exit_code, data);
 	}
 	else
 	{

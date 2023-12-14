@@ -1,7 +1,13 @@
 
 #include "../../include/minishell.h"
 
-char	*unset_var(t_lexer *lexer_lst)
+/*
+	cette fonction parcour la lexer_lst jusqu'a trouver unset puis si unset est suivie
+	d'un argument valide elle retourne cette arguement
+	si aucun arguement valide est trouver elle renvoie une erreur et s'arrete
+*/
+
+char	*check_unset(t_lexer *lexer_lst)
 {
 	t_lexer	*tmp;
 
@@ -26,7 +32,12 @@ char	*unset_var(t_lexer *lexer_lst)
 	return (NULL);
 }
 
-int	env_display(t_lexer *lexer_lst)
+/*
+	cette fonction parcour la list du lexer jusqu'a trouver env
+	puis si il est trouver appel display_env pour affiche les variable d'env
+*/
+
+int	check_env(t_lexer *lexer_lst)
 {
 	t_lexer	*tmp;
 
@@ -42,6 +53,16 @@ int	env_display(t_lexer *lexer_lst)
 	}
 	return (0);
 }
+
+/*
+	Utilise g_all.utils->node->out pour déterminer si l'affichage doit être
+	redirigé ou pas
+	la fonction parcour la list des variable d'env (env_lst) et les affiche
+	suivi d'une
+	nouvelle ligne entre chaque
+	si il n'y a pas de redirection, elle use printf pour les afficher dans
+	le terminal
+*/
 
 void	display_env(void)
 {
@@ -67,21 +88,19 @@ void	display_env(void)
 		}
 	}
 }
+/*
+	gere la command unset en supprimant les variables d'env et les variable exporter specifier
+	la fonction verifie si la commande est env et si oui elle l'affiche
+	Si la command n'est pas env, elle trouve la variable à supprimer avec check_unset et la
+	supprime des listes env_lst et export_lst.
+*/
 
-void	remove_export_node(t_export *current, t_export *prev)
+int	get_unset(t_lexer *lexer_lst)
 {
-	if (prev == NULL)
-		g_all.utils->export_lst = current->next;
-	else
-		prev->next = current->next;
-}
-
-int	unset_things(t_lexer *lexer_lst)
-{
-	if (env_display(lexer_lst) == 0)
+	if (check_env(lexer_lst) == 0)
 	{
 		g_all.utils->var = NULL;
-		g_all.utils->var = unset_var(lexer_lst);
+		g_all.utils->var = check_unset(lexer_lst);
 		if (g_all.utils->var)
 		{
 			remove_node(g_all.utils->var);

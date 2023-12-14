@@ -1,6 +1,15 @@
 
 #include "../../include/minishell.h"
 
+/*
+	Cette fonction crée un nouveau nœud pour une liste chaînée de variables
+	d'environnement (t_env)
+	Création et Allocation : Elle alloue de la mémoire pour un nouveau nœud t_env.
+	Initialisation : Le contenu du nœud (node->content) est initialisé avec la chaîne
+	de caractères str fournie, et le pointeur next est initialisé à NULL.
+	Retour : Retourne le nouveau nœud. Si l'allocation échoue, retourne NULL.
+*/
+
 t_env	*create_node_str(char *str, t_data *data)
 {
 	t_env	*node;
@@ -12,6 +21,14 @@ t_env	*create_node_str(char *str, t_data *data)
 	node->next = NULL;
 	return (node);
 }
+
+/*
+	cette fonction regarde si le noeud head est NULL, si cest le cas elle cree un noeud
+	et le defini comme le premier noeud
+	si la list contient deja des elem, elle parcou la list jusqu'au dernier elem puis
+	cree un nouveau noeud avec str en utilissant create_node_str et l'ajoute a la fin de
+	la liste
+*/
 
 void	lst_add_back(t_exec *utils, char *str, t_data *data)
 {

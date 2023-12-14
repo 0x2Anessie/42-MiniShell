@@ -1,6 +1,13 @@
 
 #include "../../include/minishell.h"
 
+/*
+	cette fonction gere les guillemets dans les valeurs des variables exporter
+	elle va passer sur chaque variable de la liste data
+	Utilise check_case et check_case_with_char pour déterminer si des modifications sont nécessaires,
+	puis applique case_egale pour ajuster la valeur de la variable si nécessaire.
+*/
+
 void	export_quotes(t_export *don, t_data *data)
 {
 	t_export	*tmp;
@@ -8,14 +15,19 @@ void	export_quotes(t_export *don, t_data *data)
 	tmp = don;
 	while (tmp)
 	{
-		if (check_case(tmp->value) && check_case_2(tmp->value))
+		if (check_case(tmp->value) && check_case_with_char(tmp->value))
 			tmp->value = case_egale(tmp->value, data);
 		tmp = tmp->next;
 	}
 	tmp = don;
 }
 
-int	check_case_2(char *str)
+/*
+	passe sur chaque elem de str et retourne 1 si elle trouve un = suivie direct d'un
+	autre caractere , indiquant qu'il s'agit d'une assignation de variable
+*/
+
+int	check_case_with_char(char *str)
 {
 	int	i;
 
@@ -28,6 +40,8 @@ int	check_case_2(char *str)
 	}
 	return (0);
 }
+
+// comme celle d'avant mais retourn 1 seulement si elle trouve un =
 
 int	check_case(char *str)
 {
@@ -42,6 +56,16 @@ int	check_case(char *str)
 	}
 	return (0);
 }
+
+/*
+	Traite un mot (argument) en enlevant les guillemets et vérifie s'il doit être
+	ajouté aux variables d'environnement.
+	Suppression des Guillemets : Appelle remove_double_quotes et remove_single_quotes
+	pour traiter les guillemets dans tmp->word.
+	Ajout aux Variables d'Environnement : Si la chaîne contient un '=', et si la
+	variable n'existe pas déjà (verif_var_exist), elle est ajoutée à la liste des
+	variables d'environnement avec lst_add_back.
+*/
 
 void	process_word(t_exec **utils, t_lexer *tmp, t_data *data)
 {

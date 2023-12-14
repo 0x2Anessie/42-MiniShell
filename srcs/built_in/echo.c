@@ -16,11 +16,18 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void	simu_echo(char **tab, int i)
+/*
+	on initialise a i + 2 pour sauter les deux premier elem du tableau (-n)
+	puis on regarde si il y a un -n en argument et ne l'imprime pas
+	si il le trouve et imprime si ce n'est pas en -n
+	en gros ecrit les argument du echo avec un -n
+*/
+
+void	display_echo_arg(char **tab, int i)
 {
 	i = i + 2;
 	if (g_all.utils->node->out > 0)
-		write_echo(tab, i);
+		write_echo_fd(tab, i);
 	else if (!g_all.utils->node->out_fail)
 	{
 		while (tab[i])
@@ -36,6 +43,8 @@ void	simu_echo(char **tab, int i)
 	}
 }
 
+// regarde tout les arguments et cherche un CMD ou un ARG puis quand c'est trouver passe au prochain
+
 void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 {
 	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))
@@ -45,6 +54,14 @@ void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 	}
 }
 
+/*
+	elle decide ou afficher les arugment de echo separer par des space
+	la fonction commence par regarder si elle doit ecrire sur une sortie special
+	si c'est le cas elle ajoute une nouvelle ligne a la fin
+	si la sortie n'es pas special elle appel process_echo2
+	En gros elle decide ou ecrire et gere les erreurs
+*/
+
 void	process_echo(char **tab, int i)
 {
 	int	j;
@@ -52,16 +69,22 @@ void	process_echo(char **tab, int i)
 	j = 0;
 	if (g_all.utils->node->out > 0)
 	{
-		if (procc_in_echo(tab, i, j) == -1)
+		if (procc_in_echo_fd(tab, i, j) == -1)
 			return ;
 		ft_write_fd("\n", g_all.utils->node->out);
 	}
 	else
-		process_echo_2(tab, i);
+		procc_in_echo_std(tab, i);
 	g_all.utils->err = 0;
 }
 
-void	process_echo_2(char **tab, int i)
+/*
+	la fonction ecri chaque argument apres le premier et ajoute un espace entre chaque
+	argument qui suivent
+	puis ajoute une nouvelle ligne a la fin
+*/
+
+void	procc_in_echo_std(char **tab, int i)
 {
 	int	j;
 

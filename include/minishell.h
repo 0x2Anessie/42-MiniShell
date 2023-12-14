@@ -19,7 +19,7 @@
 # define CHILD_PROCESS 0
 # define FORK_FAILURE -1
 # define FORWARD_OFFSET 1
-# define BACKWARD_OFFSET -1 
+# define BACKWARD_OFFSET -1
 # define SKIP_DOLLAR_QUESTION_MARK 2
 # define IDX_ADJUST -1
 # define EXIT_FAIL 1
@@ -253,7 +253,7 @@ int			pipe_parse(t_data *data);
 int			ft_chevron(char *str);
 int			pipe_parse2(t_data *data);
 size_t		ft_strlen3_mini(char const *s);
-char		*ft_substr(t_data *data, char const *s, 
+char		*ft_substr(t_data *data, char const *s,
 				unsigned int start, size_t len);
 int			is_space(char *str, char c);
 void		rm_para_quote(t_data *data);
@@ -300,9 +300,9 @@ void		sort_export_lst(t_export **head_export);
 ///////////////////////////BUILT IN///////////////////////////////////////
 int			get_pwd(char *tab, t_data *data);
 char		*ft_strjoin2_mini(char *s1, char *s2, t_data *data);
-int			procc_in_echo(char **tab, int i, int j, t_data *data);
-void		simulate_echo(t_lexer *lexer_lst, t_data *data);
-void		simu_echo(char **tab, int i, t_data *data);
+int			procc_in_echo_fd(char **tab, int i, int j, t_data *data);
+void		init_echo(t_lexer *lexer_lst, t_data *data);
+void		display_echo_arg(char **tab, int i, t_data *data);
 int			ft_strcmp(char *s1, char *s2);
 char		**ft_split_mini(char const *s, char c, t_data *data);
 char		**ft_malloc_word(char **tab, char *s, char c, t_data *data);
@@ -314,7 +314,7 @@ int			verif_pwd_export(char *str, t_data *data);
 int			verif_oldpwd_export(char *str, t_data *data);
 int			verif_oldpwd(char *str, t_data *data);
 int			verif_pwd(char *str, t_data *data);
-char		*var_exist(char *str, t_data *data);
+char		*create_new_var(char *str, t_data *data);
 int			change_directory(char *dir);
 size_t		ft_strlen_eguale(char *str);
 char		*ft_strjoin_2(char *s1, char *s2, t_data *data);
@@ -323,8 +323,8 @@ char		*ft_strjoin4(char *s1, char *s2, t_data *data);
 int			ft_strlen4(char *s);
 char		*ft_strcpy(char *dest, const char *src);
 char		*add_quotes_string(char *str, t_data *data);
-int			unset_things(t_lexer *lexer_lst, t_data *data);
-char		*unset_var(t_lexer *lexer_lst);
+int			get_unset(t_lexer *lexer_lst, t_data *data);
+char		*check_unset(t_lexer *lexer_lst);
 void		remove_node_export(char *var, t_data *data);
 void		remove_node(char *var, t_data *data);
 int			export_things(t_lexer *lexer_lst, t_data *data);
@@ -333,7 +333,7 @@ int			check_case(char *str);
 void		print_export(t_export *export_lst, t_data *data);
 void		export_remaining(t_lexer *tmp, t_data *data);
 int			check_parsing_export(char *str);
-void		process_word(t_exec **utils, t_lexer *tmp, t_data *data);
+void		supp_quote_and_add_env(t_exec **utils, t_lexer *tmp, t_data *data);
 void		remove_double_quotes(char *str);
 void		remove_single_quotes(char *str);
 int			verif_var_exist_export(t_exec *utils, char *str, t_data *data);
@@ -343,19 +343,19 @@ void		lst_add_back(t_exec *utils, char *str, t_data *data);
 void		lst_add_back_export(t_export **head, char *str, t_data *data);
 t_export	*create_node_str_export(char *str, t_data *data);
 int			is_number(char c);
-int			check_parsing_2(char *str);
+int			check_parsing_error(char *str);
 void		ft_exit(t_lexer *lex, int *fd, t_data *data);
 void		display_pwd(t_data *data);
 void		display_pwd_error(t_data *data);
 void		display_env(t_data *data);
-int			check_case_2(char *str);
+int			check_case_with_char(char *str);
 void		remove_export_node(t_export *current, t_export *prev, t_data *data);
 void		remove_env_node(t_env *current, t_env *prev, t_data *data);
 int			wrong_cd(t_lexer *lexer_lst);
-void		process_echo_2(char **tab, int i, t_data *data);
-void		simulate_echo_3(char **tab, t_data *data);
-int			cd_2(t_data *data, char *path, char *old, int *i);
-void		write_echo(char **tab, int i, t_data *data);
+void		procc_in_echo_std(char **tab, int i, t_data *data);
+void		simulate_echo(char **tab, t_data *data);
+int			cd_with_arg(t_data *data, char *path, char *old, int *i);
+void		write_echo_fd(char **tab, int i, t_data *data);
 void		exec_chemin(t_data *data);
 void		ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data *data);
 
@@ -385,7 +385,7 @@ void		handle_out(t_exec utils, int *fd, int count);
 void		handle_in(t_exec utils, int count);
 int			ft_nb_arg(t_lexer *lexer_list);
 t_lexer		*go_next_cmd(t_lexer *lexer_list);
-int			verif_var_exist_export_2(t_exec *utils, char *str);
+int			verif_var_exist_export_not_maj(t_exec *utils, char *str);
 int			close_fd(t_data *data);
 int			close_pipe(int *fd);
 int			slashinlex(t_lexer *lexer);
@@ -448,12 +448,12 @@ int			chevron_pipe(char *str);
 void		rm_para_quote2(t_data *data);
 void		rm_pwd(void);
 void		find_old_pwd(t_env	*env, t_data *data);
-int			change_directory2(t_env *tmp, t_data *data);
+int			change_directory_for_home(t_env *tmp, t_data *data);
 int			verif_home(char *str, t_data *data);
-int			change_directory3(t_env *tmp, t_data *data);
+int			change_directory_for_oldpwd(t_env *tmp, t_data *data);
 char		*get_old_pwd(t_env	*tmp, t_data *data);
 char		*get_pwd_env(t_env	*tmp, t_data *data);
-int			change_directory4(t_env *tmp, t_data *data);
+int			change_directory_for_pwd(t_env *tmp, t_data *data);
 int			count_quote(char *str);
 void		get_words(t_lexer *lexer_lst, char **tab, int *i);
 void		process_echo(char **tab, int i, t_data *data);

@@ -1,6 +1,10 @@
 
 #include "../../include/minishell.h"
 
+/*
+	elle cherche si il y un pwd, si il y a que pwd elle appel display_pwd
+	sinon elle appel display_pwd_error
+*/
 int	get_pwd(char *tab, t_data *data)
 {
 	char	**str;
@@ -16,6 +20,10 @@ int	get_pwd(char *tab, t_data *data)
 	return (0);
 }
 
+/*
+	elle va afficher la ou on est (repertoir de travail actuel)
+	use getcwd pour ca et gere les erreur si il echoue
+*/
 void	display_pwd(t_data *data)
 {
 	char	*tmp;
@@ -42,6 +50,7 @@ void	display_pwd(t_data *data)
 	free(tmp);
 }
 
+// affiche une erreur si pwd est use avec des arugument
 void	display_pwd_error(t_data *data)
 {
 	if (data->utils->node->out > 0)
@@ -55,6 +64,11 @@ void	display_pwd_error(t_data *data)
 	globi = 1;
 }
 
+/*
+	OLDPWD stock le chemin du dernier repertoire de travail
+	parcour la list des variable d'env et change de repertoire si il trouve OLDPWD
+	OLDPWD se souvient de ou tu es avant de faire pwd, pour y revenir si on fait un cd
+*/
 void	find_old_pwd(t_env *env, t_data *data)
 {
 	t_env	*tmp;
@@ -64,7 +78,7 @@ void	find_old_pwd(t_env *env, t_data *data)
 	{
 		if (!ft_strncmp(tmp->content, "OLDPWD", 6))
 		{
-			change_directory3(env, data);
+			change_directory_for_oldpwd(env, data);
 			break ;
 		}
 		tmp = tmp->next;

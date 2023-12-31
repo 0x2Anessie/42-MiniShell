@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	ft_write_fd(char *str, int fd)
@@ -11,27 +10,27 @@ int	ft_write_fd(char *str, int fd)
 	if (write (fd, str, i) == FAIL)
 	{
 		ft_printf(ERR_WRIT_NO_SPAC_LEFT_DEVC);
-		g_all.utils->err = 1;
+		globi = 1;
 		return (1);
 	}
 	return (0);
 }
 
-void	add_lexer_to_end(t_lexer **lexer_list, char *str)
+void	add_lexer_to_end(t_data *data, char *str)
 {
 	t_lexer	*new;
 	t_lexer	*current;
 
-	new = create_new_lexer(str);
-	if (*lexer_list == NULL)
+	new = create_new_lexer(data, str);
+	if (data->lexer_list == NULL)
 	{
-		*lexer_list = new;
+		data->lexer_list = new;
 		new->next = NULL;
 		new->prev = NULL;
 	}
 	else
 	{
-		current = *lexer_list;
+		current = data->lexer_list;
 		while (current->next)
 			current = current->next;
 		current->next = new;
@@ -47,15 +46,15 @@ void	process_lexer_input(char *str, int *i, int *j, t_quote *state)
 	{
 		update_quoting_state(str[*i], state);
 		if (!is_white_space(str[*i])
-			&& (!state->is_dquote && !state->is_quote))
+			&& (!state->doubl_quot_status && !state->singl_quot_status))
 		{
 			(*j)++;
 			(*i)++;
 		}
 		else if (is_white_space(str[*i])
-			&& (!state->is_dquote && !state->is_quote))
+			&& (!state->doubl_quot_status && !state->singl_quot_status))
 			break ;
-		else if (state->is_dquote || state->is_quote)
+		else if (state->doubl_quot_status || state->singl_quot_status)
 		{
 			(*j)++;
 			(*i)++;

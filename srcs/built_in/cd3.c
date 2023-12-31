@@ -1,31 +1,34 @@
 
 #include "../../include/minishell.h"
 
+// change le repertoire courant vers le dir
 int	change_directory(char *dir)
 {
 	if (chdir(dir) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
 }
 
-int	change_directory3(t_env *tmp)
+// change le repertoire courant vers celui indiquer par OLDPWD
+int	change_directory_for_oldpwd(t_env *tmp, t_data *data)
 {
-	if (chdir(get_old_pwd(tmp) + 7) == -1)
+	if (chdir(get_old_pwd(tmp, data) + 7) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
 }
 
-char	*get_pwd_env(t_env	*tmp)
+// recupere et retourn la variable d'env PWD, renvoi NULL si il le trouve pas
+char	*get_pwd_env(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("PWD=", tmp->content, 4))
@@ -35,19 +38,23 @@ char	*get_pwd_env(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_oldpwd(char *str)
+/*
+	verifie et met a jour la variable d'env OLDPWD si elle est trouvee, renvoie 1 si la
+	maj a etait faite et 0 sinon
+*/
+int	verif_oldpwd(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "OLDPWD=",
 				ft_strlen_eguale("OLDPWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("OLDPWD=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("OLDPWD=", str, data);
+			tmp->content = create_new_var(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;

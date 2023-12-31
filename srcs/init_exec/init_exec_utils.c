@@ -1,76 +1,87 @@
-
 #include "../../include/minishell.h"
 
 /**
- * @nom: get_in_fail
+ * @nom: handle_redirect_input_error
  *
- * @description: Gère les erreurs de redirection d'entrée pour un nœud de commande.
- *               Cette fonction est utilisée pour signaler des erreurs lors de la tentative
- *               de redirection d'entrée, comme l'échec de l'ouverture d'un fichier.
+ * @description:
+ * Gère les erreurs de redirection d'entrée pour un nœud de commande.
+ * Cette fonction est utilisée pour signaler des erreurs lors de la tentative
+ * de redirection d'entrée, comme l'échec de l'ouverture d'un fichier.
  *
- * @paramètres:
- *   - node: t_node *node, pointeur vers le nœud de commande concerné.
- *   - lexer_lst: t_lexer *lexer_lst, pointeur vers la liste de lexèmes actuelle.
+ * @parametres:
+ * - node: t_node *node, pointeur vers le nœud de commande concerné.
+ * - lexer_lst: t_lexer *lexer_lst, pointeur vers la liste de lexèmes actuelle.
  *
  * @fonctionnement:
- *   - Examine l'état de `node->in_fail` pour vérifier si une erreur de redirection a déjà été signalée.
- *   - Si aucune erreur précédente n'a été signalée, utilise `perror` pour afficher un message d'erreur
- *     lié au fichier spécifié dans le lexème.
- *   - Si une erreur a déjà été signalée, utilise `ft_write_fd` pour afficher un message d'erreur standardisé
- *     indiquant une redirection ambiguë.
- *   - Dans les deux cas, met à jour `node->in` à -2 pour indiquer un échec de la redirection d'entrée.
+ * - Examine l'état de `node->in_fail` pour vérifier si une erreur de
+ * redirection a déjà été signalée.
+ * - Si aucune erreur précédente n'a été signalée, utilise `perror` pour
+ * afficher un message d'erreur lié au fichier spécifié dans le lexème.
+ * - Si une erreur a déjà été signalée, utilise `ft_write_fd` pour afficher un
+ * message d'erreur standardisé indiquant une redirection ambiguë.
+ * - Dans les deux cas, met à jour `node->input_fd` à -2 pour indiquer un
+ * échec de la redirection d'entrée.
  *
- *   Pourquoi cette fonction est-elle importante ?
- *   - Gestion des Erreurs : Permet de traiter de manière appropriée les erreurs survenues lors de la 
- *     configuration des redirections d'entrée, essentielles pour le bon déroulement des commandes dans un shell.
- *   - Feedback Utilisateur : Fournit des informations claires à l'utilisateur en cas d'échec de redirection,
- *     améliorant ainsi l'expérience utilisateur et la résolution de problèmes.
- *   - Intégrité du Processus : Assure que les erreurs sont signalées et gérées correctement, évitant ainsi
- *     des comportements inattendus ou des échecs silencieux dans l'exécution des commandes.
+ * Pourquoi cette fonction est-elle importante ?
+ * - Gestion des Erreurs : Permet de traiter de manière appropriée les erreurs
+ * survenues lors de la configuration des redirections d'entrée, essentielles
+ * pour le bon déroulement des commandes dans un shell.
+ * - Feedback Utilisateur : Fournit des informations claires à l'utilisateur
+ * en cas d'échec de redirection, améliorant ainsi l'expérience utilisateur et
+ * la résolution de problèmes.
+ * - Intégrité du Processus : Assure que les erreurs sont signalées et gérées
+ * correctement, évitant ainsi des comportements inattendus ou des échecs
+ * silencieux dans l'exécution des commandes.
  *
  * @valeur_retour: 
  *   Renvoie 1 (int) pour indiquer un échec.
  *
  * @erreurs: 
- *   - Aucune erreur générée par la fonction elle-même, mais signale les erreurs de redirection.
+ *   - Aucune erreur générée par la fonction elle-même, mais signale les
+ * erreurs de redirection.
  *
  * @exemple_utilisation:
  *   t_node *node = create_node();
  *   t_lexer *lexer_lst = create_lexer_list("cmd < fichier_inexistant.txt");
- *   get_in_fail(node, lexer_lst);
+ *   handle_redirect_input_error(node, lexer_lst);
  *
- * @dépendances: 
+ * @dependances: 
  *   - ft_write_fd pour afficher des messages d'erreur.
  *
  * @graphe_de_flux:
  *   Début
  *     |
- *     v
- *   - Vérifier si une erreur de redirection a déjà été signalée (node->in_fail)
- *   /       \
- *  NON      OUI
- *   |         |
- *   v         v
- *   - Utiliser perror pour signaler l'erreur basée sur  Afficher un message d'erreur standardisé
- *     le nom du fichier (lexer_lst->next->word)      (ERR_AMB_REDIRECT) avec ft_write_fd
- *   - Mettre à jour node->in à -2                    - Mettre à jour node->in à -2
+ *     |
+ *     \-------------------->   - Vérifier si
+ *                         une erreur de redirection
+ *                            a déjà été signalée
+ *                              (node->in_fail)
+ *                              /             \
+ *                            NON            OUI
+ *                             |              |
+ *                             v              v
+ *   - Utiliser perror pour signaler          Afficher un message
+ *     l'erreur basée sur					 d'erreur standardisé
+ *     le nom du fichier                      (ERR_AMB_REDIRECT)
+ *     (lexer_lst->next->word)				   avec ft_write_fd
+ *   - Mettre à jour node->input_fd à -2      - Mettre à jour node->input_fd à -2
+ *   |                                        |
+ *   v                                        v
+ *   - Retourner 1 (échec)                    - Retourner 1 (échec)
  *   |                                                 |
  *   v                                                 v
- *   - Retourner 1 (échec)                             - Retourner 1 (échec)
- *   |                                                 |
- *   v                                                 v
- *   Fin                                               Fin
+ *   Fin                                              Fin
  */
-void	get_in_fail(t_node *node, t_lexer *lexer_lst)
+void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 {
-	if (!node->in_fail)
+	if (!node->in_fail)/*         ---> condition non intelligible --> fonction         */
 	{
-		node->in = -2;
+		node->input_fd = -2;
 		perror(lexer_lst->next->word);
 	}
 	else
 	{
-		node->in = -2;
+		node->input_fd = -2;
 		ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
 	}
 }
@@ -78,42 +89,52 @@ void	get_in_fail(t_node *node, t_lexer *lexer_lst)
 /**
  * @nom: ft_strdup
  *
- * @description: Duplique une chaîne de caractères en allouant de la mémoire pour la nouvelle copie.
- *               Cette fonction est essentielle pour créer des copies indépendantes de chaînes de 
- *               caractères, souvent utilisées dans les environnements où la manipulation des données 
- *               originales n'est pas souhaitée ou possible.
+ * @description:
+ * Duplique une chaîne de caractères en allouant de la mémoire pour la
+ * nouvelle copie. Cette fonction est essentielle pour créer des copies
+ * indépendantes de chaînes de caractères, souvent utilisées dans les
+ * environnements où la manipulation des données originales n'est pas
+ * souhaitée ou possible.
  *
- * @paramètres:
+ * @parametres:
  *   - src: char *src, pointeur vers la chaîne de caractères à dupliquer.
  *
  * @fonctionnement:
  *   - Commence par vérifier si la chaîne source 'src' n'est pas NULL.
- *   - Calcule la longueur de 'src' pour déterminer la quantité de mémoire nécessaire.
- *   - Utilise 'ft_malloc_with_tracking' pour allouer suffisamment de mémoire pour contenir la 
+ *   - Calcule la longueur de 'src' pour déterminer la quantité de mémoire
+ * nécessaire.
+ *   - Utilise 'ft_malloc_with_tracking' pour allouer suffisamment de mémoire
+ * pour contenir la 
  *     copie de 'src', y compris le caractère nul de terminaison.
  *   - Copie les caractères de 'src' dans la nouvelle chaîne allouée.
  *   - Retourne un pointeur vers la nouvelle chaîne dupliquée.
  *
  *   Pourquoi utiliser ft_strdup ?
- *   - Création de Copies : Permet de créer des copies de chaînes de caractères qui peuvent être 
+ *   - Création de Copies : Permet de créer des copies de chaînes de
+ * caractères qui peuvent être 
  *     modifiées ou conservées indépendamment de l'original.
- *   - Gestion de la Mémoire : Utilise une allocation mémoire dynamique pour s'adapter à la 
- *     taille variable des chaînes, tout en assurant le suivi de ces allocations.
- *   - Sécurité des Données : Évite de modifier les données originales, ce qui peut être 
- *     important pour maintenir l'intégrité des données dans certaines applications.
+ *   - Gestion de la Mémoire : Utilise une allocation mémoire dynamique pour
+ * s'adapter à la 
+ *     taille variable des chaînes, tout en assurant le suivi de ces
+ * allocations.
+ *   - Sécurité des Données : Évite de modifier les données originales, ce
+ * qui peut être 
+ *     important pour maintenir l'intégrité des données dans certaines
+ * applications.
  *
  * @valeur_retour: 
- *   Renvoie un pointeur vers la nouvelle chaîne de caractères dupliquée. Renvoie NULL si 
- *   'src' est NULL ou si l'allocation de mémoire échoue.
+ *   Renvoie un pointeur vers la nouvelle chaîne de caractères dupliquée.
+ * Renvoie NULL si 'src' est NULL ou si l'allocation de mémoire échoue.
  *
  * @erreurs: 
- *   - Retourne NULL si la chaîne source est NULL ou si l'allocation de mémoire échoue.
+ *   - Retourne NULL si la chaîne source est NULL ou si l'allocation de
+ * mémoire échoue.
  *
  * @exemple_utilisation:
  *   char *original = "Hello World";
  *   char *copy = ft_strdup(original);
  *
- * @dépendances: 
+ * @dependances: 
  *   - ft_malloc_with_tracking pour une allocation mémoire avec suivi.
  *
  * @graphe_de_flux:
@@ -147,7 +168,7 @@ void	get_in_fail(t_node *node, t_lexer *lexer_lst)
  *                    v
  *   Fin
  */
-char	*ft_strdup(char *src)
+char	*ft_strdup(t_data *data, char *src)
 {
 	int		index;
 	char	*dest;
@@ -157,7 +178,7 @@ char	*ft_strdup(char *src)
 		return (NULL);
 	while (src[index])
 		index++;
-	dest = ft_malloc_with_tracking(sizeof(char) * index + sizeof('\0'));
+	dest = ft_malloc_with_tracking(data, sizeof(char) * index + sizeof('\0'));
 	if (!dest)
 		return (NULL);
 	index = 0;
@@ -171,39 +192,47 @@ char	*ft_strdup(char *src)
 }
 
 /**
- * @nom: has_cmd
+ * @nom: is_token_type_cmd
  *
- * @description: Vérifie la présence d'une commande dans une liste de lexèmes. Cette fonction
- *               est cruciale pour déterminer si un ensemble de lexèmes représente une commande 
- *               valide dans un environnement de shell.
+ * @description:
+ * Vérifie la présence d'une commande dans une liste de lexèmes. Cette
+ * fonction est cruciale pour déterminer si un ensemble de lexèmes représente
+ * une commande valide dans un environnement de shell.
  *
- * @paramètres:
- *   - lexer_lst: t_lexer *lexer_lst, pointeur vers le début de la liste de lexèmes.
+ * @parametres:
+ *   - lexer_lst: t_lexer *lexer_lst, pointeur vers le début de la liste de
+ * lexèmes.
  *
  * @fonctionnement:
- *   Parcourt la liste de lexèmes et vérifie si un des lexèmes a le token CMD, indiquant la 
- *   présence d'une commande. Retourne immédiatement si une commande est trouvée.
+ * Parcourt la liste de lexèmes et vérifie si un des lexèmes a le token CMD,
+ * indiquant la présence d'une commande. Retourne immédiatement si une
+ * commande est trouvée.
  *
  *   Pourquoi vérifier la présence d'une commande ?
- *   - Identification des Commandes : Permet de distinguer entre les entrées qui sont des 
- *     commandes valides et celles qui ne le sont pas, ce qui est essentiel pour la bonne 
- *     interprétation et exécution des commandes dans un shell.
- *   - Préparation de l'Exécution : Identifier la présence d'une commande aide à décider 
- *     si une séquence de lexèmes doit être traitée comme une instruction exécutable.
- *   - Gestion des Erreurs : Contribue à la détection précoce d'erreurs ou de situations 
- *     non valides, améliorant la robustesse du traitement des commandes.
+ *   - Identification des Commandes : Permet de distinguer entre les entrées
+ * qui sont des commandes valides et celles qui ne le sont pas, ce qui est
+ * essentiel pour la bonne interprétation et exécution des commandes dans un
+ * shell.
+ *   - Préparation de l'Exécution : Identifier la présence d'une commande aide
+ * à décider si une séquence de lexèmes doit être traitée comme une
+ * instruction exécutable.
+ *   - Gestion des Erreurs : Contribue à la détection précoce d'erreurs ou de
+ * situations non valides, améliorant la robustesse du traitement des
+ * commandes.
  *
  * @valeur_retour: 
- *   Renvoie CMD_FOUND (int) si une commande est trouvée, sinon CMD_NOT_FOUND (int).
+ * Renvoie CMD_FOUND (int) si une commande est trouvée, sinon CMD_NOT_FOUND
+ * (int).
  *
  * @erreurs: 
- *   - Aucune erreur générée. La fonction renvoie simplement l'état de la présence d'une commande.
+ * - Aucune erreur générée. La fonction renvoie simplement l'état de la
+ * présence d'une commande.
  *
  * @exemple_utilisation:
  *   t_lexer *lexer_lst = create_lexer_list("echo 'Hello World'");
- *   int command_exists = has_cmd(lexer_lst);
+ *   int command_exists = is_token_type_cmd(lexer_lst);
  *
- * @dépendances: 
+ * @dependances: 
  *   Aucune dépendance externe.
  *
  * @graphe_de_flux:
@@ -232,11 +261,11 @@ char	*ft_strdup(char *src)
  *                                    v
  *                                   Fin
  */
-int	has_cmd(t_lexer *lexer_lst)
+int	is_token_type_cmd(t_lexer *lexer_lst)
 {
 	while (lexer_lst)
 	{
-		if (lexer_lst->token == CMD)
+		if (lexer_lst->token == CMD)/*         ---> condition non intelligible --> fonction         */
 			return (CMD_FOUND);
 		lexer_lst = lexer_lst->next;
 	}
@@ -246,27 +275,31 @@ int	has_cmd(t_lexer *lexer_lst)
 /**
  * @nom: nb_cmd
  *
- * @description: Compte le nombre de commandes dans une liste de lexèmes. Cette fonction
- *               est essentielle pour déterminer combien de commandes individuelles sont
- *               présentes dans une entrée de shell, ce qui est crucial pour la préparation
- *               et l'exécution de commandes dans un environnement de shell.
+ * @description:
+ * Compte le nombre de commandes dans une liste de lexèmes. Cette fonction est
+ * essentielle pour déterminer combien de commandes individuelles sont
+ * présentes dans une entrée de shell, ce qui est crucial pour la préparation
+ * et l'exécution de commandes dans un environnement de shell.
  *
- * @paramètres:
- *   - lexer_list: t_lexer *lexer_list, pointeur vers le début de la liste de lexèmes.
+ * @parametres:
+ * - lexer_list: t_lexer *lexer_list, pointeur vers le début de la liste de
+ * lexèmes.
  *
  * @fonctionnement:
- *   Parcourt la liste de lexèmes et incrémente un compteur chaque fois qu'un token CMD 
- *   est rencontré, indiquant une commande distincte. Cette méthode permet de comprendre 
- *   la structure et la quantité des commandes à exécuter.
+ * Parcourt la liste de lexèmes et incrémente un compteur chaque fois qu'un
+ * token CMD est rencontré, indiquant une commande distincte. Cette méthode
+ * permet de comprendre la structure et la quantité des commandes à exécuter.
  *
- *   Pourquoi compter les commandes ?
- *   - Organisation des Commandes : Comprendre le nombre de commandes permet de structurer 
- *     correctement l'exécution des commandes et de préparer les structures de données nécessaires.
- *   - Préparation de l'Exécution : Avoir un compte précis des commandes aide à allouer les 
- *     ressources nécessaires et à initialiser les structures de contrôle adéquates pour 
- *     l'exécution.
- *   - Clarification de l'Entrée Utilisateur : Permet de décomposer l'entrée de l'utilisateur 
- *     en unités exécutables distinctes, facilitant l'analyse et la gestion des commandes.
+ * Pourquoi compter les commandes ?
+ * - Organisation des Commandes : Comprendre le nombre de commandes permet de
+ * structurer correctement l'exécution des commandes et de préparer les
+ * structures de données nécessaires.
+ * - Préparation de l'Exécution : Avoir un compte précis des commandes aide à
+ * allouer les ressources nécessaires et à initialiser les structures de
+ * contrôle adéquates pour l'exécution.
+ * - Clarification de l'Entrée Utilisateur : Permet de décomposer l'entrée de
+ * l'utilisateur en unités exécutables distinctes, facilitant l'analyse et la
+ * gestion des commandes.
  *
  * @valeur_retour: 
  *   Renvoie le nombre total de commandes (int) dans la liste de lexèmes.
@@ -278,7 +311,7 @@ int	has_cmd(t_lexer *lexer_lst)
  *   t_lexer *lexer_list = create_lexer_list("cmd1 && cmd2");
  *   int total_cmds = nb_cmd(lexer_list);
  *
- * @dépendances: 
+ * @dependances: 
  *   Aucune dépendance externe.
  *
  * @graphe_de_flux:
@@ -319,7 +352,7 @@ int	nb_cmd(t_lexer *lexer_list)
 	index = ZERO_INIT;
 	while (lexer_list)
 	{
-		if (lexer_list->token == CMD)
+		if (lexer_list->token == CMD)/*         ---> condition non intelligible --> fonction         */
 			index++;
 		lexer_list = lexer_list->next;
 	}
@@ -329,29 +362,33 @@ int	nb_cmd(t_lexer *lexer_list)
 /**
  * @nom: nb_node
  *
- * @description: Compte le nombre de nœuds (commandes ou pipelines) dans une liste de lexèmes.
- *               Cette fonction est cruciale pour déterminer la structure et le nombre de
- *               commandes à exécuter dans un environnement de shell.
+ * @description:
+ * Compte le nombre de nœuds (commandes ou pipelines) dans une liste de
+ * lexèmes. Cette fonction est cruciale pour déterminer la structure et le
+ * nombre de commandes à exécuter dans un environnement de shell.
  *
- * @paramètres:
- *   - lexer_list: t_lexer *lexer_list, pointeur vers le début de la liste de lexèmes.
+ * @parametres:
+ * - lexer_list: t_lexer *lexer_list, pointeur vers le début de la liste de
+ * lexèmes.
  *
  * @fonctionnement:
- *   Parcourt la liste de lexèmes et incrémente un compteur chaque fois qu'un token PIPE 
- *   est rencontré ou à la fin de la liste. Chaque incrémentation représente une commande 
- *   ou un groupe de commandes (pipeline).
+ * Parcourt la liste de lexèmes et incrémente un compteur chaque fois qu'un
+ * token PIPE est rencontré ou à la fin de la liste. Chaque incrémentation
+ * représente une commande ou un groupe de commandes (pipeline).
  *
- *   Pourquoi compter les nœuds ?
- *   - Préparation de l'Exécution : Permet de déterminer combien de structures de commande 
- *     doivent être préparées pour l'exécution des instructions du shell.
- *   - Gestion des Pipelines : Les pipelines sont des séquences de commandes liées par des 
- *     pipes (|). Comprendre leur nombre aide à organiser l'exécution et la redirection des 
- *     données entre les commandes.
- *   - Structuration des Données : Offre une base pour structurer les données de commande 
- *     de manière à refléter la séquence et la logique de l'entrée de l'utilisateur.
+ * Pourquoi compter les nœuds ?
+ * - Préparation de l'Exécution : Permet de déterminer combien de structures
+ * de commande doivent être préparées pour l'exécution des instructions du
+ * shell.
+ * - Gestion des Pipelines : Les pipelines sont des séquences de commandes
+ * liées par des pipes (|). Comprendre leur nombre aide à organiser
+ * l'exécution et la redirection des données entre les commandes.
+ * - Structuration des Données : Offre une base pour structurer les données de
+ * commande de manière à refléter la séquence et la logique de l'entrée de
+ * l'utilisateur.
  *
  * @valeur_retour: 
- *   Renvoie le nombre total de nœuds (int) dans la liste de lexèmes.
+ * Renvoie le nombre total de nœuds (int) dans la liste de lexèmes.
  *
  * @erreurs: 
  *   - Aucune erreur spécifique n'est générée par cette fonction. 
@@ -360,7 +397,7 @@ int	nb_cmd(t_lexer *lexer_list)
  *   t_lexer *lexer_list = create_lexer_list("cmd1 | cmd2");
  *   int total_nodes = nb_node(lexer_list);
  *
- * @dépendances: 
+ * @dependances: 
  *   Aucune dépendance externe.
  *
  * @graphe_de_flux:
@@ -401,7 +438,7 @@ int	nb_node(t_lexer *lexer_list)
 	index = ZERO_INIT;
 	while (lexer_list)
 	{
-		if (lexer_list->token == PIPE || !lexer_list->next)
+		if (lexer_list->token == PIPE || !lexer_list->next)/*         ---> condition non intelligible --> fonction         */
 			index++;
 		lexer_list = lexer_list->next;
 	}

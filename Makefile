@@ -5,25 +5,39 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 
 # Définition des sources par répertoire
-SRC_LEXER = $(addprefix lexer/, lexer_utils.c lex.c lexer.c)
-SRC_PARSER = $(addprefix parser/, parser2.c parser4.c parser.c parser_utils.c \
-        		rm_para_quote.c)
-SRC_INIT_ENV = $(addprefix init_env/, init_env_list.c init_env.c)
-SRC_SIGNALS = $(addprefix signals/, ctrl_c_signals.c error_signals.c)
-SRC_BUILT_IN = $(addprefix built_in/, built_in_utils_2.c built_in_utils.c \
-				cd2.c cd3.c cd.c echo2.c echo.c echo_utils.c env.c \
-				env_create.c env_things.c export.c export_checking.c \
-				export_create.c export_parsing_2.c export_parsing.c \
-				export_var_exist.c ft_exit.c path_cd.c pwd.c write_echo.c)
-SRC_EXEC = $(addprefix exec/, child.c close_fd.c command_analysis.c \
-			command_execution.c exec_utils.c redir_child.c)
-SRC_EXPANDER = $(addprefix expander/, shell_variable_handling.c shell_word_expansion.c expand_len.c \
-					    expand_utils.c malloc_expand.c quoteandnode.c \
-						splitandquote.c state_quote.c)
-SRC_FREE_ALL = $(addprefix free_all/, free1.c)
-SRC_INIT_EXEC = $(addprefix init_exec/, here_doc.c init_exec.c \
-					init_exec_utils.c init_export.c init_fd.c)
-					
+SRC_LEXER = 		$(addprefix lexer/, lex.c lexer_structure_construction.c \
+						lexer_utils.c token_type_assignment.c)
+SRC_PARSER = 		$(addprefix parser/, parser2.c parser4.c parser.c parser_utils.c \
+        				rm_para_quote.c)
+SRC_INIT_ENV = 		$(addprefix init_env/, init_env_list.c init_env.c)
+SRC_SIGNALS = 		$(addprefix signals/, ctrl_c_signals.c error_signals.c signal_exits.c)
+SRC_BUILT_IN = 		$(addprefix built_in/, built_in_utils_2.c built_in_utils.c \
+						cd2.c cd3.c cd.c echo2.c echo.c echo_split.c env.c \
+						env_create.c env_things.c export.c export_checking.c \
+						export_create.c export_parsing_2.c export_parsing.c \
+						export_var_exist.c ft_exit.c path_cd.c pwd.c write_echo.c)
+SRC_EXEC = $(addprefix exec/, child_process_management.c close_pipes_and_fds.c \
+			 command_analysis.c command_execution.c command_path_resolution.c \
+			 config_stdin_stdout_commands.c pipe_cmd_management_and_init_vars.c)
+SRC_EXPANDER = $(addprefix expander/, \
+				dual_quote_status_utils.c \
+				env_var_expansion_length.c \
+				expand_utils.c \
+				expansion_processing.c \
+				lexeme_expansion_and_manipulation.c \
+				malloc_expand.c \
+				quot_state_validations.c \
+				quote_management_and_expander_utils.c \
+				shell_variable_handling.c \
+				shell_word_expansion.c \
+				singular_quote_status_utils.c \
+				special_char_handling.c \
+				special_character_checks.c \
+				split_word_by_quotes.c)
+SRC_FREE_ALL = 		$(addprefix free_all/, free1.c)
+SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc.c init_exec.c \
+						init_exec_utils.c init_export.c init_fd.c)
+
 # Combinaison de tous les fichiers sources
 SRCS = main.c \
        $(SRC_LEXER) \
@@ -109,7 +123,7 @@ clean:
 	@echo "     \  \___  \  ___/ \___ \  |  |     \  \___|  |_\  ___/ / __  \|   |  \ ";
 	@echo "      \____ >  \____ >_____ > |__|      \____ >____/\____> ____  / ___|  / ";
 	@echo "                                                               \/      \/  ";
-	@echo "                                                                      ";	
+	@echo "                                                                      ";
 
 # Fonction pour mettre à jour et afficher la barre de progression sur une seule ligne pour fclean
 define fclean_progress

@@ -1,20 +1,26 @@
 
 #include "../../include/minishell.h"
 
-void	print_export(t_export *export_lst)
+/*
+	Cette fonction parcourt et affiche la liste des variables exporter
+	elle affiche declare -x suivie de la valeur de la variable
+	on utilise write fd quand on veux ecrire dans un fd special ou
+	printf pour l'affiche standard
+*/
+void	print_export(t_export *export_lst, t_data *data)
 {
 	t_export	*current;
 
 	current = export_lst;
 	while (current != NULL)
 	{
-		if (g_all.utils->node->out > 0)
+		if (data->utils->node->output_fd > 0)
 		{
-			ft_write_fd("declare -x ", g_all.utils->node->out);
-			ft_write_fd(current->value, g_all.utils->node->out);
-			ft_write_fd("\n", g_all.utils->node->out);
+			ft_write_fd("declare -x ", data->utils->node->output_fd);
+			ft_write_fd(current->value, data->utils->node->output_fd);
+			ft_write_fd("\n", data->utils->node->output_fd);
 		}
-		else if (!g_all.utils->node->out_fail)
+		else if (!data->utils->node->out_fail)
 		{
 			printf("declare -x ");
 			printf("%s\n", current->value);
@@ -22,12 +28,13 @@ void	print_export(t_export *export_lst)
 		current = current->next;
 	}
 	current = export_lst;
-	g_all.utils->err = 0;
+	globi = 0;
 }
 
-int	export_parsing_66(t_lexer *tmp)
+//check la syntaxe de chaque mot grace a check_parsing_export 1 a 1
+int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 {
-	tmp = g_all.utils->head_lexer_lst;
+	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
 		if (check_parsing_export(tmp->word) == 1)
@@ -37,62 +44,79 @@ int	export_parsing_66(t_lexer *tmp)
 	return (0);
 }
 
-void	process_word_and_add_export(t_lexer *tmp)
+/*
+	Traite chaque argument passé à export et décide de l'ajouter ou non à la liste
+	des variables exporter
+	elle appel supp_quote_and_add_env pour traiter les caractere speciaux
+	Vérifie si la variable existe déjà et si elle doit être ajoutée à la liste des
+	variables exportées. Utilise des fonctions comme verif_var_exist_export et
+	lst_add_back_export pour cette gestion.
+*/
+void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 {
-	process_word(&(g_all.utils), tmp);
-	if (verif_var_exist_export(g_all.utils, tmp->word) == 0
+	supp_quote_and_add_env(&(data->utils), tmp, data);
+	if (verif_var_exist_export(data->utils, tmp->word, data) == 0
 		&& verif_equal(tmp->word, '=') == 0
-		&& verif_var_exist_export_2(g_all.utils, tmp->word) == 0)
-		lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+		&& verif_var_exist_export_not_maj(data->utils, tmp->word) == 0)
+		lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
 	else if (check_case(tmp->word)
-		&& verif_var_exist_export(g_all.utils, tmp->word) == 0)
+		&& verif_var_exist_export(data->utils, tmp->word, data) == 0)
 	{
-		tmp->word = case_egale(tmp->word);
-		if (verif_var_exist_export(g_all.utils, tmp->word) == 0)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+		tmp->word = case_egale(tmp->word, data);
+		if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
+			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
 	}
-	else if (verif_var_exist_export(g_all.utils, tmp->word) == 0)
+	else if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
 	{
-		if (verif_var_exist_export(g_all.utils, tmp->word) == 0
+		if (verif_var_exist_export(data->utils, tmp->word, data) == 0
 			&& verif_equal(tmp->word, '=') == 1)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
-		else if (verif_var_exist_export(g_all.utils, tmp->word) == 1)
-			lst_add_back_export(&(g_all.utils->export_lst), tmp->word);
+			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
+		else if (verif_var_exist_export(data->utils, tmp->word, data) == 1)
+			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
 	}
 }
 
-void	export_remaining(t_lexer *tmp)
+// gere les arg de export, elle appel export_parsing_syntaxe pour check la syntaxe
+// puis pour chaque token use process_word_add_export si c'est un argument
+void	export_remaining(t_lexer *tmp, t_data *data)
 {
-	if (export_parsing_66(tmp))
+	if (export_parsing_syntaxe(tmp, data))
 		return ;
-	tmp = g_all.utils->head_lexer_lst;
+	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
 		if (tmp->token == ARG)
-			process_word_and_add_export(tmp);
+			process_word_and_add_export(tmp, data);
 		tmp = tmp->next;
 	}
 }
 
-int	export_things(t_lexer *lexer_lst)
+/*
+	fonction principal de export
+	elle commence par trier les variable exporter
+	Flux de Contrôle Principal : Basé sur les conditions, décide soit d'afficher
+	les variables exportées (si aucune nouvelle variable n'est ajoutée), soit de
+	 traiter les nouveaux arguments d'exportation.
+*/
+int	export_things(t_lexer *lexer_lst, t_data *data)
 {
 	t_lexer	*tmp;
 
-	sort_export_lst(&(g_all.utils->export_lst));
+	sort_export_lst(&(data->utils->export_lst));
 	tmp = lexer_lst;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->word, "export") && !(tmp->next && tmp->next->word
 				&& !(tmp->next->word[0] == '\0')))
-			print_export(g_all.utils->export_lst);
+			print_export(data->utils->export_lst, data);
 		else if (!ft_strcmp(tmp->word, "export") && tmp->next
 			&& tmp->next->token != ARG)
-			print_export(g_all.utils->export_lst);
+			print_export(data->utils->export_lst, data);
 		else if ((ft_strcmp(tmp->word, "export") == 0) && (tmp->next
 				&& tmp->next->token == ARG))
 		{
 			tmp = tmp->next;
-			export_remaining(tmp);
+			export_remaining(tmp, data);
 			break ;
 		}
 		tmp = tmp->next;

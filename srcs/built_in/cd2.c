@@ -1,19 +1,24 @@
 
 #include "../../include/minishell.h"
 
-int	change_directory4(t_env *tmp)
+// change le repertoire courant par celui indiquer par pwd toujours avec chdir et ca gestion d'err
+int	change_directory_for_pwd(t_env *tmp, t_data *data)
 {
-	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp) + 4);
-	if (chdir(get_pwd_env(tmp) + 4) == -1)
+	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp, data) + 4);
+	if (chdir(get_pwd_env(tmp, data) + 4) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);
 }
 
-char	*var_exist(char *str)
+/*
+	check si la chaine contient un = et si oui reconstruit la variable avec la
+	nouvelle variable et renvoie la chaine mise a jour
+*/
+char	*create_new_var(char *str, t_data *data)
 {
 	int		i;
 	int		flag;
@@ -21,7 +26,7 @@ char	*var_exist(char *str)
 
 	flag = 0;
 	tmp = NULL;
-	i = 0;
+	i = ZERO_INIT;
 	while (str[i])
 	{
 		if (str[i] == '=')
@@ -33,75 +38,84 @@ char	*var_exist(char *str)
 	}
 	if (flag)
 	{
-		tmp = ft_substr(str, (unsigned int)i + 1, (size_t)ft_strlen(str));
-		str = ft_substr(str, 0, (size_t)i + 1);
-		str = ft_strjoin4(str, tmp);
+		tmp = ft_substr(data, str, (unsigned int)i + 1, (size_t)ft_strlen(str));
+		str = ft_substr(data, str, 0, (size_t)i + 1);
+		str = ft_strjoin4(str, tmp, data);
 	}
 	return (str);
 }
 
-void	get_cd(t_lexer *lexer_lst)
+/*
+	verifie si cd n'a pas d'argument, et dans ce cas la change vers le HOME
+	si il y a des argument on appel cd_with_arg
+*/
+void	get_cd(t_lexer *lexer_lst, t_data *data)
 {
 	t_env	*env;
 	int		i;
 	char	*path;
 	char	*old;
 
-	i = 0;
+	i = ZERO_INIT;
 	path = NULL;
 	old = NULL;
-	env = g_all.utils->env_lst;
+	env = data->utils->env_lst;
 	if (lexer_lst)
 	{
 		if ((ft_strcmp(lexer_lst->word, "cd") == 0)
 			&& lexer_lst->next == NULL)
 		{
-			if (change_directory2(env))
+			if (change_directory_for_home(env, data))
 			{
 				path = getcwd(path, i);
-				verif_home(path);
+				verif_home(path, data);
 			}
 			return ;
 		}
-		if (cd_2(lexer_lst, path, old, &i) == 0)
+		if (cd_with_arg(data, path, old, &i) == 0)
 			return ;
 	}
-	lexer_lst = g_all.utils->head_lexer_lst;
+	lexer_lst = data->utils->head_lexer_lst;
 }
 
+// check si il y a trop d'argument et gere l'erreur si c'est le cas
 int	wrong_cd(t_lexer *lexer_lst)
 {
 	if (lexer_lst->next)
 	{
-		write (2, "bash: cd: trop d'arguments\n", 27);
-		g_all.utils->err = 1;
+		write (STDERR_FILENO, "bash: cd: trop d'arguments\n", 27);
+		globi = 1;
 		return (0);
 	}
 	return (1);
 }
 
-int	cd_2(t_lexer *lexer_lst, char *path, char *old, int *i)
+/*
+	traite cd avec des arguments, recupere le repertoire courant et le stock dans le
+	OLDPWD et si les arguments sont valid, change le repertoire et met a jour PWD
+*/
+int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
-	if (((ft_strcmp(lexer_lst->word, "cd") == 0)
-			&& lexer_lst->next->word))
-	{			
-		if (lexer_lst->next)
-				lexer_lst = lexer_lst->next;
+	if (((ft_strcmp(data->lexer_list->word, "cd") == 0)
+			&& data->lexer_list->next->word))
+	{
+		if (data->lexer_list->next)
+				data->lexer_list = data->lexer_list->next;
 		old = getcwd(old, *i);
 		if (!old)
 		{
-			find_old_pwd(g_all.utils->env_lst);
+			find_old_pwd(data->utils->env_lst, data);
 			return (0);
 		}
 		else
-			verif_oldpwd(old);
-		if (!wrong_cd(lexer_lst))
+			verif_oldpwd(old, data);
+		if (!wrong_cd(data->lexer_list))
 			return (0);
-		if (change_directory(lexer_lst->word))
+		if (change_directory(data->lexer_list->word))
 		{
 			path = getcwd(path, *i);
-			verif_pwd(path);
-			g_all.utils->err = 0;
+			verif_pwd(path, data);
+			globi = 0;
 		}
 	}
 	return (1);

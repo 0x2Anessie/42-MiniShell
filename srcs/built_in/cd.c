@@ -1,20 +1,23 @@
 
 #include "../../include/minishell.h"
 
-int	verif_pwd(char *str)
+/*
+	verifi pwd dans la liste des variable d'env, et la met a jour
+*/
+int	verif_pwd(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	if (str == NULL)
 		return (0);
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen_eguale("PWD=")) == 0)
 		{
-			s1 = ft_strjoin_2("PWD=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("PWD=", str, data);
+			tmp->content = create_new_var(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -22,9 +25,12 @@ int	verif_pwd(char *str)
 	return (0);
 }
 
-char	*get_home(t_env	*tmp)
+/*
+	cherche HOME dans les variable d'env et la retourne si elle est trouver ou NULL sinon
+*/
+char	*get_home(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("HOME=", tmp->content, 5))
@@ -34,9 +40,12 @@ char	*get_home(t_env	*tmp)
 	return (NULL);
 }
 
-char	*get_old_pwd(t_env	*tmp)
+/*
+	pareil pour OLDPWD
+*/
+char	*get_old_pwd(t_env	*tmp, t_data *data)
 {
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (!strncmp("OLDPWD=", tmp->content, 6))
@@ -46,18 +55,21 @@ char	*get_old_pwd(t_env	*tmp)
 	return (NULL);
 }
 
-int	verif_home(char *str)
+/*
+	verifi HOME est la met a jour
+*/
+int	verif_home(char *str, t_data *data)
 {
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = g_all.utils->env_lst;
+	tmp = data->utils->env_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "HOME=", ft_strlen_eguale("HOME=")) == 0)
 		{
-			s1 = ft_strjoin_2("HOME=", str);
-			tmp->content = var_exist(s1);
+			s1 = ft_strjoin_2("HOME=", str, data);
+			tmp->content = create_new_var(s1, data);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -65,12 +77,15 @@ int	verif_home(char *str)
 	return (0);
 }
 
-int	change_directory2(t_env *tmp)
+/*
+	change le repertoire courant par homme et gere les erreur chdir
+*/
+int	change_directory_for_home(t_env *tmp, t_data *data)
 {
-	if (chdir(get_home(tmp) + 5) == -1)
+	if (chdir(get_home(tmp, data) + 5) == -1)
 	{
 		perror("chdir");
-		g_all.utils->err = 1;
+		globi = 1;
 		return (0);
 	}
 	return (1);

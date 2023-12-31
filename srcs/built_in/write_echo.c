@@ -1,81 +1,52 @@
-
 #include "../../include/minishell.h"
 
-void	write_echo(char **tab, int i)
+/*
+	ecri dans la sortie les argument apres verif qu'il soit pas un -n puis ecrit un espace
+	entre les argument
+	elle est utiliser quand echo doit etre afficher ailleurs que dans la sorti standard
+*/
+void	write_echo_fd(char **tab, int i, t_data *data)
 {
 	while (tab[i])
 	{
 		if (ft_strcmp(tab[i], "-n"))
 		{
-			ft_write_fd(tab[i], g_all.utils->node->out);
+			ft_write_fd(tab[i], data->utils->node->output_fd);
 			if (tab[i + 1])
-				ft_write_fd(" ", g_all.utils->node->out);
+				ft_write_fd(" ", data->utils->node->output_fd);
 		}
 		i++;
 	}
 }
 
-int	procc_in_echo(char **tab, int i, int j)
+/*
+	elle est apeller dans process_echo si il y a besoin d'use une sorti special
+	si j n'est pas nul la fonction va ecrire un space pour separer les argument
+	et n'ecrit rien si j est nul
+	procc_in_echo_fd ecrit les argument de echo si il y a besoin d'une redirection
+*/
+int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 {
 	while (tab[i])
 	{
 		if (j)
 		{
-			if (ft_write_fd(" ", g_all.utils->node->out))
+			if (ft_write_fd(" ", data->utils->node->output_fd))
 			{
-				g_all.utils->err = 1;
+				globi = 1;
 				return (-1);
 			}
-			ft_write_fd(tab[i++], g_all.utils->node->out);
+			ft_write_fd(tab[i++], data->utils->node->output_fd);
 		}
 		else
 		{
-			if (ft_write_fd(tab[i++], g_all.utils->node->out))
+			if (ft_write_fd(tab[i++], data->utils->node->output_fd))
 			{
-				g_all.utils->err = 1;
+				globi = 1;
 				return (-1);
 			}
 			j++;
 		}
 	}
 	return (0);
-}
-
-void	child_of_chill(t_lexer *lexer_list, int *fd, int count, t_exec utils)
-{
-	handle_in(utils, count);
-	handle_out(utils, fd, count);
-	if (is_built_in(lexer_list))
-	{
-		ft_exec_single_built_in(lexer_list, fd);
-		ft_exit_child(g_all.utils, fd);
-	}
-	if (!slashinlex(lexer_list))
-		exec_chemin(lexer_list);
-	else if (!check_path_exec(lexer_list, utils))
-	{
-		if (execve(get_cmd_path(lexer_list->word, utils.env_lst), \
-		get_arg(lexer_list), utils.env) == -1)
-			perror(lexer_list->word);
-	}
-	g_all.utils->err = ERR_CODE_CMD_NOT_FOUND;
-	ft_exit_child(g_all.utils, fd);
-}
-
-int	slashinlex(t_lexer *lexer)
-{
-	int		i;
-
-	i = 0;
-	while (lexer->word[i])
-		if (lexer->word[i++] == '/')
-			return (0);
-	return (1);
-}
-
-void	exec_chemin(t_lexer *lexer)
-{
-	if (execve(lexer->word, \
-		get_arg(lexer), g_all.utils->env) == -1)
-		perror(lexer->word);
 }

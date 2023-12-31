@@ -1,7 +1,6 @@
-
 #include "../../include/minishell.h"
 
-char	*parse_quote(char *tmp)
+char	*parse_quote(t_data *data, char *tmp)
 {
 	int	len;
 
@@ -11,13 +10,13 @@ char	*parse_quote(char *tmp)
 	if (len >= 2 && tmp[0] == '"' && tmp[len - 1] == '"' && is_space(tmp,
 			' ') == 0)
 	{
-		tmp = ft_substr(tmp, 1, (size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);
 }
 
-char	*parse_quote2(char *tmp)
+char	*parse_quote2(t_data *data, char *tmp)
 {
 	int	len;
 
@@ -25,20 +24,20 @@ char	*parse_quote2(char *tmp)
 	if (len >= 2 && tmp[0] == '\'' && tmp[len - 1] == '\'' && is_space(tmp,
 			' ') == 0)
 	{
-		tmp = ft_substr(tmp, 1, (size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);
 }
 
-char	*parse_para(char *tmp)
+char	*parse_para(t_data *data, char *tmp)
 {
 	int	len;
 
 	len = ft_strlen(tmp);
 	if (len >= 2 && tmp[0] == '(' && tmp[len - 1] == ')')
 	{
-		tmp = ft_substr(tmp, 1, (size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);
@@ -51,8 +50,8 @@ void	rm_para_quote(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(tmp->word);
-		tmp->word = parse_quote(tmp->word);
+		tmp->word = parse_para(data, tmp->word);
+		tmp->word = parse_quote(data, tmp->word);
 		tmp = tmp->next;
 	}
 }
@@ -64,8 +63,8 @@ void	rm_para_quote2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(tmp->word);
-		tmp->word = parse_quote2(tmp->word);
+		tmp->word = parse_para(data, tmp->word);
+		tmp->word = parse_quote2(data, tmp->word);
 		tmp = tmp->next;
 	}
 }

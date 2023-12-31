@@ -14,13 +14,13 @@ char	*ft_strcpy(char *dest, const char *src)
 	return (dest_start);
 }
 
-char	*add_quotes_string(char *str)
+char	*add_quotes_string(char *str, t_data *data)
 {
 	size_t	len;
 	char	*quoted_str;
 
 	len = (size_t)ft_strlen(str);
-	quoted_str = ft_malloc_with_tracking(sizeof(char)
+	quoted_str = ft_malloc_with_tracking(data, sizeof(char)
 			*(len + 3));
 	if (!quoted_str)
 		return (NULL);
@@ -31,36 +31,36 @@ char	*add_quotes_string(char *str)
 	return (quoted_str);
 }
 
-char	*join_them(char *str, int i, int flag)
+char	*join_them(char *str, int i, int flag, t_data *data)
 {
 	char	*tmp;
 
 	tmp = NULL;
 	if (str[i + 1] == '\0' && flag == 1)
 	{
-		tmp = ft_substr((const char *)str,
+		tmp = ft_substr(data, (const char *)str,
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
-		str = ft_substr(str, 0, (size_t)i + 1);
-		tmp = add_quotes_string(tmp);
-		str = ft_strjoin4(str, tmp);
+		str = ft_substr(data, str, 0, (size_t)i + 1);
+		tmp = add_quotes_string(tmp, data);
+		str = ft_strjoin4(str, tmp, data);
 	}
 	else if (flag == 1)
 	{
-		tmp = ft_substr((const char *)str,
+		tmp = ft_substr(data, (const char *)str,
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
-		str = ft_substr(str, 0, (size_t)i + 1);
-		tmp = add_quotes_string(tmp);
-		str = ft_strjoin4(str, tmp);
+		str = ft_substr(data, str, 0, (size_t)i + 1);
+		tmp = add_quotes_string(tmp, data);
+		str = ft_strjoin4(str, tmp, data);
 	}
 	return (str);
 }
 
-char	*case_egale(char *str)
+char	*case_egale(char *str, t_data *data)
 {
 	int		i;
 	int		flag;
 
-	i = 0;
+	i = ZERO_INIT;
 	flag = 0;
 	while (str[i])
 	{
@@ -71,13 +71,13 @@ char	*case_egale(char *str)
 		}
 		i++;
 	}
-	str = join_them(str, i, flag);
+	str = join_them(str, i, flag, data);
 	return (str);
 }
 
-void	exit_all(void)
+void	exit_all(t_data *data)
 {
-	ft_write_fd("exit\n", 1);
-	ft_free_all();
+	ft_write_fd("exit\n", STDOUT_FILENO);
+	ft_free_all(data);
 	exit(0);
 }

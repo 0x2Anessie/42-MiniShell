@@ -1,11 +1,10 @@
-
 #include "../../include/minishell.h"
 
 int	ft_check_quotes(char *str, t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	data->squote = 0;
 	data->dquote = 1;
 	while (str[i])
@@ -32,11 +31,13 @@ int	check_redir(char *str)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	if (str[i + 1] == '\0')
 		return (0);
-	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '>' && str[i + 1] == '<')
-		|| (str[i] == '<' && str[i + 1] == '<') || (str[i] == '<' && str[i + 1] == '>'))
+	if ((str[i] == '>' && str[i + 1] == '>') \
+	|| (str[i] == '>' && str[i + 1] == '<') \
+	|| (str[i] == '<' && str[i + 1] == '<') \
+	|| (str[i] == '<' && str[i + 1] == '>'))
 	{
 		if (str[i + 2] == '\0')
 			return (0);
@@ -48,7 +49,7 @@ int	base_check(char *str)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	if (str[0] == '|' && str[1] == '|')
 	{
 		printf("minishell: syntax error near unexpected token `||'\n");
@@ -77,8 +78,9 @@ int	ft_cloporte(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if (tmp->token == fleched || tmp->token == Dfleched || tmp->token == flechedg
-			|| tmp->token == flecheg || tmp->token == HERE_DOC || tmp->token == flechegd)
+		if (tmp->token == REDIRECT_OUT || tmp->token == APPEND_OUT \
+		|| tmp->token == REDIRECT_OUTIN || tmp->token == REDIRECT_IN \
+		|| tmp->token == HERE_DOC || tmp->token == REDIRECT_INOUT)
 		{
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->word[0] == '\0')
@@ -107,7 +109,7 @@ int	ft_parser(t_data *data)
 		return (0);
 	if (!ft_tiret(data->line))
 		return (0);
-	if (!chevron_pipe(data->line)) // plus utile
+	if (!chevron_pipe(data->line))
 		return (0);
 	return (1);
 }

@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /**
@@ -21,7 +20,7 @@
  *     créer des structures qui représentent l'environnement de manière plus 
  *     structurée et manipulable, comme des listes chaînées.
  *
- * @paramètres:
+ * @parametres:
  *   - env: Un tableau de pointeurs vers des chaînes de caractères, chacune 
  *     représentant une variable d'environnement.
  *
@@ -38,11 +37,11 @@
  *   - Si 'env' est NULL, la fonction retourne 0. La fonction suppose que 'env' est 
  *     correctement initialisé et terminé par un élément NULL.
  *
- * @exemples_d'utilisation:
+ * @exemples_utilisation:
  *   - env_size(environ) pour obtenir le nombre de variables d'environnement 
  *     dans le tableau 'environ'.
  *
- * @dépendances:
+ * @dependances:
  *   Aucune dépendance externe.
  *
  * @graphe_de_flux:
@@ -95,7 +94,7 @@ int	env_size(char **env)
  *     pour l'allocation permet un suivi et une gestion plus précise de la mémoire, 
  *     notamment pour éviter les fuites de mémoire dans des programmes de longue durée.
  *
- * @paramètres:
+ * @parametres:
  *   - env: Une chaîne de caractères représentant la variable d'environnement à 
  *     encapsuler dans la nouvelle structure t_env.
  *
@@ -114,11 +113,11 @@ int	env_size(char **env)
  *   - Si l'allocation mémoire échoue, la fonction retourne NULL sans créer 
  *     de nouvel élément.
  *
- * @exemples_d'utilisation:
+ * @exemples_utilisation:
  *   - create_and_init_env_var_node("PATH=/usr/bin") pour créer un élément contenant la variable 
  *     d'environnement PATH.
  *
- * @dépendances:
+ * @dependances:
  *   - ft_malloc_with_tracking: Alloue de la mémoire avec suivi.
  *   - ft_strdup: Copie une chaîne de caractères.
  *
@@ -141,14 +140,14 @@ int	env_size(char **env)
  *              v
  *           Retourner 'new'
  */
-t_env	*create_and_init_env_var_node(char *env)
+t_env	*create_and_init_env_var_node(t_data *data, char *env)
 {
 	t_env	*new;
 
-	new = ft_malloc_with_tracking(sizeof(t_env));
+	new = ft_malloc_with_tracking(data, sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->content = ft_strdup(env);
+	new->content = ft_strdup(data, env);
 	new->next = NULL;
 	return (new);
 }
@@ -173,7 +172,7 @@ t_env	*create_and_init_env_var_node(char *env)
  *     évitant la complexité et le coût potentiel de réorganiser ou de réallouer 
  *     des structures de données plus grandes.
  *
- * @paramètres:
+ * @parametres:
  *   - lst: Un pointeur sur le premier élément de la liste chaînée de type t_env.
  *   - new: Un pointeur sur l'élément de type t_env à ajouter à la fin de la liste.
  *
@@ -189,11 +188,11 @@ t_env	*create_and_init_env_var_node(char *env)
  *   - Si 'lst' est NULL, la fonction ne fait rien. Il incombe à l'appelant de 
  *     s'assurer que la liste n'est pas NULL avant d'appeler cette fonction.
  *
- * @exemples_d'utilisation:
+ * @exemples_utilisation:
  *   - ft_env_lst_add_to_end(env_list, new_env_var) pour ajouter une nouvelle 
  *     variable d'environnement à une liste existante.
  *
- * @dépendances:
+ * @dependances:
  *   Aucune dépendance spécifique à d'autres fonctions ou structures externes.
  *
  * @graphe_de_flux:
@@ -249,7 +248,7 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *     variable PWD si l'environnement est vide, la fonction assure que le programme 
  *     a toujours accès à au moins une variable d'environnement essentielle.
  *
- * @paramètres:
+ * @parametres:
  *   - env: Un tableau de chaînes de caractères représentant les variables 
  *     d'environnement.
  *
@@ -271,11 +270,11 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *     avec les éléments suivants, potentiellement aboutissant à une liste 
  *     incomplète.
  *
- * @exemples_d'utilisation:
+ * @exemples_utilisation:
  *   - create_env_list_from_array(envp) dans un programme où envp est le tableau de variables 
  *     d'environnement passé au main.
  *
- * @dépendances:
+ * @dependances:
  *   - env_size: Calcule la taille du tableau d'environnement.
  *   - init_env_list_with_pwd_if_empty: Initialise la liste avec PWD si vide.
  *   - create_and_init_env_var_node: Crée un nouvel élément de type t_env.
@@ -324,7 +323,7 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *    v
  *   Retourner final
  */
-t_env	*create_env_list_from_array(char **env)
+t_env	*create_env_list_from_array(t_data *data, char **env)
 {
 	int		env_nb;
 	int		i;
@@ -337,12 +336,12 @@ t_env	*create_env_list_from_array(char **env)
 	env_nb = env_size(env);
 	if (env_nb == 0)
 	{
-		final = init_env_list_with_pwd_if_empty(final);
+		final = init_env_list_with_pwd_if_empty(data, final);
 		return (final);
 	}
 	while (++i < env_nb)
 	{
-		new = create_and_init_env_var_node(env[i]);
+		new = create_and_init_env_var_node(data, env[i]);
 		if (!final)
 			final = new;
 		else

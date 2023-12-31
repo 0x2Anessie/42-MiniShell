@@ -1,11 +1,16 @@
 
 #include "../../include/minishell.h"
 
-t_export	*create_node_str_export(char *str)
+/*
+	cette fonction cree un nouveau noeud pour la liste des variable exporter
+	alloue de la memoire pour un nouveau noeudt_export
+	initialise le noeud et retourne le noeud cree si il y eu un probleme
+*/
+t_export	*create_node_str_export(char *str, t_data *data)
 {
 	t_export	*node;
 
-	node = ft_malloc_with_tracking(sizeof(t_export));
+	node = ft_malloc_with_tracking(data, sizeof(t_export));
 	if (node)
 	{
 		node->value = str;
@@ -14,13 +19,17 @@ t_export	*create_node_str_export(char *str)
 	return (node);
 }
 
-void	lst_add_back_export(t_export **head, char *str)
+/*
+	ajoute un nouveau noeud a la fin de la liste, sauf si c'est le premier elle cree
+	avec create_node_str et en fait la premiere
+*/
+void	lst_add_back_export(t_export **head, char *str, t_data *data)
 {
 	t_export	*current;
 
 	if (*head == NULL)
 	{
-		*head = create_node_str_export(str);
+		*head = create_node_str_export(str, data);
 	}
 	else
 	{
@@ -29,6 +38,6 @@ void	lst_add_back_export(t_export **head, char *str)
 		{
 			current = current->next;
 		}
-		current->next = create_node_str_export(str);
+		current->next = create_node_str_export(str, data);
 	}
 }

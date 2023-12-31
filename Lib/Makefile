@@ -6,7 +6,7 @@ OBJS_FT = ${FT_PRINTF:.c=.o}
 OBJS_GNL = ${GNL:.c=.o}
 OBJ = $(OBJS_FT) $(OBJS_GNL)
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 
 all: $(NAME)
 

@@ -244,11 +244,11 @@ typedef struct s_exec
 	struct s_exec	*prev;
 }				t_exec;
 
-typedef struct s_memory/*     Change name    */
+typedef struct s_memory/*     Change name s_trash_memory    */
 {
 	void			*add;
 	struct s_memory	*next;
-}			t_memory;
+}			t_memory;/*     Change name t_trash_memory   */
 
 typedef struct s_data
 {

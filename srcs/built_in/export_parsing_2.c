@@ -40,7 +40,7 @@ int	check_parsing_error(char *str)
 		if (str[i] == '!' || str[i] == '$')
 		{
 			str += i;
-			globi = 1;
+			g_signal_received = 1;
 			ft_printf("export: %s event not found", str);
 			return (1);
 		}
@@ -49,7 +49,7 @@ int	check_parsing_error(char *str)
 		if (((str[0] == '"' && str[1] == '"') || (str[0] == '\''
 					&& str[1] == '\'')) && str[2] == '\0')
 		{
-			globi = 1;
+			g_signal_received = 1;
 			ft_printf("export : `': not a valid identifier\n");
 			return (1);
 		}
@@ -69,13 +69,13 @@ int	check_parsing_export(char *str)
 		|| is_number(*str) || *str == '+' || *str == '%' || *str == '?'
 		|| (*str == '-' && !str[1]))
 	{
-		globi = 1;
+		g_signal_received = 1;
 		ft_printf("export : `%s': not a valid identifier\n", str);
 		return (1);
 	}
 	else if (*str == '-')
 	{
-		globi = 2;
+		g_signal_received = 2;
 		ft_printf("export : %c%c: invalid option\n", str[0], str[1]);
 		return (1);
 	}

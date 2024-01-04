@@ -113,7 +113,7 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
  * `ft_malloc_with_tracking`.
  * - Configure les redirections d'entrée et de sortie pour chaque nœud avec
  * `setup_input_redirection` et `setup_output_redirection`.
- * - Vérifie la présence de la commande dans le lexème en utilisant `has_cmd`.
+ * - Vérifie la présence de la commande dans le lexème en utilisant `is_command_present`.
  * - Ajoute le nœud configuré à la fin de la liste existante en utilisant
  * `insert_command_at_end_of_linked_list`.
  * Répète ce processus jusqu'à avoir parcouru tous les lexèmes ou atteint un
@@ -153,7 +153,7 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
  * - ft_malloc_with_tracking pour l'allocation mémoire avec suivi.
  * - setup_input_redirection et setup_output_redirection pour configurer les
  * redirections.
- * - has_cmd pour vérifier la présence de commandes.
+ * - is_command_present pour vérifier la présence de commandes.
  * - insert_command_at_end_of_linked_list pour ajouter un nœud à la liste.
  *
  * @graphe_de_flux:
@@ -178,7 +178,7 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
  * sans rien  setup_output_redirection)
  * faire       |
  *             v
- *           Vérifier si le lexème contient une commande (has_cmd)
+ *           Vérifier si le lexème contient une commande (is_command_present)
  *             |
  *             v
  *           Ajouter le nœud à la liste (insert_command_at_end_of_linked_list)
@@ -212,7 +212,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 		setup_input_redirection(node, data->lexer_list, data);
 		setup_output_redirection(node, data->lexer_list);
 		node->next = NULL;
-		node->has_cmd = is_token_type_cmd(data->lexer_list);
+		node->is_command_present = is_token_type_cmd(data->lexer_list);
 		utils->node = insert_command_at_end_of_linked_list(utils->node, node);
 		while (data->lexer_list && data->lexer_list->token != PIPE)
 			data->lexer_list = data->lexer_list->next;

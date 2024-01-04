@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int	ft_strlen4(char *s)
+int	ft_string_length(char *s)
 {
 	int	indx;
 
@@ -13,7 +13,7 @@ int	ft_strlen4(char *s)
 	return (indx);
 }
 
-char	*ft_strjoin4(char *s1, char *s2, t_data *data)
+char	*ft_strjoin_with_memory_tracking(char *s1, char *s2, t_data *data)
 {
 	char	*s3;
 	int		i;
@@ -23,7 +23,8 @@ char	*ft_strjoin4(char *s1, char *s2, t_data *data)
 	j = -1;
 	if (!s1 || !s2 || !s1[0] || !s2[0])
 		return (NULL);
-	s3 = ft_malloc_with_tracking(data, sizeof(char) * (ft_strlen4(s1) + ft_strlen4(s2) + 1));
+	s3 = ft_malloc_with_tracking(\
+	data, sizeof(char) * (ft_string_length(s1) + ft_string_length(s2) + 1));
 	if (!s3)
 		return (NULL);
 	while (s1 && s1[++j])
@@ -35,7 +36,7 @@ char	*ft_strjoin4(char *s1, char *s2, t_data *data)
 	return (s3);
 }
 
-size_t	ft_strlen_eguale(char *str)
+size_t	ft_str_len_until_equal(char *str)
 {
 	size_t	indx;
 
@@ -49,7 +50,8 @@ size_t	ft_strlen_eguale(char *str)
 	return (indx);
 }
 
-char	*ft_strjoin_2(char *s1, char *s2, t_data *data)
+char	*ft_strjoin_free_arg2_with_memory_tracking(\
+char *s1, char *s2, t_data *data)
 {
 	int		i;
 	int		j;
@@ -62,7 +64,7 @@ char	*ft_strjoin_2(char *s1, char *s2, t_data *data)
 	if (!s2)
 		return (NULL);
 	str = (char *)ft_malloc_with_tracking(data, sizeof(char)
-			*(ft_strlen4(s1) + ft_strlen4(s2) + 1));
+			*(ft_string_length(s1) + ft_string_length(s2) + 1));
 	if (str == NULL)
 		return (NULL);
 	while (s1[++i] != '\0')

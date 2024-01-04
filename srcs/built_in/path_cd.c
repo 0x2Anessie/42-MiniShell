@@ -9,9 +9,9 @@
 // 	tmp = data->utils->env_lst;
 // 	while (tmp)
 // 	{
-// 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen_eguale("PWD=")) == 0)
+// 		if (ft_strncmp(tmp->content, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
 // 		{
-// 			s1 = ft_strjoin_2("PWD=", str);
+// 			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_CURRENT_WORKING_DIR, str);
 // 			tmp->content = create_new_var(s1);
 // 			return (1);
 // 		}
@@ -29,9 +29,9 @@
 // 	while (tmp)
 // 	{
 // 		if (ft_strncmp(tmp->content, "OLDPWD=",
-// 				ft_strlen_eguale("OLDPWD=")) == 0)
+// 				ft_str_len_until_equal("OLDPWD=")) == 0)
 // 		{
-// 			s1 = ft_strjoin_2("OLDPWD=", str);
+// 			s1 = ft_strjoin_free_arg2_with_memory_tracking("OLDPWD=", str);
 // 			tmp->content = create_new_var(s1);
 // 			return (1);
 // 		}
@@ -55,9 +55,9 @@ int	verif_oldpwd_export(char *str, t_data *data)
 	tmp = data->utils->export_lst;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->value, "OLDPWD=", ft_strlen_eguale("OLDPWD=")) == 0)
+		if (ft_strncmp(tmp->value, ENV_SET_OLDPWD, ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)
 		{
-			s1 = ft_strjoin_2("OLDPWD=", str, data);
+			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_OLDPWD, str, data);
 			tmp->value = create_new_var(s1, data);
 			tmp->value = case_egale(s1, data);
 			return (1);
@@ -76,9 +76,9 @@ int	verif_pwd_export(char *str, t_data *data)
 	tmp = data->utils->export_lst;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->value, "PWD=", ft_strlen_eguale("PWD=")) == 0)
+		if (ft_strncmp(tmp->value, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
 		{
-			s1 = ft_strjoin_2("PWD=", str, data);
+			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_CURRENT_WORKING_DIR, str, data);
 			tmp->value = create_new_var(s1, data);
 			tmp->value = case_egale(s1, data);
 			return (1);

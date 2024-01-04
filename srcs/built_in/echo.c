@@ -27,7 +27,7 @@ void	display_echo_arg(char **tab, int i, t_data *data)
 	i = i + 2;
 	if (data->utils->node->output_fd > 0)
 		write_echo_fd(tab, i, data);
-	else if (!data->utils->node->out_fail)
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		while (tab[i])
 		{
@@ -72,7 +72,7 @@ void	process_echo(char **tab, int i, t_data *data)
 	}
 	else
 		procc_in_echo_std(tab, i, data);
-	globi = 0;
+	g_signal_received = 0;
 }
 
 /*
@@ -85,7 +85,7 @@ void	procc_in_echo_std(char **tab, int i, t_data *data)
 	int	j;
 
 	j = ZERO_INIT;
-	if (!data->utils->node->out_fail)
+	if (!data->utils->node->output_redirection_error_id)
 	{
 		while (tab[i])
 		{

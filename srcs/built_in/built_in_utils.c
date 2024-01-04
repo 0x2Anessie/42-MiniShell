@@ -42,7 +42,7 @@ char	*join_them(char *str, int i, int flag, t_data *data)
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
 		str = ft_substr(data, str, 0, (size_t)i + 1);
 		tmp = add_quotes_string(tmp, data);
-		str = ft_strjoin4(str, tmp, data);
+		str = ft_strjoin_with_memory_tracking(str, tmp, data);
 	}
 	else if (flag == 1)
 	{
@@ -50,7 +50,7 @@ char	*join_them(char *str, int i, int flag, t_data *data)
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
 		str = ft_substr(data, str, 0, (size_t)i + 1);
 		tmp = add_quotes_string(tmp, data);
-		str = ft_strjoin4(str, tmp, data);
+		str = ft_strjoin_with_memory_tracking(str, tmp, data);
 	}
 	return (str);
 }

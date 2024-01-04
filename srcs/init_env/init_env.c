@@ -36,7 +36,7 @@ t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final)
 	char	*tmp;
 
 	tmp = getcwd(NULL, 0);
-	tmp = ft_strjoin_2(OLDPWD_PREFIX, tmp, data);
+	tmp = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_OLDPWD, tmp, data);
 	malloc_no_env_initial_node(data, tmp, &final);
 	return (final);
 }

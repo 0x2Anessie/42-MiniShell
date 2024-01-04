@@ -417,7 +417,7 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 		{
 			waitpid(pid[index], wstatus, 0);
 			if (WIFEXITED(*wstatus))
-				globi = WEXITSTATUS(*wstatus);
+				g_signal_received = WEXITSTATUS(*wstatus);
 		}
 		index++;
 		nb_node--;

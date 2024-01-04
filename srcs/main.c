@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2023/12/22 05:16:47 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/02 00:21:50 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-unsigned int	globi = ZERO_INIT;
+unsigned int	g_signal_received = ZERO_INIT;
 
 /**
  * @nom: init_data
@@ -325,7 +325,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		ft_init_lexer_process(data);
 		if (!ft_parser(data))
 		{
-			globi = 2;
+			g_signal_received = 2;
 			return ;
 		}
 		tmp_lex = data->lexer_list;

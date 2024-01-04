@@ -13,7 +13,7 @@ char	*check_unset(t_lexer *lexer_lst)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp(tmp->word, "unset", 5))
+		if (!ft_strncmp(tmp->word, CMD_UNSET_ENV_VAR, 5))
 		{
 			if (tmp->next && tmp->next->word && !(tmp->next->word[0] == '\0'))
 			{
@@ -42,7 +42,7 @@ int	check_env(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strcmp(tmp->word, "env"))
+		if (!ft_strcmp(tmp->word, CMD_ENV_VARS))
 		{
 			display_env(data);
 			return (1);
@@ -73,7 +73,7 @@ void	display_env(t_data *data)
 			current = current->next;
 		}
 	}
-	else if (!data->utils->node->out_fail)
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		while (current)
 		{
@@ -101,6 +101,6 @@ int	get_unset(t_lexer *lexer_lst, t_data *data)
 			remove_node_export(data->utils->var, data);
 		}
 	}
-	globi = 0;
+	g_signal_received = 0;
 	return (0);
 }

@@ -10,7 +10,7 @@ int	get_pwd(char *tab, t_data *data)
 	char	**str;
 
 	str = ft_split_mini(tab, ' ', data);
-	if (tab && strcmp(str[0], "pwd") == 0)
+	if (tab && strcmp(str[0], CMD_PRINT_DIRCT) == 0)
 	{
 		if (str[1] == NULL)
 			display_pwd(data);
@@ -33,7 +33,7 @@ void	display_pwd(t_data *data)
 	{
 		ft_printf("error retrieving current directory: " \
 		"No such file or directory\n");
-		globi = 1;
+		g_signal_received = 1;
 		free(tmp);
 		return ;
 	}
@@ -42,11 +42,11 @@ void	display_pwd(t_data *data)
 		ft_write_fd(tmp, data->utils->node->output_fd);
 		ft_write_fd("\n", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->out_fail)
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		printf("%s\n", tmp);
 	}
-	globi = 0;
+	g_signal_received = 0;
 	free(tmp);
 }
 
@@ -57,11 +57,11 @@ void	display_pwd_error(t_data *data)
 	{
 		ft_write_fd("pwd: too many arguments", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->out_fail)
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		printf("pwd: too many arguments");
 	}
-	globi = 1;
+	g_signal_received = 1;
 }
 
 /*
@@ -76,7 +76,7 @@ void	find_old_pwd(t_env *env, t_data *data)
 	tmp = env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, "OLDPWD", 6))
+		if (!ft_strncmp(tmp->content, ENV_PREVIOUS_WORKING_DIR, 6))
 		{
 			change_directory_for_oldpwd(env, data);
 			break ;

@@ -217,7 +217,7 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
-	data->utils->error = convert_int_to_string_with_tracking(data, globi);
+	data->utils->error = convert_int_to_string_with_tracking(data, g_signal_received);
 	exp->str = allocate_memory_for_expanded_word(expnd, st, data->nv, data);
 	if (!exp->str)
 		return ;

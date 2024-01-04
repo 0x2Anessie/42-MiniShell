@@ -20,7 +20,7 @@ void	print_export(t_export *export_lst, t_data *data)
 			ft_write_fd(current->value, data->utils->node->output_fd);
 			ft_write_fd("\n", data->utils->node->output_fd);
 		}
-		else if (!data->utils->node->out_fail)
+		else if (!data->utils->node->output_redirection_error_id)
 		{
 			printf("declare -x ");
 			printf("%s\n", current->value);
@@ -28,7 +28,7 @@ void	print_export(t_export *export_lst, t_data *data)
 		current = current->next;
 	}
 	current = export_lst;
-	globi = 0;
+	g_signal_received = 0;
 }
 
 //check la syntaxe de chaque mot grace a check_parsing_export 1 a 1
@@ -106,13 +106,13 @@ int	export_things(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->word, "export") && !(tmp->next && tmp->next->word
+		if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->word
 				&& !(tmp->next->word[0] == '\0')))
 			print_export(data->utils->export_lst, data);
-		else if (!ft_strcmp(tmp->word, "export") && tmp->next
+		else if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && tmp->next
 			&& tmp->next->token != ARG)
 			print_export(data->utils->export_lst, data);
-		else if ((ft_strcmp(tmp->word, "export") == 0) && (tmp->next
+		else if ((ft_strcmp(tmp->word, CMD_EXPORT_VARS) == 0) && (tmp->next
 				&& tmp->next->token == ARG))
 		{
 			tmp = tmp->next;

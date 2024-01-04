@@ -7,8 +7,8 @@ int	change_directory_for_pwd(t_env *tmp, t_data *data)
 	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp, data) + 4);
 	if (chdir(get_pwd_env(tmp, data) + 4) == -1)
 	{
-		perror("chdir");
-		globi = 1;
+		perror(CMD_CHANGE_DIRECTORY);
+		g_signal_received = 1;
 		return (0);
 	}
 	return (1);
@@ -38,9 +38,10 @@ char	*create_new_var(char *str, t_data *data)
 	}
 	if (flag)
 	{
-		tmp = ft_substr(data, str, (unsigned int)i + 1, (size_t)ft_strlen(str));
+		tmp = ft_substr(\
+		data, str, (unsigned int)i + 1, (size_t)ft_strlen(str));
 		str = ft_substr(data, str, 0, (size_t)i + 1);
-		str = ft_strjoin4(str, tmp, data);
+		str = ft_strjoin_with_memory_tracking(str, tmp, data);
 	}
 	return (str);
 }
@@ -62,7 +63,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	env = data->utils->env_lst;
 	if (lexer_lst)
 	{
-		if ((ft_strcmp(lexer_lst->word, "cd") == 0)
+		if ((ft_strcmp(lexer_lst->word, CMD_CHANG_DIRCT) == 0)
 			&& lexer_lst->next == NULL)
 		{
 			if (change_directory_for_home(env, data))
@@ -84,7 +85,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 	if (lexer_lst->next)
 	{
 		write (STDERR_FILENO, "bash: cd: trop d'arguments\n", 27);
-		globi = 1;
+		g_signal_received = 1;
 		return (0);
 	}
 	return (1);
@@ -96,7 +97,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 */
 int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
-	if (((ft_strcmp(data->lexer_list->word, "cd") == 0)
+	if (((ft_strcmp(data->lexer_list->word, CMD_CHANG_DIRCT) == 0)
 			&& data->lexer_list->next->word))
 	{
 		if (data->lexer_list->next)
@@ -115,7 +116,7 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);
-			globi = 0;
+			g_signal_received = 0;
 		}
 	}
 	return (1);

@@ -10,7 +10,7 @@ int	ft_write_fd(char *str, int fd)
 	if (write (fd, str, i) == FAIL)
 	{
 		ft_printf(ERR_WRIT_NO_SPAC_LEFT_DEVC);
-		globi = 1;
+		g_signal_received = 1;
 		return (1);
 	}
 	return (0);

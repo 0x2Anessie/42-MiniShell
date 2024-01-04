@@ -74,7 +74,7 @@ void	ctrl_c_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	globi = exit_stat_ctrl_c_sigint();
+	g_signal_received = exit_stat_ctrl_c_sigint();
 }
 
 /**
@@ -150,7 +150,7 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
 	ft_putchar('\n');
 	data->utils->is_here_doc = 0;
 	data->utils->can_run = 0;
-	globi = exit_stat_ctrl_c_sigint();
+	g_signal_received = exit_stat_ctrl_c_sigint();
 }
 
 /**

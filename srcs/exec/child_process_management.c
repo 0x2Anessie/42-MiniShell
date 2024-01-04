@@ -51,7 +51,7 @@ t_data *data, int *fd, int count, t_exec utils)
         if (is_execve_failed(command_full_path, arguments, utils.env))
             perror(data->lexer_list->word);
     }
-	globi = ERR_CODE_CMD_NOT_FOUND;
+	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(data->utils, fd, data);
 }
 

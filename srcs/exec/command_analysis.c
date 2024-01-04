@@ -37,7 +37,7 @@
  * @exemples_utilisation:
  * - is_exact_command_match(lexeme, "exit", 4) retournera 1 si lexeme->word est
  * "exit".
- * - is_exact_command_match(lexeme, "echo", 4) retournera 0 si lexeme->word est
+ * - is_exact_command_match(lexeme, CMD_ECHO, 4) retournera 0 si lexeme->word est
  * "echoo".
  *
  * @dependances:
@@ -103,7 +103,7 @@ t_lexer *lexer_lst, const char *command, int command_length)
  *
  * @exemples_utilisation:
  * t_lexer lexer;
- * lexer.word = "echo";
+ * lexer.word = CMD_ECHO;
  * int result = is_built_in_command(&lexer);
  * -------> Résultat attendu : 1
  *
@@ -164,7 +164,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
  * La fonction 'should_continue_execution' évalue plusieurs conditions pour
  * décider si le processus d'exécution doit se poursuivre. Elle vérifie
  * l'existence et l'état de 'node' dans data->utils', si 'node' a une commande 
- * à exécuter ('has_cmd'), et si 'can_run' dans data->utils' est vrai.
+ * à exécuter ('is_command_present'), et si 'can_run' dans data->utils' est vrai.
  * De plus, elle incrémente la valeur pointée par 'y[1]' et vérifie si elle est
  * supérieure ou égale à 0.
  *   
@@ -197,7 +197,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
  *   Début
  *     |
  *     v
- *  data->utils->node existe etdata->utils->node->has_cmd == 1 ?
+ *  data->utils->node existe etdata->utils->node->is_command_present == 1 ?
  *  /        \
  * VRAI      FAUX
  *  |         \
@@ -214,7 +214,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
 int	should_continue_execution(t_data *data, int *y)
 {
 	return (data->utils->node \
-	&& data->utils->node->has_cmd == 1 && ++y[1] >= 0 && data->utils->can_run);/*         ---> condition non intelligible --> fonction         */
+	&& data->utils->node->is_command_present == 1 && ++y[1] >= 0 && data->utils->can_run);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**
@@ -231,7 +231,7 @@ int	should_continue_execution(t_data *data, int *y)
  * - La validité de l'entrée ('input_fd') du nœud, qui ne doit pas être égale à
  * INVALID_PIPE.
  * - La validité de la sortie en cas d'échec ('out_fail'), qui ne doit pas être
- * égale à OUT_FAIL.
+ * égale à OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE.
  *   
  * Pourquoi ces critères sont-ils importants ?
  * - Gestion des erreurs de redirection : Ces vérifications permettent de
@@ -249,7 +249,7 @@ int	should_continue_execution(t_data *data, int *y)
  * - Si 'node' est NULL, la fonction retournera 0, car elle ne peut pas
  * vérifier la validité des redirections.
  * - La fonction se repose sur les valeurs prédéfinies de INVALID_PIPE et
- * OUT_FAIL pour évaluer la validité.
+ * OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE pour évaluer la validité.
  *
  * @exemples_utilisation:
  * t_node node;
@@ -264,7 +264,7 @@ int	should_continue_execution(t_data *data, int *y)
  *   Début
  *     |
  *     v
- *   node->input_fd != INVALID_PIPE et node->out_fail != OUT_FAIL ?
+ *   node->input_fd != INVALID_PIPE et node->out_fail != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE ?
  *  /        \
  * VRAI      FAUX
  *  |         \
@@ -274,7 +274,7 @@ int	should_continue_execution(t_data *data, int *y)
  */
 int	check_redirection_validity_in_node(t_node *node)
 {
-	return (node->input_fd != INVALID_PIPE && node->out_fail != OUT_FAIL);/*         ---> condition non intelligible --> fonction         */
+	return (node->input_fd != INVALID_PIPE && node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**

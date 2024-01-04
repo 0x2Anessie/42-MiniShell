@@ -61,10 +61,10 @@ void	simulate_echo(char **tab, t_data *data)
 	i = ZERO_INIT;
 	if (tab && tab[i] && tab[i + 1])
 		ncount = check_n(tab[i + 1]);
-	if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], "echo")
+	if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
 		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')
 		process_echo(tab, ++i, data);
-	else if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], "echo")
+	else if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
 		&& ncount)
 		display_echo_arg(tab, i, data);
 	else

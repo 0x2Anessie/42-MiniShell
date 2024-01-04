@@ -10,7 +10,7 @@
 # include <signal.h>
 # include <stdbool.h>
 
-/*  MACRO ACTUELLEMENT UTILISER  */
+/* STATUS AND FLAG DEFINITIONS */
 # define FAIL -1
 # define TRUE 1
 # define FALSE 0
@@ -36,36 +36,44 @@
 # define EXPANSION_REQUIRED 1
 # define NO_ACTION_REQUIRED 0
 # define INVALID_PIPE -2
-# define OUT_FAIL 2
-# define TAB '\t'  // Tabulation horizontale
-# define SHIFT_OUT 14  // SO (Shift Out)
-# define TOKEN_IS_COMMAND 1
-# define TOKEN_IS_PIPE 0
-# define INFINITY_LOOP 1
-# define PERM_O_RW_G_R_OT_R 0644
-# define ERR_HEREDOC_EOF_WARNING "bash: warning: here-document delimited by \
-end-of-file (wanted `EOF')\n"
-# define HEREDOC_TEMP_FILE "here_doc.tmp"
-# define PERM_RWX_ALL 0777
-# define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
-# define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
-# define ERR_AMB_REDIRECT "bash: ambiguous redirect\n"
-# define OUT_FILE "Outfile"
+
+# define OUTPUT_TARGET_ACCESS_ERROR_CODE 1
+# define OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE 2
 # define CMD_NOT_FOUND 0
 # define CMD_FOUND 1
 # define SIGNAL_EXIT_OFFSET 128
+
+/* FILE AND STREAM CONSTANTS */
+# define TAB '\t'  // Tabulation horizontale
+# define SHIFT_OUT 14  // SO (Shift Out)
+# define HEREDOC_TEMP_FILE "here_doc.tmp"
+# define PERM_RWX_ALL 0777
+# define PERM_O_RW_G_R_OT_R 0644
+# define OUT_FILE "Outfile"
+
+/* ERROR MESSAGES AND SIGNALS */
+# define ERR_HEREDOC_EOF_WARNING "bash: warning: here-document delimited by \
+end-of-file (wanted `EOF')\n"
+# define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
+# define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
+# define ERR_AMB_REDIRECT "bash: ambiguous redirect\n"
+# define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
+# define WRITE_ERROR_MSG "write error"
+# define QUIT_MESSAGE "Quit\n"
 # define CTRL_C_SIGINT SIGINT
 # define CTRL_BACKSLSH SIGQUIT
 # define IGNORE_SIG_ACTION SIG_IGN
+
+/* PIPE AND PROCESS CONSTANTS */
 # define PIPE_READ_END 0
 # define PIPE_WRITE_END 1
-# define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
-# define WRITE_ERROR_MSG "write error"
-# define OLDPWD_PREFIX "OLDPWD="
-# define QUIT_MESSAGE "Quit\n"
-# define PWD_PREFIX "PWD="
-# define HOME_PREFIX "HOME="
-# define PATH_PREFIX "PATH="
+
+/* SHELL COMMAND AND TOKEN CONSTANTS */
+# define TOKEN_IS_COMMAND 1
+# define TOKEN_IS_PIPE 0
+# define INFINITY_LOOP 1
+
+/* STRING AND CHARACTER CONSTANTS */
 # define FT_NEWLINE "\n"
 # define IS_SEPARATOR 1
 # define NOT_SEPARATOR 0
@@ -88,6 +96,19 @@ end-of-file (wanted `EOF')\n"
 # define CMD_EXPORT_VARS "export"
 # define CMD_CHANG_DIRCT "cd"
 # define CMD_PRINT_DIRCT "pwd"
+# define CMD_CHANGE_DIRECTORY "chdir"
+# define CMD_UNSET_ENV_VAR "unset"
+
+/* ENVIRONMENT VARIABLE SET */
+# define ENV_SET_CURRENT_WORKING_DIR "PWD="
+# define ENV_SET_USER_HOME_DIR "HOME="
+# define ENV_SET_OLDPWD "OLDPWD="
+# define ENV_SET_PATH_PREFIX "PATH="
+
+/* ENVIRONMENT VARIABLE NAMES */
+# define ENV_PREVIOUS_WORKING_DIR "OLDPDW"
+# define ENV_CURRENT_WORKING_DIR "PWD"
+# define ENV_USER_HOME_DIR "HOME"
 
 # define WELCOME_MSG "\
 \n\033[93m\
@@ -130,45 +151,45 @@ typedef enum s_token
 	PIPE,
 }			t_token;
 
-typedef struct s_ListNode
+typedef struct s_list_node
 {
 	char				*data;
-	struct s_ListNode	*next;
-}						t_ListNode;
+	struct s_list_node	*next;
+}						t_list_node;
 
 typedef struct s_node
 {
 	int				input_fd;
 	int				output_fd;
-	char			*here_doc;
+	char			*heredoc_tmp_fullname;
 	int				here_doc_fd;
 	int				index;
-	int				has_cmd;
-	int				has_out;
-	int				in_fail;
-	int				out_fail;
+	int				is_command_present;
+	int				is_output_redirection_feasible;
+	int				is_input_redirection_failed;
+	int				output_redirection_error_id;
 	struct s_node	*next;
 }			t_node;
 
 typedef struct s_env
 {
-	char			*content;
+	char			*content;/*     Change name    */
 	struct s_env	*next;
 }				t_env;
 
 typedef struct s_stringdata
 {
-	int		len;
-	int		i;
-	int		j;
-	int		is_escaped;
+	int		len;/*     Change name    */
+	int		i;/*     Change name    */
+	int		j;/*     Change name    */
+	int		is_escaped;/*     Change name    */
 }			t_stringdata;
 
 typedef struct s_lexer
 {
-	char			*word;
+	char			*word;/*     Change name    */
 	t_token			token;
-	int				i;
+	int				i;/*     Change name    */
 	int				nb_words;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
@@ -179,17 +200,17 @@ typedef struct s_quote
 	int	singl_quot_status;
 	int	doubl_quot_status;
 	int	singl_quot_start_status;
-	int	found;
+	int	found;/*     Change name    */
 }				t_quote;
 
 typedef struct s_expand
 {
-	char	*str;
-	int		len;
-	int		found;
-	int		need_expand;
-	int		quote;
-	int		i;
+	char	*str;/*     Change name    */
+	int		len;/*     Change name    */
+	int		found;/*     Change name    */
+	int		need_expand;/*     Change name    */
+	int		quote;/*     Change name    */
+	int		i;/*     Change name    */
 }				t_expand;
 
 typedef struct s_export
@@ -200,30 +221,30 @@ typedef struct s_export
 
 typedef struct s_exec
 {
-	int				can_run;
-	char			*hd;
-	int				dupin;
+	int				can_run;/*     Change name    */
+	char			*hd;/*     Change name    */
+	int				dupin;/*     Change name    */
 	int				is_here_doc;
 	char			**env;
-	int				err;
-	t_env			*env_lst;
-	int				nb_cmd;
-	int				nb_node;
-	char			*error;
-	int				ret;
+	int				err;/*     Change name    */
+	t_env			*env_lst;/*     Change name    */
+	int				nb_cmd;/*     Change name    */
+	int				nb_node;/*     Change name    */
+	char			*error;/*     Change name    */
+	int				ret;/*     Change name    */
 	int				previous_fd;
-	char			*var;
-	t_node			*head_node_lst;
-	t_lexer			*head_lexer_lst;
-	t_export		*export_lst;
-	t_export		*head_export_lst;
-	t_env			*head_env_lst;
+	char			*var;/*     Change name    */
+	t_node			*head_node_lst;/*     Change name    */
+	t_lexer			*head_lexer_lst;/*     Change name    */
+	t_export		*export_lst;/*     Change name    */
+	t_export		*head_export_lst;/*     Change name    */
+	t_env			*head_env_lst;/*     Change name    */
 	struct s_node	*node;
 	struct s_exec	*next;
 	struct s_exec	*prev;
 }				t_exec;
 
-typedef struct s_memory
+typedef struct s_memory/*     Change name    */
 {
 	void			*add;
 	struct s_memory	*next;
@@ -231,47 +252,48 @@ typedef struct s_memory
 
 typedef struct s_data
 {
-	char		*test;
-	int			x;
-	int			squote;
-	int			dquote;
-	int			ac;
+	char		*test;/*     Change name    */
+	int			x;/*     Change name    */
+	int			squote;/*     Change name    */
+	int			dquote;/*     Change name    */
+	int			ac;/*     Change name    */
 	int			nb_mots;
 	char		**av;
 	char		**env;
-	char		**nv;
-	char		*line;
-	int			index;
-	char		**allcommand;
-	char		**envpaths;
-	char		*finalpath;
-	t_exec		*utils;
+	char		**nv;/*     Change name    */
+	char		*line;/*     Change name    */
+	int			index;/*     Change name    */
+	char		**allcommand;/*     Change name    */
+	char		**envpaths;/*     Change name    */
+	char		*finalpath;/*     Change name    */
+	t_exec		*utils;/*     Change name    */
 	t_memory	*trash_memory;
 	t_lexer		*lexer_list;
 	t_quote		*quote;
-	t_ListNode	*envp;
+	t_list_node	*envp;
 	t_expand	*expand;
 
 }			t_data;
 
-extern unsigned int	globi;
+extern unsigned int	g_signal_received;
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                  MAIN                                  */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                    MAIN                                   */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de main.c */
 void		prompt_loop(char *tmp, t_data *data, char **env);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                BUILT_IN                                */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                  BUILT_IN                                 */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de built_in_utils_2.c */
-int			ft_strlen4(char *s);
-char		*ft_strjoin4(char *s1, char *s2, t_data *data);
-size_t		ft_strlen_eguale(char *str);
-char		*ft_strjoin_2(char *s1, char *s2, t_data *data);
+int			ft_string_length(char *s);
+char		*ft_strjoin_with_memory_tracking(char *s1, char *s2, t_data *data);
+size_t		ft_str_len_until_equal(char *str);
+char		*ft_strjoin_free_arg2_with_memory_tracking(\
+char *s1, char *s2, t_data *data);
 
 /* Déclarations des fonctions de built_in_utils.c */
 char		*ft_strcpy(char *dest, const char *src);
@@ -326,7 +348,8 @@ void		lst_add_back(t_exec *utils, char *str, t_data *data);
 void		remove_node(char *var, t_data *data);
 void		remove_env_node(t_env *current, t_env *prev, t_data *data);
 void		remove_node_export(char *var, t_data *data);
-void		remove_export_node(t_export *current, t_export *prev, t_data *data);
+void		remove_export_node(\
+t_export *current, t_export *prev, t_data *data);
 
 /* Déclarations des fonctions de env.c */
 char		*check_unset(t_lexer *lexer_lst);
@@ -399,18 +422,24 @@ char		*get_old_pwd(t_env	*tmp, t_data *data);
 void		execute_lexer_command_with_args(t_data *data);
 void		ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data *data);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                  EXEC                                  */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                    EXEC                                   */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 void		initialize_pid_array_to_zero(pid_t *pid, int nb_node);
 void		init_fd_and_status_vars(int *fd, int *y, int *wstatus);
-pid_t		create_and_execute_child_process(t_data *data, int *fd, int count, t_exec utils);
+pid_t		create_and_execute_child_process(\
+t_data *data, int *fd, int count, t_exec utils);
+
 char		**build_arg_array_from_lexer(t_data *data);
-int			check_if_cmd_full_path_exec_is_valid(t_lexer *lexer, t_exec utils, t_data *data);
+int			check_if_cmd_full_path_exec_is_valid(\
+t_lexer *lexer, t_exec utils, t_data *data);
+
 char		*find_command_full_path(char *cmd, t_env *env_lst, t_data *data);
 char		**extract_paths_from_env(t_env *env_lst, t_data *data);
-void		configure_stdout_redirection_for_command(t_exec utils, int *fd, int count);
+void		configure_stdout_redirection_for_command(\
+t_exec utils, int *fd, int count);
+
 void		configure_stdin_redirection_for_command(t_exec utils, int count);
 int			count_args_until_pipe_for_cmd_array(t_lexer *lexer_list);
 t_lexer		*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list);
@@ -418,7 +447,8 @@ int			close_file_descriptors_in_linked_list(t_data *data);
 int			closes_ends_of_pipe(int *fd);
 int			check_for_slash_path_delimiter(t_lexer *lexer);
 //int			ft_exit_child(t_exec *utils, int *fd);
-void		exec_cmd_with_redirection_and_builtins(t_data *data, int *fd, int count, t_exec utils);
+void		exec_cmd_with_redirection_and_builtins(\
+t_data *data, int *fd, int count, t_exec utils);
 
 /* Déclarations des fonctions de command_analysis.c */
 int			is_exact_command_match(\
@@ -432,15 +462,17 @@ t_lexer		*find_next_command_in_lexer(t_lexer *lexer_list);
 /* Déclarations des fonctions de command_execution.c */
 void		ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data);
 void		close_fds_if_needed(int *fd, int previous_fd);
-int			manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y);
+int			manage_exec_linked_cmd_sequence(\
+int *fd, pid_t *pid, t_data *data, int *y);
+
 void		wait_and_process_child_statuses(\
 pid_t *pid, int *wstatus, int nb_node, t_data *data);
 
 void		manage_execution_resources(t_data *data);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                EXPANDER                                */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                  EXPANDER                                 */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /*   Déclarations des fonctions de dual_quote_status_utils.c   */
 int			is_both_quotes_off(t_quote *state);
@@ -566,9 +598,9 @@ int			is_char_cmd_separator(char c);
 int			is_end_of_command_word(char *cmd, int i, t_quote *state);
 int			count_string_array_elements(char **arr);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                  FREE                                  */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                     FREE                                  */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /*   Déclarations des fonctions de free.c  */
 int			ft_exit_child(t_exec *utils, int *fd, t_data *data);
@@ -577,9 +609,9 @@ void		*ft_malloc_with_tracking(t_data *data, size_t size);
 void		ft_free(void *add, t_data *date);
 void		ft_free_all(t_data *data);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                INIT_ENV                                */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                  INIT_ENV                                 */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /*   Déclarations des fonctions de init_env_list.c  */
 int			env_size(char **env);
@@ -592,9 +624,9 @@ void		malloc_no_env_initial_node(t_data *data, char *str, t_env **env);
 t_env		*init_env_list_with_pwd_if_empty(t_data *data, t_env *final);
 t_exec		*init_env(t_data *data, char **env);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                               INIT_EXEC                                */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                 INIT_EXEC                                 */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de file_flags.c */
 int			out_to_file_flags(void);
@@ -615,14 +647,17 @@ int			nb_cmd(t_lexer *lexer_list);
 int			nb_node(t_lexer *lexer_list);
 
 /* Déclarations des fonctions de init_exec_utils.c */
-t_node		*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new);
+t_node		*insert_command_at_end_of_linked_list(\
+t_node *node_lst, t_node *new);
+
 void		build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils);
 void		ft_init_exec(t_data *data);
 
 /* Déclarations des fonctions de init_export.c */
 void		sort_export_lst(t_export **head_export);
 t_export	*ft_new_export_node(t_data *data, t_export *new);
-t_export	*ft_buil_sorted_chained_list_env_var(t_data *data, t_export *export_lst);
+t_export	*ft_buil_sorted_chained_list_env_var(\
+t_data *data, t_export *export_lst);
 
 /* Déclarations des fonctions de init_fd.c */
 void		configure_here_doc_input(\
@@ -632,14 +667,14 @@ void		setup_input_redirection(\
 t_node *node, t_lexer *lexer_lst, t_data *data);
 
 void		append_output_redirection(\
-t_node *node, t_lexer *lex_lst, int *has_out);
+t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible);
 
 void		normal_output_redirection(t_node *node, t_lexer *lex_lst);
 void		setup_output_redirection(t_node *node, t_lexer *lexer_lst);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                  LEXER                                 */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                    LEXER                                  */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de lex.c */
 int			ft_write_fd(char *str, int fd);
@@ -666,9 +701,9 @@ void		ft_init_lexer_process(t_data *data);
 int			is_white_space(char c);
 // void		print_lex(t_data *data);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                 PARSER                                 */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                   PARSER                                  */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de parser_utils.c */
 size_t		ft_strlen3_mini(char const *s);
@@ -703,9 +738,9 @@ char		*parse_para(t_data *data, char *tmp);
 void		rm_para_quote(t_data *data);
 void		rm_para_quote2(t_data *data);
 
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
-/*                                 SIGNALS                                */
-/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-' */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
+/*                                   SIGNALS                                 */
+/* -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-' */
 
 /* Déclarations des fonctions de ctrl_c_signals.c */
 void		ctrl_c_handler(int sig);

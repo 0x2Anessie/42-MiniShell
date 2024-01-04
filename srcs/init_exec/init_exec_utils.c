@@ -13,7 +13,7 @@
  * - lexer_lst: t_lexer *lexer_lst, pointeur vers la liste de lexèmes actuelle.
  *
  * @fonctionnement:
- * - Examine l'état de `node->in_fail` pour vérifier si une erreur de
+ * - Examine l'état de `node->is_input_redirection_failed` pour vérifier si une erreur de
  * redirection a déjà été signalée.
  * - Si aucune erreur précédente n'a été signalée, utilise `perror` pour
  * afficher un message d'erreur lié au fichier spécifié dans le lexème.
@@ -55,7 +55,7 @@
  *     \-------------------->   - Vérifier si
  *                         une erreur de redirection
  *                            a déjà été signalée
- *                              (node->in_fail)
+ *                              (node->is_input_redirection_failed)
  *                              /             \
  *                            NON            OUI
  *                             |              |
@@ -74,7 +74,7 @@
  */
 void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 {
-	if (!node->in_fail)/*         ---> condition non intelligible --> fonction         */
+	if (!node->is_input_redirection_failed)/*         ---> condition non intelligible --> fonction         */
 	{
 		node->input_fd = -2;
 		perror(lexer_lst->next->word);

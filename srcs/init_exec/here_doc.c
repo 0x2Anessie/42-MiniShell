@@ -229,9 +229,9 @@ void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
 	data->utils->is_here_doc = 1;
 	handle_sig(data);
-	node->here_doc = HEREDOC_TEMP_FILE;
+	node->heredoc_tmp_fullname = HEREDOC_TEMP_FILE;
 	node->here_doc_fd = open(\
-	node->here_doc, heredoc_tmp_file_flags(), PERM_RWX_ALL);
+	node->heredoc_tmp_fullname, heredoc_tmp_file_flags(), PERM_RWX_ALL);
 	if (node->here_doc_fd < 0)
 		return ;
 	ft_read_input(node, lexer_lst, data);

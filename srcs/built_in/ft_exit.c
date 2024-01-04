@@ -57,7 +57,7 @@ void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *d
 	if (lex->next->next)
 	{
 		ft_printf("bash: exit: too many arguments\n");
-		globi = 1;
+		g_signal_received = 1;
 	}
 	else
 	{

@@ -15,11 +15,11 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-			ft_strlen_eguale(tmp->value))) == 0 \
-				&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value))))
+			ft_str_len_until_equal(tmp->value))) == 0 \
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))
 		{
 			if (verif_equal(str, '=')
-				&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value)))
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value)))
 			tmp->value = case_egale(str, data);
 			return (1);
 		}
@@ -55,9 +55,9 @@ int	verif_var_exist(t_exec *utils, char *str)
 	while (tmp)
 	{
 		if (tmp->content && !(ft_strncmp
-				(tmp->content, str, ft_strlen_eguale(tmp
-						->content))) && (ft_strlen_eguale
-				(str) == ft_strlen_eguale(tmp->content)))
+				(tmp->content, str, ft_str_len_until_equal(tmp
+						->content))) && (ft_str_len_until_equal
+				(str) == ft_str_len_until_equal(tmp->content)))
 		{
 			tmp->content = str;
 			tmp = utils->env_lst;
@@ -77,8 +77,8 @@ int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-		ft_strlen_eguale(tmp->value))) == 0 \
-		&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value))))
+		ft_str_len_until_equal(tmp->value))) == 0 \
+		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))
 		{
 			return (1);
 		}

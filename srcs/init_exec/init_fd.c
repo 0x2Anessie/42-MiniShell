@@ -1,5 +1,12 @@
 #include "../../include/minishell.h"
 
+bool is_here_doc_followed_by_delimiter(t_lexer *lexer_lst)
+{
+    return (lexer_lst && lexer_lst->token == HERE_DOC && 
+           lexer_lst->next && lexer_lst->next->token == DELIMITER);
+}
+
+
 /**
  * @nom: configure_here_doc_input
  *
@@ -88,8 +95,7 @@
  */
 void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
 {
-	if (lex_lst && lex_lst->token == HERE_DOC \
-	&& lex_lst->next->token == DELIMITER)/*         ---> condition non intelligible --> fonction         */
+	if (is_here_doc_followed_by_delimiter(lex_lst))
 	{
 		if (node->input_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			close (node->input_fd);
@@ -101,12 +107,24 @@ void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
 		}
 		else
 		{
-			node->input_fd = -2;
+			node->input_fd = INPUT_FD_REDIRECTION_FAIL;
 			unlink(node->heredoc_tmp_fullname);
 			perror(node->heredoc_tmp_fullname);
 		}
 	}
 }
+
+bool is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst)
+{
+    return (lexer_lst && lexer_lst->token == REDIRECT_IN && 
+           lexer_lst->next->token == FD);
+}
+
+bool is_next_word_existing_and_readable(t_lexer *lexer_lst)
+{
+    return (lexer_lst->next && lexer_lst->next->word && !access(lexer_lst->next->word, R_OK));
+}
+
 
 /**
  * @nom: setup_input_redirection
@@ -190,18 +208,17 @@ void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
  */
 void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	node->input_fd = -1;
+	node->input_fd = INPUT_FD_NOT_SET;
 	node->is_input_redirection_failed = 0;
 	while (lexer_lst && lexer_lst->token != PIPE)/*         ---> condition non intelligible --> fonction         */
 	{
-		if (lexer_lst && lexer_lst->token == REDIRECT_IN \
-		&& lexer_lst->next->token == FD)/*         ---> condition non intelligible --> fonction         */
+		if (is_input_redirection_followed_by_token_fd(lexer_lst))
 		{
 			if (node->input_fd > 0)/*         ---> condition non intelligible --> fonction         */
 				close(node->input_fd);
 			if (!lexer_lst->next->word)/*         ---> condition non intelligible --> fonction         */
 				node->is_input_redirection_failed = 1;
-			if (lexer_lst->next->word && !access(lexer_lst->next->word, R_OK))/*         ---> condition non intelligible --> fonction         */
+			if (is_next_word_existing_and_readable(lexer_lst))
 				node->input_fd = open(lexer_lst->next->word, O_RDONLY);
 			else
 				handle_redirect_input_error(node, lexer_lst);
@@ -210,6 +227,21 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 		lexer_lst = lexer_lst->next;
 	}
 }
+
+bool is_append_out_followed_by_fd_token(t_lexer *lex_lst)
+{
+    return (lex_lst && lex_lst->next && 
+           lex_lst->token == APPEND_OUT && 
+           lex_lst->next->token == FD);
+}
+
+bool is_output_append_redirection_error_detected(t_node *node, t_lexer *lex_lst)
+{
+    return (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && 
+           (node->output_fd == OUTPUT_FD_NOT_CONFIGURED || 
+            !access(lex_lst->next->word, F_OK)));
+}
+
 
 /**
  * @nom: append_output_redirection
@@ -308,8 +340,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
  */
 void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == APPEND_OUT \
-	&& lex_lst->next->token == FD)/*         ---> condition non intelligible --> fonction         */
+	if (is_append_out_followed_by_fd_token(lex_lst))
 	{
 		if (node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			close (node->output_fd);
@@ -321,11 +352,24 @@ void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *is_output_re
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
 			node->output_redirection_error_id = OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
 		}
-		if (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && (node->output_fd == -1
-				|| !access(lex_lst->next->word, F_OK)))/*         ---> condition non intelligible --> fonction         */
+		if (is_output_append_redirection_error_detected(node, lex_lst))
 			node->output_redirection_error_id = OUTPUT_TARGET_ACCESS_ERROR_CODE;
 		*is_output_redirection_feasible = 1;
 	}
+}
+
+bool is_redirect_out_followed_by_fd_token(t_lexer *lex_lst)
+{
+    return (lex_lst && lex_lst->next && 
+           lex_lst->token == REDIRECT_OUT && 
+           lex_lst->next->token == FD);
+}
+
+bool is_normal_output_redirection_error_detected(t_node *node, t_lexer *lex_lst)
+{
+    return (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && 
+           (node->output_fd == OUTPUT_FD_NOT_CONFIGURED || 
+            !access(lex_lst->next->word, W_OK)));
 }
 
 /**
@@ -421,8 +465,7 @@ void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *is_output_re
  */
 void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 {
-	if (lex_lst && lex_lst->next && lex_lst->token == REDIRECT_OUT \
-	&& lex_lst->next->token == FD)/*         ---> condition non intelligible --> fonction         */
+	if (is_redirect_out_followed_by_fd_token(lex_lst))
 	{
 		if (node->output_fd > 0)
 			close (node->output_fd);
@@ -434,12 +477,21 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
 			node->output_redirection_error_id = OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
 		}
-		if (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && (node->output_fd == -1
-				|| !access(lex_lst->next->word, W_OK)))/*         ---> condition non intelligible --> fonction         */
+		if (is_normal_output_redirection_error_detected(node, lex_lst))
 			node->output_redirection_error_id = OUTPUT_TARGET_ACCESS_ERROR_CODE;
 		node->is_output_redirection_feasible = 1;
 	}
 }
+
+bool is_output_redirection_error_detected(t_node *node)
+{
+    return (node->is_output_redirection_feasible && 
+           node->output_fd == OUTPUT_FD_NOT_CONFIGURED && 
+           node->input_fd != INPUT_FD_REDIRECTION_FAIL && 
+           node->output_redirection_error_id != \
+		   OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);
+}
+
 
 /**
  * @nom: setup_output_redirection
@@ -453,12 +505,13 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
  * - lex_lst: t_lexer *lex_lst, pointeur vers le début de la liste de lexèmes.
  *
  * @fonctionnement:
- * Initialise les champs de redirection de sortie du nœud (`is_output_redirection_feasible`, `out`, 
- * `output_redirection_error_id`). Parcourt la liste de lexèmes, appelant
- * `normal_output_redirection` et `append_output_redirection` pour chaque lexème.
- * Si une redirection est présente mais échoue, un message d'erreur est
- * généré et les indicateurs de redirection sont réinitialisés. La boucle se
- * poursuit jusqu'à la rencontre d'un token PIPE ou la fin de la liste.
+ * Initialise les champs de redirection de sortie du nœud
+ * (`is_output_redirection_feasible`, `out`, `output_redirection_error_id`).
+ * Parcourt la liste de lexèmes, appelant `normal_output_redirection` et
+ * `append_output_redirection` pour chaque lexème. Si une redirection est
+ * présente mais échoue, un message d'erreur est généré et les indicateurs de
+ * redirection sont réinitialisés. La boucle se poursuit jusqu'à la rencontre
+ * d'un token PIPE ou la fin de la liste.
  * - `normal_output_redirection` gère les redirections de sortie normales.
  * - `append_output_redirection` gère les redirections de sortie de type append.
  *
@@ -536,14 +589,13 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 {
 	node->is_output_redirection_feasible = 0;
-	node->output_fd = -1;
+	node->output_fd = OUTPUT_FD_NOT_CONFIGURED;
 	node->output_redirection_error_id = 0;
 	while (lex_lst && lex_lst->token != PIPE)
 	{
 		normal_output_redirection(node, lex_lst);
 		append_output_redirection(node, lex_lst, &node->is_output_redirection_feasible);
-		if (node->is_output_redirection_feasible && node->output_fd == -1
-			&& node->input_fd != -2 && node->output_redirection_error_id != 2)/*         ---> condition non intelligible --> fonction         */
+		if (is_output_redirection_error_detected(node))
 		{
 			node->is_output_redirection_feasible = 0;
 			perror(OUT_FILE);

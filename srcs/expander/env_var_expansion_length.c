@@ -178,7 +178,7 @@ int	calculate_length_for_env_expansion(char *word, char **env_var, t_quote *stat
 	int			word_Index;
 
 	state->found = ZERO_INIT;
-	if (state->singl_quot_status == 1 && state->doubl_quot_status == 0)
+	if (is_only_single_quote_on(state))
 		return (calculate_length_until_single_quote(word, length));
 	else
 	{

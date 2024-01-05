@@ -74,16 +74,11 @@
  */
 void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 {
-	if (!node->is_input_redirection_failed)/*         ---> condition non intelligible --> fonction         */
-	{
-		node->input_fd = -2;
+	node->input_fd = INPUT_FD_REDIRECTION_FAIL;
+	if (!node->is_input_redirection_failed)
 		perror(lexer_lst->next->word);
-	}
 	else
-	{
-		node->input_fd = -2;
 		ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
-	}
 }
 
 /**

@@ -274,7 +274,7 @@ int	should_continue_execution(t_data *data, int *y)
  */
 int	check_redirection_validity_in_node(t_node *node)
 {
-	return (node->input_fd != INVALID_PIPE && node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);/*         ---> condition non intelligible --> fonction         */
+	return (node->input_fd != INPUT_FD_REDIRECTION_FAIL && node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**

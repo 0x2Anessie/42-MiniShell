@@ -272,7 +272,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
  *
  * @dependances: 
  * - build_cmd_linked_list pour construire la liste des nœuds de commande.
- * - ft_buil_sorted_chained_list_env_var pour construire la liste
+ * - ft_buil_sorted_linked_list_env_var pour construire la liste
  * d'exportation des variables d'environnement.
  * - export_quotes pour préparer les citations dans les variables
  * d'exportation.
@@ -285,7 +285,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
  *   Initialiser les structures et variables globales de gestion
  *     |
  *     v
- *   Compter le nombre de commandes et de nœuds (nb_cmd, nb_node)
+ *   Compter le nombre de commandes et de nœuds (total_number_of_cmd_find_in_linked_list, nb_node)
  *     |
  *     v
  *   La liste d'exportation
@@ -338,15 +338,16 @@ void	ft_init_exec(t_data *data)
 	data->utils->is_here_doc = 1;
 	data->utils->can_run = 1;
 	data->utils->hd = NULL;
-	data->utils->nb_cmd = nb_cmd(data->lexer_list);
-	data->utils->nb_node = nb_node(data->lexer_list);
+	data->utils->total_number_of_cmd_find_in_linked_list = \
+	count_cmd_in_lexer_linked_list(data->lexer_list);
+	data->utils->nb_node = count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
 	data->utils->env = data->env;
-	if (!(data->utils->export_lst))
+	if (!(data->utils->head_of_linked_list_env_var))
 	{
-		data->utils->export_lst = \
-		ft_buil_sorted_chained_list_env_var(data, data->utils->export_lst);
-		export_quotes(data->utils->export_lst, data);
+		data->utils->head_of_linked_list_env_var = \
+		ft_buil_sorted_linked_list_env_var(data, data->utils->head_of_linked_list_env_var);
+		export_quotes(data->utils->head_of_linked_list_env_var, data);
 	}
 	node = NULL;
 	build_cmd_linked_list(node, data, data->utils);

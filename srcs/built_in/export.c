@@ -7,11 +7,11 @@
 	on utilise write fd quand on veux ecrire dans un fd special ou
 	printf pour l'affiche standard
 */
-void	print_export(t_export *export_lst, t_data *data)
+void	print_export(t_export *head_of_linked_list_env_var, t_data *data)
 {
 	t_export	*current;
 
-	current = export_lst;
+	current = head_of_linked_list_env_var;
 	while (current != NULL)
 	{
 		if (data->utils->node->output_fd > 0)
@@ -27,7 +27,7 @@ void	print_export(t_export *export_lst, t_data *data)
 		}
 		current = current->next;
 	}
-	current = export_lst;
+	current = head_of_linked_list_env_var;
 	g_signal_received = 0;
 }
 
@@ -58,21 +58,21 @@ void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 	if (verif_var_exist_export(data->utils, tmp->word, data) == 0
 		&& verif_equal(tmp->word, '=') == 0
 		&& verif_var_exist_export_not_maj(data->utils, tmp->word) == 0)
-		lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
+		lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
 	else if (check_case(tmp->word)
 		&& verif_var_exist_export(data->utils, tmp->word, data) == 0)
 	{
 		tmp->word = case_egale(tmp->word, data);
 		if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
-			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
 	}
 	else if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
 	{
 		if (verif_var_exist_export(data->utils, tmp->word, data) == 0
 			&& verif_equal(tmp->word, '=') == 1)
-			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
 		else if (verif_var_exist_export(data->utils, tmp->word, data) == 1)
-			lst_add_back_export(&(data->utils->export_lst), tmp->word, data);
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
 	}
 }
 
@@ -102,16 +102,16 @@ int	export_things(t_lexer *lexer_lst, t_data *data)
 {
 	t_lexer	*tmp;
 
-	sort_export_lst(&(data->utils->export_lst));
+	sort_linked_list_env_var(&(data->utils->head_of_linked_list_env_var));
 	tmp = lexer_lst;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->word
 				&& !(tmp->next->word[0] == '\0')))
-			print_export(data->utils->export_lst, data);
+			print_export(data->utils->head_of_linked_list_env_var, data);
 		else if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && tmp->next
 			&& tmp->next->token != ARG)
-			print_export(data->utils->export_lst, data);
+			print_export(data->utils->head_of_linked_list_env_var, data);
 		else if ((ft_strcmp(tmp->word, CMD_EXPORT_VARS) == 0) && (tmp->next
 				&& tmp->next->token == ARG))
 		{

@@ -87,7 +87,7 @@ void	display_env(t_data *data)
 	gere la command unset en supprimant les variables d'env et les variable exporter specifier
 	la fonction verifie si la commande est env et si oui elle l'affiche
 	Si la command n'est pas env, elle trouve la variable à supprimer avec check_unset et la
-	supprime des listes env_lst et export_lst.
+	supprime des listes env_lst et head_of_linked_list_env_var.
 */
 int	get_unset(t_lexer *lexer_lst, t_data *data)
 {

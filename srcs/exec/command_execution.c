@@ -231,7 +231,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * Initialiser data->utils->previous_fd avec fd[0]
  *   |
  *   v
- * data->utils->nb_cmd >= 1 et pipe(fd) échoue ?
+ * data->utils->total_number_of_cmd_find_in_linked_list >= 1 et pipe(fd) échoue ?
  *  /       \
  * OUI      NON
  *  |         |
@@ -250,7 +250,7 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * l'exécution
  *   |
  *   v
- * (is_built_in_command(lex_lst)) et (data->utils->nb_cmd == 1) ?
+ * (is_built_in_command(lex_lst)) et (data->utils->total_number_of_cmd_find_in_linked_list == 1) ?
  *  /       \
  * OUI      NON
  *  |         |
@@ -288,12 +288,12 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 	{
 		data->lexer_list = find_next_command_in_lexer(data->lexer_list);
 		data->utils->previous_fd = fd[0];
-		if (data->utils->nb_cmd >= 1 && pipe(fd) < 0)
+		if (data->utils->total_number_of_cmd_find_in_linked_list >= 1 && pipe(fd) < 0)
 			return (0);
 		if (check_redirection_validity_in_node(data->utils->node))
 		{
 			if (\
-			(is_built_in_command(data->lexer_list)) && data->utils->nb_cmd == 1)/*         ---> condition non intelligible --> fonction         */
+			(is_built_in_command(data->lexer_list)) && data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
 				ft_exec_single_built_in(data->lexer_list, fd, data);
 			else
 				pid[y[0]++] = create_and_execute_child_process(\
@@ -338,7 +338,7 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  * @erreurs_possibles_et_effets_de_bord:
  * - Si 'pid' est NULL, la fonction retourne immédiatement sans attendre aucun
  * processus.
- * - La fonction dépend de 'data->utils->can_run' et 'data->utils->nb_cmd' pour
+ * - La fonction dépend de 'data->utils->can_run' et 'data->utils->total_number_of_cmd_find_in_linked_list' pour
  * déterminer si elle doit continuer à attendre les processus.
  *
  * @exemples_utilisation:
@@ -368,7 +368,7 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  *   |         |
  *   |         v
  *   |       Entrer dans la boucle tant que 'nb_node' > 0,
- *   |       'data->utils->can_run' et 'data->utils->nb_cmd' sont vrais
+ *   |       'data->utils->can_run' et 'data->utils->total_number_of_cmd_find_in_linked_list' sont vrais
  *   |         |
  *   |         v
  *   |       pid[index] est-il supérieur à 0 ?
@@ -411,7 +411,7 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 	index = ZERO_INIT;
 	if (!pid)
 		return ;
-	while (nb_node > 0 && data->utils->can_run && data->utils->nb_cmd)/*         ---> condition non intelligible --> fonction         */
+	while (nb_node > 0 && data->utils->can_run && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
 		if (pid[index] > 0)
 		{
@@ -498,7 +498,7 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
  *         |         |
  *         v         v
  *       Afficher   Est-ce une commande intégrée unique ?
- *       l'erreur    avec 'is_built_in_command' et 'data->utils->nb_cmd'
+ *       l'erreur    avec 'is_built_in_command' et 'data->utils->total_number_of_cmd_find_in_linked_list'
  *          |        /              \
  *          |      NON             OUI
  *          |        |              |

@@ -51,7 +51,7 @@ char	*get_old_pwd(t_env	*tmp, t_data *data)
 	tmp = data->utils->env_lst;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 7))
+		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 6))
 			return (tmp->content);
 		tmp = tmp->next;
 	}

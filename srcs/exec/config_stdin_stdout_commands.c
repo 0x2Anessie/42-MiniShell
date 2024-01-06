@@ -165,7 +165,7 @@ t_exec utils, int *fd, int count)
 		if (utils.node->input_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			close (utils.node->input_fd);
 	}
-	else if (count != utils.nb_cmd - 1 && fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
+	else if (count != utils.total_number_of_cmd_find_in_linked_list - 1 && fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
 		dup2(fd[1], STDOUT_FILENO);
 	if (fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
 		close(fd[1]);

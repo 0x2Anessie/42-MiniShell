@@ -1,5 +1,11 @@
 #include "../../include/minishell.h"
 
+bool	is_first_input_redirection_error(t_node *node)
+{
+    return (!node->is_input_redirection_failed);
+}
+
+
 /**
  * @nom: handle_redirect_input_error
  *
@@ -75,7 +81,7 @@
 void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 {
 	node->input_fd = INPUT_FD_REDIRECTION_FAIL;
-	if (!node->is_input_redirection_failed)
+	if (is_first_input_redirection_error(node))
 		perror(lexer_lst->next->word);
 	else
 		ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
@@ -186,6 +192,11 @@ char	*ft_strdup(t_data *data, char *src)
 	return (dest);
 }
 
+bool	is_current_lexer_token_cmd(t_lexer *current_lexer)
+{
+    return (current_lexer->token == CMD);
+}
+
 /**
  * @nom: is_token_type_cmd
  *
@@ -260,7 +271,7 @@ int	is_token_type_cmd(t_lexer *lexer_lst)
 {
 	while (lexer_lst)
 	{
-		if (lexer_lst->token == CMD)/*         ---> condition non intelligible --> fonction         */
+		if (is_current_lexer_token_cmd(lexer_lst))
 			return (CMD_FOUND);
 		lexer_lst = lexer_lst->next;
 	}
@@ -268,7 +279,7 @@ int	is_token_type_cmd(t_lexer *lexer_lst)
 }
 
 /**
- * @nom: nb_cmd
+ * @nom: count_cmd_in_lexer_linked_list
  *
  * @description:
  * Compte le nombre de commandes dans une liste de lexèmes. Cette fonction est
@@ -304,7 +315,7 @@ int	is_token_type_cmd(t_lexer *lexer_lst)
  *
  * @exemple_utilisation:
  *   t_lexer *lexer_list = create_lexer_list("cmd1 && cmd2");
- *   int total_cmds = nb_cmd(lexer_list);
+ *   int total_cmds = count_cmd_in_lexer_linked_list(lexer_list);
  *
  * @dependances: 
  *   Aucune dépendance externe.
@@ -340,22 +351,27 @@ int	is_token_type_cmd(t_lexer *lexer_lst)
  *                  v
  *                 Fin
  */
-int	nb_cmd(t_lexer *lexer_list)
+int	count_cmd_in_lexer_linked_list(t_lexer *lexer_list)
 {
-	int	index;
+	int	cmd_count;
 
-	index = ZERO_INIT;
+	cmd_count = ZERO_INIT;
 	while (lexer_list)
 	{
-		if (lexer_list->token == CMD)/*         ---> condition non intelligible --> fonction         */
-			index++;
+		if (is_current_lexer_token_cmd(lexer_list))
+			cmd_count++;
 		lexer_list = lexer_list->next;
 	}
-	return (index);
+	return (cmd_count);
+}
+
+bool	is_pipe_or_end_of_lexer_linked_list(t_lexer *element)
+{
+    return (element->token == PIPE || element->next == NULL);
 }
 
 /**
- * @nom: nb_node
+ * @nom: count_pipe_or_end_in_lexer_linked_list
  *
  * @description:
  * Compte le nombre de nœuds (commandes ou pipelines) dans une liste de
@@ -390,7 +406,7 @@ int	nb_cmd(t_lexer *lexer_list)
  *
  * @exemple_utilisation:
  *   t_lexer *lexer_list = create_lexer_list("cmd1 | cmd2");
- *   int total_nodes = nb_node(lexer_list);
+ *   int total_nodes = count_pipe_or_end_in_lexer_linked_list(lexer_list);
  *
  * @dependances: 
  *   Aucune dépendance externe.
@@ -426,14 +442,14 @@ int	nb_cmd(t_lexer *lexer_list)
  *                  v
  *                 Fin
  */
-int	nb_node(t_lexer *lexer_list)
+int	count_pipe_or_end_in_lexer_linked_list(t_lexer *lexer_list)
 {
 	int	index;
 
 	index = ZERO_INIT;
 	while (lexer_list)
 	{
-		if (lexer_list->token == PIPE || !lexer_list->next)/*         ---> condition non intelligible --> fonction         */
+		if (is_pipe_or_end_of_lexer_linked_list(lexer_list))
 			index++;
 		lexer_list = lexer_list->next;
 	}

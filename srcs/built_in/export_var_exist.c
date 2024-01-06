@@ -2,7 +2,7 @@
 #include "../../include/minishell.h"
 
 /*
-	elle verifi si une variable specifier par str existe dans la export_lst en
+	elle verifi si une variable specifier par str existe dans la head_of_linked_list_env_var en
 	comparant str avec la valeur de chaque noeud
 	si une variable est trouver et que str contient un = l valeur de la variable
 	est mis a jour avec str
@@ -11,7 +11,7 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 {
 	t_export	*tmp;
 
-	tmp = utils->export_lst;
+	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
@@ -68,12 +68,12 @@ int	verif_var_exist(t_exec *utils, char *str)
 	return (0);
 }
 
-// comme celle d'avant mais ne met pas a jour la variable et parcour la export_lst
+// comme celle d'avant mais ne met pas a jour la variable et parcour la head_of_linked_list_env_var
 int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 {
 	t_export	*tmp;
 
-	tmp = utils->export_lst;
+	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \

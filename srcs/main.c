@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/02 00:21:50 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/06 00:13:59 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -432,7 +432,7 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, ac, av, env);
 	data.utils = init_env(&data, env);
 	tmp = NULL;
-	data.utils->export_lst = NULL;
+	data.utils->head_of_linked_list_env_var = NULL;
 	while (42)
 	{
 		free(tmp);

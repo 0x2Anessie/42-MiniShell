@@ -249,7 +249,7 @@ typedef struct s_exec
 	char			**env;
 	int				err;/*       Change name      */
 	t_env			*env_lst;/*       Change name      */
-	int				nb_cmd;/*       Change name      */
+	int				total_number_of_cmd_find_in_linked_list;
 	int				nb_node;/*       Change name      */
 	char			*error;/*       Change name      */
 	int				ret;/*       Change name      */
@@ -257,7 +257,7 @@ typedef struct s_exec
 	char			*var;/*       Change name      */
 	t_node			*head_node_lst;/*       Change name      */
 	t_lexer			*head_lexer_lst;/*       Change name      */
-	t_export		*export_lst;/*       Change name      */
+	t_export		*head_of_linked_list_env_var;/*       Change name      */
 	t_export		*head_export_lst;/*       Change name      */
 	t_env			*head_env_lst;/*       Change name      */
 	struct s_node	*node;
@@ -408,7 +408,7 @@ int			verif_var_exist(t_exec *utils, char *str);
 int			verif_var_exist_export_not_maj(t_exec *utils, char *str);
 
 /*   Déclarations des fonctions de export.c   */
-void		print_export(t_export *export_lst, t_data *data);
+void		print_export(t_export *head_of_linked_list_env_var, t_data *data);
 int			export_parsing_syntaxe(t_lexer *tmp, t_data *data);
 void		process_word_and_add_export(t_lexer *tmp, t_data *data);
 void		export_remaining(t_lexer *tmp, t_data *data);
@@ -664,8 +664,8 @@ t_node *node, t_lexer *lexer_lst, t_data *data);
 void		handle_redirect_input_error(t_node *node, t_lexer *lexer_lst);
 char		*ft_strdup(t_data *data, char *src);
 int			is_token_type_cmd(t_lexer *lexer_lst);
-int			nb_cmd(t_lexer *lexer_list);
-int			nb_node(t_lexer *lexer_list);
+int			count_cmd_in_lexer_linked_list(t_lexer *lexer_list);
+int			count_pipe_or_end_in_lexer_linked_list(t_lexer *lexer_list);
 
 /*   Déclarations des fonctions de init_exec_utils.c   */
 t_node		*insert_command_at_end_of_linked_list(\
@@ -675,10 +675,10 @@ void		build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils);
 void		ft_init_exec(t_data *data);
 
 /*   Déclarations des fonctions de init_export.c   */
-void		sort_export_lst(t_export **head_export);
-t_export	*ft_new_export_node(t_data *data, t_export *new);
-t_export	*ft_buil_sorted_chained_list_env_var(\
-t_data *data, t_export *export_lst);
+void		sort_linked_list_env_var(t_export **head_of_linked_list_env_var);
+t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, t_export *new);
+t_export	*ft_buil_sorted_linked_list_env_var(\
+t_data *data, t_export *head_of_linked_list_env_var);
 
 /*   Déclarations des fonctions de init_fd.c   */
 void		configure_here_doc_input(\

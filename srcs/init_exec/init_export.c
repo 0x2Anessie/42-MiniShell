@@ -1,7 +1,22 @@
 #include "../../include/minishell.h"
 
+bool	is_sorting_linked_list_env_var_unnecessary(\
+t_export **head_of_linked_list_env_var)
+{
+	return (!head_of_linked_list_env_var \
+	|| !(*head_of_linked_list_env_var) \
+	|| !((*head_of_linked_list_env_var)->next));
+}
+
+bool	is_current_value_greater_than_next(\
+char *current_value, char *next_value)
+{
+	return (ft_strcmp(current_value, next_value) > 0);
+}
+
+
 /**
- * @nom: sort_export_lst
+ * @nom: sort_linked_list_env_var
  *
  * @description: Trie une liste de structures t_export représentant des
  * variables d'environnement, en utilisant un tri à bulles. Ce tri est
@@ -36,7 +51,7 @@
  *
  * @exemple_utilisation:
  *   t_export *head_export = create_export_list();
- *   sort_export_lst(&head_export);
+ *   sort_linked_list_env_var(&head_export);
  *
  * @dependances: 
  *   - ft_strcmp pour comparer les chaînes de caractères des valeurs des
@@ -82,22 +97,23 @@
  *     v
  *   Fin
  */
-void	sort_export_lst(t_export **head_export)
+void	sort_linked_list_env_var(t_export **head_of_linked_list_env_var)
 {
 	int			swapped;
 	t_export	*current;
 	char		*temp;
 
-	if (!head_export || !(*head_export) || !((*head_export)->next))/*         ---> condition non intelligible --> fonction         */
+	if (is_sorting_linked_list_env_var_unnecessary(head_of_linked_list_env_var))
 		return ;
 	swapped = 1;
 	while (swapped)
 	{
 		swapped = 0;
-		current = *head_export;
+		current = *head_of_linked_list_env_var;
 		while (!current->next)
 		{
-			if (ft_strcmp(current->value, current->next->value) > 0)/*         ---> condition non intelligible --> fonction         */
+			if (is_current_value_greater_than_next(\
+			current->value, current->next->value))
 			{
 				temp = current->value;
 				current->value = current->next->value;
@@ -110,7 +126,7 @@ void	sort_export_lst(t_export **head_export)
 }
 
 /**
- * @nom: ft_new_export_node
+ * @nom: ft_new_variable_to_linked_list_env_var
  *
  * @description: Crée un nouveau nœud pour une liste d'exportation des
  * variables d'environnement.Cette fonction est essentielle pour construire
@@ -145,7 +161,7 @@ void	sort_export_lst(t_export **head_export)
  *   - Renvoie NULL si l'allocation de mémoire échoue à n'importe quel stade.
  *
  * @exemple_utilisation:
- *   t_export *new_node = ft_new_export_node(new_node);
+ *   t_export *new_node = ft_new_variable_to_linked_list_env_var(new_node);
  *
  * @dependances: 
  *   - ft_malloc_with_tracking pour l'allocation mémoire avec suivi.
@@ -185,7 +201,7 @@ void	sort_export_lst(t_export **head_export)
  *                           v
  *                          Fin
  */
-t_export	*ft_new_export_node(t_data *data, t_export *new)
+t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, t_export *new)
 {
 	new = NULL;
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
@@ -197,7 +213,7 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
 }
 
 /**
- * @nom: ft_buil_sorted_chained_list_env_var
+ * @nom: ft_buil_sorted_linked_list_env_var
  *
  * @description: Construit une liste triée des variables d'environnement pour
  * l'exportation. Cette fonction joue un rôle crucial dans la gestion ordonnée
@@ -205,17 +221,18 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
  * manipulation.
  *
  * @parametres:
- *   - export_lst: t_export *export_lst, pointeur initial vers la liste
- * d'exportation.
+ *   - head_of_linked_list_env_var: t_export *head_of_linked_list_env_var,
+ * pointeur initial vers la liste d'exportation.
  *
  * @fonctionnement:
  * Initialise un nouveau pointeur de liste et parcourt la liste des
  * variables d'environnement. Pour chaque variable, crée un nouveau nœud avec
- * `ft_new_export_node` et l'ajoute à la liste. Après avoir construit la liste
- * complète, trie les éléments en utilisant `sort_export_lst`, qui repose sur
- * `ft_strcmp` pour comparer les valeurs des nœuds. Ce processus garantit que
- * les variables d'environnement sont listées dans un ordre alphabétique pour
- * une meilleure lisibilité et cohérence.
+ * `ft_new_variable_to_linked_list_env_var` et l'ajoute à la liste. Après avoir
+ * construit la liste complète, trie les éléments en utilisant
+ * `sort_linked_list_env_var`, qui repose sur `ft_strcmp` pour comparer les
+ * valeurs des nœuds. Ce processus garantit que les variables d'environnement
+ * sont listées dans un ordre alphabétique pour une meilleure lisibilité et
+ * cohérence.
  *
  *   Pourquoi construire et trier une liste d'exportation ?
  *   - Visualisation et gestion ordonnées : Facilite la visualisation et la
@@ -233,12 +250,14 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
  *   - Renvoie NULL en cas d'échec de l'allocation de mémoire.
  *
  * @exemple_utilisation:
- *   t_export *export_lst = NULL;
- *   export_lst = ft_buil_sorted_chained_list_env_var(export_lst);
+ *   t_export *head_of_linked_list_env_var = NULL;
+ *   head_of_linked_list_env_var = 
+ * 			ft_buil_sorted_linked_list_env_var(head_of_linked_list_env_var);
  *
  * @dependances: 
- *   - ft_new_export_node pour créer de nouveaux nœuds de liste.
- *   - sort_export_lst pour trier la liste.
+ *   - ft_new_variable_to_linked_list_env_var pour créer de nouveaux nœuds de
+ * liste.
+ *   - sort_linked_list_env_var pour trier la liste.
  *   - ft_strcmp pour comparer les chaînes de caractères.
  *
  * @graphe_de_flux:
@@ -251,7 +270,7 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
  *   Parcourir la liste des variables d'environnement
  *     |
  *     v
- *   Créer un nouveau nœud avec ft_new_export_node
+ *   Créer un nouveau nœud avec ft_new_variable_to_linked_list_env_var
  *     |
  *     v
  *   Ajouter le nouveau nœud à la liste d'exportation
@@ -265,7 +284,7 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
  * Continuer Ajouter le nœud à la liste
  * la création  |
  * de nœuds    v
- *            Trier la liste avec sort_export_lst
+ *            Trier la liste avec sort_linked_list_env_var
  *             |
  *             v
  *           Retourner la liste d'exportation triée
@@ -273,8 +292,8 @@ t_export	*ft_new_export_node(t_data *data, t_export *new)
  *             v
  *            Fin
  */
-t_export	*ft_buil_sorted_chained_list_env_var(\
-t_data *data, t_export *export_lst)
+t_export	*ft_buil_sorted_linked_list_env_var(\
+t_data *data, t_export *head_of_linked_list_env_var)
 {
 	t_export	*new;
 	t_export	*current_new;
@@ -282,11 +301,11 @@ t_data *data, t_export *export_lst)
 	current_new = NULL;
 	while (data->utils->env_lst)
 	{
-		new = ft_new_export_node(data, new);
-		if (!export_lst)
+		new = ft_new_variable_to_linked_list_env_var(data, new);
+		if (!head_of_linked_list_env_var)
 		{
-			export_lst = new;
-			current_new = export_lst;
+			head_of_linked_list_env_var = new;
+			current_new = head_of_linked_list_env_var;
 		}
 		else
 		{
@@ -295,7 +314,7 @@ t_data *data, t_export *export_lst)
 		}
 		data->utils->env_lst = data->utils->env_lst->next;
 	}
-	sort_export_lst(&export_lst);
+	sort_linked_list_env_var(&head_of_linked_list_env_var);
 	data->utils->env_lst = data->utils->head_env_lst;
-	return (export_lst);
+	return (head_of_linked_list_env_var);
 }

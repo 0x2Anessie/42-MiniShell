@@ -77,7 +77,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 	unsigned char	exit_code;
 
 	exit_code = 0;
-	if (data->utils->nb_cmd == 1)
+	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{

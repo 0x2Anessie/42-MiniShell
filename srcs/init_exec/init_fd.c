@@ -30,11 +30,11 @@ bool	is_input_fd_ready_for_read(t_node *node)
  * - lex_lst: t_lexer *lex_lst, pointeur vers le début de la liste de lexèmes.
  *
  * @fonctionnement:
- * Vérifie si les lexèmes indiquent un here-doc (HERE_DOC et DELIMITER). Si oui, 
- * ferme l'entrée existante, puis appelle `manage_here_doc_process` pour créer
- * le here-doc. Ouvre ensuite le fichier temporaire du here-doc et le configure
- * comme entrée du nœud. Gère les cas d'échec en mettant à jour l'indicateur
- * d'entrée et en supprimant le fichier temporaire.
+ * Vérifie si les lexèmes indiquent un here-doc (HERE_DOC et DELIMITER).
+ * Si oui, ferme l'entrée existante, puis appelle `manage_here_doc_process`
+ * pour créer le here-doc. Ouvre ensuite le fichier temporaire du here-doc et
+ * le configure comme entrée du nœud. Gère les cas d'échec en mettant à jour
+ * l'indicateur d'entrée et en supprimant le fichier temporaire.
  * - `ft_read_input` lit l'entrée utilisateur pour le here-doc.
  * - `handle_sig` configure les signaux pendant la lecture du here-doc.
  * - `manage_here_doc_process` orchestre la création du here-doc.
@@ -132,7 +132,9 @@ bool	is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst)
 
 bool	is_next_word_existing_and_readable(t_lexer *lexer_lst)
 {
-	return (lexer_lst->next && lexer_lst->next->word && !access(lexer_lst->next->word, R_OK));
+	return (lexer_lst->next \
+	&& lexer_lst->next->word \
+	&& !access(lexer_lst->next->word, R_OK));
 }
 
 bool	is_current_token_not_pipe(t_lexer *lexer_lst)
@@ -167,10 +169,10 @@ bool	is_next_word_missing(t_lexer *lexer_lst)
  *
  * @fonctionnement:
  * Initialise les variables de redirection d'entrée dans le nœud (`input_fd`,
- * `is_input_redirection_failed`). Parcourt la liste de lexèmes pour configurer les redirections
- * d'entrée normales et les here-docs. Utilise `configure_here_doc_input` pour
- * gérer les here-docs et `handle_redirect_input_error` en cas d'échec de
- * redirection d'entrée.
+ * `is_input_redirection_failed`). Parcourt la liste de lexèmes pour configurer
+ * les redirections d'entrée normales et les here-docs.
+ * Utilise `configure_here_doc_input` pour gérer les here-docs et
+ * `handle_redirect_input_error` en cas d'échec de redirection d'entrée.
  *
  * Pourquoi configurer la redirection d'entrée ?
  * - Contrôle des données entrantes : Oriente l'entrée des commandes depuis
@@ -234,7 +236,7 @@ bool	is_next_word_missing(t_lexer *lexer_lst)
 void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
 	node->input_fd = INPUT_FD_NOT_SET;
-	node->is_input_redirection_failed = 0;
+	node->is_input_redirection_failed = ZERO_INIT;
 	while (is_current_token_not_pipe(lexer_lst))
 	{
 		if (is_input_redirection_followed_by_token_fd(lexer_lst))
@@ -242,7 +244,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 			if (is_input_fd_open(node))
 				close(node->input_fd);
 			if (is_next_word_missing(lexer_lst))
-				node->is_input_redirection_failed = 1;
+				node->is_input_redirection_failed = YES;
 			if (is_next_word_existing_and_readable(lexer_lst))
 				node->input_fd = open(lexer_lst->next->word, O_RDONLY);
 			else
@@ -260,11 +262,13 @@ bool	is_append_out_followed_by_fd_token(t_lexer *lex_lst)
 		   lex_lst->next->token == FD);
 }
 
-bool	is_output_append_redirection_error_detected(t_node *node, t_lexer *lex_lst)
+bool	is_output_append_redirection_error_detected(\
+t_node *node, t_lexer *lex_lst)
 {
-	return (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && 
-		   (node->output_fd == OUTPUT_FD_NOT_CONFIGURED || 
-			!access(lex_lst->next->word, F_OK)));
+	return (node->output_redirection_error_id != \
+	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
+	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
+	|| !access(lex_lst->next->word, F_OK)));
 }
 
 bool	is_output_fd_open_for_closure(t_node *node)
@@ -290,8 +294,8 @@ bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
  * @parametres:
  * - node: t_node *node, pointeur vers le nœud de commande à configurer.
  * - lex_lst: t_lexer *lex_lst, pointeur vers la liste de lexèmes.
- * - is_output_redirection_feasible: int *is_output_redirection_feasible, pointeur vers l'indicateur de présence de
- * redirection de sortie.
+ * - is_output_redirection_feasible: int *is_output_redirection_feasible,
+ * pointeur vers l'indicateur de présence de redirection de sortie.
  *
  * @fonctionnement:
  * Vérifie si les lexèmes indiquent une redirection de sortie de type append
@@ -303,7 +307,7 @@ bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
  * - Gère également les cas d'échec d'accès au fichier.
  *
  * Pourquoi gérer la redirection de sortie de type append ?
- * - Ajout de données : Permet d'ajouter des sorties à un fichier existant sans 
+ * - Ajout de données : Permet d'ajouter des sorties à un fichier existant sans
  * écraser son contenu, ce qui est crucial pour les journaux ou la
  * concaténation de données.
  * - Précision de la redirection : Fournit un contrôle plus fin sur la manière
@@ -323,7 +327,8 @@ bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
  * @exemple_utilisation:
  *   t_node *node = create_node();
  *   t_lexer *lex_lst = create_lexer_list("commande >> fichier.txt");
- *   append_output_redirection(node, lex_lst, &node->is_output_redirection_feasible);
+ *   append_output_redirection(
+ *			node, lex_lst, &node->is_output_redirection_feasible);
  *
  * @dependances: 
  *   - ft_write_fd pour écrire les messages d'erreur.
@@ -373,7 +378,8 @@ bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
  *  v
  * Fin
  */
-void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
+void	append_output_redirection(\
+t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 {
 	if (is_append_out_followed_by_fd_token(lex_lst))
 	{
@@ -385,10 +391,12 @@ void	append_output_redirection(t_node *node, t_lexer *lex_lst, int *is_output_re
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
-			node->output_redirection_error_id = OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
+			node->output_redirection_error_id = \
+			OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
 		}
 		if (is_output_append_redirection_error_detected(node, lex_lst))
-			node->output_redirection_error_id = OUTPUT_TARGET_ACCESS_ERROR_CODE;
+			node->output_redirection_error_id = \
+			OUTPUT_TARGET_ACCESS_ERROR_CODE;
 		*is_output_redirection_feasible = YES;
 	}
 }
@@ -400,11 +408,13 @@ bool	is_redirect_out_followed_by_fd_token(t_lexer *lex_lst)
 		   lex_lst->next->token == FD);
 }
 
-bool	is_normal_output_redirection_error_detected(t_node *node, t_lexer *lex_lst)
+bool	is_normal_output_redirection_error_detected(\
+t_node *node, t_lexer *lex_lst)
 {
-	return (node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE && 
-		   (node->output_fd == OUTPUT_FD_NOT_CONFIGURED || 
-			!access(lex_lst->next->word, W_OK)));
+	return (node->output_redirection_error_id != \
+	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
+	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
+	|| !access(lex_lst->next->word, W_OK)));
 }
 
 /**
@@ -425,7 +435,8 @@ bool	is_normal_output_redirection_error_detected(t_node *node, t_lexer *lex_lst)
  * standard (REDIRECT_OUT). Si oui, ferme la sortie existante si elle est
  * ouverte,puis tente d'ouvrir le fichier de redirection spécifié. Si
  * l'ouverture échoue ou si le nom du fichier n'est pas donné, écrit un
- * message d'erreur et met à jour l'indicateur d'échec de sortie (`output_redirection_error_id`).
+ * message d'erreur et met à jour l'indicateur d'échec de sortie
+ * (`output_redirection_error_id`).
  *
  * Pourquoi gérer la redirection de sortie standard ?
  * - Contrôle de flux : Permet de rediriger la sortie des commandes vers des
@@ -510,21 +521,23 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
-			node->output_redirection_error_id = OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
+			node->output_redirection_error_id = \
+			OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE;
 		}
 		if (is_normal_output_redirection_error_detected(node, lex_lst))
-			node->output_redirection_error_id = OUTPUT_TARGET_ACCESS_ERROR_CODE;
+			node->output_redirection_error_id = \
+			OUTPUT_TARGET_ACCESS_ERROR_CODE;
 		node->is_output_redirection_feasible = YES;
 	}
 }
 
 bool	is_output_redirection_error_detected(t_node *node)
 {
-	return (node->is_output_redirection_feasible && 
-		   node->output_fd == OUTPUT_FD_NOT_CONFIGURED && 
-		   node->input_fd != INPUT_FD_REDIRECTION_FAIL && 
-		   node->output_redirection_error_id != \
-		   OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);
+	return (node->is_output_redirection_feasible \
+	&& node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
+	&& node->input_fd != INPUT_FD_REDIRECTION_FAIL \
+	&& node->output_redirection_error_id != \
+	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);
 }
 
 
@@ -548,7 +561,8 @@ bool	is_output_redirection_error_detected(t_node *node)
  * redirection sont réinitialisés. La boucle se poursuit jusqu'à la rencontre
  * d'un token PIPE ou la fin de la liste.
  * - `normal_output_redirection` gère les redirections de sortie normales.
- * - `append_output_redirection` gère les redirections de sortie de type append.
+ * - `append_output_redirection` gère les redirections de sortie de type
+ * append.
  *
  * Pourquoi cette fonction est-elle importante ?
  * La fonction `setup_output_redirection` est essentielle dans un
@@ -629,7 +643,8 @@ void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 	while (lex_lst && lex_lst->token != PIPE)
 	{
 		normal_output_redirection(node, lex_lst);
-		append_output_redirection(node, lex_lst, &node->is_output_redirection_feasible);
+		append_output_redirection(\
+		node, lex_lst, &node->is_output_redirection_feasible);
 		if (is_output_redirection_error_detected(node))
 		{
 			node->is_output_redirection_feasible = NO;

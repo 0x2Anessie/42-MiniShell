@@ -103,7 +103,8 @@ void	sort_linked_list_env_var(t_export **head_of_linked_list_env_var)
 	t_export	*current;
 	char		*temp;
 
-	if (is_sorting_linked_list_env_var_unnecessary(head_of_linked_list_env_var))
+	if (is_sorting_linked_list_env_var_unnecessary(\
+	head_of_linked_list_env_var))
 		return ;
 	swapped = 1;
 	while (swapped)
@@ -201,7 +202,8 @@ void	sort_linked_list_env_var(t_export **head_of_linked_list_env_var)
  *                           v
  *                          Fin
  */
-t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, t_export *new)
+t_export	*ft_new_variable_to_linked_list_env_var(\
+t_data *data, t_export *new)
 {
 	new = NULL;
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));

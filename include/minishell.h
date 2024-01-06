@@ -245,7 +245,7 @@ typedef struct s_exec
 	int				can_run;/*       Change name      */
 	char			*hd;/*       Change name      */
 	int				dupin;/*       Change name      */
-	int				is_here_doc;
+	int				in_here_doc_mode;
 	char			**env;
 	int				err;/*       Change name      */
 	t_env			*env_lst;/*       Change name      */

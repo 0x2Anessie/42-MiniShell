@@ -71,7 +71,7 @@ t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final)
  *   - Alloue de la mémoire pour une nouvelle structure t_exec.
  *   - Si l'allocation échoue, retourne NULL.
  *   - Initialise les variables de la structure, y compris env_lst, head_env_lst, 
- *     err, ret et is_here_doc.
+ *     err, ret et in_here_doc_mode.
  *   - Si 'env' est non-NULL, remplit env_lst avec les variables d'environnement 
  *     en utilisant create_env_list_from_array.
  *   - Retourne un pointeur vers la structure t_exec nouvellement créée.
@@ -132,6 +132,6 @@ t_exec	*init_env(t_data *data, char **env)
 	utils->head_env_lst = utils->env_lst;
 	utils->err = ZERO_INIT;
 	utils->ret = ZERO_INIT;
-	utils->is_here_doc = ZERO_INIT;
+	utils->in_here_doc_mode = ZERO_INIT;
 	return (utils);
 }

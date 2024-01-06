@@ -199,30 +199,6 @@ int	calculate_length_for_env_expansion(char *word, char **env_var, t_quote *stat
 	return (word_Index);
 }
 
-// int	calculate_length_for_env_expansion(\
-// char *word, char **env_var, t_quote *state, int *length)
-// {
-// 	int	env_var_index;
-// 	int	word_index;
-// 	int	y;
-
-// 	env_var_index = ZERO_INIT;
-// 	while (env_var[env_var_index])
-// 	{
-// 		y = 0;
-// 		word_index = 1;
-// 		if (word[word_index] == env_var[env_var_index][y])/*         ---> condition non intelligible --> fonction         */
-// 		{
-// 			word_index = get_env_var_expansion_length(\
-// 			word, length, env_var[env_var_index], state);
-// 			if (state->found == 1)/*         ---> condition non intelligible --> fonction         */
-// 				return (word_index);
-// 		}
-// 		env_var_index++;
-// 	}
-// 	return (word_index);
-// }
-
 /**
  * @nom: calculate_expanded_env_var_length
  * @brief: Calcule la longueur d'expansion pour un mot donné en fonction des

@@ -6,6 +6,13 @@ void	write_line_to_heredoc(char *line, int heredoc_fd)
 	ft_write_fd("\n", heredoc_fd);
 }
 
+bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
+{
+    return (!ft_strncmp(delimiter, line, strlen2(delimiter)) \
+	&& (strlen2(delimiter) == strlen2(line)));
+}
+
+
 /**
  * @nom: ft_read_input
  *
@@ -127,15 +134,18 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 			dup2(data->utils->dupin, STDIN_FILENO);
 			break ;
 		}
-		if (!ft_strncmp(lexer_lst->next->word, data->utils->hd, \
-		strlen2(lexer_lst->next->word)))/*         ---> condition non intelligible --> fonction         */
-			if (strlen2(lexer_lst->next->word) == strlen2(data->utils->hd))/*         ---> condition non intelligible --> fonction         */
+		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->hd))
 				break ;
 		write_line_to_heredoc(data->utils->hd, node->here_doc_fd);
 		free(data->utils->hd);
 	}
 	close(data->utils->dupin);
 	free(data->utils->hd);
+}
+
+bool	is_heredoc_file_opening_failed(int file_descriptor)
+{
+    return (file_descriptor < 0);
 }
 
 /**
@@ -151,7 +161,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
  *   - lexer_lst: t_lexer *lexer_lst, pointeur vers la liste de lexèmes.
  *
  * @fonctionnement:
- * - Active le mode here-document en définissant le flag `is_here_doc`.
+ * - Active le mode here-document en définissant le flag `in_here_doc_mode`.
  * - Configure les gestionnaires de signaux pour le here-document en
  * utilisant `handle_sig`.
  * - Ouvre un fichier temporaire pour stocker les entrées du here-document.
@@ -191,7 +201,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
  *   Début
  *     |
  *     v
- *   - Activer le mode here-document (is_here_doc = 1)
+ *   - Activer le mode here-document (in_here_doc_mode = 1)
  *   |
  *   v
  *   - Configurer les gestionnaires de signaux (handle_sig)
@@ -220,22 +230,22 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
  *   - Fermer le fichier temporaire
  *   |           |
  *   v           v
- *   - Désactiver le mode here-document (is_here_doc = 0)
+ *   - Désactiver le mode here-document (in_here_doc_mode = 0)
  *   |           |
  *   v           v
  *   Fin         Fin
  */
 void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	data->utils->is_here_doc = 1;
+	data->utils->in_here_doc_mode = YES;
 	handle_sig(data);
 	node->heredoc_tmp_fullname = HEREDOC_TEMP_FILE;
 	node->here_doc_fd = open(\
 	node->heredoc_tmp_fullname, heredoc_tmp_file_flags(), PERM_RWX_ALL);
-	if (node->here_doc_fd < 0)
+	if (is_heredoc_file_opening_failed(node->here_doc_fd))
 		return ;
 	ft_read_input(node, lexer_lst, data);
-	data->utils->is_here_doc = 0;
+	data->utils->in_here_doc_mode = NO;
 	handle_sig(data);
 	close(node->here_doc_fd);
 }

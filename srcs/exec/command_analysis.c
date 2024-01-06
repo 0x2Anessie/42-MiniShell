@@ -214,7 +214,9 @@ int	is_built_in_command(t_lexer *lexer_lst)
 int	should_continue_execution(t_data *data, int *y)
 {
 	return (data->utils->node \
-	&& data->utils->node->is_command_present == 1 && ++y[1] >= 0 && data->utils->can_run);/*         ---> condition non intelligible --> fonction         */
+	&& data->utils->node->is_command_present == 1 \
+	&& ++y[1] >= 0 \
+	&& data->utils->can_run);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**
@@ -274,7 +276,9 @@ int	should_continue_execution(t_data *data, int *y)
  */
 int	check_redirection_validity_in_node(t_node *node)
 {
-	return (node->input_fd != INPUT_FD_REDIRECTION_FAIL && node->output_redirection_error_id != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);/*         ---> condition non intelligible --> fonction         */
+	return (node->input_fd != INPUT_FD_REDIRECTION_FAIL \
+	&& node->output_redirection_error_id != \
+	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**

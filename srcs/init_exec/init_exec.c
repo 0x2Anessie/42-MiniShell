@@ -113,7 +113,8 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
  * `ft_malloc_with_tracking`.
  * - Configure les redirections d'entrée et de sortie pour chaque nœud avec
  * `setup_input_redirection` et `setup_output_redirection`.
- * - Vérifie la présence de la commande dans le lexème en utilisant `is_command_present`.
+ * - Vérifie la présence de la commande dans le lexème en utilisant
+ * `is_command_present`.
  * - Ajoute le nœud configuré à la fin de la liste existante en utilisant
  * `insert_command_at_end_of_linked_list`.
  * Répète ce processus jusqu'à avoir parcouru tous les lexèmes ou atteint un
@@ -285,7 +286,8 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
  *   Initialiser les structures et variables globales de gestion
  *     |
  *     v
- *   Compter le nombre de commandes et de nœuds (total_number_of_cmd_find_in_linked_list, nb_node)
+ *   Compter le nombre de commandes et de nœuds
+ * 		(total_number_of_cmd_find_in_linked_list, nb_node)
  *     |
  *     v
  *   La liste d'exportation
@@ -335,23 +337,25 @@ void	ft_init_exec(t_data *data)
 	t_node	*node;
 
 	data->utils->node = NULL;
-	data->utils->is_here_doc = 1;
+	data->utils->in_here_doc_mode = 1;
 	data->utils->can_run = 1;
 	data->utils->hd = NULL;
 	data->utils->total_number_of_cmd_find_in_linked_list = \
 	count_cmd_in_lexer_linked_list(data->lexer_list);
-	data->utils->nb_node = count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
+	data->utils->nb_node = \
+	count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
 	data->utils->env = data->env;
 	if (!(data->utils->head_of_linked_list_env_var))
 	{
 		data->utils->head_of_linked_list_env_var = \
-		ft_buil_sorted_linked_list_env_var(data, data->utils->head_of_linked_list_env_var);
+		ft_buil_sorted_linked_list_env_var(\
+		data, data->utils->head_of_linked_list_env_var);
 		export_quotes(data->utils->head_of_linked_list_env_var, data);
 	}
 	node = NULL;
 	build_cmd_linked_list(node, data, data->utils);
-	data->utils->is_here_doc = ZERO_INIT;
+	data->utils->in_here_doc_mode = ZERO_INIT;
 	handle_sig(data);
 	data->utils->head_node_lst = data->utils->node;
 }

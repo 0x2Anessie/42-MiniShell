@@ -16,13 +16,6 @@ bool is_execve_failed(char *command_path, char **arguments, char **env)
     return execve(command_path, arguments, env) == FAIL;
 }
 
-// void	execute_lexer_command_with_args(t_data *data)
-// {
-// 	if (execve(data->lexer_list->word, \
-// 		build_arg_array_from_lexer(data), data->utils->env) == FAIL)/*         ---> condition non intelligible --> fonction         */
-// 		perror(data->lexer_list->word);
-// }
-
 void execute_lexer_command_with_args(t_data *data)
 {
     char **arguments = build_arg_array_from_lexer(data);
@@ -54,31 +47,6 @@ t_data *data, int *fd, int count, t_exec utils)
 	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(data->utils, fd, data);
 }
-
-// void	exec_cmd_with_redirection_and_builtins(\
-// t_data *data, int *fd, int count, t_exec utils)
-// {
-// 	configure_stdin_redirection_for_command(utils, count);
-// 	configure_stdout_redirection_for_command(utils, fd, count);
-// 	if (is_built_in_command(data->lexer_list))
-// 	{
-// 		ft_exec_single_built_in(data->lexer_list, fd, data);
-// 		ft_exit_child(data->utils, fd, data);
-// 	}
-// 	if (!check_for_slash_path_delimiter(data->lexer_list))
-// 		execute_lexer_command_with_args(data);
-// 	else if (!check_if_cmd_full_path_exec_is_valid(\
-// 	data->lexer_list, utils, data))
-// 	{
-// 		if (\
-// 		execve(find_command_full_path(\
-// 		data->lexer_list->word, utils.env_lst, data), \
-// 		build_arg_array_from_lexer(data), utils.env) == FAIL)/*         ---> condition non intelligible --> fonction         */
-// 			perror(data->lexer_list->word);
-// 	}
-// 	globi = ERR_CODE_CMD_NOT_FOUND;
-// 	ft_exit_child(data->utils, fd, data);
-// }
 
 /**
  * @nom: create_and_execute_child_process

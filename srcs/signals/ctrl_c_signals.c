@@ -108,7 +108,7 @@ void	ctrl_c_handler(int sig)
  * 'here document'.
  * - Écrit un retour à la ligne (FT_NEWLINE) sur STDERR.
  * - Met à jour les variables dans la structure globale 'g_all.utils', notamment 
- * 'is_here_doc' à 0, 'can_run' à 0 et 'err' à EXIT_STAT_CTRL_C_SIGINT.
+ * 'in_here_doc_mode' à 0, 'can_run' à 0 et 'err' à EXIT_STAT_CTRL_C_SIGINT.
  *
  * @valeur_de_retour:
  * Aucune valeur de retour (fonction void).
@@ -138,7 +138,7 @@ void	ctrl_c_handler(int sig)
  * Écrire FT_NEWLINE sur STDERR
  *   |
  *   v
- * Mettre à jour g_all.utils (is_here_doc, can_run, err)
+ * Mettre à jour g_all.utils (in_here_doc_mode, can_run, err)
  *   |
  *   v
  * Fin
@@ -148,7 +148,7 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
 	(void)sig;
 	close(0);
 	ft_putchar('\n');
-	data->utils->is_here_doc = 0;
+	data->utils->in_here_doc_mode = 0;
 	data->utils->can_run = 0;
 	g_signal_received = exit_stat_ctrl_c_sigint();
 }
@@ -180,11 +180,11 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
  * Aucun paramètre d'entrée.
  *
  * @fonctionnement:
- * - Vérifie l'état 'is_here_doc' dans la structure globale 'g_all.utils'.
- * - Si 'is_here_doc' est vrai, configure le signal CTRL_C_SIGINT pour utiliser
+ * - Vérifie l'état 'in_here_doc_mode' dans la structure globale 'g_all.utils'.
+ * - Si 'in_here_doc_mode' est vrai, configure le signal CTRL_C_SIGINT pour utiliser
  * le gestionnaire ctrl_c_handler_here_doc, spécifique au contexte 
  * 'here document'.
- * - Si 'is_here_doc' est faux, configure le signal CTRL_C_SIGINT pour utiliser
+ * - Si 'in_here_doc_mode' est faux, configure le signal CTRL_C_SIGINT pour utiliser
  * le gestionnaire ctrl_c_handler standard et le signal CTRL_BACKSLSH pour 
  * ignorer l'action (IGNORE_SIG_ACTION).
  *
@@ -211,7 +211,7 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
  * Début
  *   |
  *   v
- * g_all.utils->is_here_doc est vrai ?
+ * g_all.utils->in_here_doc_mode est vrai ?
  *   /        \
  * VRAI      FAUX
  *   |          \
@@ -226,7 +226,7 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
  */
 void	handle_sig(t_data *data)
 {
-	if (data->utils->is_here_doc)/*         ---> condition non intelligible --> fonction         */
+	if (data->utils->in_here_doc_mode)/*         ---> condition non intelligible --> fonction         */
 		signal(SIGINT, (void (*)(int))ctrl_c_handler_here_doc);
 	else
 	{

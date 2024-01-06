@@ -18,9 +18,9 @@ void	initialize_data(t_stringdata *data, char *str)
 */
 void	extract_within_quotes(t_stringdata *data, char *str)
 {
-	while (data->i < data->len && (str[data->i] != '\'' || data->is_escaped))
+	while (data->i < data->len && (str[data->i] != '\'' || data->is_escaped))/*         ---> condition non intelligible --> fonction         */
 	{
-		if (str[data->i] == '\\' && !data->is_escaped)
+		if (str[data->i] == '\\' && !data->is_escaped)/*         ---> condition non intelligible --> fonction         */
 			data->is_escaped = 1;
 		else
 		{
@@ -40,9 +40,9 @@ void	extract_within_quotes(t_stringdata *data, char *str)
 */
 void	extract_quotes(t_stringdata *data, char *str, char quote)
 {
-	while (data->i < data->len && (str[data->i] != quote || data->is_escaped))
+	while (data->i < data->len && (str[data->i] != quote || data->is_escaped))/*         ---> condition non intelligible --> fonction         */
 	{
-		if (str[data->i] == '\\' && !data->is_escaped)
+		if (str[data->i] == '\\' && !data->is_escaped)/*         ---> condition non intelligible --> fonction         */
 			data->is_escaped = 1;
 		else
 		{
@@ -67,7 +67,7 @@ void	remove_single_quotes(char *str)
 	initialize_data(&data, str);
 	while (data.i < data.len)
 	{
-		if (str[data.i] == '\'' && !data.is_escaped)
+		if (str[data.i] == '\'' && !data.is_escaped)/*         ---> condition non intelligible --> fonction         */
 		{
 			data.i++;
 			extract_within_quotes(&data, str);
@@ -95,7 +95,7 @@ void	remove_double_quotes(char *str)
 	initialize_data(&data, str);
 	while (data.i < data.len)
 	{
-		if (str[data.i] == '\"' && !data.is_escaped)
+		if (str[data.i] == '\"' && !data.is_escaped)/*         ---> condition non intelligible --> fonction         */
 		{
 			data.i++;
 			extract_quotes(&data, str, '\"');

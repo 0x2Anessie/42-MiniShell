@@ -5,7 +5,7 @@
 int	change_directory_for_pwd(t_env *tmp, t_data *data)
 {
 	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp, data) + 4);
-	if (chdir(get_pwd_env(tmp, data) + 4) == -1)
+	if (chdir(get_pwd_env(tmp, data) + 4) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_signal_received = 1;
@@ -64,7 +64,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	if (lexer_lst)
 	{
 		if ((ft_strcmp(lexer_lst->word, CMD_CHANG_DIRCT) == 0)
-			&& lexer_lst->next == NULL)
+			&& lexer_lst->next == NULL)/*         ---> condition non intelligible --> fonction         */
 		{
 			if (change_directory_for_home(env, data))
 			{
@@ -98,7 +98,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
 	if (((ft_strcmp(data->lexer_list->word, CMD_CHANG_DIRCT) == 0)
-			&& data->lexer_list->next->word))
+			&& data->lexer_list->next->word))/*         ---> condition non intelligible --> fonction         */
 	{
 		if (data->lexer_list->next)
 				data->lexer_list = data->lexer_list->next;

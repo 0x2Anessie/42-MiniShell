@@ -16,7 +16,7 @@ int	verif_pwd(char *str, t_data *data)
 	{
 		if (ft_strncmp(\
 		tmp->content, ENV_SET_CURRENT_WORKING_DIR, \
-		ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
+		ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_CURRENT_WORKING_DIR, str, data);
@@ -36,7 +36,7 @@ char	*get_home(t_env	*tmp, t_data *data)
 	tmp = data->utils->env_lst;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->content, 5))
+		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->content, 5))/*         ---> condition non intelligible --> fonction         */
 			return (tmp->content);
 		tmp = tmp->next;
 	}
@@ -51,7 +51,7 @@ char	*get_old_pwd(t_env	*tmp, t_data *data)
 	tmp = data->utils->env_lst;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 6))
+		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 6))/*         ---> condition non intelligible --> fonction         */
 			return (tmp->content);
 		tmp = tmp->next;
 	}
@@ -71,7 +71,7 @@ int	verif_home(char *str, t_data *data)
 	{
 		if (ft_strncmp(\
 		tmp->content, ENV_SET_USER_HOME_DIR, \
-		ft_str_len_until_equal(ENV_SET_USER_HOME_DIR)) == 0)
+		ft_str_len_until_equal(ENV_SET_USER_HOME_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_USER_HOME_DIR, str, data);
@@ -88,7 +88,7 @@ int	verif_home(char *str, t_data *data)
 */
 int	change_directory_for_home(t_env *tmp, t_data *data)
 {
-	if (chdir(get_home(tmp, data) + 5) == -1)
+	if (chdir(get_home(tmp, data) + 5) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_signal_received = 1;

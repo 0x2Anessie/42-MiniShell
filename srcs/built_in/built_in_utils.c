@@ -36,7 +36,7 @@ char	*join_them(char *str, int i, int flag, t_data *data)
 	char	*tmp;
 
 	tmp = NULL;
-	if (str[i + 1] == '\0' && flag == 1)
+	if (str[i + 1] == '\0' && flag == 1)/*         ---> condition non intelligible --> fonction         */
 	{
 		tmp = ft_substr(data, (const char *)str,
 				(unsigned int)i + 1, (size_t)ft_strlen(str));

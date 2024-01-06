@@ -9,7 +9,7 @@ void	write_echo_fd(char **tab, int i, t_data *data)
 {
 	while (tab[i])
 	{
-		if (ft_strcmp(tab[i], "-n"))
+		if (ft_strcmp(tab[i], "-n"))/*         ---> condition non intelligible --> fonction         */
 		{
 			ft_write_fd(tab[i], data->utils->node->output_fd);
 			if (tab[i + 1])
@@ -40,7 +40,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 		}
 		else
 		{
-			if (ft_write_fd(tab[i++], data->utils->node->output_fd))
+			if (ft_write_fd(tab[i++], data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 			{
 				g_signal_received = 1;
 				return (-1);

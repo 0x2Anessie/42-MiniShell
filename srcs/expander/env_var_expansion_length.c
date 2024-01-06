@@ -88,7 +88,7 @@ char *word, int *length, char *env_var, t_quote *state)
 		&& y != 0 && env_var[y] == '=')/*         ---> condition non intelligible --> fonction         */
 	{
 		state->found = 1;
-		while (env_var[++y])
+		while (env_var[++y])/*         ---> condition non intelligible --> fonction         */
 			(*length)++;
 		return (i);
 	}
@@ -171,7 +171,8 @@ int	calculate_length_until_single_quote(char *word, int *length)
 	return (index);
 }
 
-int	calculate_length_for_env_expansion(char *word, char **env_var, t_quote *state, int *length)
+int	calculate_length_for_env_expansion(\
+char *word, char **env_var, t_quote *state, int *length)
 {
 	int			env_var_index;
 	int			y;
@@ -187,10 +188,11 @@ int	calculate_length_for_env_expansion(char *word, char **env_var, t_quote *stat
 		{
 			y = ZERO_INIT;
 			word_Index = 1;
-			if (word[word_Index] == env_var[env_var_index][y])
+			if (word[word_Index] == env_var[env_var_index][y])/*         ---> condition non intelligible --> fonction         */
 			{
-				word_Index = get_env_var_expansion_length(word, length, env_var[env_var_index], state);
-				if (state->found == 1)
+				word_Index = get_env_var_expansion_length(\
+				word, length, env_var[env_var_index], state);
+				if (state->found == 1)/*         ---> condition non intelligible --> fonction         */
 					return (word_Index);
 			}
 			env_var_index++;

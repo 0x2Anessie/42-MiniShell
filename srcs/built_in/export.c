@@ -14,13 +14,13 @@ void	print_export(t_export *head_of_linked_list_env_var, t_data *data)
 	current = head_of_linked_list_env_var;
 	while (current != NULL)
 	{
-		if (data->utils->node->output_fd > 0)
+		if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			ft_write_fd("declare -x ", data->utils->node->output_fd);
 			ft_write_fd(current->value, data->utils->node->output_fd);
 			ft_write_fd("\n", data->utils->node->output_fd);
 		}
-		else if (!data->utils->node->output_redirection_error_id)
+		else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 		{
 			printf("declare -x ");
 			printf("%s\n", current->value);
@@ -37,7 +37,7 @@ int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
-		if (check_parsing_export(tmp->word) == 1)
+		if (check_parsing_export(tmp->word) == 1)/*         ---> condition non intelligible --> fonction         */
 			return (1);
 		tmp = tmp->next;
 	}
@@ -85,7 +85,7 @@ void	export_remaining(t_lexer *tmp, t_data *data)
 	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
-		if (tmp->token == ARG)
+		if (tmp->token == ARG)/*         ---> condition non intelligible --> fonction         */
 			process_word_and_add_export(tmp, data);
 		tmp = tmp->next;
 	}
@@ -107,13 +107,13 @@ int	export_things(t_lexer *lexer_lst, t_data *data)
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->word
-				&& !(tmp->next->word[0] == '\0')))
+				&& !(tmp->next->word[0] == '\0')))/*         ---> condition non intelligible --> fonction         */
 			print_export(data->utils->head_of_linked_list_env_var, data);
 		else if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && tmp->next
-			&& tmp->next->token != ARG)
+			&& tmp->next->token != ARG)/*         ---> condition non intelligible --> fonction         */
 			print_export(data->utils->head_of_linked_list_env_var, data);
 		else if ((ft_strcmp(tmp->word, CMD_EXPORT_VARS) == 0) && (tmp->next
-				&& tmp->next->token == ARG))
+				&& tmp->next->token == ARG))/*         ---> condition non intelligible --> fonction         */
 		{
 			tmp = tmp->next;
 			export_remaining(tmp, data);

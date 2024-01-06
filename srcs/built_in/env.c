@@ -13,9 +13,9 @@ char	*check_unset(t_lexer *lexer_lst)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp(tmp->word, CMD_UNSET_ENV_VAR, 5))
+		if (!ft_strncmp(tmp->word, CMD_UNSET_ENV_VAR, 5))/*         ---> condition non intelligible --> fonction         */
 		{
-			if (tmp->next && tmp->next->word && !(tmp->next->word[0] == '\0'))
+			if (tmp->next && tmp->next->word && !(tmp->next->word[0] == '\0'))/*         ---> condition non intelligible --> fonction         */
 			{
 				tmp = tmp->next;
 				return (tmp->word);
@@ -42,7 +42,7 @@ int	check_env(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strcmp(tmp->word, CMD_ENV_VARS))
+		if (!ft_strcmp(tmp->word, CMD_ENV_VARS))/*         ---> condition non intelligible --> fonction         */
 		{
 			display_env(data);
 			return (1);
@@ -63,17 +63,17 @@ void	display_env(t_data *data)
 	t_env	*current;
 
 	current = data->utils->env_lst;
-	if (data->utils->node->output_fd > 0)
+	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		while (current)
 		{
-			if (ft_write_fd(current->content, data->utils->node->output_fd))
+			if (ft_write_fd(current->content, data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 				return ;
 			ft_write_fd("\n", data->utils->node->output_fd);
 			current = current->next;
 		}
 	}
-	else if (!data->utils->node->output_redirection_error_id)
+	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 	{
 		while (current)
 		{

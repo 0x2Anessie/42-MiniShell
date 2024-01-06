@@ -15,7 +15,7 @@ void	init_echo(t_lexer *lexer_lst, t_data *data)
 	i = ZERO_INIT;
 	tab = NULL;
 	head = lexer_lst;
-	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))
+	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))/*         ---> condition non intelligible --> fonction         */
 	{
 		lexer_lst = lexer_lst->next;
 		i++;
@@ -59,17 +59,17 @@ void	simulate_echo(char **tab, t_data *data)
 	int	ncount;
 
 	i = ZERO_INIT;
-	if (tab && tab[i] && tab[i + 1])
+	if (tab && tab[i] && tab[i + 1])/*         ---> condition non intelligible --> fonction         */
 		ncount = check_n(tab[i + 1]);
 	if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
-		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')
+		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')/*         ---> condition non intelligible --> fonction         */
 		process_echo(tab, ++i, data);
 	else if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
-		&& ncount)
+		&& ncount)/*         ---> condition non intelligible --> fonction         */
 		display_echo_arg(tab, i, data);
 	else
 	{
-		if (data->utils->node->output_fd > 0)
+		if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			ft_write_fd("\n", data->utils->node->output_fd);
 		else
 			printf("\n");

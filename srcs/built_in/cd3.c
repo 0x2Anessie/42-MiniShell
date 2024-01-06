@@ -4,7 +4,7 @@
 // change le repertoire courant vers le dir
 int	change_directory(char *dir)
 {
-	if (chdir(dir) == -1)
+	if (chdir(dir) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_signal_received = 1;
@@ -16,7 +16,7 @@ int	change_directory(char *dir)
 // change le repertoire courant vers celui indiquer par OLDPWD
 int	change_directory_for_oldpwd(t_env *tmp, t_data *data)
 {
-	if (chdir(get_old_pwd(tmp, data) + 7) == -1)
+	if (chdir(get_old_pwd(tmp, data) + 7) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_signal_received = 1;
@@ -31,7 +31,7 @@ char	*get_pwd_env(t_env	*tmp, t_data *data)
 	tmp = data->utils->env_lst;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_CURRENT_WORKING_DIR, tmp->content, 4))
+		if (!strncmp(ENV_SET_CURRENT_WORKING_DIR, tmp->content, 4))/*         ---> condition non intelligible --> fonction         */
 			return (tmp->content);
 		tmp = tmp->next;
 	}
@@ -51,7 +51,7 @@ int	verif_oldpwd(char *str, t_data *data)
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, ENV_PREVIOUS_WORKING_DIR,
-				ft_str_len_until_equal(ENV_PREVIOUS_WORKING_DIR)) == 0)
+				ft_str_len_until_equal(ENV_PREVIOUS_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_PREVIOUS_WORKING_DIR, str, data);

@@ -14,7 +14,7 @@ void	remove_node(char *var, t_data *data)
 	prev = NULL;
 	while (current != NULL)
 	{
-		if (!ft_strncmp(current->content, var, ft_string_length(var)))
+		if (!ft_strncmp(current->content, var, ft_string_length(var)))/*         ---> condition non intelligible --> fonction         */
 		{
 			remove_env_node(current, prev, data);
 			return ;
@@ -49,7 +49,7 @@ void	remove_node_export(char *var, t_data *data)
 	prev = NULL;
 	while (current)
 	{
-		if (ft_strncmp(current->value, var, ft_string_length(var)) == 0)
+		if (ft_strncmp(current->value, var, ft_string_length(var)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			remove_export_node(current, prev, data);
 			return ;

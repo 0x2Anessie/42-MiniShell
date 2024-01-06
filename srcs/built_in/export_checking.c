@@ -14,7 +14,7 @@ void	export_quotes(t_export *don, t_data *data)
 	tmp = don;
 	while (tmp)
 	{
-		if (check_case(tmp->value) && check_case_with_char(tmp->value))
+		if (check_case(tmp->value) && check_case_with_char(tmp->value))/*         ---> condition non intelligible --> fonction         */
 			tmp->value = case_egale(tmp->value, data);
 		tmp = tmp->next;
 	}
@@ -67,7 +67,7 @@ void	supp_quote_and_add_env(t_exec **utils, t_lexer *tmp, t_data *data)
 {
 	remove_double_quotes(tmp->word);
 	remove_single_quotes(tmp->word);
-	if (verif_equal(tmp->word, '=') && verif_var_exist(*utils, tmp->word) == 0)
+	if (verif_equal(tmp->word, '=') && verif_var_exist(*utils, tmp->word) == 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		lst_add_back(*utils, tmp->word, data);
 	}

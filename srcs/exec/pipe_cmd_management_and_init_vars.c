@@ -228,9 +228,9 @@ void	initialize_pid_array_to_zero(pid_t *pid_array, int num_nodes)
 	int	index;
 
 	index = ZERO_INIT;
-	if (!pid_array)
+	if (!pid_array)/*         ---> condition non intelligible --> fonction         */
 		return ;
-	while (index < num_nodes)
+	while (index < num_nodes)/*         ---> condition non intelligible --> fonction         */
 	{
 		pid_array[index] = 0;
 		index++;

@@ -1,45 +1,6 @@
 
 #include "../../include/minishell.h"
 
-// int	verif_pwd(char *str)
-// {
-// 	t_env	*tmp;
-// 	char	*s1;
-
-// 	tmp = data->utils->env_lst;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(tmp->content, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
-// 		{
-// 			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_CURRENT_WORKING_DIR, str);
-// 			tmp->content = create_new_var(s1);
-// 			return (1);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (0);
-// }
-
-// int	verif_oldpwd(char *str)
-// {
-// 	t_env	*tmp;
-// 	char	*s1;
-
-// 	tmp = data->utils->env_lst;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(tmp->content, "OLDPWD=",
-// 				ft_str_len_until_equal("OLDPWD=")) == 0)
-// 		{
-// 			s1 = ft_strjoin_free_arg2_with_memory_tracking("OLDPWD=", str);
-// 			tmp->content = create_new_var(s1);
-// 			return (1);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (0);
-// }
-
 /*
 	l'objectif de cette fonction est de mettre a jour la valeur de la variable
 	d'env OLDPWD
@@ -55,7 +16,7 @@ int	verif_oldpwd_export(char *str, t_data *data)
 	tmp = data->utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->value, ENV_SET_OLDPWD, ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)
+		if (ft_strncmp(tmp->value, ENV_SET_OLDPWD, ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_OLDPWD, str, data);
 			tmp->value = create_new_var(s1, data);
@@ -76,7 +37,7 @@ int	verif_pwd_export(char *str, t_data *data)
 	tmp = data->utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->value, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
+		if (ft_strncmp(tmp->value, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_CURRENT_WORKING_DIR, str, data);
 			tmp->value = create_new_var(s1, data);

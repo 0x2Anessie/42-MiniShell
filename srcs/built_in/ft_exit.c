@@ -10,11 +10,11 @@ int	is_valid_number2(int neg, char *str, int i)
 		return (1);
 	if (i == 19)
 	{
-		if (str[0] == '-' || str[0] == '+')
+		if (str[0] == '-' || str[0] == '+')/*         ---> condition non intelligible --> fonction         */
 			str++;
-		if (neg && ft_strcmp(str, "9223372036854775808") > 0)
+		if (neg && ft_strcmp(str, "9223372036854775808") > 0)/*         ---> condition non intelligible --> fonction         */
 			return (1);
-		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)
+		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)/*         ---> condition non intelligible --> fonction         */
 			return (1);
 	}
 	return (0);
@@ -30,12 +30,12 @@ int	is_valid_number(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (!i && str[i] == '-')
+		if (!i && str[i] == '-')/*         ---> condition non intelligible --> fonction         */
 		{
 			neg = 1;
 			continue ;
 		}
-		if (!i && str[i] == '+')
+		if (!i && str[i] == '+')/*         ---> condition non intelligible --> fonction         */
 			continue ;
 		if ((str[i] < '0' || str[i] > '9'))
 			return (1);
@@ -77,11 +77,11 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 	unsigned char	exit_code;
 
 	exit_code = 0;
-	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)
+	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{
-		if (is_valid_number(lex->next->word))
+		if (is_valid_number(lex->next->word))/*         ---> condition non intelligible --> fonction         */
 		{
 			ft_printf("bash: exit: %s: numeric argument required\n", \
 			lex->next->word);

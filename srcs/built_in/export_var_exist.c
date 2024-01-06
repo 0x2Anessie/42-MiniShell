@@ -16,7 +16,7 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
 			ft_str_len_until_equal(tmp->value))) == 0 \
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			if (verif_equal(str, '=')
 				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value)))
@@ -57,7 +57,7 @@ int	verif_var_exist(t_exec *utils, char *str)
 		if (tmp->content && !(ft_strncmp
 				(tmp->content, str, ft_str_len_until_equal(tmp
 						->content))) && (ft_str_len_until_equal
-				(str) == ft_str_len_until_equal(tmp->content)))
+				(str) == ft_str_len_until_equal(tmp->content)))/*         ---> condition non intelligible --> fonction         */
 		{
 			tmp->content = str;
 			tmp = utils->env_lst;
@@ -78,7 +78,7 @@ int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
 		ft_str_len_until_equal(tmp->value))) == 0 \
-		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))
+		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			return (1);
 		}

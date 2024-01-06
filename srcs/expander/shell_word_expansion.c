@@ -9,15 +9,15 @@ int	determine_expansion_or_quote_removal(t_lexer **to_check, t_quote *state, t_e
 	index = ZERO_INIT;
 	while ((*to_check)->word[index])
 	{
-		if ((*to_check)->token == DELIMITER)
+		if ((*to_check)->token == DELIMITER)/*         ---> condition non intelligible --> fonction         */
 			return (NO_EXPAND);
-		if ((*to_check)->word[index] == '$')
+		if ((*to_check)->word[index] == '$')/*         ---> condition non intelligible --> fonction         */
 			exp->need_expand = NEED_EXPAND;
-		if ((*to_check)->word[index] == '"' || (*to_check)->word[index] == '\'')
+		if ((*to_check)->word[index] == '"' || (*to_check)->word[index] == '\'')/*         ---> condition non intelligible --> fonction         */
 			exp->quote = QUOTED;
 		index++;
 	}
-	if (exp->need_expand == NO_EXPAND && exp->quote == QUOTED)
+	if (exp->need_expand == NO_EXPAND && exp->quote == QUOTED)/*         ---> condition non intelligible --> fonction         */
 		(*to_check)->word = create_cleaned_str_excluding_inactive_quots((*to_check)->word, state, data);
 	else
 		return (EXPANSION_REQUIRED);

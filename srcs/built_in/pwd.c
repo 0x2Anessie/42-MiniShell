@@ -10,7 +10,7 @@ int	get_pwd(char *tab, t_data *data)
 	char	**str;
 
 	str = ft_split_mini(tab, ' ', data);
-	if (tab && strcmp(str[0], CMD_PRINT_DIRCT) == 0)
+	if (tab && strcmp(str[0], CMD_PRINT_DIRCT) == 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		if (str[1] == NULL)
 			display_pwd(data);
@@ -37,12 +37,12 @@ void	display_pwd(t_data *data)
 		free(tmp);
 		return ;
 	}
-	if (data->utils->node->output_fd > 0)
+	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		ft_write_fd(tmp, data->utils->node->output_fd);
 		ft_write_fd("\n", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->output_redirection_error_id)
+	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 	{
 		printf("%s\n", tmp);
 	}
@@ -53,11 +53,11 @@ void	display_pwd(t_data *data)
 // affiche une erreur si pwd est use avec des arugument
 void	display_pwd_error(t_data *data)
 {
-	if (data->utils->node->output_fd > 0)
+	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		ft_write_fd("pwd: too many arguments", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->output_redirection_error_id)
+	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 	{
 		printf("pwd: too many arguments");
 	}

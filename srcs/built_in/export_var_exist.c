@@ -51,7 +51,7 @@ int	verif_var_exist(t_exec *utils, char *str)
 {
 	t_env	*tmp;
 
-	tmp = utils->env_lst;
+	tmp = utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (tmp->content && !(ft_strncmp
@@ -60,7 +60,7 @@ int	verif_var_exist(t_exec *utils, char *str)
 				(str) == ft_str_len_until_equal(tmp->content)))/*         ---> condition non intelligible --> fonction         */
 		{
 			tmp->content = str;
-			tmp = utils->env_lst;
+			tmp = utils->linked_list_full_env_var_copy_alpha;
 			return (1);
 		}
 		tmp = tmp->next;

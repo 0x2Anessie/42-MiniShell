@@ -60,7 +60,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	i = ZERO_INIT;
 	path = NULL;
 	old = NULL;
-	env = data->utils->env_lst;
+	env = data->utils->linked_list_full_env_var_copy_alpha;
 	if (lexer_lst)
 	{
 		if ((ft_strcmp(lexer_lst->word, CMD_CHANG_DIRCT) == 0)
@@ -105,7 +105,7 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 		old = getcwd(old, *i);
 		if (!old)
 		{
-			find_old_pwd(data->utils->env_lst, data);
+			find_old_pwd(data->utils->linked_list_full_env_var_copy_alpha, data);
 			return (0);
 		}
 		else

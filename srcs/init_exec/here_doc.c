@@ -121,8 +121,9 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	data->utils->dupin = dup(0);
 	while (INFINITY_LOOP)
 	{
-		data->utils->hd = readline("> ");
-		if (!data->utils->hd && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
+		data->utils->line = readline("> ");
+		printf("valeur de line : %s\n", data->utils->line);
+		if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
 		{
 			write (\
 			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
@@ -134,13 +135,15 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 			dup2(data->utils->dupin, STDIN_FILENO);
 			break ;
 		}
-		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->hd))
+		printf("valeur de line : %s\n", data->utils->line);
+		printf("valeur de word : %s\n", lexer_lst->next->word);
+		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->line))
 				break ;
-		write_line_to_heredoc(data->utils->hd, node->here_doc_fd);
-		free(data->utils->hd);
+		write_line_to_heredoc(data->utils->line, node->here_doc_fd);
+		free(data->utils->line);
 	}
 	close(data->utils->dupin);
-	free(data->utils->hd);
+	free(data->utils->line);
 }
 
 bool	is_heredoc_file_opening_failed(int file_descriptor)
@@ -237,7 +240,7 @@ bool	is_heredoc_file_opening_failed(int file_descriptor)
  */
 void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	data->utils->in_here_doc_mode = YES;
+	data->utils->in_here_doc_mode = TRUE;
 	handle_sig(data);
 	node->heredoc_tmp_fullname = HEREDOC_TEMP_FILE;
 	node->here_doc_fd = open(\
@@ -245,7 +248,7 @@ void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 	if (is_heredoc_file_opening_failed(node->here_doc_fd))
 		return ;
 	ft_read_input(node, lexer_lst, data);
-	data->utils->in_here_doc_mode = NO;
+	data->utils->in_here_doc_mode = FALSE;
 	handle_sig(data);
 	close(node->here_doc_fd);
 }

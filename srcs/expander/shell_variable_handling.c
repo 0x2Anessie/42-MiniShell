@@ -304,7 +304,7 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
  * Début
  *   |
  *   v
- *   - Initialiser les variables 'i' et 'y'
+ *   - Initialiser les variables 'i' et 'env_var_char_idx'
  *   |
  *   v
  *   - Vérifier si 'w[1]' est le caractère spécial '?'
@@ -334,29 +334,40 @@ int	find_and_expand_env_var_with_special_char(\
 char *w, t_expand *exp, t_data *data, t_quote *state)
 {
 	int	i;
-	int	y;
+	int	env_var_char_idx;
 
 	i = -1;
-	y = ZERO_INIT;
+	env_var_char_idx = ZERO_INIT;
 	if (w[1] == '?')/*         ---> condition non intelligible --> fonction         */
 		return (append_curnt_error_code_to_expansion_struc(exp, data));
 	i = 0;
-	while (w[i++] && data->nv[data->x][y] \
-	&& w[i] == data->nv[data->x][y] \
+	while (w[i++] && data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
+	&& w[i] == data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
 	&& w[i] != '=')/*         ---> condition non intelligible --> fonction         */
-		y++;
+		env_var_char_idx++;
 	if ((w[i] == '\0' \
 	|| w[i] == '$' \
 	|| is_special_syntax_character(w[i], state)) \
-	&& data->nv[data->x][y] && data->nv[data->x][y] == '=')/*         ---> condition non intelligible --> fonction         */
+	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] && data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
 	{
 		exp->found = 1;
-		while (data->nv[data->x][++y])
-			exp->str[exp->len++] = data->nv[data->x][y];
+		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
+			exp->str[exp->len++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
 		return (i);
 	}
 	return (i);
 }
+
+bool	is_current_char_question_mark(const char *word, int index)
+{
+    return (word[index] == '?');
+}
+
+bool	is_expansion_not_found(const t_expand *exp)
+{
+    return (exp->found == 0);
+}
+
 
 /**
  * @nom: expand_env_vars_with_question_mark_handling
@@ -414,7 +425,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
  * Début
  *   |
  *   v
- *   - Initialiser les variables 'i', 'x', et 'y'
+ *   - Initialiser les variables 'i', 'x', et 'env_var_char_idx'
  *   |
  *   v
  *   Entrer dans une boucle pour parcourir 'nv'
@@ -427,7 +438,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
  *   v         v
  *   - Appeler
  * find_and_expand_env_var_with_special_char       - Comparer
- *   - Retourner le résultat                          'w[i]' avec 'nv[x][y]'
+ *   - Retourner le résultat                          'w[i]' avec 'nv[x][env_var_char_idx]'
  *     /       \
  *                               OUI      NON
  *                                |         |
@@ -459,26 +470,26 @@ int	expand_env_vars_with_question_mark_handling(\
 char *w, t_expand *exp, t_data *data, t_quote *state)
 {
 	int	i;
-	int	y;
+	int	env_var_char_idx;
 
 	i = 1;
-	data->x = -1;
+	data->env_var_line_idx = -1;
 	exp->found = ZERO_INIT;
-	while (data->nv[++data->x])/*         ---> condition non intelligible --> fonction         */
+	while (data->full_env_var_copy_gamma[++data->env_var_line_idx])/*         ---> condition non intelligible --> fonction         */
 	{
-		y = 0;
+		env_var_char_idx = 0;
 		i = 1;
-		if (w[i] == '?')/*         ---> condition non intelligible --> fonction         */
+		if (is_current_char_question_mark(w, i))/*         ---> condition non intelligible --> fonction         */
 			return (\
 			find_and_expand_env_var_with_special_char(w, exp, data, state));
-		if (w[i] == data->nv[data->x][y])/*         ---> condition non intelligible --> fonction         */
+		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))/*         ---> condition non intelligible --> fonction         */
 		{
 			i = find_and_expand_env_var_with_special_char(w, exp, data, state);
 			if (exp->found == 1)/*         ---> condition non intelligible --> fonction         */
 				return (i);
 		}
 	}
-	if (exp->found == 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_expansion_not_found(exp))/*         ---> condition non intelligible --> fonction         */
 		return (handle_unfound_expansion_word(w, state));
 	return (i);
 }

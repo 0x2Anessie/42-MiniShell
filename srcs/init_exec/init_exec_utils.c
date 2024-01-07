@@ -80,11 +80,16 @@ bool	is_first_input_redirection_error(t_node *node)
  */
 void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 {
-	node->input_fd = INPUT_FD_REDIRECTION_FAIL;
 	if (is_first_input_redirection_error(node))
+	{
+		node->input_fd = INPUT_FD_REDIRECTION_FAIL;
 		perror(lexer_lst->next->word);
+	}
 	else
+	{
+		node->input_fd = INPUT_FD_REDIRECTION_FAIL;
 		ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
+	}
 }
 
 /**

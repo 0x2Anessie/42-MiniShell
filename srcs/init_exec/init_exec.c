@@ -339,13 +339,13 @@ void	ft_init_exec(t_data *data)
 	data->utils->node = NULL;
 	data->utils->in_here_doc_mode = 1;
 	data->utils->can_run = 1;
-	data->utils->hd = NULL;
+	data->utils->line = NULL;
 	data->utils->total_number_of_cmd_find_in_linked_list = \
 	count_cmd_in_lexer_linked_list(data->lexer_list);
 	data->utils->nb_node = \
 	count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
-	data->utils->env = data->env;
+	data->utils->full_env_var_copy_beta = data->full_env_var_copy_alpha;
 	if (!(data->utils->head_of_linked_list_env_var))
 	{
 		data->utils->head_of_linked_list_env_var = \

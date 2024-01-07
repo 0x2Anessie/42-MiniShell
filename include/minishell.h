@@ -38,10 +38,6 @@
 # define FORWARD_OFFSET 1
 # define BACKWARD_OFFSET -1
 
-/*   CONDITION   */
-# define YES 1
-# define NO 0
-
 /*   OUTPUT REDIRECTION ERROR ID   */
 # define OUTPUT_TARGET_ACCESS_ERROR_CODE 1
 # define OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE 2
@@ -172,11 +168,11 @@ typedef enum s_token
 	PIPE,
 }			t_token;
 
-typedef struct s_list_node
-{
-	char				*data;
-	struct s_list_node	*next;
-}						t_list_node;
+// typedef struct s_list_node
+// {
+// 	char				*data;
+// 	struct s_list_node	*next;
+// }						t_list_node;
 
 typedef struct s_node
 {
@@ -243,22 +239,22 @@ typedef struct s_export
 typedef struct s_exec
 {
 	int				can_run;/*       Change name      */
-	char			*hd;/*       Change name      */
+	char			*line;/*       Change name      */
 	int				dupin;/*       Change name      */
 	int				in_here_doc_mode;
-	char			**env;
-	int				err;/*       Change name      */
-	t_env			*env_lst;/*       Change name      */
+	char			**full_env_var_copy_beta;
+	// int				err;/*       Change name      */
+	t_env			*linked_list_full_env_var_copy_alpha;/*       Change name      */
 	int				total_number_of_cmd_find_in_linked_list;
 	int				nb_node;/*       Change name      */
 	char			*error;/*       Change name      */
-	int				ret;/*       Change name      */
+	// int				ret;/*       Change name      */
 	int				previous_fd;
 	char			*var;/*       Change name      */
 	t_node			*head_node_lst;/*       Change name      */
 	t_lexer			*head_lexer_lst;/*       Change name      */
 	t_export		*head_of_linked_list_env_var;/*       Change name      */
-	t_export		*head_export_lst;/*       Change name      */
+	// t_export		*head_export_lst;/*       Change name      */
 	t_env			*head_env_lst;/*       Change name      */
 	struct s_node	*node;
 	struct s_exec	*next;
@@ -274,24 +270,24 @@ typedef struct s_memory/*       Change name s_trash_memory      */
 typedef struct s_data
 {
 	char		*test;/*       Change name      */
-	int			x;/*       Change name      */
+	int			env_var_line_idx;/*       Change name      */
 	int			squote;/*       Change name      */
 	int			dquote;/*       Change name      */
 	int			ac;/*       Change name      */
 	int			nb_mots;
 	char		**av;
-	char		**env;
-	char		**nv;/*       Change name      */
+	char		**full_env_var_copy_alpha;
+	char		**full_env_var_copy_gamma;/*       Change name      */
 	char		*line;/*       Change name      */
-	int			index;/*       Change name      */
-	char		**allcommand;/*       Change name      */
-	char		**envpaths;/*       Change name      */
-	char		*finalpath;/*       Change name      */
+	// int			index;/*       Change name      */
+	// char		**allcommand;/*       Change name      */
+	// char		**envpaths;/*       Change name      */
+	// char		*finalpath;/*       Change name      */
 	t_exec		*utils;/*       Change name      */
 	t_memory	*trash_memory;
 	t_lexer		*lexer_list;
 	t_quote		*quote;
-	t_list_node	*envp;
+	// t_list_node	*envp;
 	t_expand	*expand;
 
 }			t_data;
@@ -505,6 +501,9 @@ int			is_both_quotes_on(t_quote *state);
 int			get_env_var_expansion_length(\
 char *word, int *length, char *env_var, t_quote *state);
 
+bool	is_char_matching_env_var(\
+char *word, int word_index, char *env_var, int env_var_index);
+
 int			calculate_length_until_single_quote(char *word, int *length);
 int			calculate_length_for_env_expansion(\
 char *word, char **env_var, t_quote *state, int *length);
@@ -552,6 +551,14 @@ int			is_single_quote_started(t_quote *state);
 int			is_single_quote_started_double_quote_closed(t_quote *state);
 int			is_single_quote_open_and_started(t_quote *state);
 
+/*     Déclarations des fonctions de lexeme_expansion_and_manipulation_condition.c   */
+bool		is_expansion_required_and_unquoted(t_expand *exp);
+bool		is_there_remaining_elements(int index, int total_length);
+bool		is_single_quote_with_closed_double_quotes(char c, t_quote *state);
+bool		is_double_quote_with_closed_single_quotes(char c, t_quote *state);
+bool    	is_dollar_char_then_end_of_string(t_lexer *exp);
+
+
 /*     Déclarations des fonctions de lexeme_expansion_and_manipulation.c   */
 char		*allocate_memory_for_expanded_word(\
 t_lexer **exp, t_quote *st, char **env, t_data *data);
@@ -580,6 +587,13 @@ char *w, t_expand *exp, t_data *data, t_quote *state);
 
 int			expand_env_vars_with_question_mark_handling(\
 char *w, t_expand *exp, t_data *data, t_quote *state);
+
+/*     Déclarations des fonctions de shell_word_expansion_conditions.c   */
+bool		is_expansion_not_required_and_quoted(t_expand *exp);
+bool		is_singl_or_doubl_quote(char character);
+bool		is_dollar_sign(char character);
+bool		is_the_token_a_delimiter(t_token token);
+bool		is_word_non_empty(const char *word);
 
 /*     Déclarations des fonctions de shell_word_expansion.c   */
 int			determine_expansion_or_quote_removal(\
@@ -624,7 +638,7 @@ int			count_string_array_elements(char **arr);
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*     Déclarations des fonctions de free.c    */
-int			ft_exit_child(t_exec *utils, int *fd, t_data *data);
+int			ft_exit_child(int *fd, t_data *data);
 void		add_to_trash_memory(t_data *data, void *add);
 void		*ft_malloc_with_tracking(t_data *data, size_t size);
 void		ft_free(void *add, t_data *date);

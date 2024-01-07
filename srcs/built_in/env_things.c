@@ -10,7 +10,7 @@ void	remove_node(char *var, t_data *data)
 	t_env	*current;
 	t_env	*prev;
 
-	current = data->utils->env_lst;
+	current = data->utils->linked_list_full_env_var_copy_alpha;
 	prev = NULL;
 	while (current != NULL)
 	{
@@ -31,7 +31,7 @@ void	remove_node(char *var, t_data *data)
 void	remove_env_node(t_env *current, t_env *prev, t_data *data)
 {
 	if (!prev)
-		data->utils->env_lst = current->next;
+		data->utils->linked_list_full_env_var_copy_alpha = current->next;
 	else
 		prev->next = current->next;
 }

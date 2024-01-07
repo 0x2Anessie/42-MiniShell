@@ -1,122 +1,71 @@
 #include "../../include/minishell.h"
 
-int	determine_expansion_or_quote_removal(t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
+int	determine_expansion_or_quote_removal(\
+t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 {
 	int		index;
 
 	exp->need_expand = ZERO_INIT;
 	exp->quote = ZERO_INIT;
 	index = ZERO_INIT;
-	while ((*to_check)->word[index])
+	while (is_word_non_empty((*to_check)->word + index))
 	{
-		if ((*to_check)->token == DELIMITER)/*         ---> condition non intelligible --> fonction         */
+		if (is_the_token_a_delimiter((*to_check)->token))
 			return (NO_EXPAND);
-		if ((*to_check)->word[index] == '$')/*         ---> condition non intelligible --> fonction         */
+		if (is_dollar_sign((*to_check)->word[index]))
 			exp->need_expand = NEED_EXPAND;
-		if ((*to_check)->word[index] == '"' || (*to_check)->word[index] == '\'')/*         ---> condition non intelligible --> fonction         */
+		if (is_singl_or_doubl_quote((*to_check)->word[index]))
 			exp->quote = QUOTED;
 		index++;
 	}
-	if (exp->need_expand == NO_EXPAND && exp->quote == QUOTED)/*         ---> condition non intelligible --> fonction         */
-		(*to_check)->word = create_cleaned_str_excluding_inactive_quots((*to_check)->word, state, data);
+	if (is_expansion_not_required_and_quoted(exp))
+		(*to_check)->word = create_cleaned_str_excluding_inactive_quots(\
+		(*to_check)->word, state, data);
 	else
 		return (EXPANSION_REQUIRED);
 	return (NO_ACTION_REQUIRED);
 }
 
 /**
- * @nom: expand
- * @brief: Effectue l'expansion de mots dans une structure lexer.
+ * @brief Traite chaque lexème pour une éventuelle expansion.
  *
- * Cette fonction parcourt les éléments d'une structure lexer (t_lexer) et, en fonction 
- * de la présence de caractères spéciaux et d'autres critères, effectue l'expansion des mots. 
- * Elle gère l'allocation et l'initialisation des structures d'état des guillemets (t_quote) 
- * et d'expansion (t_expand), et appelle différentes fonctions auxiliaires pour l'expansion 
- * des mots et la gestion des guillemets.
- *
- * @pourquoi: 
- *   - L'expansion de mots est un élément clé dans l'interprétation des commandes dans un shell, 
- *     permettant de traiter correctement les variables, les guillemets et d'autres constructions syntaxiques.
- *   - Fournit une flexibilité et une puissance accrues dans le traitement des commandes, 
- *     en permettant des substitutions et des manipulations dynamiques de chaînes.
- *
- * @param state: t_quote *state, pointeur vers l'état des guillemets.
- * @param env: char **env, tableau de chaînes de caractères représentant l'environnement.
- * @param tmp: t_lexer *tmp, pointeur vers le lexer à traiter.
- *
- * @gestion_des_erreurs: Si l'allocation pour 'state' ou 'exp' échoue, la fonction se termine prématurément.
- *
- * @effet_de_bord: Modifie la structure du lexer et l'état des guillemets.
- *
- * @exemple: 
- *   t_quote *state = NULL;
- *   char *env[] = {"VAR=value", NULL};
- *   t_lexer *lexer = create_lexer("echo $VAR");
- *   expand(state, env, lexer);
- *   // Traite chaque mot dans 'lexer' pour l'expansion.
- *
- * @dependances: Utilise 'is_dollr_quot_apstrph', 'dollar_at_end', 'determine_expansion_or_quote_removal', 
- *               et 'expand_and_insert_in_lexeme_linked_list' pour diverses opérations d'expansion.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   - Allocation de 'state' et 'exp'
- *     |
- *     v
- *   - Parcourir 'tmp'
- *     |
- *     v
- *   - 'tmp' est-il non nul ?
- *   /       \
- * VRAI     FAUX
- *   |         |
- *   v         v
- *   - Sauvegarde 'tmp'   - Fin de la fonction
- *     dans 'save'
- *     |
- *     v
- *   - Caractère spécial dans 'save->word' ?
- *   /       \
- * VRAI     FAUX
- *   |         |
- *   v         v
- *   - Gestion de   - Passage au mot suivant
- *     l'expansion
- *     |
- *     v
- *   - Passage au mot suivant
- *     |
- *     v
- *   Fin
+ * @param state Pointeur vers l'état des guillemets.
+ * @param data Pointeur vers la structure de données du shell.
+ * @param exp Pointeur vers la structure d'expansion.
+ * @param lexeme Pointeur vers le lexème actuel à traiter.
  */
-void	expand(t_quote *state, char **env, t_lexer *tmp, t_data *data)
+void	process_lexer_for_expansion(\
+t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme)
 {
-	t_lexer		*save;
-	t_expand	*exp;
+    t_lexer *current = lexeme;
 
-	data->nv = env;
-	state = ft_malloc_with_tracking(data, sizeof(t_quote));
-	if (!state)
-		return ;
-	reset_quoting_state(state);
-	exp = ft_malloc_with_tracking(data, sizeof(t_expand));
-	if (!exp)
-		return ;
-	while (tmp)
+    while (current)
 	{
-		save = tmp;
-		if (is_dollar_or_doubl_or_singl_quote(tmp->word))
+        if (is_dollar_or_doubl_or_singl_quote(current->word))
 		{
-			tmp = tmp->next;
-			reset_quoting_state(state);
-			if (!is_dollar_at_end(save->word))
-				continue ;
-			if (determine_expansion_or_quote_removal(&save, state, exp, data))
-				expand_and_insert_in_lexeme_linked_list(&save, state, data, exp);
-		}
-		else
-			tmp = tmp->next;
-	}
+            if (is_dollar_at_end(current->word) \
+			&& determine_expansion_or_quote_removal(\
+			&current, state, exp, data))
+                expand_and_insert_in_lexeme_linked_list(\
+				&current, state, data, exp);
+        }
+        reset_quoting_state(state);
+        current = current->next;
+    }
 }
+
+void expand(t_quote *state, char **env, t_lexer *tmp, t_data *data)
+{
+    t_expand *exp;
+
+    data->full_env_var_copy_gamma = env;
+    state = ft_malloc_with_tracking(data, sizeof(t_quote));
+    if (!state)
+        return;
+    reset_quoting_state(state);
+    exp = ft_malloc_with_tracking(data, sizeof(t_expand));
+    if (!exp)
+        return;
+    process_lexer_for_expansion(state, data, exp, tmp);
+}
+

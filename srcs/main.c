@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/06 00:13:59 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/07 21:35:33 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 {
 	data->ac = ac;
 	data->av = av;
-	data->env = env;
+	data->full_env_var_copy_alpha = env;
 	data->trash_memory = NULL;
 	data->utils = NULL;
 	data->line = NULL;
-	data->allcommand = NULL;
-	data->envpaths = NULL;
+	// data->allcommand = NULL;
+	// data->envpaths = NULL;
 	data->lexer_list = NULL;
-	data->index = ZERO_INIT;
+	// data->index = ZERO_INIT;
 }
 
 /**
@@ -329,7 +329,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 			return ;
 		}
 		tmp_lex = data->lexer_list;
-		new_env = get_new_env(data, data->utils->env_lst);
+		new_env = get_new_env(data, data->utils->linked_list_full_env_var_copy_alpha);
 		expand(data->quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{

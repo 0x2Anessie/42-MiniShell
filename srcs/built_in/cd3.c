@@ -28,7 +28,7 @@ int	change_directory_for_oldpwd(t_env *tmp, t_data *data)
 // recupere et retourn la variable d'env PWD, renvoi NULL si il le trouve pas
 char	*get_pwd_env(t_env	*tmp, t_data *data)
 {
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (!strncmp(ENV_SET_CURRENT_WORKING_DIR, tmp->content, 4))/*         ---> condition non intelligible --> fonction         */
@@ -47,7 +47,7 @@ int	verif_oldpwd(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, ENV_PREVIOUS_WORKING_DIR,

@@ -9,7 +9,7 @@ int	verif_pwd(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	if (str == NULL)
 		return (0);
 	while (tmp)
@@ -33,7 +33,7 @@ int	verif_pwd(char *str, t_data *data)
 */
 char	*get_home(t_env	*tmp, t_data *data)
 {
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->content, 5))/*         ---> condition non intelligible --> fonction         */
@@ -48,7 +48,7 @@ char	*get_home(t_env	*tmp, t_data *data)
 */
 char	*get_old_pwd(t_env	*tmp, t_data *data)
 {
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 6))/*         ---> condition non intelligible --> fonction         */
@@ -66,7 +66,7 @@ int	verif_home(char *str, t_data *data)
 	t_env	*tmp;
 	char	*s1;
 
-	tmp = data->utils->env_lst;
+	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
 		if (ft_strncmp(\

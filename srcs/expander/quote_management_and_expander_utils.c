@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 17:54:00 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/06 03:29:58 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/07 03:15:38 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,12 @@ int	is_char_cmd_separator(char c)
 	return (NOT_SEPARATOR);
 }
 
+bool	is_cmd_separator_and_quotes_off(char c, t_quote *state)
+{
+    return (is_char_cmd_separator(c) && is_both_quotes_off(state));
+}
+
+
 /**
  * @fonction: is_end_of_command_word
  * @breve_description: Détermine si le caractère actuel marque la fin d'un mot
@@ -228,9 +234,9 @@ int	is_char_cmd_separator(char c)
  */
 int	is_end_of_command_word(char *cmd, int i, t_quote *state)
 {
-	if (is_char_cmd_separator(cmd[i]) && is_both_quotes_off(state))
-		return (1);/*                    ---> definir define                   */
-	return (0);
+	if (is_cmd_separator_and_quotes_off(cmd[i], state))
+		return (TRUE);
+	return (FALSE);
 }
 
 /**

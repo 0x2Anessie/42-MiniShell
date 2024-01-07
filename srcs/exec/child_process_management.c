@@ -20,7 +20,7 @@ void execute_lexer_command_with_args(t_data *data)
 {
     char **arguments = build_arg_array_from_lexer(data);
 
-    if (is_execve_failed(data->lexer_list->word, arguments, data->utils->env))
+    if (is_execve_failed(data->lexer_list->word, arguments, data->utils->full_env_var_copy_beta))
         perror(data->lexer_list->word);
 }
 
@@ -32,20 +32,20 @@ t_data *data, int *fd, int count, t_exec utils)
 	if (is_built_in_command(data->lexer_list))
 	{
 		ft_exec_single_built_in(data->lexer_list, fd, data);
-		ft_exit_child(data->utils, fd, data);
+		ft_exit_child(fd, data);
 	}
     if (!check_for_slash_path_delimiter(data->lexer_list))
         execute_lexer_command_with_args(data);
 	else if (!check_if_cmd_full_path_exec_is_valid(data->lexer_list, utils, data))
 	{
-        char *command_full_path = find_command_full_path(data->lexer_list->word, utils.env_lst, data);
+        char *command_full_path = find_command_full_path(data->lexer_list->word, utils.linked_list_full_env_var_copy_alpha, data);
         char **arguments = build_arg_array_from_lexer(data);
 
-        if (is_execve_failed(command_full_path, arguments, utils.env))
+        if (is_execve_failed(command_full_path, arguments, utils.full_env_var_copy_beta))
             perror(data->lexer_list->word);
     }
 	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
-	ft_exit_child(data->utils, fd, data);
+	ft_exit_child(fd, data);
 }
 
 /**

@@ -126,12 +126,12 @@ t_exec	*init_env(t_data *data, char **env)
 	utils = ft_malloc_with_tracking(data, sizeof(t_exec));
 	if (!utils)
 		return (NULL);
-	utils->env_lst = NULL;
+	utils->linked_list_full_env_var_copy_alpha = NULL;
 	if (env)
-		utils->env_lst = create_env_list_from_array(data, env);
-	utils->head_env_lst = utils->env_lst;
-	utils->err = ZERO_INIT;
-	utils->ret = ZERO_INIT;
+		utils->linked_list_full_env_var_copy_alpha = create_env_list_from_array(data, env);
+	utils->head_env_lst = utils->linked_list_full_env_var_copy_alpha;
+	// utils->err = ZERO_INIT;
+	// utils->ret = ZERO_INIT;
 	utils->in_here_doc_mode = ZERO_INIT;
 	return (utils);
 }

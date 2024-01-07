@@ -171,12 +171,19 @@ int	calculate_length_until_single_quote(char *word, int *length)
 	return (index);
 }
 
+bool	is_char_matching_env_var(\
+char *word, int word_index, char *env_var, int env_var_index)
+{
+    return (word[word_index] == env_var[env_var_index]);
+}
+
+
 int	calculate_length_for_env_expansion(\
 char *word, char **env_var, t_quote *state, int *length)
 {
 	int			env_var_index;
 	int			y;
-	int			word_Index;
+	int			word_index;
 
 	state->found = ZERO_INIT;
 	if (is_only_single_quote_on(state))
@@ -187,18 +194,18 @@ char *word, char **env_var, t_quote *state, int *length)
 		while (env_var[env_var_index])
 		{
 			y = ZERO_INIT;
-			word_Index = 1;
-			if (word[word_Index] == env_var[env_var_index][y])/*         ---> condition non intelligible --> fonction         */
+			word_index = 1;
+			if (is_char_matching_env_var(word, word_index, env_var[env_var_index], y))
 			{
-				word_Index = get_env_var_expansion_length(\
+				word_index = get_env_var_expansion_length(\
 				word, length, env_var[env_var_index], state);
 				if (state->found == 1)/*         ---> condition non intelligible --> fonction         */
-					return (word_Index);
+					return (word_index);
 			}
 			env_var_index++;
 		}	
 	}
-	return (word_Index);
+	return (word_index);
 }
 
 /**
@@ -262,7 +269,7 @@ char *word, char **env_var, t_quote *state, int *length)
  *  v             v
  * Appeler       Parcourir 'env_var'
  * 'calculate_length_until_single_quote'   |
- * Retourner 'word_Index'      v
+ * Retourner 'word_index'      v
  *                         Correspondance dans 'env_var' ?
  *                         /         \
  *                       VRAI       FAUX
@@ -280,10 +287,10 @@ char *word, char **env_var, t_quote *state, int *length)
  *                   |            \
  *                   v             v
  *                 Retourner    Continuer la boucle
- *                 'word_Index'   sur 'env_var'
+ *                 'word_index'   sur 'env_var'
  *                               |
  *                               v
- *                             Retourner 'word_Index'
+ *                             Retourner 'word_index'
  */
 int	calculate_expanded_env_var_length(\
 char *word, char **env_var, t_quote *state, int *length)

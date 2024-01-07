@@ -244,7 +244,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 			if (is_input_fd_open(node))
 				close(node->input_fd);
 			if (is_next_word_missing(lexer_lst))
-				node->is_input_redirection_failed = YES;
+				node->is_input_redirection_failed = TRUE;
 			if (is_next_word_existing_and_readable(lexer_lst))
 				node->input_fd = open(lexer_lst->next->word, O_RDONLY);
 			else
@@ -397,7 +397,7 @@ t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 		if (is_output_append_redirection_error_detected(node, lex_lst))
 			node->output_redirection_error_id = \
 			OUTPUT_TARGET_ACCESS_ERROR_CODE;
-		*is_output_redirection_feasible = YES;
+		*is_output_redirection_feasible = TRUE;
 	}
 }
 
@@ -527,7 +527,7 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 		if (is_normal_output_redirection_error_detected(node, lex_lst))
 			node->output_redirection_error_id = \
 			OUTPUT_TARGET_ACCESS_ERROR_CODE;
-		node->is_output_redirection_feasible = YES;
+		node->is_output_redirection_feasible = TRUE;
 	}
 }
 
@@ -647,7 +647,7 @@ void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 		node, lex_lst, &node->is_output_redirection_feasible);
 		if (is_output_redirection_error_detected(node))
 		{
-			node->is_output_redirection_feasible = NO;
+			node->is_output_redirection_feasible = FALSE;
 			perror(OUT_FILE);
 		}
 		lex_lst = lex_lst->next;

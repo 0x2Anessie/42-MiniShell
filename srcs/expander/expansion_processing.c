@@ -1,5 +1,11 @@
 #include "../../include/minishell.h"
 
+bool	is_current_char_dollar_sign(t_lexer *exp, int index)
+{
+    return (exp->word[index] == '$');
+}
+
+
 /**
  * @nom: expand_variables_and_handle_special_chars
  * @brief: Calcule la longueur totale de la chaîne après expansion.
@@ -93,7 +99,7 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 	while ((*expnd)->word[index])
 	{
 		update_quoting_state((*expnd)->word[index], state);
-		if ((*expnd)->word[index] == '$')/*         ---> condition non intelligible --> fonction         */
+		if (is_current_char_dollar_sign(*expnd, index))
 		{
 			if (is_next_char_end_or_special(&(*expnd)->word[index], state))
 				exp->str[exp->len++] = (*expnd)->word[index];
@@ -203,7 +209,7 @@ t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 	while ((*exp)->word[index])
 	{
 		update_quoting_state((*exp)->word[index], state);
-		if ((*exp)->word[index] == '$')/*         ---> condition non intelligible --> fonction         */
+		if (is_current_char_dollar_sign(*exp, index)) 
 		{
 			if (is_next_char_question_mark(*exp, index))
 			{
@@ -212,7 +218,7 @@ t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 			}
 			else
 				index += calculate_expanded_env_var_length(\
-				&(*exp)->word[index], data->env, state, expanded_length);
+				&(*exp)->word[index], data->full_env_var_copy_alpha, state, expanded_length);
 			if (is_special_char_found_with_state_not_found(*exp, state, index))
 				(*expanded_length)++;
 		}

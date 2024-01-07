@@ -24,11 +24,13 @@ SRC_EXPANDER = $(addprefix expander/, \
 				env_var_expansion_length.c \
 				expand_utils.c \
 				expansion_processing.c \
+				lexeme_expansion_and_manipulation_condition.c \
 				lexeme_expansion_and_manipulation.c \
 				malloc_expand.c \
 				quot_state_validations.c \
 				quote_management_and_expander_utils.c \
 				shell_variable_handling.c \
+				shell_word_expansion_conditions.c \
 				shell_word_expansion.c \
 				singular_quote_status_utils.c \
 				special_char_handling.c \

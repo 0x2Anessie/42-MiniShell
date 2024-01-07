@@ -94,7 +94,7 @@ t_lexer **exp, t_quote *st, char **env, t_data *data)
 	env = NULL;
 	len = ZERO_INIT;
 	st->found = ZERO_INIT;
-	if ((*exp)->word[0] && (*exp)->word[0] == '$' && !(*exp)->word[1])/*         ---> condition non intelligible --> fonction         */
+	if (is_dollar_char_then_end_of_string(*exp))
 		len++;
 	length_of_env_variable_value(exp, st, data, &len);
 	str = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
@@ -217,15 +217,16 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 	char	**expanded;
 
 	exp->len = ZERO_INIT;
-	data->utils->error = convert_int_to_string_with_tracking(data, g_signal_received);
-	exp->str = allocate_memory_for_expanded_word(expnd, st, data->nv, data);
+	data->utils->error = \
+	convert_int_to_string_with_tracking(data, g_signal_received);
+	exp->str = allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
 	if (!exp->str)
 		return ;
 	st->singl_quot_status = ZERO_INIT;
 	st->doubl_quot_status = ZERO_INIT;
 	expand_variables_and_handle_special_chars(expnd, st, exp, data);
 	exp->str[exp->len] = '\0';
-	if (exp->need_expand == 1 && exp->quote == 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_expansion_required_and_unquoted(exp))
 		expanded = split_word_by_quotes(data, exp->str, st);
 	else
 	{
@@ -339,7 +340,7 @@ char **insert, t_lexer *back, t_data *data, int len)
 	t_lexer	*tmp;
 
 	i = ZERO_INIT;
-	while (++i < len)
+	while (is_there_remaining_elements(++i, len))
 	{
 		tmp = ft_malloc_with_tracking(data, sizeof(t_lexer) * (1));
 		if (!tmp)
@@ -524,12 +525,14 @@ char *cmd_without_quotes_ready_for_expand, t_quote *state)
 	state->doubl_quot_status = ZERO_INIT;
 	while (original_cmd_with_quotes[++i])
 	{
-		if (original_cmd_with_quotes[i] == '"' && is_single_quote_closed(state))/*         ---> condition non intelligible --> fonction         */
+		if (is_double_quote_with_closed_single_quotes(\
+		original_cmd_with_quotes[i], state))
 		{
 			update_quoting_state(original_cmd_with_quotes[i], state);
 			continue ;
 		}
-		if (original_cmd_with_quotes[i] == '\'' && is_doubl_quote_closed(state))/*         ---> condition non intelligible --> fonction         */
+		if (is_single_quote_with_closed_double_quotes(\
+		original_cmd_with_quotes[i], state))
 		{
 			update_quoting_state(original_cmd_with_quotes[i], state);
 			continue ;

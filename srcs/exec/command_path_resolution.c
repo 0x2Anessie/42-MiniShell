@@ -253,7 +253,7 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
 int	check_if_cmd_full_path_exec_is_valid(\
 t_lexer *lexer, t_exec utils, t_data *data)
 {
-	if (!find_command_full_path(lexer->word, utils.env_lst, data))
+	if (!find_command_full_path(lexer->word, utils.linked_list_full_env_var_copy_alpha, data))
 	{
 		write(STDERR_FILENO, lexer->word, strlen2(lexer->word));
 		write(\

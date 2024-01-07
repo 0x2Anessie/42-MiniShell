@@ -62,7 +62,7 @@ void	display_env(t_data *data)
 {
 	t_env	*current;
 
-	current = data->utils->env_lst;
+	current = data->utils->linked_list_full_env_var_copy_alpha;
 	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		while (current)

@@ -1,16 +1,26 @@
 #include "../../include/minishell.h"
 
-int	ft_exit_child(t_exec *utils, int *fd, t_data *data)
+int	ft_exit_child(int *fd, t_data *data)
 {
-	int	k;
 
-	k = utils->err;
 	if (fd)
 		closes_ends_of_pipe(fd);
 	close_file_descriptors_in_linked_list(data);
 	ft_free_all(data);
-	exit(k);
+	exit(0);
 }
+
+// int	ft_exit_child(t_exec *utils, int *fd, t_data *data)
+// {
+// 	int	k;
+
+// 	k = utils->err;
+// 	if (fd)
+// 		closes_ends_of_pipe(fd);
+// 	close_file_descriptors_in_linked_list(data);
+// 	ft_free_all(data);
+// 	exit(k);
+// }
 
 void	add_to_trash_memory(t_data *data, void *add)
 {

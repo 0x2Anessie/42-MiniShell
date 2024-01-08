@@ -240,7 +240,7 @@ bool	is_heredoc_file_opening_failed(int file_descriptor)
  */
 void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	data->utils->in_here_doc_mode = TRUE;
+	data->utils->is_this_an_exec_in_heredoc = TRUE;
 	handle_sig(data);
 	node->heredoc_tmp_fullname = HEREDOC_TEMP_FILE;
 	node->here_doc_fd = open(\
@@ -248,7 +248,7 @@ void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 	if (is_heredoc_file_opening_failed(node->here_doc_fd))
 		return ;
 	ft_read_input(node, lexer_lst, data);
-	data->utils->in_here_doc_mode = FALSE;
+	data->utils->is_this_an_exec_in_heredoc = FALSE;
 	handle_sig(data);
 	close(node->here_doc_fd);
 }

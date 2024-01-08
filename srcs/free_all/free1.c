@@ -24,10 +24,10 @@ int	ft_exit_child(int *fd, t_data *data)
 
 void	add_to_trash_memory(t_data *data, void *add)
 {
-	t_memory	*mem;
-	t_memory	*tmp;
+	t_trash_memory	*mem;
+	t_trash_memory	*tmp;
 
-	mem = malloc(sizeof(t_memory));
+	mem = malloc(sizeof(t_trash_memory));
 	if (!mem)
 		return ;
 	mem->add = add;
@@ -56,9 +56,9 @@ void	*ft_malloc_with_tracking(t_data *data, size_t size)
 
 void	ft_free(void *add, t_data *data)
 {
-	t_memory	*tmp;
-	t_memory	*ex;
-	t_memory	*next;
+	t_trash_memory	*tmp;
+	t_trash_memory	*ex;
+	t_trash_memory	*next;
 
 	tmp = data->trash_memory;
 	ex = NULL;
@@ -83,8 +83,8 @@ void	ft_free(void *add, t_data *data)
 
 void	ft_free_all(t_data *data)
 {
-	t_memory	*tmp;
-	t_memory	*next;
+	t_trash_memory	*tmp;
+	t_trash_memory	*next;
 
 	tmp = data->trash_memory;
 	while (tmp)

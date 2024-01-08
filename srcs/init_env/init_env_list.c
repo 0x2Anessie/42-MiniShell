@@ -147,8 +147,8 @@ t_env	*create_and_init_env_var_node(t_data *data, char *env)
 	new = ft_malloc_with_tracking(data, sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->content = ft_strdup(data, env);
-	new->next = NULL;
+	new->var_env_name_and_value = ft_strdup(data, env);
+	new->next_var_env_name_and_value = NULL;
 	return (new);
 }
 
@@ -222,9 +222,9 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
 	t_env	*tmp;
 
 	tmp = lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	while (tmp->next_var_env_name_and_value)
+		tmp = tmp->next_var_env_name_and_value;
+	tmp->next_var_env_name_and_value = new;
 }
 
 /**

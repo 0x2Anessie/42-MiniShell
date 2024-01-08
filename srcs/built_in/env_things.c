@@ -14,13 +14,13 @@ void	remove_node(char *var, t_data *data)
 	prev = NULL;
 	while (current != NULL)
 	{
-		if (!ft_strncmp(current->content, var, ft_string_length(var)))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strncmp(current->var_env_name_and_value, var, ft_string_length(var)))/*         ---> condition non intelligible --> fonction         */
 		{
 			remove_env_node(current, prev, data);
 			return ;
 		}
 		prev = current;
-		current = current->next;
+		current = current->next_var_env_name_and_value;
 	}
 }
 
@@ -31,9 +31,9 @@ void	remove_node(char *var, t_data *data)
 void	remove_env_node(t_env *current, t_env *prev, t_data *data)
 {
 	if (!prev)
-		data->utils->linked_list_full_env_var_copy_alpha = current->next;
+		data->utils->linked_list_full_env_var_copy_alpha = current->next_var_env_name_and_value;
 	else
-		prev->next = current->next;
+		prev->next_var_env_name_and_value = current->next_var_env_name_and_value;
 }
 
 /*

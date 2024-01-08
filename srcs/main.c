@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/07 21:35:33 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/08 02:26:47 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ unsigned int	g_signal_received = ZERO_INIT;
  */
 void	init_data(t_data *data, int ac, char **av, char **env)
 {
-	data->ac = ac;
-	data->av = av;
+	data->command_line_arg_count = ac;
+	data->command_line_args = av;
 	data->full_env_var_copy_alpha = env;
 	data->trash_memory = NULL;
 	data->utils = NULL;
@@ -203,7 +203,7 @@ char	**get_new_env(t_data *data, t_env *env_lst)
 	while (env_lst)
 	{
 		i++;
-		env_lst = env_lst->next;
+		env_lst = env_lst->next_var_env_name_and_value;
 	}
 	new_env = ft_malloc_with_tracking(data, sizeof(char *) * (i + 1));
 	if (!new_env)
@@ -213,8 +213,8 @@ char	**get_new_env(t_data *data, t_env *env_lst)
 	i = 0;
 	while (env_lst)
 	{
-		new_env[i++] = env_lst->content;
-		env_lst = env_lst->next;
+		new_env[i++] = env_lst->var_env_name_and_value;
+		env_lst = env_lst->next_var_env_name_and_value;
 	}
 	env_lst = head;
 	return (new_env);

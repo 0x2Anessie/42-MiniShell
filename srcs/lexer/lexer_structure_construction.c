@@ -83,7 +83,7 @@ void	ft_init_lexer_process(t_data *data)
 	tmp = NULL;
 	current = NULL;
 	data->lexer_list = NULL;
-	data->nb_mots = count_words_in_input(data->line);
+	data->input_line_word_count = count_words_in_input(data->line);
 	i = ZERO_INIT;
 	process_input_string(data, tmp, current, i);
 }

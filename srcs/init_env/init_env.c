@@ -18,8 +18,8 @@ void	malloc_no_env_initial_node(t_data *data, char *str, t_env **env)
 		perror(ERR_MEMORY_ALLOCATION);
 		return ;
 	}
-	new_node->content = ft_strdup(data, str);
-	new_node->next = NULL;
+	new_node->var_env_name_and_value = ft_strdup(data, str);
+	new_node->next_var_env_name_and_value = NULL;
 	*env = new_node;
 }
 
@@ -132,6 +132,6 @@ t_exec	*init_env(t_data *data, char **env)
 	utils->head_env_lst = utils->linked_list_full_env_var_copy_alpha;
 	// utils->err = ZERO_INIT;
 	// utils->ret = ZERO_INIT;
-	utils->in_here_doc_mode = ZERO_INIT;
+	utils->is_this_an_exec_in_heredoc = ZERO_INIT;
 	return (utils);
 }

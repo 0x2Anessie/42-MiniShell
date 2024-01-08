@@ -45,7 +45,7 @@ t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme)
 		{
             if (is_dollar_at_end(current->word) \
 			&& determine_expansion_or_quote_removal(\
-			&current, state, exp, data))
+			&current, state, exp, data))/*   condition inintelligible  ---> bool fonction   */
                 expand_and_insert_in_lexeme_linked_list(\
 				&current, state, data, exp);
         }

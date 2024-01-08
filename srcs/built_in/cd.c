@@ -15,15 +15,15 @@ int	verif_pwd(char *str, t_data *data)
 	while (tmp)
 	{
 		if (ft_strncmp(\
-		tmp->content, ENV_SET_CURRENT_WORKING_DIR, \
+		tmp->var_env_name_and_value, ENV_SET_CURRENT_WORKING_DIR, \
 		ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_CURRENT_WORKING_DIR, str, data);
-			tmp->content = create_new_var(s1, data);
+			tmp->var_env_name_and_value = create_new_var(s1, data);
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (0);
 }
@@ -36,9 +36,9 @@ char	*get_home(t_env	*tmp, t_data *data)
 	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->content, 5))/*         ---> condition non intelligible --> fonction         */
-			return (tmp->content);
-		tmp = tmp->next;
+		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->var_env_name_and_value, 5))/*         ---> condition non intelligible --> fonction         */
+			return (tmp->var_env_name_and_value);
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (NULL);
 }
@@ -51,9 +51,9 @@ char	*get_old_pwd(t_env	*tmp, t_data *data)
 	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_OLDPWD, tmp->content, 6))/*         ---> condition non intelligible --> fonction         */
-			return (tmp->content);
-		tmp = tmp->next;
+		if (!strncmp(ENV_SET_OLDPWD, tmp->var_env_name_and_value, 6))/*         ---> condition non intelligible --> fonction         */
+			return (tmp->var_env_name_and_value);
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (NULL);
 }
@@ -70,15 +70,15 @@ int	verif_home(char *str, t_data *data)
 	while (tmp)
 	{
 		if (ft_strncmp(\
-		tmp->content, ENV_SET_USER_HOME_DIR, \
+		tmp->var_env_name_and_value, ENV_SET_USER_HOME_DIR, \
 		ft_str_len_until_equal(ENV_SET_USER_HOME_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_USER_HOME_DIR, str, data);
-			tmp->content = create_new_var(s1, data);
+			tmp->var_env_name_and_value = create_new_var(s1, data);
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (0);
 }

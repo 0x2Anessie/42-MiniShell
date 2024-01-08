@@ -67,18 +67,18 @@ void	display_env(t_data *data)
 	{
 		while (current)
 		{
-			if (ft_write_fd(current->content, data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
+			if (ft_write_fd(current->var_env_name_and_value, data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 				return ;
 			ft_write_fd("\n", data->utils->node->output_fd);
-			current = current->next;
+			current = current->next_var_env_name_and_value;
 		}
 	}
 	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 	{
 		while (current)
 		{
-			printf("%s\n", current->content);
-			current = current->next;
+			printf("%s\n", current->var_env_name_and_value);
+			current = current->next_var_env_name_and_value;
 		}
 	}
 }
@@ -93,12 +93,12 @@ int	get_unset(t_lexer *lexer_lst, t_data *data)
 {
 	if (check_env(lexer_lst, data) == 0)
 	{
-		data->utils->var = NULL;
-		data->utils->var = check_unset(lexer_lst);
-		if (data->utils->var)
+		data->utils->name_of_var_env_to_del = NULL;
+		data->utils->name_of_var_env_to_del = check_unset(lexer_lst);
+		if (data->utils->name_of_var_env_to_del)
 		{
-			remove_node(data->utils->var, data);
-			remove_node_export(data->utils->var, data);
+			remove_node(data->utils->name_of_var_env_to_del, data);
+			remove_node_export(data->utils->name_of_var_env_to_del, data);
 		}
 	}
 	g_signal_received = 0;

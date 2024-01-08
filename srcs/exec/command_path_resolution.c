@@ -73,19 +73,19 @@ char	**extract_paths_from_env(t_env *env_lst, t_data *data)
 	char	**path;
 
 	path = NULL;
-	if (!env_lst || !env_lst->content)/*         ---> condition non intelligible --> fonction         */
+	if (!env_lst || !env_lst->var_env_name_and_value)/*         ---> condition non intelligible --> fonction         */
 	{
 		return (NULL);
 	}
 	while (env_lst)/*         ---> condition non intelligible --> fonction         */
 	{
-		if (!ft_strncmp(env_lst->content, ENV_SET_PATH_PREFIX, ft_strlen(ENV_SET_PATH_PREFIX)))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strncmp(env_lst->var_env_name_and_value, ENV_SET_PATH_PREFIX, ft_strlen(ENV_SET_PATH_PREFIX)))/*         ---> condition non intelligible --> fonction         */
 		{
 			path = ft_split_mini(\
-			env_lst->content + ft_strlen(ENV_SET_PATH_PREFIX), ':', data);
+			env_lst->var_env_name_and_value + ft_strlen(ENV_SET_PATH_PREFIX), ':', data);
 			return (path);
 		}
-		env_lst = env_lst->next;
+		env_lst = env_lst->next_var_env_name_and_value;
 	}
 	return (path);
 }

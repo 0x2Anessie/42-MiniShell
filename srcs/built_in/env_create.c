@@ -16,8 +16,8 @@ t_env	*create_node_str(char *str, t_data *data)
 	node = ft_malloc_with_tracking(data, sizeof(t_env));
 	if (!node)
 		return (NULL);
-	node->content = str;
-	node->next = NULL;
+	node->var_env_name_and_value = str;
+	node->next_var_env_name_and_value = NULL;
 	return (node);
 }
 
@@ -41,10 +41,10 @@ void	lst_add_back(t_exec *utils, char *str, t_data *data)
 	else
 	{
 		current = head;
-		while (current->next)
+		while (current->next_var_env_name_and_value)
 		{
-			current = current->next;
+			current = current->next_var_env_name_and_value;
 		}
-		current->next = create_node_str(str, data);
+		current->next_var_env_name_and_value = create_node_str(str, data);
 	}
 }

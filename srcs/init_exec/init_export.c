@@ -210,7 +210,7 @@ t_data *data, t_export *new)
 	if (!new)
 		return (NULL);
 	new->value = ft_strdup(\
-	data, data->utils->linked_list_full_env_var_copy_alpha->content);
+	data, data->utils->linked_list_full_env_var_copy_alpha->var_env_name_and_value);
 	new->next = NULL;
 	return (new);
 }
@@ -315,7 +315,7 @@ t_data *data, t_export *head_of_linked_list_env_var)
 			current_new->next = new;
 			current_new = current_new->next;
 		}
-		data->utils->linked_list_full_env_var_copy_alpha = data->utils->linked_list_full_env_var_copy_alpha->next;
+		data->utils->linked_list_full_env_var_copy_alpha = data->utils->linked_list_full_env_var_copy_alpha->next_var_env_name_and_value;
 	}
 	sort_linked_list_env_var(&head_of_linked_list_env_var);
 	data->utils->linked_list_full_env_var_copy_alpha = data->utils->head_env_lst;

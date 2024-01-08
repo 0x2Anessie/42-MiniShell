@@ -337,7 +337,7 @@ void	ft_init_exec(t_data *data)
 	t_node	*node;
 
 	data->utils->node = NULL;
-	data->utils->in_here_doc_mode = 1;
+	data->utils->is_this_an_exec_in_heredoc = 1;
 	data->utils->can_run = 1;
 	data->utils->line = NULL;
 	data->utils->total_number_of_cmd_find_in_linked_list = \
@@ -355,7 +355,7 @@ void	ft_init_exec(t_data *data)
 	}
 	node = NULL;
 	build_cmd_linked_list(node, data, data->utils);
-	data->utils->in_here_doc_mode = ZERO_INIT;
+	data->utils->is_this_an_exec_in_heredoc = ZERO_INIT;
 	handle_sig(data);
 	data->utils->head_node_lst = data->utils->node;
 }

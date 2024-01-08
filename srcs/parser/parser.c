@@ -5,21 +5,21 @@ int	ft_check_quotes(char *str, t_data *data)
 	int	i;
 
 	i = ZERO_INIT;
-	data->squote = 0;
-	data->dquote = 1;
+	data->is_sing_quot = 0;
+	data->is_doub_quot = 1;
 	while (str[i])
 	{
-		if (str[i] == '"' && !data->squote && !data->dquote)
-			data->dquote = 1;
-		else if (str[i] == '"' && !data->squote && data->dquote)
-			data->dquote = 0;
-		else if (str[i] == '\'' && !data->squote && data->dquote)
-			data->squote = 1;
-		else if (str[i] == '\'' && data->squote && data->dquote)
-			data->squote = 0;
+		if (str[i] == '"' && !data->is_sing_quot && !data->is_doub_quot)
+			data->is_doub_quot = 1;
+		else if (str[i] == '"' && !data->is_sing_quot && data->is_doub_quot)
+			data->is_doub_quot = 0;
+		else if (str[i] == '\'' && !data->is_sing_quot && data->is_doub_quot)
+			data->is_sing_quot = 1;
+		else if (str[i] == '\'' && data->is_sing_quot && data->is_doub_quot)
+			data->is_sing_quot = 0;
 		i++;
 	}
-	if (data->squote == data->dquote)
+	if (data->is_sing_quot == data->is_doub_quot)
 	{
 		printf("minishell: syntax error quote not closed\n");
 		return (0);

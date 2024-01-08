@@ -348,7 +348,8 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	if ((w[i] == '\0' \
 	|| w[i] == '$' \
 	|| is_special_syntax_character(w[i], state)) \
-	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] && data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
+	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
+	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
 	{
 		exp->found = 1;
 		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
@@ -482,7 +483,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 		if (is_current_char_question_mark(w, i))/*         ---> condition non intelligible --> fonction         */
 			return (\
 			find_and_expand_env_var_with_special_char(w, exp, data, state));
-		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))/*         ---> condition non intelligible --> fonction         */
+		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))
 		{
 			i = find_and_expand_env_var_with_special_char(w, exp, data, state);
 			if (exp->found == 1)/*         ---> condition non intelligible --> fonction         */

@@ -76,11 +76,11 @@ void	find_old_pwd(t_env *env, t_data *data)
 	tmp = env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, ENV_PREVIOUS_WORKING_DIR, 6))
+		if (!ft_strncmp(tmp->var_env_name_and_value, ENV_PREVIOUS_WORKING_DIR, 6))
 		{
 			change_directory_for_oldpwd(env, data);
 			break ;
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_var_env_name_and_value;
 	}
 }

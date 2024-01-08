@@ -54,16 +54,16 @@ int	verif_var_exist(t_exec *utils, char *str)
 	tmp = utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (tmp->content && !(ft_strncmp
-				(tmp->content, str, ft_str_len_until_equal(tmp
-						->content))) && (ft_str_len_until_equal
-				(str) == ft_str_len_until_equal(tmp->content)))/*         ---> condition non intelligible --> fonction         */
+		if (tmp->var_env_name_and_value && !(ft_strncmp
+				(tmp->var_env_name_and_value, str, ft_str_len_until_equal(tmp
+						->var_env_name_and_value))) && (ft_str_len_until_equal
+				(str) == ft_str_len_until_equal(tmp->var_env_name_and_value)))/*         ---> condition non intelligible --> fonction         */
 		{
-			tmp->content = str;
+			tmp->var_env_name_and_value = str;
 			tmp = utils->linked_list_full_env_var_copy_alpha;
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (0);
 }

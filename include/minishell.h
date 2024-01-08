@@ -180,26 +180,26 @@ typedef struct s_node
 	int				output_fd;
 	char			*heredoc_tmp_fullname;
 	int				here_doc_fd;
-	int				index;
+	int				index;/*       Change name      */
 	int				is_command_present;
 	int				is_output_redirection_feasible;
 	int				is_input_redirection_failed;
 	int				output_redirection_error_id;
-	struct s_node	*next;
+	struct s_node	*next;/*       Change name      */
 }			t_node;
 
 typedef struct s_env
 {
-	char			*content;/*       Change name      */
-	struct s_env	*next;
+	char			*var_env_name_and_value;
+	struct s_env	*next_var_env_name_and_value;
 }				t_env;
 
 typedef struct s_stringdata
 {
-	int		len;/*       Change name      */
+	int		word_len_of_cmd_with_quot_includ;
 	int		i;/*       Change name      */
 	int		j;/*       Change name      */
-	int		is_escaped;/*       Change name      */
+	int		is_current_char_preceded_by_escape_char;
 }			t_stringdata;
 
 typedef struct s_lexer
@@ -207,7 +207,7 @@ typedef struct s_lexer
 	char			*word;/*       Change name      */
 	t_token			token;
 	int				i;/*       Change name      */
-	int				nb_words;
+	int				nb_words;/*       Change name      */
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }			t_lexer;
@@ -232,8 +232,8 @@ typedef struct s_expand
 
 typedef struct s_export
 {
-	char			*value;
-	struct s_export	*next;
+	char			*value;/*       Change name      */
+	struct s_export	*next;/*       Change name      */
 }			t_export;
 
 typedef struct s_exec
@@ -241,54 +241,54 @@ typedef struct s_exec
 	int				can_run;/*       Change name      */
 	char			*line;/*       Change name      */
 	int				dupin;/*       Change name      */
-	int				in_here_doc_mode;
+	int				is_this_an_exec_in_heredoc;
 	char			**full_env_var_copy_beta;
-	// int				err;/*       Change name      */
-	t_env			*linked_list_full_env_var_copy_alpha;/*       Change name      */
+	// int				err;
+	t_env			*linked_list_full_env_var_copy_alpha;
 	int				total_number_of_cmd_find_in_linked_list;
 	int				nb_node;/*       Change name      */
 	char			*error;/*       Change name      */
-	// int				ret;/*       Change name      */
+	// int				ret;
 	int				previous_fd;
-	char			*var;/*       Change name      */
+	char			*name_of_var_env_to_del;
 	t_node			*head_node_lst;/*       Change name      */
 	t_lexer			*head_lexer_lst;/*       Change name      */
-	t_export		*head_of_linked_list_env_var;/*       Change name      */
-	// t_export		*head_export_lst;/*       Change name      */
+	t_export		*head_of_linked_list_env_var;
+	// t_export		*head_export_lst;
 	t_env			*head_env_lst;/*       Change name      */
 	struct s_node	*node;
 	struct s_exec	*next;
 	struct s_exec	*prev;
 }				t_exec;
 
-typedef struct s_memory/*       Change name s_trash_memory      */
+typedef struct s_trash_memory
 {
-	void			*add;
-	struct s_memory	*next;
-}			t_memory;/*       Change name t_trash_memory     */
+	void					*add;
+	struct s_trash_memory	*next;
+}			t_trash_memory;
 
 typedef struct s_data
 {
-	char		*test;/*       Change name      */
-	int			env_var_line_idx;/*       Change name      */
-	int			squote;/*       Change name      */
-	int			dquote;/*       Change name      */
-	int			ac;/*       Change name      */
-	int			nb_mots;
-	char		**av;
-	char		**full_env_var_copy_alpha;
-	char		**full_env_var_copy_gamma;/*       Change name      */
-	char		*line;/*       Change name      */
-	// int			index;/*       Change name      */
-	// char		**allcommand;/*       Change name      */
-	// char		**envpaths;/*       Change name      */
-	// char		*finalpath;/*       Change name      */
-	t_exec		*utils;/*       Change name      */
-	t_memory	*trash_memory;
-	t_lexer		*lexer_list;
-	t_quote		*quote;
+	// char			*test;
+	int				env_var_line_idx;
+	int				is_sing_quot;
+	int				is_doub_quot;
+	int				command_line_arg_count;
+	int				input_line_word_count;
+	char			**command_line_args;
+	char			**full_env_var_copy_alpha;
+	char			**full_env_var_copy_gamma;
+	char			*line;/*       Change name      */
+	// int			index;
+	// char		**allcommand;
+	// char		**envpaths;
+	// char		*finalpath;
+	t_exec			*utils;
+	t_trash_memory	*trash_memory;
+	t_lexer			*lexer_list;
+	t_quote			*quote;
 	// t_list_node	*envp;
-	t_expand	*expand;
+	t_expand		*expand;
 
 }			t_data;
 

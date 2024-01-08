@@ -13,6 +13,16 @@ int	stop_pand_slash(char *str, char c)
 			printf("salut22222\n");
 			return (0);
 		}
+		if ((str[0] == c && str[1] == c))
+		{
+			printf("salut22222\n");
+			return (0);
+		}
+		if ((str[0] == c && str[1] == '.'))
+		{
+			printf("salut22222\n");
+			return (0);
+		}
 		i++;
 	}
 	return (1);

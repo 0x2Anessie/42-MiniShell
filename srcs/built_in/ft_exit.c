@@ -1,6 +1,7 @@
 
 #include "../../include/minishell.h"
 
+// check si le nombre est superieur a 19 ou au long long puis renvoie une erreur si cest le cas
 int	is_valid_number2(int neg, char *str, int i)
 {
 	if (str[0] == '+' || str[0] == '-')
@@ -9,16 +10,17 @@ int	is_valid_number2(int neg, char *str, int i)
 		return (1);
 	if (i == 19)
 	{
-		if (str[0] == '-' || str[0] == '+')
+		if (str[0] == '-' || str[0] == '+')/*         ---> condition non intelligible --> fonction         */
 			str++;
-		if (neg && ft_strcmp(str, "9223372036854775808") > 0)
+		if (neg && ft_strcmp(str, "9223372036854775808") > 0)/*         ---> condition non intelligible --> fonction         */
 			return (1);
-		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)
+		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)/*         ---> condition non intelligible --> fonction         */
 			return (1);
 	}
 	return (0);
 }
 
+// gere le + et -  lui et celle d'avant serve a verifier le nb du code d'erreur
 int	is_valid_number(char *str)
 {
 	int	i;
@@ -28,12 +30,12 @@ int	is_valid_number(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (!i && str[i] == '-')
+		if (!i && str[i] == '-')/*         ---> condition non intelligible --> fonction         */
 		{
 			neg = 1;
 			continue ;
 		}
-		if (!i && str[i] == '+')
+		if (!i && str[i] == '+')/*         ---> condition non intelligible --> fonction         */
 			continue ;
 		if ((str[i] < '0' || str[i] > '9'))
 			return (1);
@@ -41,19 +43,21 @@ int	is_valid_number(char *str)
 	return (is_valid_number2(neg, str, i));
 }
 
+// ferme les pipes et descripteurs de fichier ouvert avant l'exit
 void	free_res(int *fd, t_data *data)
 {
-	close_pipe(fd);
-	close_fd(data);
+	closes_ends_of_pipe(fd);
+	close_file_descriptors_in_linked_list(data);
 	ft_free_all(data);
 }
 
-void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
+// check i il y a trop d'argument et sinons'occupe de sortir
+void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
 {
 	if (lex->next->next)
 	{
 		ft_printf("bash: exit: too many arguments\n");
-		globi = 1;
+		g_signal_received = 1;
 	}
 	else
 	{
@@ -63,16 +67,21 @@ void	ft_exit2(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
 	}
 }
 
+/*
+	fait l'exit, affiche exit si c le seul shell en cour d'execution puis verifie si le code
+	de sorti est correct puis envoie a exit_with_code pour quitter avec le bon code de sorti ou 0 si
+	aucun code specifier
+*/
 void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 {
 	unsigned char	exit_code;
 
 	exit_code = 0;
-	if (data->utils->nb_cmd == 1)
+	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{
-		if (is_valid_number(lex->next->word))
+		if (is_valid_number(lex->next->word))/*         ---> condition non intelligible --> fonction         */
 		{
 			ft_printf("bash: exit: %s: numeric argument required\n", \
 			lex->next->word);
@@ -80,7 +89,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 			exit(2);
 		}
 		else
-			ft_exit2(lex, fd, exit_code, data);
+			ft_exit_with_code(lex, fd, exit_code, data);
 	}
 	else
 	{

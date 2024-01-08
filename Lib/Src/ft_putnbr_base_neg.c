@@ -18,7 +18,7 @@ int	ft_putnbr_base_neg(unsigned int nbr, char *base)
 	int			count;
 
 	nbr2 = nbr;
-	count = ft_len_nb(nbr2);
+	count = length_of_number_for_string_conversion(nbr2);
 	if (nbr2 < 0)
 		nbr2 = nbr2 * (-1);
 	if (nbr2 >= ft_strlenbase(base))

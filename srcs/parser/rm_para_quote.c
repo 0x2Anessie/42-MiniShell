@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 char	*parse_quote(t_data *data, char *tmp)
@@ -11,7 +10,7 @@ char	*parse_quote(t_data *data, char *tmp)
 	if (len >= 2 && tmp[0] == '"' && tmp[len - 1] == '"' && is_space(tmp,
 			' ') == 0)
 	{
-		tmp = ft_substr(data, tmp, 1,(size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);
@@ -25,7 +24,7 @@ char	*parse_quote2(t_data *data, char *tmp)
 	if (len >= 2 && tmp[0] == '\'' && tmp[len - 1] == '\'' && is_space(tmp,
 			' ') == 0)
 	{
-		tmp = ft_substr(data, tmp, 1,(size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);
@@ -38,7 +37,7 @@ char	*parse_para(t_data *data, char *tmp)
 	len = ft_strlen(tmp);
 	if (len >= 2 && tmp[0] == '(' && tmp[len - 1] == ')')
 	{
-		tmp = ft_substr(data, tmp, 1,(size_t)len - 2);
+		tmp = ft_substr(data, tmp, 1, (size_t)len - 2);
 		return (tmp);
 	}
 	return (tmp);

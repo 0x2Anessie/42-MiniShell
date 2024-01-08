@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 t_lexer	*create_new_lexer(t_data *data, char *str)
@@ -21,7 +20,7 @@ int	check_redir_error(t_lexer *tmp) // je pense que ca sert a rein a tester
 	i = -1;
 	if (tmp->word[0] == '<')
 		if (tmp->word[i] != '>')
-				return (0);
+			return (0);
 	if (tmp->word[0] == '>')
 		while (tmp->word[++i])
 			if (tmp->word[i] != '>')
@@ -42,23 +41,23 @@ t_token	which_redir(t_lexer *tmp)
 	if (!check_redir_error(tmp))
 	{
 		if (tmp->word[0] == '>' && tmp->word[1] == '\0')
-			return (fleched);
+			return (REDIRECT_OUT);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '\0')
-			return (flecheg);
+			return (REDIRECT_IN);
 		else if (tmp->word[0] == '>' && tmp->word[1] == '>')
-			return (Dfleched);
+			return (APPEND_OUT);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '<')
 			return (HERE_DOC);
 		else if (tmp->word[0] == '<' && tmp->word[1] == '>')
-			return (flechegd);
+			return (REDIRECT_INOUT);
 		else if (tmp->word[0] == '>' && tmp->word[1] == '<')
-			return (flechedg);
+			return (REDIRECT_OUTIN);
 	}
 	return (-1);
 }
 
-void	assign_command_or_argument_token(t_lexer *tmp, t_lexer *first) 
-{	
+void	assign_command_or_argument_token(t_lexer *tmp, t_lexer *first)
+{
 	if (first->token != CMD)
 		tmp->token = CMD;
 	else

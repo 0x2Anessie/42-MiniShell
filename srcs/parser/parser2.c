@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	pipe_parse2(t_data *data)
@@ -6,12 +5,12 @@ int	pipe_parse2(t_data *data)
 	int		k;
 	t_lexer	*tmp;
 
-	k = 0;
+	k = ZERO_INIT;
 	tmp = data->lexer_list;
 	while (tmp)
 	{
 		k = 0;
-		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|') // egale juste > 
+		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|')
 			|| (tmp->word[k] == '<' && tmp->word[k + 1] == '|'))
 		{
 			printf("KKKKKK zsh: parse error near `|'\n");
@@ -19,7 +18,7 @@ int	pipe_parse2(t_data *data)
 			return (0);
 		}
 		if ((tmp->word[k] == '|' && tmp->word[k + 1] == '<')
-			|| (tmp->word[k] == '|' && tmp->word[k + 1] == '>')) // supp ou cree le doss
+			|| (tmp->word[k] == '|' && tmp->word[k + 1] == '>'))
 		{
 			printf("zsh: no such file or directory\n");
 			k++;
@@ -35,8 +34,8 @@ int	ft_chevron(char *str)
 	int	i;
 	int	k;
 
-	k = 0;
-	i = 0;
+	k = ZERO_INIT;
+	i = ZERO_INIT;
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
@@ -55,7 +54,7 @@ int	pipe_parse(t_data *data)
 	int		k;
 	t_lexer	*tmp;
 
-	k = 0;
+	k = ZERO_INIT;
 	tmp = NULL;
 	tmp = data->lexer_list;
 	while (tmp)
@@ -86,17 +85,19 @@ int	ft_arrow2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp != NULL)
 	{
-		if ((tmp->token == Dfleched || tmp->token == fleched))
+		if ((tmp->token == APPEND_OUT || tmp->token == REDIRECT_OUT))
 		{
-			if (tmp->next->token == HERE_DOC || tmp->next->token == flecheg
-				|| tmp->next->token == Dfleched || tmp->next->token == fleched
+			if (tmp->next->token == HERE_DOC || tmp->next->token == REDIRECT_IN
+				|| tmp->next->token == APPEND_OUT
+				|| tmp->next->token == REDIRECT_OUT
 				|| tmp->next->token == PIPE)
 				return (0);
 		}
-		if (tmp->token == HERE_DOC || tmp->token == flecheg)
+		if (tmp->token == HERE_DOC || tmp->token == REDIRECT_IN)
 		{
-			if (tmp->next->token == HERE_DOC || tmp->next->token == flecheg
-				|| tmp->next->token == Dfleched || tmp->next->token == fleched
+			if (tmp->next->token == HERE_DOC || tmp->next->token == REDIRECT_IN
+				|| tmp->next->token == APPEND_OUT
+				|| tmp->next->token == REDIRECT_OUT
 				|| tmp->next->token == PIPE)
 				return (0);
 		}

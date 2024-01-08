@@ -1,11 +1,10 @@
-
 #include "../../include/minishell.h"
 
 int	stop_pand_slash(char *str, char c)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	while (str[i])
 	{
 		if ((str[0] == c && str[1] == '\0'))
@@ -32,7 +31,7 @@ int	chevron_pipe(char *str)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	if (!str)
 		return (0);
 	while (str[i])

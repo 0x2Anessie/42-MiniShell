@@ -17,15 +17,15 @@ int	ft_word_count(char *s, char c)
 	int	i;
 	int	count;
 
-	i = 0;
+	i = ZERO_INIT;
 	count = 0;
 	while (s[i])
 	{
-		while (s[i] == c && s[i])
+		while (s[i] == c && s[i])/*         ---> condition non intelligible --> fonction         */
 			i++;
 		if (s[i])
 			count++;
-		while (s[i] != c && s[i])
+		while (s[i] != c && s[i])/*         ---> condition non intelligible --> fonction         */
 			i++;
 	}
 	return (count);
@@ -35,8 +35,8 @@ char	*ft_put_word_in_malloc(char *s, char c, char *tab)
 {
 	int	i;
 
-	i = 0;
-	while (s[i] && (s[i] != c))
+	i = ZERO_INIT;
+	while (s[i] && (s[i] != c))/*         ---> condition non intelligible --> fonction         */
 	{
 		tab[i] = s[i];
 		i++;
@@ -51,8 +51,8 @@ char	**ft_malloc_word(char **tab, char *s, char c, t_data *data)
 	int	j;
 	int	k;
 
-	k = 0;
-	i = 0;
+	k = ZERO_INIT;
+	i = ZERO_INIT;
 	while (s[i])
 	{
 		if (s[i] == c || s[i] == '\0')
@@ -60,7 +60,7 @@ char	**ft_malloc_word(char **tab, char *s, char c, t_data *data)
 		else
 		{
 			j = 0;
-			while (s[i + j] != c && s[i + j])
+			while (s[i + j] != c && s[i + j])/*         ---> condition non intelligible --> fonction         */
 				j++;
 			tab[k] = ft_malloc_with_tracking(data, sizeof(char) * (j + 1));
 			if (!tab[k])

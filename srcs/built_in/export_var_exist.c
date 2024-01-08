@@ -1,19 +1,25 @@
 
 #include "../../include/minishell.h"
 
+/*
+	elle verifi si une variable specifier par str existe dans la head_of_linked_list_env_var en
+	comparant str avec la valeur de chaque noeud
+	si une variable est trouver et que str contient un = l valeur de la variable
+	est mis a jour avec str
+*/
 int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 {
 	t_export	*tmp;
 
-	tmp = utils->export_lst;
+	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-			ft_strlen_eguale(tmp->value))) == 0 \
-				&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value))))
+			ft_str_len_until_equal(tmp->value))) == 0 \
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			if (verif_equal(str, '=')
-				&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value)))
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value)))
 			tmp->value = case_egale(str, data);
 			return (1);
 		}
@@ -26,7 +32,7 @@ int	verif_equal(char *str, char c)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	while (str[i])
 	{
 		if (str[i] == c)
@@ -36,37 +42,43 @@ int	verif_equal(char *str, char c)
 	return (0);
 }
 
+/*
+	verifie si une la variable str existe deja dans la liste des variable d'env
+	(env_lst) en comparant str avec le contenu de chaque noeud
+	si il trouve il met a jour la variable d'env avec str
+*/
 int	verif_var_exist(t_exec *utils, char *str)
 {
 	t_env	*tmp;
 
-	tmp = utils->env_lst;
+	tmp = utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (tmp->content && !(ft_strncmp
-				(tmp->content, str, ft_strlen_eguale(tmp
-						->content))) && (ft_strlen_eguale
-				(str) == ft_strlen_eguale(tmp->content)))
+		if (tmp->var_env_name_and_value && !(ft_strncmp
+				(tmp->var_env_name_and_value, str, ft_str_len_until_equal(tmp
+						->var_env_name_and_value))) && (ft_str_len_until_equal
+				(str) == ft_str_len_until_equal(tmp->var_env_name_and_value)))/*         ---> condition non intelligible --> fonction         */
 		{
-			tmp->content = str;
-			tmp = utils->env_lst;
+			tmp->var_env_name_and_value = str;
+			tmp = utils->linked_list_full_env_var_copy_alpha;
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_var_env_name_and_value;
 	}
 	return (0);
 }
 
-int	verif_var_exist_export_2(t_exec *utils, char *str)
+// comme celle d'avant mais ne met pas a jour la variable et parcour la head_of_linked_list_env_var
+int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 {
 	t_export	*tmp;
 
-	tmp = utils->export_lst;
+	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
 		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-		ft_strlen_eguale(tmp->value))) == 0 \
-		&& (ft_strlen_eguale(str) == ft_strlen_eguale(tmp->value))))
+		ft_str_len_until_equal(tmp->value))) == 0 \
+		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			return (1);
 		}

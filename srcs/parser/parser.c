@@ -97,9 +97,9 @@ int	ft_cloporte(t_data *data)
 
 int	ft_parser(t_data *data)
 {
-	if (!ft_check_quotes(data->line, data))
+	if (!ft_check_quotes(data->minishell_input_cmd, data))
 		return (0);
-	if (!base_check(data->line))
+	if (!base_check(data->minishell_input_cmd))
 		return (0);
 	if (!pipe_parse(data))
 		return (0);
@@ -107,9 +107,9 @@ int	ft_parser(t_data *data)
 		return (0);
 	if (!ft_arrow(data))
 		return (0);
-	if (!ft_tiret(data->line))
+	if (!ft_tiret(data->minishell_input_cmd))
 		return (0);
-	if (!chevron_pipe(data->line))
+	if (!chevron_pipe(data->minishell_input_cmd))
 		return (0);
 	return (1);
 }

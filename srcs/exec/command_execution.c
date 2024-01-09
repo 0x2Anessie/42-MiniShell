@@ -338,7 +338,7 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  * @erreurs_possibles_et_effets_de_bord:
  * - Si 'pid' est NULL, la fonction retourne immédiatement sans attendre aucun
  * processus.
- * - La fonction dépend de 'data->utils->can_run' et 'data->utils->total_number_of_cmd_find_in_linked_list' pour
+ * - La fonction dépend de 'data->utils->heredoc_ctrl_c_uninterrupted' et 'data->utils->total_number_of_cmd_find_in_linked_list' pour
  * déterminer si elle doit continuer à attendre les processus.
  *
  * @exemples_utilisation:
@@ -368,7 +368,7 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  *   |         |
  *   |         v
  *   |       Entrer dans la boucle tant que 'nb_node' > 0,
- *   |       'data->utils->can_run' et 'data->utils->total_number_of_cmd_find_in_linked_list' sont vrais
+ *   |       'data->utils->heredoc_ctrl_c_uninterrupted' et 'data->utils->total_number_of_cmd_find_in_linked_list' sont vrais
  *   |         |
  *   |         v
  *   |       pid[index] est-il supérieur à 0 ?
@@ -411,7 +411,7 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 	index = ZERO_INIT;
 	if (!pid)
 		return ;
-	while (nb_node > 0 && data->utils->can_run && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
+	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
 		if (pid[index] > 0)
 		{
@@ -527,13 +527,13 @@ void	manage_execution_resources(t_data *data)
 
 	init_fd_and_status_vars(fd, y, &wstatus);
 	pid = ft_malloc_with_tracking(\
-	data, sizeof(pid_t) * (data->utils->nb_node));
+	data, sizeof(pid_t) * (data->utils->cmd_count_pipe_chained));
 	if (!pid)
 		return ;
-	initialize_pid_array_to_zero(pid, data->utils->nb_node);
+	initialize_pid_array_to_zero(pid, data->utils->cmd_count_pipe_chained);
 	handle_process_signal();
 	if (!manage_exec_linked_cmd_sequence(fd, pid, data, y))/*         ---> le nom de la fonction de condition semble etrange --> fonction         */
 		perror("Pipe ");
-	wait_and_process_child_statuses(pid, &wstatus, data->utils->nb_node, data);
+	wait_and_process_child_statuses(pid, &wstatus, data->utils->cmd_count_pipe_chained, data);
 	close_file_descriptors_in_linked_list(data);
 }

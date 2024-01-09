@@ -108,7 +108,7 @@ void	ctrl_c_handler(int sig)
  * 'here document'.
  * - Écrit un retour à la ligne (FT_NEWLINE) sur STDERR.
  * - Met à jour les variables dans la structure globale 'g_all.utils', notamment 
- * 'in_here_doc_mode' à 0, 'can_run' à 0 et 'err' à EXIT_STAT_CTRL_C_SIGINT.
+ * 'in_here_doc_mode' à 0, 'heredoc_ctrl_c_uninterrupted' à 0 et 'err' à EXIT_STAT_CTRL_C_SIGINT.
  *
  * @valeur_de_retour:
  * Aucune valeur de retour (fonction void).
@@ -138,7 +138,7 @@ void	ctrl_c_handler(int sig)
  * Écrire FT_NEWLINE sur STDERR
  *   |
  *   v
- * Mettre à jour g_all.utils (in_here_doc_mode, can_run, err)
+ * Mettre à jour g_all.utils (in_here_doc_mode, heredoc_ctrl_c_uninterrupted, err)
  *   |
  *   v
  * Fin
@@ -149,7 +149,7 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
 	close(0);
 	ft_putchar('\n');
 	data->utils->is_this_an_exec_in_heredoc = 0;
-	data->utils->can_run = 0;
+	data->utils->heredoc_ctrl_c_uninterrupted = 0;
 	g_signal_received = exit_stat_ctrl_c_sigint();
 }
 

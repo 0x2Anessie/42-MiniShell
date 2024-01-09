@@ -164,7 +164,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
  * La fonction 'should_continue_execution' évalue plusieurs conditions pour
  * décider si le processus d'exécution doit se poursuivre. Elle vérifie
  * l'existence et l'état de 'node' dans data->utils', si 'node' a une commande 
- * à exécuter ('is_command_present'), et si 'can_run' dans data->utils' est vrai.
+ * à exécuter ('is_command_present'), et si 'heredoc_ctrl_c_uninterrupted' dans data->utils' est vrai.
  * De plus, elle incrémente la valeur pointée par 'y[1]' et vérifie si elle est
  * supérieure ou égale à 0.
  *   
@@ -203,7 +203,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
  *  |         \
  *  |          \
  *  v           v
- * y[1]++ >= 0 etdata->utils->can_run ?  Retourner 0
+ * y[1]++ >= 0 etdata->utils->heredoc_ctrl_c_uninterrupted ?  Retourner 0
  *  /        \
  * VRAI      FAUX
  *  |         \
@@ -216,7 +216,7 @@ int	should_continue_execution(t_data *data, int *y)
 	return (data->utils->node \
 	&& data->utils->node->is_command_present == 1 \
 	&& ++y[1] >= 0 \
-	&& data->utils->can_run);/*         ---> condition non intelligible --> fonction         */
+	&& data->utils->heredoc_ctrl_c_uninterrupted);/*         ---> condition non intelligible --> fonction         */
 }
 
 /**

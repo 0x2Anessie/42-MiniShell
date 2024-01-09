@@ -49,13 +49,13 @@ void	remove_node_export(char *var, t_data *data)
 	prev = NULL;
 	while (current)
 	{
-		if (ft_strncmp(current->value, var, ft_string_length(var)) == 0)/*         ---> condition non intelligible --> fonction         */
+		if (ft_strncmp(current->env_var_name_and_value, var, ft_string_length(var)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			remove_export_node(current, prev, data);
 			return ;
 		}
 		prev = current;
-		current = current->next;
+		current = current->next_env_var_name_and_value;
 	}
 }
 
@@ -66,7 +66,7 @@ void	remove_node_export(char *var, t_data *data)
 void	remove_export_node(t_export *current, t_export *prev, t_data *data)
 {
 	if (prev == NULL)
-		data->utils->head_of_linked_list_env_var = current->next;
+		data->utils->head_of_linked_list_env_var = current->next_env_var_name_and_value;
 	else
-		prev->next = current->next;
+		prev->next_env_var_name_and_value = current->next_env_var_name_and_value;
 }

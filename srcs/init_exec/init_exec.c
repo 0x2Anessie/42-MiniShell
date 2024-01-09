@@ -204,7 +204,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 	int	index;
 
 	index = ZERO_INIT;
-	while (index < utils->nb_node)
+	while (index < utils->cmd_count_pipe_chained)
 	{
 		node = ft_malloc_with_tracking(data, sizeof(t_node));
 		if (!node)
@@ -338,11 +338,11 @@ void	ft_init_exec(t_data *data)
 
 	data->utils->node = NULL;
 	data->utils->is_this_an_exec_in_heredoc = 1;
-	data->utils->can_run = 1;
-	data->utils->line = NULL;
+	data->utils->heredoc_ctrl_c_uninterrupted = 1;
+	data->utils->heredoc_input_buffer = NULL;
 	data->utils->total_number_of_cmd_find_in_linked_list = \
 	count_cmd_in_lexer_linked_list(data->lexer_list);
-	data->utils->nb_node = \
+	data->utils->cmd_count_pipe_chained = \
 	count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
 	data->utils->full_env_var_copy_beta = data->full_env_var_copy_alpha;

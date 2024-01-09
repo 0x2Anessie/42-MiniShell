@@ -2,7 +2,7 @@
 
 bool	is_expansion_required_and_unquoted(t_expand *exp)
 {
-    return (exp->need_expand == 1 && exp->quote == 0);
+    return (exp->dollar_sign_present == 1 && exp->sing_or_doub_quote_in_env_expansion == 0);
 }
 
 bool	is_there_remaining_elements(int index, int total_length)

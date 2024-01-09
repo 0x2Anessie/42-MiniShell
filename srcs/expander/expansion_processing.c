@@ -102,7 +102,7 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 		if (is_current_char_dollar_sign(*expnd, index))
 		{
 			if (is_next_char_end_or_special(&(*expnd)->word[index], state))
-				exp->str[exp->len++] = (*expnd)->word[index];
+				exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = (*expnd)->word[index];
 			else if (is_next_char_decimal_digit(&(*expnd)->word[index]))
 				index++;
 			else if (is_single_quote_open_and_started(state))
@@ -113,7 +113,7 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 				&(*expnd)->word[index], exp, data, state) IDX_ADJUST;
 		}
 		else
-			exp->str[exp->len++] = (*expnd)->word[index];
+			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = (*expnd)->word[index];
 		index++;
 	}
 }
@@ -213,7 +213,7 @@ t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 		{
 			if (is_next_char_question_mark(*exp, index))
 			{
-				(*expanded_length) += ft_strlen(data->utils->error);
+				(*expanded_length) += ft_strlen(data->utils->g_signal_in_char_format);
 				index += SKIP_DOLLAR_QUESTION_MARK;
 			}
 			else

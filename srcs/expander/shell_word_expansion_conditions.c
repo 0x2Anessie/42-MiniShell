@@ -2,7 +2,7 @@
 
 bool	is_expansion_not_required_and_quoted(t_expand *exp)
 {
-    return (exp->need_expand == NO_EXPAND && exp->quote == QUOTED);
+    return (exp->dollar_sign_present == NO_EXPAND && exp->sing_or_doub_quote_in_env_expansion == QUOTED);
 }
 
 bool	is_singl_or_doubl_quote(char character)

@@ -14,9 +14,9 @@ void	export_quotes(t_export *don, t_data *data)
 	tmp = don;
 	while (tmp)
 	{
-		if (check_case(tmp->value) && check_case_with_char(tmp->value))/*         ---> condition non intelligible --> fonction         */
-			tmp->value = case_egale(tmp->value, data);
-		tmp = tmp->next;
+		if (check_case(tmp->env_var_name_and_value) && check_case_with_char(tmp->env_var_name_and_value))/*         ---> condition non intelligible --> fonction         */
+			tmp->env_var_name_and_value = case_egale(tmp->env_var_name_and_value, data);
+		tmp = tmp->next_env_var_name_and_value;
 	}
 	tmp = don;
 }

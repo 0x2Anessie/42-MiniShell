@@ -13,8 +13,8 @@ t_export	*create_node_str_export(char *str, t_data *data)
 	node = ft_malloc_with_tracking(data, sizeof(t_export));
 	if (node)
 	{
-		node->value = str;
-		node->next = NULL;
+		node->env_var_name_and_value = str;
+		node->next_env_var_name_and_value = NULL;
 	}
 	return (node);
 }
@@ -34,10 +34,10 @@ void	lst_add_back_export(t_export **head, char *str, t_data *data)
 	else
 	{
 		current = *head;
-		while (current->next != NULL)
+		while (current->next_env_var_name_and_value != NULL)
 		{
-			current = current->next;
+			current = current->next_env_var_name_and_value;
 		}
-		current->next = create_node_str_export(str, data);
+		current->next_env_var_name_and_value = create_node_str_export(str, data);
 	}
 }

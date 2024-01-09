@@ -14,16 +14,16 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-			ft_str_len_until_equal(tmp->value))) == 0 \
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
+		if (tmp->env_var_name_and_value && ((ft_strncmp(tmp->env_var_name_and_value, str, \
+			ft_str_len_until_equal(tmp->env_var_name_and_value))) == 0 \
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			if (verif_equal(str, '=')
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value)))
-			tmp->value = case_egale(str, data);
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value)))
+			tmp->env_var_name_and_value = case_egale(str, data);
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_env_var_name_and_value;
 	}
 	return (0);
 }
@@ -76,13 +76,13 @@ int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (tmp->value && ((ft_strncmp(tmp->value, str, \
-		ft_str_len_until_equal(tmp->value))) == 0 \
-		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->value))))/*         ---> condition non intelligible --> fonction         */
+		if (tmp->env_var_name_and_value && ((ft_strncmp(tmp->env_var_name_and_value, str, \
+		ft_str_len_until_equal(tmp->env_var_name_and_value))) == 0 \
+		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			return (1);
 		}
-		tmp = tmp->next;
+		tmp = tmp->next_env_var_name_and_value;
 	}
 	return (0);
 }

@@ -14,7 +14,7 @@ int	is_next_char_decimal_digit(char *word)
 int	is_special_char_found_with_state_not_found(\
 t_lexer *exp, t_quote *state, int index)
 {
-	return (state->found == 0 && exp->word[index] \
+	return (state->var_env_match_confirmed == 0 && exp->word[index] \
 	&& is_special_syntax_character(exp->word[index], state));
 }
 

@@ -31,9 +31,9 @@ bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
  * - Duplique le descripteur d'entrée standard pour préserver l'état
  * original.
  * - Entre dans une boucle infinie pour lire les lignes d'entrée une par une.
- * - Si `readline` retourne NULL et `can_run` est actif, signale la fin du
+ * - Si `readline` retourne NULL et `heredoc_ctrl_c_uninterrupted` est actif, signale la fin du
  * here-document.
- * - En cas d'interruption (flag `can_run` désactivé), restaure le
+ * - En cas d'interruption (flag `heredoc_ctrl_c_uninterrupted` désactivé), restaure le
  * descripteur d'entrée standard et sort de la boucle.
  * - Vérifie si la ligne lue correspond au délimiteur spécifié pour terminer
  * la lecture.
@@ -83,12 +83,12 @@ bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
  *   - Lire une ligne (readline)
  *     |
  *     v
- *   - Ligne lue est-elle NULL et can_run activé ?
+ *   - Ligne lue est-elle NULL et heredoc_ctrl_c_uninterrupted activé ?
  *                  /             \
  *                OUI             NON
  *                 |               |
  *                 v               v
- *   - Écrire un avertissement          - can_run est-il désactivé ?
+ *   - Écrire un avertissement          - heredoc_ctrl_c_uninterrupted est-il désactivé ?
  *    (ERR_HEREDOC_EOF_WARNING)              /       \
  *   - Sortir de la boucle                  OUI      NON  
  *                                           |        |
@@ -118,32 +118,32 @@ bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
  */
 void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	data->utils->dupin = dup(0);
+	data->utils->stdin_fd_for_heredoc = dup(0);
 	while (INFINITY_LOOP)
 	{
-		data->utils->line = readline("> ");
-		printf("valeur de line : %s\n", data->utils->line);
-		if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
+		data->utils->heredoc_input_buffer = readline("> ");
+		// printf("valeur de line : %s\n", data->utils->heredoc_input_buffer);
+		if (!data->utils->heredoc_input_buffer && data->utils->heredoc_ctrl_c_uninterrupted)/*         ---> condition non intelligible --> fonction         */
 		{
 			write (\
 			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
 			ft_strlen(ERR_HEREDOC_EOF_WARNING));
 			break ;
 		}
-		if (!data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
+		if (!data->utils->heredoc_ctrl_c_uninterrupted)/*         ---> condition non intelligible --> fonction         */
 		{
-			dup2(data->utils->dupin, STDIN_FILENO);
+			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
 			break ;
 		}
-		printf("valeur de line : %s\n", data->utils->line);
-		printf("valeur de word : %s\n", lexer_lst->next->word);
-		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->line))
+		// printf("valeur de line : %s\n", data->utils->heredoc_input_buffer);
+		// printf("valeur de word : %s\n", lexer_lst->next->word);
+		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->heredoc_input_buffer))
 				break ;
-		write_line_to_heredoc(data->utils->line, node->here_doc_fd);
-		free(data->utils->line);
+		write_line_to_heredoc(data->utils->heredoc_input_buffer, node->here_doc_fd);
+		free(data->utils->heredoc_input_buffer);
 	}
-	close(data->utils->dupin);
-	free(data->utils->line);
+	close(data->utils->stdin_fd_for_heredoc);
+	free(data->utils->heredoc_input_buffer);
 }
 
 bool	is_heredoc_file_opening_failed(int file_descriptor)

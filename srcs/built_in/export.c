@@ -17,15 +17,15 @@ void	print_export(t_export *head_of_linked_list_env_var, t_data *data)
 		if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			ft_write_fd("declare -x ", data->utils->node->output_fd);
-			ft_write_fd(current->value, data->utils->node->output_fd);
+			ft_write_fd(current->env_var_name_and_value, data->utils->node->output_fd);
 			ft_write_fd("\n", data->utils->node->output_fd);
 		}
 		else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
 		{
 			printf("declare -x ");
-			printf("%s\n", current->value);
+			printf("%s\n", current->env_var_name_and_value);
 		}
-		current = current->next;
+		current = current->next_env_var_name_and_value;
 	}
 	current = head_of_linked_list_env_var;
 	g_signal_received = 0;

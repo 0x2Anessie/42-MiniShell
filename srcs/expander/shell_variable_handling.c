@@ -73,7 +73,7 @@ int	append_chars_expnt_until_singl_quot(char *word, t_expand *exp)
 	indx = -1;
 	while (word[++indx] && word[indx] != '\'')/*         ---> condition non intelligible --> fonction         */
 	{
-		exp->str[exp->len++] = word[indx];
+		exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = word[indx];
 	}
 	return (indx);
 }
@@ -246,9 +246,9 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
 	int	indx;
 
 	indx = -1;
-	while (data->utils->error[++indx])/*         ---> condition non intelligible --> fonction         */
-		exp->str[exp->len++] = data->utils->error[indx];
-	exp->found = 1;
+	while (data->utils->g_signal_in_char_format[++indx])/*         ---> condition non intelligible --> fonction         */
+		exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->utils->g_signal_in_char_format[indx];
+	exp->var_env_match_found = 1;
 	return (2);
 }
 
@@ -351,9 +351,9 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
 	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
 	{
-		exp->found = 1;
+		exp->var_env_match_found = 1;
 		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
-			exp->str[exp->len++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
+			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
 		return (i);
 	}
 	return (i);
@@ -366,7 +366,7 @@ bool	is_current_char_question_mark(const char *word, int index)
 
 bool	is_expansion_not_found(const t_expand *exp)
 {
-    return (exp->found == 0);
+    return (exp->var_env_match_found == 0);
 }
 
 
@@ -475,7 +475,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 
 	i = 1;
 	data->env_var_line_idx = -1;
-	exp->found = ZERO_INIT;
+	exp->var_env_match_found = ZERO_INIT;
 	while (data->full_env_var_copy_gamma[++data->env_var_line_idx])/*         ---> condition non intelligible --> fonction         */
 	{
 		env_var_char_idx = 0;
@@ -486,7 +486,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))
 		{
 			i = find_and_expand_env_var_with_special_char(w, exp, data, state);
-			if (exp->found == 1)/*         ---> condition non intelligible --> fonction         */
+			if (exp->var_env_match_found == 1)/*         ---> condition non intelligible --> fonction         */
 				return (i);
 		}
 	}

@@ -5,17 +5,17 @@ t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 {
 	int		index;
 
-	exp->need_expand = ZERO_INIT;
-	exp->quote = ZERO_INIT;
+	exp->dollar_sign_present = ZERO_INIT;
+	exp->sing_or_doub_quote_in_env_expansion = ZERO_INIT;
 	index = ZERO_INIT;
 	while (is_word_non_empty((*to_check)->word + index))
 	{
 		if (is_the_token_a_delimiter((*to_check)->token))
 			return (NO_EXPAND);
 		if (is_dollar_sign((*to_check)->word[index]))
-			exp->need_expand = NEED_EXPAND;
+			exp->dollar_sign_present = NEED_EXPAND;
 		if (is_singl_or_doubl_quote((*to_check)->word[index]))
-			exp->quote = QUOTED;
+			exp->sing_or_doub_quote_in_env_expansion = QUOTED;
 		index++;
 	}
 	if (is_expansion_not_required_and_quoted(exp))

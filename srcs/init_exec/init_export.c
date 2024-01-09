@@ -5,7 +5,7 @@ t_export **head_of_linked_list_env_var)
 {
 	return (!head_of_linked_list_env_var \
 	|| !(*head_of_linked_list_env_var) \
-	|| !((*head_of_linked_list_env_var)->next));
+	|| !((*head_of_linked_list_env_var)->next_env_var_name_and_value));
 }
 
 bool	is_current_value_greater_than_next(\
@@ -111,17 +111,17 @@ void	sort_linked_list_env_var(t_export **head_of_linked_list_env_var)
 	{
 		swapped = 0;
 		current = *head_of_linked_list_env_var;
-		while (!current->next)
+		while (!current->next_env_var_name_and_value)
 		{
 			if (is_current_value_greater_than_next(\
-			current->value, current->next->value))
+			current->env_var_name_and_value, current->next_env_var_name_and_value->env_var_name_and_value))
 			{
-				temp = current->value;
-				current->value = current->next->value;
-				current->next->value = temp;
+				temp = current->env_var_name_and_value;
+				current->env_var_name_and_value = current->next_env_var_name_and_value->env_var_name_and_value;
+				current->next_env_var_name_and_value->env_var_name_and_value = temp;
 				swapped = 1;
 			}
-			current = current->next;
+			current = current->next_env_var_name_and_value;
 		}
 	}
 }
@@ -209,9 +209,9 @@ t_data *data, t_export *new)
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
 	if (!new)
 		return (NULL);
-	new->value = ft_strdup(\
+	new->env_var_name_and_value = ft_strdup(\
 	data, data->utils->linked_list_full_env_var_copy_alpha->var_env_name_and_value);
-	new->next = NULL;
+	new->next_env_var_name_and_value = NULL;
 	return (new);
 }
 
@@ -312,8 +312,8 @@ t_data *data, t_export *head_of_linked_list_env_var)
 		}
 		else
 		{
-			current_new->next = new;
-			current_new = current_new->next;
+			current_new->next_env_var_name_and_value = new;
+			current_new = current_new->next_env_var_name_and_value;
 		}
 		data->utils->linked_list_full_env_var_copy_alpha = data->utils->linked_list_full_env_var_copy_alpha->next_var_env_name_and_value;
 	}

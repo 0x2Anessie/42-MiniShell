@@ -93,7 +93,7 @@ t_lexer **exp, t_quote *st, char **env, t_data *data)
 
 	env = NULL;
 	len = ZERO_INIT;
-	st->found = ZERO_INIT;
+	st->var_env_match_confirmed = ZERO_INIT;
 	if (is_dollar_char_then_end_of_string(*exp))
 		len++;
 	length_of_env_variable_value(exp, st, data, &len);
@@ -216,22 +216,23 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 {
 	char	**expanded;
 
-	exp->len = ZERO_INIT;
-	data->utils->error = \
+	exp->length_of_expanded_var_value = ZERO_INIT;
+	data->utils->g_signal_in_char_format = \
 	convert_int_to_string_with_tracking(data, g_signal_received);
-	exp->str = allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
-	if (!exp->str)
+	exp->value_of_expanded_var_from_env = \
+	allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
+	if (!exp->value_of_expanded_var_from_env)
 		return ;
 	st->singl_quot_status = ZERO_INIT;
 	st->doubl_quot_status = ZERO_INIT;
 	expand_variables_and_handle_special_chars(expnd, st, exp, data);
-	exp->str[exp->len] = '\0';
+	exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value] = '\0';
 	if (is_expansion_required_and_unquoted(exp))
-		expanded = split_word_by_quotes(data, exp->str, st);
+		expanded = split_word_by_quotes(data, exp->value_of_expanded_var_from_env, st);
 	else
 	{
 		(*expnd)->word = \
-		create_cleaned_str_excluding_inactive_quots(exp->str, st, data);
+		create_cleaned_str_excluding_inactive_quots(exp->value_of_expanded_var_from_env, st, data);
 		return ;
 	}
 	replace_and_extend_chained_list_lexeme(expnd, expanded, data);

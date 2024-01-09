@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/08 02:26:47 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:27:02 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->full_env_var_copy_alpha = env;
 	data->trash_memory = NULL;
 	data->utils = NULL;
-	data->line = NULL;
+	data->minishell_input_cmd = NULL;
 	// data->allcommand = NULL;
 	// data->envpaths = NULL;
 	data->lexer_list = NULL;
@@ -321,7 +321,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		exit_all(data);
 	if (tmp && tmp[0])
 	{
-		data->line = tmp;
+		data->minishell_input_cmd = tmp;
 		ft_init_lexer_process(data);
 		if (!ft_parser(data))
 		{
@@ -329,7 +329,8 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 			return ;
 		}
 		tmp_lex = data->lexer_list;
-		new_env = get_new_env(data, data->utils->linked_list_full_env_var_copy_alpha);
+		new_env = get_new_env(\
+		data, data->utils->linked_list_full_env_var_copy_alpha);
 		expand(data->quote, new_env, tmp_lex, data);
 		if (tmp_lex && tmp_lex->word)
 		{

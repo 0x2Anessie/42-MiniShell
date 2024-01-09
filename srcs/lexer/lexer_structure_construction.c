@@ -53,19 +53,19 @@ t_data *data, t_lexer *tmp, t_lexer *current, int i)
 	int	x;
 
 	x = ZERO_INIT;
-	while (data->line[i])
+	while (data->minishell_input_cmd[i])
 	{
 		j = 0;
-		while (data->line[i] == ' ' || \
-		(data->line[i] >= TAB && data->line[i] <= SHIFT_OUT))
+		while (data->minishell_input_cmd[i] == ' ' || \
+		(data->minishell_input_cmd[i] >= TAB && data->minishell_input_cmd[i] <= SHIFT_OUT))
 			i++;
-		if (!data->line || !data->line[i])
+		if (!data->minishell_input_cmd || !data->minishell_input_cmd[i])
 		{
 			data->lexer_list = current;
 			get_token_in_node(&current, tmp);
 			return ;
 		}
-		j = get_word_in_list(data->line, i, data, tmp);
+		j = get_word_in_list(data->minishell_input_cmd, i, data, tmp);
 		if (x == 0)
 			current = data->lexer_list;
 		i = i + j;
@@ -83,7 +83,7 @@ void	ft_init_lexer_process(t_data *data)
 	tmp = NULL;
 	current = NULL;
 	data->lexer_list = NULL;
-	data->input_line_word_count = count_words_in_input(data->line);
+	data->input_line_word_count = count_words_in_input(data->minishell_input_cmd);
 	i = ZERO_INIT;
 	process_input_string(data, tmp, current, i);
 }

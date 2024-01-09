@@ -36,13 +36,13 @@ char	*join_them(char *str, int i, int flag, t_data *data)
 	char	*tmp;
 
 	tmp = NULL;
-	if (str[i + 1] == '\0' && flag == 1)
+	if (str[i + 1] == '\0' && flag == 1)/*         ---> condition non intelligible --> fonction         */
 	{
 		tmp = ft_substr(data, (const char *)str,
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
 		str = ft_substr(data, str, 0, (size_t)i + 1);
 		tmp = add_quotes_string(tmp, data);
-		str = ft_strjoin4(str, tmp, data);
+		str = ft_strjoin_with_memory_tracking(str, tmp, data);
 	}
 	else if (flag == 1)
 	{
@@ -50,7 +50,7 @@ char	*join_them(char *str, int i, int flag, t_data *data)
 				(unsigned int)i + 1, (size_t)ft_strlen(str));
 		str = ft_substr(data, str, 0, (size_t)i + 1);
 		tmp = add_quotes_string(tmp, data);
-		str = ft_strjoin4(str, tmp, data);
+		str = ft_strjoin_with_memory_tracking(str, tmp, data);
 	}
 	return (str);
 }
@@ -60,7 +60,7 @@ char	*case_egale(char *str, t_data *data)
 	int		i;
 	int		flag;
 
-	i = 0;
+	i = ZERO_INIT;
 	flag = 0;
 	while (str[i])
 	{
@@ -77,7 +77,7 @@ char	*case_egale(char *str, t_data *data)
 
 void	exit_all(t_data *data)
 {
-	ft_write_fd("exit\n", 1);
+	ft_write_fd("exit\n", STDOUT_FILENO);
 	ft_free_all(data);
 	exit(0);
 }

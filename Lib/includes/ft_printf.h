@@ -5,7 +5,7 @@
 # include <unistd.h>
 
 int		ft_printf(const char *text, ...);
-int		ft_len_nb(long n);
+int		length_of_number_for_string_conversion(long n);
 int		ft_putchar(char c);
 int		ft_putstr(char *str);
 int		ft_putnbr_base(int nbr, char *base);

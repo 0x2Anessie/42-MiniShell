@@ -12,7 +12,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		ft_putstr_fd(char *s1, char *s2, int fd);
 int			strlen2(char *s);
 int			ft_strchr(char *str, char c);
-int			ft_len_nb(long n);
+int			length_of_number_for_string_conversion(long n);
 char		*ft_is_neg(char *res, long n, int i);
 char		*ft_itoa(int n);
 long long	ft_atoll(const char *str);

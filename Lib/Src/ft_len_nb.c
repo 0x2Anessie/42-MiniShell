@@ -1,6 +1,6 @@
 #include "../includes/ft_printf.h"
 
-int	ft_len_nb(long n)
+int	length_of_number_for_string_conversion(long n)
 {
 	int	i;
 

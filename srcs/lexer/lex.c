@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	ft_write_fd(char *str, int fd)
@@ -11,7 +10,7 @@ int	ft_write_fd(char *str, int fd)
 	if (write (fd, str, i) == FAIL)
 	{
 		ft_printf(ERR_WRIT_NO_SPAC_LEFT_DEVC);
-		globi = 1;
+		g_signal_received = 1;
 		return (1);
 	}
 	return (0);
@@ -47,15 +46,15 @@ void	process_lexer_input(char *str, int *i, int *j, t_quote *state)
 	{
 		update_quoting_state(str[*i], state);
 		if (!is_white_space(str[*i])
-			&& (!state->is_dquote && !state->is_quote))
+			&& (!state->doubl_quot_status && !state->singl_quot_status))
 		{
 			(*j)++;
 			(*i)++;
 		}
 		else if (is_white_space(str[*i])
-			&& (!state->is_dquote && !state->is_quote))
+			&& (!state->doubl_quot_status && !state->singl_quot_status))
 			break ;
-		else if (state->is_dquote || state->is_quote)
+		else if (state->doubl_quot_status || state->singl_quot_status)
 		{
 			(*j)++;
 			(*i)++;

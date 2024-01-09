@@ -1,11 +1,10 @@
-
 #include "../../include/minishell.h"
 
 size_t	ft_strlen3_mini(char const *s)
 {
 	size_t	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	while (s[i])
 		i++;
 	return (i);
@@ -24,7 +23,8 @@ char	*ft_substr(t_data *data, char const *s, unsigned int start, size_t len)
 		nouveau[0] = '\0';
 		return (nouveau);
 	}
-	nouveau = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
+	nouveau = \
+	ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	i = 0;
 	if (!nouveau || !s)
 		return (NULL);
@@ -47,7 +47,7 @@ int	is_space(char *str, char c)
 {
 	int	i;
 
-	i = 0;
+	i = ZERO_INIT;
 	while (str[i])
 	{
 		if (str[i] == c)

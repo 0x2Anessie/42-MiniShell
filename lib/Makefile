@@ -1,7 +1,7 @@
 NAME = lib42.a
-FT_PRINTF = $(addprefix Src/ft_, len_nb_hexa.c len_nb.c memset.c pointeur.c printf.c putchar.c \
+FT_PRINTF = $(addprefix src/ft_, len_nb_hexa.c len_nb.c memset.c pointeur.c printf.c putchar.c \
 putnbr_base_hex.c putnbr_base_neg.c putnbr_base.c putstr.c strjoin2.c strncmp.c putstr_fd.c strchr.c atoll.c)
-GNL = $(addprefix Src/, get_next_line.c get_next_line_utils.c)
+GNL = $(addprefix src/, get_next_line.c get_next_line_utils.c)
 OBJS_FT = ${FT_PRINTF:.c=.o}
 OBJS_GNL = ${GNL:.c=.o}
 OBJ = $(OBJS_FT) $(OBJS_GNL)

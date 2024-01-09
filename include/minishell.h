@@ -5,7 +5,7 @@
 # include <readline/readline.h>
 # include <stdio.h>
 # include <readline/history.h>
-# include "../Lib/includes/lib.h"
+# include "../lib/includes/lib.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>

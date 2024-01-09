@@ -5,8 +5,8 @@
 void	initialize_data(t_stringdata *data, char *str)
 {
 	data->word_len_of_cmd_with_quot_includ = ft_strlen(str);
-	data->i = ZERO_INIT;
-	data->j = ZERO_INIT;
+	data->indx_quote_escape_handling = ZERO_INIT;
+	data->indx_rebuilt_str_excl_quotes = ZERO_INIT;
 	data->is_current_char_preceded_by_escape_char = ZERO_INIT;
 }
 
@@ -18,16 +18,16 @@ void	initialize_data(t_stringdata *data, char *str)
 */
 void	extract_within_quotes(t_stringdata *data, char *str)
 {
-	while (data->i < data->word_len_of_cmd_with_quot_includ && (str[data->i] != '\'' || data->is_current_char_preceded_by_escape_char))/*         ---> condition non intelligible --> fonction         */
+	while (data->indx_quote_escape_handling < data->word_len_of_cmd_with_quot_includ && (str[data->indx_quote_escape_handling] != '\'' || data->is_current_char_preceded_by_escape_char))/*         ---> condition non intelligible --> fonction         */
 	{
-		if (str[data->i] == '\\' && !data->is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
+		if (str[data->indx_quote_escape_handling] == '\\' && !data->is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
 			data->is_current_char_preceded_by_escape_char = 1;
 		else
 		{
-			str[data->j] = str[data->i];
-			data->j++;
+			str[data->indx_rebuilt_str_excl_quotes] = str[data->indx_quote_escape_handling];
+			data->indx_rebuilt_str_excl_quotes++;
 		}
-		data->i++;
+		data->indx_quote_escape_handling++;
 		data->is_current_char_preceded_by_escape_char = 0;
 	}
 }
@@ -40,16 +40,16 @@ void	extract_within_quotes(t_stringdata *data, char *str)
 */
 void	extract_quotes(t_stringdata *data, char *str, char quote)
 {
-	while (data->i < data->word_len_of_cmd_with_quot_includ && (str[data->i] != quote || data->is_current_char_preceded_by_escape_char))/*         ---> condition non intelligible --> fonction         */
+	while (data->indx_quote_escape_handling < data->word_len_of_cmd_with_quot_includ && (str[data->indx_quote_escape_handling] != quote || data->is_current_char_preceded_by_escape_char))/*         ---> condition non intelligible --> fonction         */
 	{
-		if (str[data->i] == '\\' && !data->is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
+		if (str[data->indx_quote_escape_handling] == '\\' && !data->is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
 			data->is_current_char_preceded_by_escape_char = 1;
 		else
 		{
-			str[data->j] = str[data->i];
-			data->j++;
+			str[data->indx_rebuilt_str_excl_quotes] = str[data->indx_quote_escape_handling];
+			data->indx_rebuilt_str_excl_quotes++;
 		}
-		data->i++;
+		data->indx_quote_escape_handling++;
 		data->is_current_char_preceded_by_escape_char = 0;
 	}
 }
@@ -65,22 +65,22 @@ void	remove_single_quotes(char *str)
 	t_stringdata	data;
 
 	initialize_data(&data, str);
-	while (data.i < data.word_len_of_cmd_with_quot_includ)
+	while (data.indx_quote_escape_handling < data.word_len_of_cmd_with_quot_includ)
 	{
-		if (str[data.i] == '\'' && !data.is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
+		if (str[data.indx_quote_escape_handling] == '\'' && !data.is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
 		{
-			data.i++;
+			data.indx_quote_escape_handling++;
 			extract_within_quotes(&data, str);
-			data.i++;
+			data.indx_quote_escape_handling++;
 		}
 		else
 		{
-			str[data.j] = str[data.i];
-			data.i++;
-			data.j++;
+			str[data.indx_rebuilt_str_excl_quotes] = str[data.indx_quote_escape_handling];
+			data.indx_quote_escape_handling++;
+			data.indx_rebuilt_str_excl_quotes++;
 		}
 	}
-	str[data.j] = '\0';
+	str[data.indx_rebuilt_str_excl_quotes] = '\0';
 }
 
 /*
@@ -93,20 +93,20 @@ void	remove_double_quotes(char *str)
 	t_stringdata	data;
 
 	initialize_data(&data, str);
-	while (data.i < data.word_len_of_cmd_with_quot_includ)
+	while (data.indx_quote_escape_handling < data.word_len_of_cmd_with_quot_includ)
 	{
-		if (str[data.i] == '\"' && !data.is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
+		if (str[data.indx_quote_escape_handling] == '\"' && !data.is_current_char_preceded_by_escape_char)/*         ---> condition non intelligible --> fonction         */
 		{
-			data.i++;
+			data.indx_quote_escape_handling++;
 			extract_quotes(&data, str, '\"');
-			data.i++;
+			data.indx_quote_escape_handling++;
 		}
 		else
 		{
-			str[data.j] = str[data.i];
-			data.i++;
-			data.j++;
+			str[data.indx_rebuilt_str_excl_quotes] = str[data.indx_quote_escape_handling];
+			data.indx_quote_escape_handling++;
+			data.indx_rebuilt_str_excl_quotes++;
 		}
 	}
-	str[data.j] = '\0';
+	str[data.indx_rebuilt_str_excl_quotes] = '\0';
 }

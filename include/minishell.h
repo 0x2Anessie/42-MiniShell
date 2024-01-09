@@ -197,8 +197,8 @@ typedef struct s_env
 typedef struct s_stringdata
 {
 	int word_len_of_cmd_with_quot_includ;
-	int i;/*                            Change name                            */
-	int j;/*                            Change name                            */
+	int indx_quote_escape_handling;
+	int indx_rebuilt_str_excl_quotes;
 	int is_current_char_preceded_by_escape_char;
 } t_stringdata;
 

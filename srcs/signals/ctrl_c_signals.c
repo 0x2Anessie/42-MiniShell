@@ -143,13 +143,13 @@ void	ctrl_c_handler(int sig)
  *   v
  * Fin
  */
-void	ctrl_c_handler_here_doc(int sig, t_data *data)
+void	ctrl_c_handler_here_doc(int sig)
 {
 	(void)sig;
 	close(0);
 	ft_putchar('\n');
-	data->utils->is_this_an_exec_in_heredoc = 0;
-	data->utils->can_run = 0;
+	// data->utils->is_this_an_exec_in_heredoc = 0;
+	// data->utils->can_run = 0;
 	g_signal_received = exit_stat_ctrl_c_sigint();
 }
 
@@ -227,7 +227,14 @@ void	ctrl_c_handler_here_doc(int sig, t_data *data)
 void	handle_sig(t_data *data)
 {
 	if (data->utils->is_this_an_exec_in_heredoc)/*         ---> condition non intelligible --> fonction         */
-		signal(SIGINT, (void (*)(int))ctrl_c_handler_here_doc);
+	{	
+		signal(SIGINT, &ctrl_c_handler_here_doc);
+		if (g_signal_received == 130)
+		{
+			data->utils->is_this_an_exec_in_heredoc = 0;
+			data->utils->can_run = 0;
+		}
+	}
 	else
 	{
 		signal(CTRL_C_SIGINT, &ctrl_c_handler);

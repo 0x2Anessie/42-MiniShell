@@ -122,21 +122,18 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	while (INFINITY_LOOP)
 	{
 		data->utils->line = readline("> ");
-		printf("valeur de line : %s\n", data->utils->line);
+		// if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
+		// {
+		// 	write (\
+		// 	STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
+		// 	ft_strlen(ERR_HEREDOC_EOF_WARNING));
+		// 	break ;
+		// }
 		if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
 		{
-			write (\
-			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
-			ft_strlen(ERR_HEREDOC_EOF_WARNING));
+			dup2(data->utils->dupin, STDIN_FILENO);		
 			break ;
 		}
-		if (!data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
-		{
-			dup2(data->utils->dupin, STDIN_FILENO);
-			break ;
-		}
-		printf("valeur de line : %s\n", data->utils->line);
-		printf("valeur de word : %s\n", lexer_lst->next->word);
 		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->line))
 				break ;
 		write_line_to_heredoc(data->utils->line, node->here_doc_fd);

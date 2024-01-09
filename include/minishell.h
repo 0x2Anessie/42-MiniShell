@@ -779,7 +779,7 @@ void		rm_para_quote2(t_data *data);
 
 /*   Déclarations des fonctions de ctrl_c_signals.c   */
 void		ctrl_c_handler(int sig);
-void		ctrl_c_handler_here_doc(int sig, t_data *data);
+void		ctrl_c_handler_here_doc(int sig);
 void		handle_sig(t_data *data);
 
 /*   Déclarations des fonctions de error_signals.cc   */

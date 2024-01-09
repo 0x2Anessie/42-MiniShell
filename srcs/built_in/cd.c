@@ -91,7 +91,7 @@ int	change_directory_for_home(t_env *tmp, t_data *data)
 	if (chdir(get_home(tmp, data) + 5) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
-		g_signal_received = 1;
+		g_globi = 1;
 		return (0);
 	}
 	return (1);

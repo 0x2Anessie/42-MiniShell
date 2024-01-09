@@ -44,7 +44,7 @@ t_data *data, int *fd, int count, t_exec utils)
         if (is_execve_failed(command_full_path, arguments, utils.full_env_var_copy_beta))
             perror(data->lexer_list->word);
     }
-	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
+	g_globi = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(fd, data);
 }
 

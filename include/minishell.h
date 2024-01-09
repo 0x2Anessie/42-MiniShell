@@ -292,7 +292,7 @@ typedef struct s_data
 
 }			t_data;
 
-extern unsigned int	g_signal_received;
+extern unsigned int	g_globi;
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                      MAIN                                     */

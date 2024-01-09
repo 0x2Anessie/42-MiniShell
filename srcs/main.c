@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/08 18:54:06 by lgoure           ###   ########.fr       */
+/*   Updated: 2024/01/09 14:28:29 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-unsigned int	g_signal_received = ZERO_INIT;
+unsigned int	g_globi = ZERO_INIT;
 
 /**
  * @nom: init_data
@@ -325,7 +325,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		ft_init_lexer_process(data);
 		if (!ft_parser(data))
 		{
-			g_signal_received = 2;
+			g_globi = 2;
 			return ;
 		}
 		tmp_lex = data->lexer_list;

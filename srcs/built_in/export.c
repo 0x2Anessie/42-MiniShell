@@ -28,7 +28,7 @@ void	print_export(t_export *head_of_linked_list_env_var, t_data *data)
 		current = current->next;
 	}
 	current = head_of_linked_list_env_var;
-	g_signal_received = 0;
+	g_globi = 0;
 }
 
 //check la syntaxe de chaque mot grace a check_parsing_export 1 a 1

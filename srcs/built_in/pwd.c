@@ -33,7 +33,7 @@ void	display_pwd(t_data *data)
 	{
 		ft_printf("error retrieving current directory: " \
 		"No such file or directory\n");
-		g_signal_received = 1;
+		g_globi = 1;
 		free(tmp);
 		return ;
 	}
@@ -46,7 +46,7 @@ void	display_pwd(t_data *data)
 	{
 		printf("%s\n", tmp);
 	}
-	g_signal_received = 0;
+	g_globi = 0;
 	free(tmp);
 }
 
@@ -61,7 +61,7 @@ void	display_pwd_error(t_data *data)
 	{
 		printf("pwd: too many arguments");
 	}
-	g_signal_received = 1;
+	g_globi = 1;
 }
 
 /*

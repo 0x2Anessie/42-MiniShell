@@ -513,9 +513,9 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 {
 	if (is_redirect_out_followed_by_fd_token(lex_lst))
 	{
-		if (node->output_fd > 0)
+		if (node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			close (node->output_fd);
-		if (lex_lst->next->word)
+		if (lex_lst->next->word)/*         ---> condition non intelligible --> fonction         */
 			node->output_fd = open(\
 			lex_lst->next->word, out_to_file_flags(), PERM_O_RW_G_R_OT_R);
 		else
@@ -640,7 +640,7 @@ void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 	node->is_output_redirection_feasible = ZERO_INIT;
 	node->output_fd = OUTPUT_FD_NOT_CONFIGURED;
 	node->output_redirection_error_id = 0;
-	while (lex_lst && lex_lst->token != PIPE)
+	while (lex_lst && lex_lst->token != PIPE)/*         ---> condition non intelligible --> fonction         */
 	{
 		normal_output_redirection(node, lex_lst);
 		append_output_redirection(\

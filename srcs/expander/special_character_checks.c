@@ -152,7 +152,7 @@ int	is_dollar_or_doubl_or_singl_quote(char *word)
 	index = ZERO_INIT;
 	while (word[index])
 	{
-		if (word[index] == '$' || word[index] == '"' || word [index] == '\'')
+		if (word[index] == '$' || word[index] == '"' || word [index] == '\'')/*         ---> condition non intelligible --> fonction         */
 			return (CHAR_IS_SPECIAL);
 		index++;
 	}

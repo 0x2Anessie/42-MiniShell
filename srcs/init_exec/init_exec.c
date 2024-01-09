@@ -215,7 +215,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 		node->next = NULL;
 		node->is_command_present = is_token_type_cmd(data->lexer_list);
 		utils->node = insert_command_at_end_of_linked_list(utils->node, node);
-		while (data->lexer_list && data->lexer_list->token != PIPE)
+		while (data->lexer_list && data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
 			data->lexer_list = data->lexer_list->next;
 		if (data->lexer_list)
 			data->lexer_list = data->lexer_list->next;

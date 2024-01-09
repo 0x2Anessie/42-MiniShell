@@ -156,9 +156,9 @@ void	ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
  */
 void	close_fds_if_needed(int *fd, int previous_fd)
 {
-	if (fd[1] > 0)
+	if (fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
 		close(fd[1]);
-	if (previous_fd > 0)
+	if (previous_fd > 0)/*         ---> condition non intelligible --> fonction         */
 		close(previous_fd);
 }
 
@@ -288,7 +288,7 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 	{
 		data->lexer_list = find_next_command_in_lexer(data->lexer_list);
 		data->utils->previous_fd = fd[0];
-		if (data->utils->total_number_of_cmd_find_in_linked_list >= 1 && pipe(fd) < 0)
+		if (data->utils->total_number_of_cmd_find_in_linked_list >= 1 && pipe(fd) < 0)/*         ---> condition non intelligible --> fonction         */
 			return (0);
 		if (check_redirection_validity_in_node(data->utils->node))
 		{
@@ -409,14 +409,14 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 	int	index;
 
 	index = ZERO_INIT;
-	if (!pid)
+	if (!pid)/*         ---> condition non intelligible --> fonction         */
 		return ;
 	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
-		if (pid[index] > 0)
+		if (pid[index] > 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			waitpid(pid[index], wstatus, 0);
-			if (WIFEXITED(*wstatus))
+			if (WIFEXITED(*wstatus))/*         ---> condition non intelligible --> fonction         */
 				g_signal_received = WEXITSTATUS(*wstatus);
 		}
 		index++;
@@ -532,7 +532,7 @@ void	manage_execution_resources(t_data *data)
 		return ;
 	initialize_pid_array_to_zero(pid, data->utils->cmd_count_pipe_chained);
 	handle_process_signal();
-	if (!manage_exec_linked_cmd_sequence(fd, pid, data, y))/*         ---> le nom de la fonction de condition semble etrange --> fonction         */
+	if (!manage_exec_linked_cmd_sequence(fd, pid, data, y))
 		perror("Pipe ");
 	wait_and_process_child_statuses(pid, &wstatus, data->utils->cmd_count_pipe_chained, data);
 	close_file_descriptors_in_linked_list(data);

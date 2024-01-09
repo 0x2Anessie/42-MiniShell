@@ -91,11 +91,11 @@ void	display_env(t_data *data)
 */
 int	get_unset(t_lexer *lexer_lst, t_data *data)
 {
-	if (check_env(lexer_lst, data) == 0)
+	if (check_env(lexer_lst, data) == 0)/*         ---> condition non intelligible --> fonction         */
 	{
 		data->utils->name_of_var_env_to_del = NULL;
 		data->utils->name_of_var_env_to_del = check_unset(lexer_lst);
-		if (data->utils->name_of_var_env_to_del)
+		if (data->utils->name_of_var_env_to_del)/*         ---> condition non intelligible --> fonction         */
 		{
 			remove_node(data->utils->name_of_var_env_to_del, data);
 			remove_node_export(data->utils->name_of_var_env_to_del, data);

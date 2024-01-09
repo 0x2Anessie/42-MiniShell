@@ -127,12 +127,12 @@ t_data *data, int *fd, int count, t_exec utils)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == FORK_FAILURE)
+	if (pid == FORK_FAILURE)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror("Fork");
 		return (FT_FAILURE_EXIT);
 	}
-	if (pid == CHILD_PROCESS)
+	if (pid == CHILD_PROCESS)/*         ---> condition non intelligible --> fonction         */
 		exec_cmd_with_redirection_and_builtins(data, fd, count, utils);
 	return (pid);
 }

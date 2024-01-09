@@ -32,7 +32,7 @@ int	check_case_with_char(char *str)
 	i = ZERO_INIT;
 	while (str[i])
 	{
-		if (str[i] == '=' && str[i + 1] != '\0')
+		if (str[i] == '=' && str[i + 1] != '\0')/*         ---> condition non intelligible --> fonction         */
 			return (1);
 		i++;
 	}

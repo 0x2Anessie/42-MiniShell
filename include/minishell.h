@@ -180,7 +180,7 @@ typedef struct s_node
 	int output_fd;
 	char *heredoc_tmp_fullname;
 	int here_doc_fd;
-	int index;/*                          Change name                          */
+	// int index;
 	int is_command_present;
 	int is_output_redirection_feasible;
 	int is_input_redirection_failed;

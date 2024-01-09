@@ -110,9 +110,9 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 		}
 		else
 			verif_oldpwd(old, data);
-		if (!wrong_cd(data->lexer_list))
+		if (!wrong_cd(data->lexer_list))/*         ---> condition non intelligible --> fonction         */
 			return (0);
-		if (change_directory(data->lexer_list->word))
+		if (change_directory(data->lexer_list->word))/*         ---> condition non intelligible --> fonction         */
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);

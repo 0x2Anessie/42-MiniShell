@@ -480,7 +480,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	{
 		env_var_char_idx = 0;
 		i = 1;
-		if (is_current_char_question_mark(w, i))/*         ---> condition non intelligible --> fonction         */
+		if (is_current_char_question_mark(w, i))
 			return (\
 			find_and_expand_env_var_with_special_char(w, exp, data, state));
 		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))
@@ -490,7 +490,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 				return (i);
 		}
 	}
-	if (is_expansion_not_found(exp))/*         ---> condition non intelligible --> fonction         */
+	if (is_expansion_not_found(exp))
 		return (handle_unfound_expansion_word(w, state));
 	return (i);
 }

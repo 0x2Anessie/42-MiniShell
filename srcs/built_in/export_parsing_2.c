@@ -18,7 +18,7 @@ int	check_parsing_char(char *str, int i)
 		|| str[i] == '$' || str[i] == '(' || str[i] == ')' || str[i] == '='
 		|| str[i] == '+' || str[i] == '<' || str[i] == '>' || str[i] == '?'
 		|| str[i] == '/' || str[i] == ':' || str[i] == ',' || str[i] == '\''
-		|| str[i] == '\"')
+		|| str[i] == '\"')/*         ---> condition non intelligible --> fonction         */
 	{
 		ft_printf("export : `%s': not a valid identifier\n", str);
 		return (1);
@@ -37,7 +37,7 @@ int	check_parsing_error(char *str)
 	i = ZERO_INIT;
 	while (str[i] && str[i] != '=')
 	{
-		if (str[i] == '!' || str[i] == '$')
+		if (str[i] == '!' || str[i] == '$')/*         ---> condition non intelligible --> fonction         */
 		{
 			str += i;
 			g_signal_received = 1;
@@ -79,7 +79,7 @@ int	check_parsing_export(char *str)
 		ft_printf("export : %c%c: invalid option\n", str[0], str[1]);
 		return (1);
 	}
-	if (check_parsing_error(str) == 1)/*         ---> condition non intelligible --> fonction         */
+	if (check_parsing_error(str) == 1)
 		return (1);
 	return (0);
 }

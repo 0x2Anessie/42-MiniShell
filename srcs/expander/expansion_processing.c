@@ -206,7 +206,7 @@ t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 	int	index;
 
 	index = ZERO_INIT;
-	while ((*exp)->word[index])
+	while ((*exp)->word[index])/*         ---> condition non intelligible --> fonction         */
 	{
 		update_quoting_state((*exp)->word[index], state);
 		if (is_current_char_dollar_sign(*exp, index)) 

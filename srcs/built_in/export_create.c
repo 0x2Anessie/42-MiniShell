@@ -34,7 +34,7 @@ void	lst_add_back_export(t_export **head, char *str, t_data *data)
 	else
 	{
 		current = *head;
-		while (current->next_env_var_name_and_value != NULL)
+		while (current->next_env_var_name_and_value != NULL)/*         ---> condition non intelligible --> fonction         */
 		{
 			current = current->next_env_var_name_and_value;
 		}

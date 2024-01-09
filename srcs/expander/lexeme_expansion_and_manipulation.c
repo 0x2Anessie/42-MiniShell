@@ -221,7 +221,7 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 	convert_int_to_string_with_tracking(data, g_signal_received);
 	exp->value_of_expanded_var_from_env = \
 	allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
-	if (!exp->value_of_expanded_var_from_env)
+	if (!exp->value_of_expanded_var_from_env)/*         ---> condition non intelligible --> fonction         */
 		return ;
 	st->singl_quot_status = ZERO_INIT;
 	st->doubl_quot_status = ZERO_INIT;

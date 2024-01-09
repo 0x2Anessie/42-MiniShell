@@ -63,9 +63,9 @@
  */
 int	closes_ends_of_pipe(int *fd)
 {
-	if (fd[PIPE_READ_END] > 0)
+	if (fd[PIPE_READ_END] > 0)/*         ---> condition non intelligible --> fonction         */
 		close(fd[PIPE_READ_END]);
-	if (fd[PIPE_WRITE_END] > 0)
+	if (fd[PIPE_WRITE_END] > 0)/*         ---> condition non intelligible --> fonction         */
 		close(fd[PIPE_WRITE_END]);
 	return (1);
 }
@@ -149,7 +149,7 @@ int	closes_ends_of_pipe(int *fd)
 int	close_file_descriptors_in_linked_list(t_data *data)
 {
 	data->utils->node = data->utils->head_node_lst;
-	while (data->utils->node)
+	while (data->utils->node)/*         ---> condition non intelligible --> fonction         */
 	{
 		if (data->utils->node->input_fd > 1)/*         ---> condition non intelligible --> fonction         */
 			close(data->utils->node->input_fd);

@@ -31,7 +31,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 	{
 		if (j)
 		{
-			if (ft_write_fd(" ", data->utils->node->output_fd))
+			if (ft_write_fd(" ", data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 			{
 				g_signal_received = 1;
 				return (-1);

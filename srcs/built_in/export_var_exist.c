@@ -19,7 +19,7 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value))))/*         ---> condition non intelligible --> fonction         */
 		{
 			if (verif_equal(str, '=')
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value)))
+				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value)))/*         ---> condition non intelligible --> fonction         */
 			tmp->env_var_name_and_value = case_egale(str, data);
 			return (1);
 		}

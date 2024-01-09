@@ -191,7 +191,7 @@ char *word, char **env_var, t_quote *state, int *length)
 	else
 	{
 		env_var_index = ZERO_INIT;
-		while (env_var[env_var_index])
+		while (env_var[env_var_index])/*         ---> condition non intelligible --> fonction         */
 		{
 			y = ZERO_INIT;
 			word_index = 1;

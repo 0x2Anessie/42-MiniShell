@@ -81,7 +81,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{
-		if (is_valid_number(lex->next->word))/*         ---> condition non intelligible --> fonction         */
+		if (is_valid_number(lex->next->word))
 		{
 			ft_printf("bash: exit: %s: numeric argument required\n", \
 			lex->next->word);

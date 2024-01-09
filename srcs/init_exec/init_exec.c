@@ -209,7 +209,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 		node = ft_malloc_with_tracking(data, sizeof(t_node));
 		if (!node)
 			return ;
-		node->index = index;
+		// node->index = index;
 		setup_input_redirection(node, data->lexer_list, data);
 		setup_output_redirection(node, data->lexer_list);
 		node->next = NULL;

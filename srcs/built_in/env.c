@@ -13,12 +13,12 @@ char	*check_unset(t_lexer *lexer_lst)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp(tmp->word, CMD_UNSET_ENV_VAR, 5))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strncmp(tmp->cmd_segment, CMD_UNSET_ENV_VAR, 5))/*         ---> condition non intelligible --> fonction         */
 		{
-			if (tmp->next && tmp->next->word && !(tmp->next->word[0] == '\0'))/*         ---> condition non intelligible --> fonction         */
+			if (tmp->next && tmp->next->cmd_segment && !(tmp->next->cmd_segment[0] == '\0'))/*         ---> condition non intelligible --> fonction         */
 			{
 				tmp = tmp->next;
-				return (tmp->word);
+				return (tmp->cmd_segment);
 			}
 			else
 			{
@@ -42,7 +42,7 @@ int	check_env(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp != NULL)
 	{
-		if (!ft_strcmp(tmp->word, CMD_ENV_VARS))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strcmp(tmp->cmd_segment, CMD_ENV_VARS))/*         ---> condition non intelligible --> fonction         */
 		{
 			display_env(data);
 			return (1);

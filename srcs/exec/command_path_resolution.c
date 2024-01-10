@@ -253,9 +253,9 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
 int	check_if_cmd_full_path_exec_is_valid(\
 t_lexer *lexer, t_exec utils, t_data *data)
 {
-	if (!find_command_full_path(lexer->word, utils.linked_list_full_env_var_copy_alpha, data))
+	if (!find_command_full_path(lexer->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data))
 	{
-		write(STDERR_FILENO, lexer->word, strlen2(lexer->word));
+		write(STDERR_FILENO, lexer->cmd_segment, strlen2(lexer->cmd_segment));
 		write(\
 		STDERR_FILENO, ERR_MSG_CMD_NOT_FOUND, ft_strlen(ERR_MSG_CMD_NOT_FOUND));
 		return (EXIT_FAIL);
@@ -348,30 +348,77 @@ t_lexer *lexer, t_exec utils, t_data *data)
  *     v
  *   Fin
  */
-char	**build_arg_array_from_lexer(t_data *data)
-{
-	char	**arg;
-	int		nb_arg;
-	int		index;
+// char	**build_arg_array_from_lexer(t_data *data)
+// {
+// 	char	**arg;
+// 	int		nb_arg;
+// 	int		index;
 
-	index = ZERO_INIT;
-	nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
-	arg = ft_malloc_with_tracking(\
-	data, sizeof(char *) * (nb_arg + sizeof('\0')));
-	arg[index] = data->lexer_list->word;
-	while (\
-	data->lexer_list && data->lexer_list->token != ARG \
-	&& data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
-		data->lexer_list = data->lexer_list->next;
-	index++;
-	while (\
-	data->lexer_list != NULL \
-	&& index < nb_arg && data->lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
-	{
-		arg[index] = data->lexer_list->word;
-		data->lexer_list = data->lexer_list->next;
-		index++;
-	}
-	arg[index] = NULL;
-	return (arg);
+// 	index = ZERO_INIT;
+// 	nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
+// 	arg = ft_malloc_with_tracking(\
+// 	data, sizeof(char *) * (nb_arg + sizeof('\0')));
+// 	arg[index] = data->lexer_list->word;
+// 	while (\
+// 	data->lexer_list && data->lexer_list->token != ARG \
+// 	&& data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+// 		data->lexer_list = data->lexer_list->next;
+// 	index++;
+// 	while (\
+// 	data->lexer_list != NULL \
+// 	&& index < nb_arg && data->lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
+// 	{
+// 		arg[index] = data->lexer_list->word;
+// 		data->lexer_list = data->lexer_list->next;
+// 		index++;
+// 	}
+// 	arg[index] = NULL;
+// 	return (arg);
+// }
+
+// char **build_arg_array_from_lexer(t_data *data)
+// {
+//     char **arg;
+//     int nb_arg;
+//     int index;
+
+//     index = ZERO_INIT;
+//     nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
+//     arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
+//     arg[index++] = data->lexer_list->word; // Initialiser arg[0] avec le chemin de la commande
+
+//     while (data->lexer_list->next != NULL && index < nb_arg)
+//     {
+//         if (data->lexer_list->next->token == ARG)
+//         {
+//             arg[index++] = data->lexer_list->next->word;
+//         }
+//         data->lexer_list->next = data->lexer_list->next->next;
+//     }
+//     arg[index] = NULL;
+//     return arg;
+// }
+
+char **build_arg_array_from_lexer(t_data *data)
+{
+    char **arg;
+    int nb_arg;
+    int index;
+
+    index = ZERO_INIT;
+    nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
+    arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
+    arg[index++] = data->lexer_list->cmd_segment;
+
+    while (data->lexer_list->next != NULL && index < nb_arg)
+    {
+        if (data->lexer_list->next->token == ARG)
+        {
+            arg[index++] = data->lexer_list->next->cmd_segment;
+        }
+        data->lexer_list->next = data->lexer_list->next->next;
+    }
+    arg[index] = NULL;
+    return arg;
 }
+

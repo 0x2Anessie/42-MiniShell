@@ -37,7 +37,7 @@ int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
-		if (check_parsing_export(tmp->word) == 1)/*         ---> condition non intelligible --> fonction         */
+		if (check_parsing_export(tmp->cmd_segment) == 1)/*         ---> condition non intelligible --> fonction         */
 			return (1);
 		tmp = tmp->next;
 	}
@@ -55,24 +55,24 @@ int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 {
 	supp_quote_and_add_env(&(data->utils), tmp, data);
-	if (verif_var_exist_export(data->utils, tmp->word, data) == 0
-		&& verif_equal(tmp->word, '=') == 0
-		&& verif_var_exist_export_not_maj(data->utils, tmp->word) == 0)
-		lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
-	else if (check_case(tmp->word)
-		&& verif_var_exist_export(data->utils, tmp->word, data) == 0)
+	if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0
+		&& verif_equal(tmp->cmd_segment, '=') == 0
+		&& verif_var_exist_export_not_maj(data->utils, tmp->cmd_segment) == 0)
+		lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
+	else if (check_case(tmp->cmd_segment)
+		&& verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
 	{
-		tmp->word = case_egale(tmp->word, data);
-		if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
+		tmp->cmd_segment = case_egale(tmp->cmd_segment, data);
+		if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
 	}
-	else if (verif_var_exist_export(data->utils, tmp->word, data) == 0)
+	else if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
 	{
-		if (verif_var_exist_export(data->utils, tmp->word, data) == 0
-			&& verif_equal(tmp->word, '=') == 1)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
-		else if (verif_var_exist_export(data->utils, tmp->word, data) == 1)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->word, data);
+		if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0
+			&& verif_equal(tmp->cmd_segment, '=') == 1)
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
+		else if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 1)
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
 	}
 }
 
@@ -106,13 +106,13 @@ int	export_things(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->word
-				&& !(tmp->next->word[0] == '\0')))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->cmd_segment
+				&& !(tmp->next->cmd_segment[0] == '\0')))/*         ---> condition non intelligible --> fonction         */
 			print_export(data->utils->head_of_linked_list_env_var, data);
-		else if (!ft_strcmp(tmp->word, CMD_EXPORT_VARS) && tmp->next
+		else if (!ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) && tmp->next
 			&& tmp->next->token != ARG)/*         ---> condition non intelligible --> fonction         */
 			print_export(data->utils->head_of_linked_list_env_var, data);
-		else if ((ft_strcmp(tmp->word, CMD_EXPORT_VARS) == 0) && (tmp->next
+		else if ((ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) == 0) && (tmp->next
 				&& tmp->next->token == ARG))/*         ---> condition non intelligible --> fonction         */
 		{
 			tmp = tmp->next;

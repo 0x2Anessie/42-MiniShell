@@ -357,5 +357,5 @@ void	ft_init_exec(t_data *data)
 	build_cmd_linked_list(node, data, data->utils);
 	data->utils->is_this_an_exec_in_heredoc = ZERO_INIT;
 	handle_sig(data);
-	data->utils->head_node_lst = data->utils->node;
+	data->utils->head_cmd_lst = data->utils->node;
 }

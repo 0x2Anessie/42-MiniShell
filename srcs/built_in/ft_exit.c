@@ -61,7 +61,7 @@ void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *d
 	}
 	else
 	{
-		exit_code = ft_atoll(lex->next->word);
+		exit_code = ft_atoll(lex->next->cmd_segment);
 		free_res(fd, data);
 		exit (exit_code);
 	}
@@ -81,10 +81,10 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{
-		if (is_valid_number(lex->next->word))
+		if (is_valid_number(lex->next->cmd_segment))
 		{
 			ft_printf("bash: exit: %s: numeric argument required\n", \
-			lex->next->word);
+			lex->next->cmd_segment);
 			free_res(fd, data);
 			exit(2);
 		}

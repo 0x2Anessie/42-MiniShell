@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/09 00:27:02 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/10 00:31:38 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,7 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		new_env = get_new_env(\
 		data, data->utils->linked_list_full_env_var_copy_alpha);
 		expand(data->quote, new_env, tmp_lex, data);
-		if (tmp_lex && tmp_lex->word)
+		if (tmp_lex && tmp_lex->cmd_segment)
 		{
 			ft_init_exec(data);
 			manage_execution_resources(data);

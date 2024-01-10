@@ -9,9 +9,9 @@ void	get_data_in_node(t_lexer **lexer_list)
 	tmp = *lexer_list;
 	while (tmp)
 	{
-		if (tmp->word[0] == '|')
+		if (tmp->cmd_segment[0] == '|')
 			i = 0;
-		tmp->i = i;
+		tmp->segment_position = i;
 		tmp = tmp->next;
 		i++;
 	}

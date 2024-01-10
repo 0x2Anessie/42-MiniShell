@@ -73,7 +73,7 @@ void	ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
 		export_things(lexer_lst, data);
 	else if (\
 	is_exact_command_match(lexer_lst, CMD_PRINT_DIRCT, strlen(CMD_PRINT_DIRCT)))
-		get_pwd(lexer_lst->word, data);
+		get_pwd(lexer_lst->cmd_segment, data);
 	else if (is_exact_command_match(lexer_lst, CMD_ECHO, strlen(CMD_ECHO)))
 		init_echo(lexer_lst, data);
 	else if (\

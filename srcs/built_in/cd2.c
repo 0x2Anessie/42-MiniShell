@@ -63,7 +63,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	env = data->utils->linked_list_full_env_var_copy_alpha;
 	if (lexer_lst)
 	{
-		if ((ft_strcmp(lexer_lst->word, CMD_CHANG_DIRCT) == 0)
+		if ((ft_strcmp(lexer_lst->cmd_segment, CMD_CHANG_DIRCT) == 0)
 			&& lexer_lst->next == NULL)/*         ---> condition non intelligible --> fonction         */
 		{
 			if (change_directory_for_home(env, data))
@@ -97,8 +97,8 @@ int	wrong_cd(t_lexer *lexer_lst)
 */
 int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
-	if (((ft_strcmp(data->lexer_list->word, CMD_CHANG_DIRCT) == 0)
-			&& data->lexer_list->next->word))/*         ---> condition non intelligible --> fonction         */
+	if (((ft_strcmp(data->lexer_list->cmd_segment, CMD_CHANG_DIRCT) == 0)
+			&& data->lexer_list->next->cmd_segment))/*         ---> condition non intelligible --> fonction         */
 	{
 		if (data->lexer_list->next)
 				data->lexer_list = data->lexer_list->next;
@@ -112,7 +112,7 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 			verif_oldpwd(old, data);
 		if (!wrong_cd(data->lexer_list))/*         ---> condition non intelligible --> fonction         */
 			return (0);
-		if (change_directory(data->lexer_list->word))/*         ---> condition non intelligible --> fonction         */
+		if (change_directory(data->lexer_list->cmd_segment))/*         ---> condition non intelligible --> fonction         */
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);

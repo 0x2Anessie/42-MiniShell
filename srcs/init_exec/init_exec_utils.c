@@ -83,7 +83,7 @@ void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst)
 	if (is_first_input_redirection_error(node))
 	{
 		node->input_fd = INPUT_FD_REDIRECTION_FAIL;
-		perror(lexer_lst->next->word);
+		perror(lexer_lst->next->cmd_segment);
 	}
 	else
 	{

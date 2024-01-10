@@ -65,10 +65,10 @@ int	check_case(char *str)
 */
 void	supp_quote_and_add_env(t_exec **utils, t_lexer *tmp, t_data *data)
 {
-	remove_double_quotes(tmp->word);
-	remove_single_quotes(tmp->word);
-	if (verif_equal(tmp->word, '=') && verif_var_exist(*utils, tmp->word) == 0)/*         ---> condition non intelligible --> fonction         */
+	remove_double_quotes(tmp->cmd_segment);
+	remove_single_quotes(tmp->cmd_segment);
+	if (verif_equal(tmp->cmd_segment, '=') && verif_var_exist(*utils, tmp->cmd_segment) == 0)/*         ---> condition non intelligible --> fonction         */
 	{
-		lst_add_back(*utils, tmp->word, data);
+		lst_add_back(*utils, tmp->cmd_segment, data);
 	}
 }

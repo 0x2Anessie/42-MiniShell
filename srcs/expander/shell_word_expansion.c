@@ -8,19 +8,19 @@ t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 	exp->dollar_sign_present = ZERO_INIT;
 	exp->sing_or_doub_quote_in_env_expansion = ZERO_INIT;
 	index = ZERO_INIT;
-	while (is_word_non_empty((*to_check)->word + index))
+	while (is_word_non_empty((*to_check)->cmd_segment + index))
 	{
 		if (is_the_token_a_delimiter((*to_check)->token))
 			return (NO_EXPAND);
-		if (is_dollar_sign((*to_check)->word[index]))
+		if (is_dollar_sign((*to_check)->cmd_segment[index]))
 			exp->dollar_sign_present = NEED_EXPAND;
-		if (is_singl_or_doubl_quote((*to_check)->word[index]))
+		if (is_singl_or_doubl_quote((*to_check)->cmd_segment[index]))
 			exp->sing_or_doub_quote_in_env_expansion = QUOTED;
 		index++;
 	}
 	if (is_expansion_not_required_and_quoted(exp))
-		(*to_check)->word = create_cleaned_str_excluding_inactive_quots(\
-		(*to_check)->word, state, data);
+		(*to_check)->cmd_segment = create_cleaned_str_excluding_inactive_quots(\
+		(*to_check)->cmd_segment, state, data);
 	else
 		return (EXPANSION_REQUIRED);
 	return (NO_ACTION_REQUIRED);
@@ -41,9 +41,9 @@ t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme)
 
     while (current)
 	{
-        if (is_dollar_or_doubl_or_singl_quote(current->word))
+        if (is_dollar_or_doubl_or_singl_quote(current->cmd_segment))
 		{
-            if (is_dollar_at_end(current->word) \
+            if (is_dollar_at_end(current->cmd_segment) \
 			&& determine_expansion_or_quote_removal(\
 			&current, state, exp, data))/*         ---> condition non intelligible --> fonction         */
                 expand_and_insert_in_lexeme_linked_list(\

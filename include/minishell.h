@@ -204,10 +204,9 @@ typedef struct s_stringdata
 
 typedef struct s_lexer
 {
-	char *word;/*                         Change name                         */
+	char *cmd_segment;
 	t_token token;
-	int i;/*                            Change name                           */
-	// int nb_words;
+	int segment_position;
 	struct s_lexer *next;
 	struct s_lexer *prev;
 } t_lexer;
@@ -251,11 +250,11 @@ typedef struct s_exec
 	// int				ret;
 	int previous_fd;
 	char *name_of_var_env_to_del;
-	t_node *head_node_lst;/*                    Change name                    */
-	t_lexer *head_lexer_lst;/*                   Change name                   */
+	t_node *head_cmd_lst;
+	t_lexer *head_lexer_lst;
+	t_env *head_env_lst;
 	t_export *head_of_linked_list_env_var;
 	// t_export		*head_export_lst;
-	t_env *head_env_lst;/*                     Change name                     */
 	struct s_node *node;
 	struct s_exec *next;
 	struct s_exec *prev;

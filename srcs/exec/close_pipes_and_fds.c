@@ -148,7 +148,7 @@ int	closes_ends_of_pipe(int *fd)
  */
 int	close_file_descriptors_in_linked_list(t_data *data)
 {
-	data->utils->node = data->utils->head_node_lst;
+	data->utils->node = data->utils->head_cmd_lst;
 	while (data->utils->node)/*         ---> condition non intelligible --> fonction         */
 	{
 		if (data->utils->node->input_fd > 1)/*         ---> condition non intelligible --> fonction         */

@@ -60,8 +60,8 @@
 int	is_exact_command_match(\
 t_lexer *lexer_lst, const char *command, int command_length)
 {
-	return (!ft_strncmp(lexer_lst->word, command, command_length) \
-	&& strlen2(lexer_lst->word) == command_length);
+	return (!ft_strncmp(lexer_lst->cmd_segment, command, command_length) \
+	&& strlen2(lexer_lst->cmd_segment) == command_length);
 }
 
 /**
@@ -131,7 +131,7 @@ t_lexer *lexer_lst, const char *command, int command_length)
  */
 int	is_built_in_command(t_lexer *lexer_lst)
 {
-	if (lexer_lst->word == NULL)
+	if (lexer_lst->cmd_segment == NULL)
 		return (0);
 	return (\
 	is_exact_command_match(\

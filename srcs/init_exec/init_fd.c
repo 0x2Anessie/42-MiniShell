@@ -133,8 +133,8 @@ bool	is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst)
 bool	is_next_word_existing_and_readable(t_lexer *lexer_lst)
 {
 	return (lexer_lst->next \
-	&& lexer_lst->next->word \
-	&& !access(lexer_lst->next->word, R_OK));
+	&& lexer_lst->next->cmd_segment \
+	&& !access(lexer_lst->next->cmd_segment, R_OK));
 }
 
 bool	is_current_token_not_pipe(t_lexer *lexer_lst)
@@ -149,7 +149,7 @@ bool	is_input_fd_open(t_node *node)
 
 bool	is_next_word_missing(t_lexer *lexer_lst)
 {
-    return (!lexer_lst->next->word);
+    return (!lexer_lst->next->cmd_segment);
 }
 
 
@@ -246,7 +246,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 			if (is_next_word_missing(lexer_lst))
 				node->is_input_redirection_failed = TRUE;
 			if (is_next_word_existing_and_readable(lexer_lst))
-				node->input_fd = open(lexer_lst->next->word, O_RDONLY);
+				node->input_fd = open(lexer_lst->next->cmd_segment, O_RDONLY);
 			else
 				handle_redirect_input_error(node, lexer_lst);
 		}
@@ -268,7 +268,7 @@ t_node *node, t_lexer *lex_lst)
 	return (node->output_redirection_error_id != \
 	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
 	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
-	|| !access(lex_lst->next->word, F_OK)));
+	|| !access(lex_lst->next->cmd_segment, F_OK)));
 }
 
 bool	is_output_fd_open_for_closure(t_node *node)
@@ -278,7 +278,7 @@ bool	is_output_fd_open_for_closure(t_node *node)
 
 bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
 {
-    return (lex_lst->next && lex_lst->next->word);
+    return (lex_lst->next && lex_lst->next->cmd_segment);
 }
 
 
@@ -387,7 +387,7 @@ t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 			close (node->output_fd);
 		if (is_next_lexeme_word_existing(lex_lst))
 			node->output_fd = open(\
-			lex_lst->next->word, append_to_file_flags(), PERM_O_RW_G_R_OT_R);
+			lex_lst->next->cmd_segment, append_to_file_flags(), PERM_O_RW_G_R_OT_R);
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
@@ -414,7 +414,7 @@ t_node *node, t_lexer *lex_lst)
 	return (node->output_redirection_error_id != \
 	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
 	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
-	|| !access(lex_lst->next->word, W_OK)));
+	|| !access(lex_lst->next->cmd_segment, W_OK)));
 }
 
 /**
@@ -515,9 +515,9 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 	{
 		if (node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
 			close (node->output_fd);
-		if (lex_lst->next->word)/*         ---> condition non intelligible --> fonction         */
+		if (lex_lst->next->cmd_segment)/*         ---> condition non intelligible --> fonction         */
 			node->output_fd = open(\
-			lex_lst->next->word, out_to_file_flags(), PERM_O_RW_G_R_OT_R);
+			lex_lst->next->cmd_segment, out_to_file_flags(), PERM_O_RW_G_R_OT_R);
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);

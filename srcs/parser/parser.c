@@ -83,7 +83,7 @@ int	ft_cloporte(t_data *data)
 		|| tmp->token == HERE_DOC || tmp->token == REDIRECT_INOUT)
 		{
 			tmp = tmp->next;
-			if (tmp == NULL || tmp->word[0] == '\0')
+			if (tmp == NULL || tmp->cmd_segment[0] == '\0')
 			{
 				printf("2 syntax error near unexpected token\n");
 				return (0);

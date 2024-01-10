@@ -122,7 +122,6 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	while (INFINITY_LOOP)
 	{
 		data->utils->heredoc_input_buffer = readline("> ");
-		// printf("valeur de line : %s\n", data->utils->heredoc_input_buffer);
 		if (!data->utils->heredoc_input_buffer && data->utils->heredoc_ctrl_c_uninterrupted)/*         ---> condition non intelligible --> fonction         */
 		{
 			write (\
@@ -135,9 +134,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
 			break ;
 		}
-		// printf("valeur de line : %s\n", data->utils->heredoc_input_buffer);
-		// printf("valeur de word : %s\n", lexer_lst->next->word);
-		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->heredoc_input_buffer))
+		if (is_heredoc_delimiter_matched(lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
 				break ;
 		write_line_to_heredoc(data->utils->heredoc_input_buffer, node->here_doc_fd);
 		free(data->utils->heredoc_input_buffer);

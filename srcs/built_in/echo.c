@@ -47,7 +47,7 @@ void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 {
 	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))/*         ---> condition non intelligible --> fonction         */
 	{
-		tab[(*i)++] = lexer_lst->word;
+		tab[(*i)++] = lexer_lst->cmd_segment;
 		lexer_lst = lexer_lst->next;
 	}
 }

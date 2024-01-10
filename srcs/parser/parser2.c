@@ -10,15 +10,15 @@ int	pipe_parse2(t_data *data)
 	while (tmp)
 	{
 		k = 0;
-		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|')
-			|| (tmp->word[k] == '<' && tmp->word[k + 1] == '|'))
+		if ((tmp->cmd_segment[k] == '>' && tmp->cmd_segment[k + 1] == '|')
+			|| (tmp->cmd_segment[k] == '<' && tmp->cmd_segment[k + 1] == '|'))
 		{
 			printf("KKKKKK zsh: parse error near `|'\n");
 			k++;
 			return (0);
 		}
-		if ((tmp->word[k] == '|' && tmp->word[k + 1] == '<')
-			|| (tmp->word[k] == '|' && tmp->word[k + 1] == '>'))
+		if ((tmp->cmd_segment[k] == '|' && tmp->cmd_segment[k + 1] == '<')
+			|| (tmp->cmd_segment[k] == '|' && tmp->cmd_segment[k + 1] == '>'))
 		{
 			printf("zsh: no such file or directory\n");
 			k++;
@@ -60,12 +60,12 @@ int	pipe_parse(t_data *data)
 	while (tmp)
 	{
 		k = 0;
-		if (!ft_chevron(tmp->word) || !ft_chevron(tmp->word))
+		if (!ft_chevron(tmp->cmd_segment) || !ft_chevron(tmp->cmd_segment))
 		{
 			printf("3 syntax error near unexpected token\n");
 			return (0);
 		}
-		if (tmp->word[k] == '|' && tmp->word[k + 1] == '|')
+		if (tmp->cmd_segment[k] == '|' && tmp->cmd_segment[k + 1] == '|')
 		{
 			printf("3 syntax error near unexpected token\n");
 			return (0);
@@ -116,7 +116,7 @@ int	ft_arrow(t_data *data)
 		if (tmp->token == PIPE)
 		{
 			tmp = tmp->next;
-			if (tmp == NULL || tmp->token == PIPE || tmp->word[0] == '\0')
+			if (tmp == NULL || tmp->token == PIPE || tmp->cmd_segment[0] == '\0')
 			{
 				printf("6 syntax error near unexpected token\n");
 				return (0);

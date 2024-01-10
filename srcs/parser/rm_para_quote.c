@@ -50,8 +50,8 @@ void	rm_para_quote(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(data, tmp->word);
-		tmp->word = parse_quote(data, tmp->word);
+		tmp->cmd_segment = parse_para(data, tmp->cmd_segment);
+		tmp->cmd_segment = parse_quote(data, tmp->cmd_segment);
 		tmp = tmp->next;
 	}
 }
@@ -63,8 +63,8 @@ void	rm_para_quote2(t_data *data)
 	tmp = data->lexer_list;
 	while (tmp)
 	{
-		tmp->word = parse_para(data, tmp->word);
-		tmp->word = parse_quote2(data, tmp->word);
+		tmp->cmd_segment = parse_para(data, tmp->cmd_segment);
+		tmp->cmd_segment = parse_quote2(data, tmp->cmd_segment);
 		tmp = tmp->next;
 	}
 }

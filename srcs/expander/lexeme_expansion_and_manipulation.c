@@ -231,7 +231,7 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 		expanded = split_word_by_quotes(data, exp->value_of_expanded_var_from_env, st);
 	else
 	{
-		(*expnd)->word = \
+		(*expnd)->cmd_segment = \
 		create_cleaned_str_excluding_inactive_quots(exp->value_of_expanded_var_from_env, st, data);
 		return ;
 	}
@@ -353,7 +353,7 @@ char **insert, t_lexer *back, t_data *data, int len)
 		tmp->prev = back;
 		tmp->next = data->lexer_list->next;
 		tmp->token = ARG;
-		tmp->word = ft_strdup(data, insert[i]);
+		tmp->cmd_segment = ft_strdup(data, insert[i]);
 		back = tmp;
 	}
 }
@@ -432,7 +432,7 @@ t_lexer **old_node, char **to_insert, t_data *data)
 
 	len = count_string_array_elements(to_insert);
 	back = (*old_node)->prev;
-	(*old_node)->word = ft_strdup(data, to_insert[0]);
+	(*old_node)->cmd_segment = ft_strdup(data, to_insert[0]);
 	if (len > 1)
 	{
 		back = (*old_node);

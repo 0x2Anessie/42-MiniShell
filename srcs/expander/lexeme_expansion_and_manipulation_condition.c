@@ -22,5 +22,5 @@ bool	is_double_quote_with_closed_single_quotes(char c, t_quote *state)
 
 bool    is_dollar_char_then_end_of_string(t_lexer *exp)
 {
-    return (exp->word[0] == '$' && exp->word[1] == '\0');
+    return (exp->cmd_segment[0] == '$' && exp->cmd_segment[1] == '\0');
 }

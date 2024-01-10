@@ -64,7 +64,7 @@ int	base_check(char *str)
 	{
 		if (!check_redir(str))
 		{
-			printf("1 syntax error near unexpected token\n");
+			printf("minishell: syntax error near unexpected token\n");
 			return (0);
 		}
 	}
@@ -85,7 +85,7 @@ int	ft_cloporte(t_data *data)
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->word[0] == '\0')
 			{
-				printf("2 syntax error near unexpected token\n");
+				printf("minishell: syntax error near unexpected token\n");
 				return (0);
 			}
 		}
@@ -103,11 +103,11 @@ int	ft_parser(t_data *data)
 		return (0);
 	if (!pipe_parse(data))
 		return (0);
+	if (!ft_tiret(data->line))
+		return (0);
 	if (!ft_cloporte(data))
 		return (0);
 	if (!ft_arrow(data))
-		return (0);
-	if (!ft_tiret(data->line))
 		return (0);
 	if (!chevron_pipe(data->line))
 		return (0);

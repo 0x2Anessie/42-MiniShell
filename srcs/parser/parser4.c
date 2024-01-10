@@ -9,7 +9,7 @@ int	stop_pand_slash(char *str, char c)
 	{
 		if ((str[0] == c && str[1] == '\0'))
 		{
-			printf("salut22222\n");
+			// printf("salut22222\n");
 			return (0);
 		}
 		i++;
@@ -21,7 +21,7 @@ int	ft_tiret(char *str) // a corriger
 {
 	if (!stop_pand_slash(str, '/'))
 	{
-		printf ("bash: %s : is an empty directory\n", str);
+		printf ("minishell: %s : is a directory\n", str);
 		return (0);
 	}
 	return (1);
@@ -40,7 +40,7 @@ int	chevron_pipe(char *str)
 		{
 			if (str[i - 1] == '>' && str[i + 1] == '<')
 			{
-				printf("TTTTTT zsh: parse error near `|'\n");
+				printf("minishell: parse error near `|'\n");
 				return (0);
 			}
 		}

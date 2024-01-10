@@ -84,7 +84,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 {
 	if (lexer_lst->next)
 	{
-		write (STDERR_FILENO, "bash: cd: trop d'arguments\n", 27);
+		write (STDERR_FILENO, "minishell: cd: trop d'arguments\n", 27);
 		g_globi = 1;
 		return (0);
 	}

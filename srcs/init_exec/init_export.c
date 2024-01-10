@@ -16,6 +16,18 @@ char *current_value, char *next_value)
 
  
 /**
+ * Checks if there exists a next element in the list for sorting purposes.
+ *
+ * @param current A pointer to the current environment variable node in the list.
+ * @return true if a next element exists, false otherwise.
+ */
+bool next_element_exists_for_sorting(t_export *current)
+{
+    return (current != NULL && current->next_env_var_name_and_value != NULL);
+}
+
+
+/**
  * @nom: sort_linked_list_env_var
  *
  * @description: Trie une liste de structures t_export représentant des

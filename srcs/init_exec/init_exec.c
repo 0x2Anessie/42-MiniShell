@@ -224,6 +224,12 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 	data->lexer_list = utils->head_lexer_lst;
 }
 
+bool	is_env_var_list_uninitialized(t_exec *utils)
+{
+	return (utils->head_of_linked_list_env_var == NULL);
+}
+
+
 /**
  * @nom: ft_init_exec
  *
@@ -346,7 +352,7 @@ void	ft_init_exec(t_data *data)
 	count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
 	data->utils->full_env_var_copy_beta = data->full_env_var_copy_alpha;
-	if (!(data->utils->head_of_linked_list_env_var))/* condition non-intelligible */
+	if (is_env_var_list_uninitialized(data->utils))
 	{
 		data->utils->head_of_linked_list_env_var = \
 		ft_buil_sorted_linked_list_env_var(\

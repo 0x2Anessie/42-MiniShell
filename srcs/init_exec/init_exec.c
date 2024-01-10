@@ -346,7 +346,7 @@ void	ft_init_exec(t_data *data)
 	count_pipe_or_end_in_lexer_linked_list(data->lexer_list);
 	data->utils->head_lexer_lst = data->lexer_list;
 	data->utils->full_env_var_copy_beta = data->full_env_var_copy_alpha;
-	if (!(data->utils->head_of_linked_list_env_var))
+	if (!(data->utils->head_of_linked_list_env_var))/* condition non-intelligible */
 	{
 		data->utils->head_of_linked_list_env_var = \
 		ft_buil_sorted_linked_list_env_var(\

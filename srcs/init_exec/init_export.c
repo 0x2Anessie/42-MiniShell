@@ -210,10 +210,35 @@ t_data *data, t_export *new)
 	if (!new)
 		return (NULL);
 	new->env_var_name_and_value = ft_strdup(\
-	data, data->utils->linked_list_full_env_var_copy_alpha->var_env_name_and_value);
+	data, data->utils->linked_list_full_env_var_copy_alpha->\
+	var_env_name_and_value);
 	new->next_env_var_name_and_value = NULL;
 	return (new);
 }
+
+/**
+ * Vérifie si la liste liée des variables d'environnement est vide.
+ *
+ * @param head_of_linked_list_env_var Pointeur vers la tête de la liste liée
+ * des variables d'environnement.
+ * @return true si la liste est vide, false si elle contient au moins un élément.
+ */
+bool	is_linked_list_env_var_empty(t_export *head_of_linked_list_env_var)
+{
+    return (head_of_linked_list_env_var == NULL);
+}
+
+/**
+ * Vérifie si la liste liée des variables d'environnement à traiter existe.
+ *
+ * @param utils Structure contenant la liste liée des variables d'environnement.
+ * @return true si la liste liée existe et doit être traitée, false sinon.
+ */
+bool exist_linked_list_env_var_to_process(t_exec *utils)
+{
+    return (utils->linked_list_full_env_var_copy_alpha != NULL);
+}
+
 
 /**
  * @nom: ft_buil_sorted_linked_list_env_var
@@ -302,10 +327,10 @@ t_data *data, t_export *head_of_linked_list_env_var)
 	t_export	*current_new;
 
 	current_new = NULL;
-	while (data->utils->linked_list_full_env_var_copy_alpha)
+	while (exist_linked_list_env_var_to_process(data->utils))
 	{
 		new = ft_new_variable_to_linked_list_env_var(data, new);
-		if (!head_of_linked_list_env_var)
+		if (is_linked_list_env_var_empty(head_of_linked_list_env_var))
 		{
 			head_of_linked_list_env_var = new;
 			current_new = head_of_linked_list_env_var;
@@ -315,9 +340,12 @@ t_data *data, t_export *head_of_linked_list_env_var)
 			current_new->next_env_var_name_and_value = new;
 			current_new = current_new->next_env_var_name_and_value;
 		}
-		data->utils->linked_list_full_env_var_copy_alpha = data->utils->linked_list_full_env_var_copy_alpha->next_var_env_name_and_value;
+		data->utils->linked_list_full_env_var_copy_alpha = \
+		data->utils->linked_list_full_env_var_copy_alpha->\
+		next_var_env_name_and_value;
 	}
 	sort_linked_list_env_var(&head_of_linked_list_env_var);
-	data->utils->linked_list_full_env_var_copy_alpha = data->utils->head_env_lst;
+	data->utils->linked_list_full_env_var_copy_alpha = \
+	data->utils->head_env_lst;
 	return (head_of_linked_list_env_var);
 }

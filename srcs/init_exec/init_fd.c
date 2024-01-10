@@ -417,6 +417,22 @@ t_node *node, t_lexer *lex_lst)
 	|| !access(lex_lst->next->cmd_segment, W_OK)));
 }
 
+bool	is_next_command_segment_present(t_lexer *lex_lst)
+{
+    return (lex_lst->next && lex_lst->next->cmd_segment);
+}
+
+/**
+ * Vérifie si le descripteur de fichier de sortie est ouvert et prêt à être fermé.
+ * 
+ * @param node Le nœud contenant le descripteur de fichier de sortie à vérifier.
+ * @return true si le descripteur de fichier de sortie est ouvert, false sinon.
+ */
+bool	is_output_fd_open_for_closing(t_node *node)
+{
+    return (node->output_fd > 0);
+}
+
 /**
  * @nom: normal_output_redirection
  *
@@ -513,9 +529,9 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 {
 	if (is_redirect_out_followed_by_fd_token(lex_lst))
 	{
-		if (node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_output_fd_open_for_closing(node))/*         ---> condition non intelligible --> fonction         */
 			close (node->output_fd);
-		if (lex_lst->next->cmd_segment)/*         ---> condition non intelligible --> fonction         */
+		if (is_next_command_segment_present(lex_lst))/*         ---> condition non intelligible --> fonction         */
 			node->output_fd = open(\
 			lex_lst->next->cmd_segment, out_to_file_flags(), PERM_O_RW_G_R_OT_R);
 		else

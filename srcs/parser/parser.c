@@ -64,7 +64,7 @@ int	base_check(char *str)
 	{
 		if (!check_redir(str))
 		{
-			printf("1 syntax error near unexpected token\n");
+			printf("syntax error near unexpected token\n");
 			return (0);
 		}
 	}
@@ -85,7 +85,7 @@ int	ft_cloporte(t_data *data)
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->word[0] == '\0')
 			{
-				printf("2 syntax error near unexpected token\n");
+				printf("syntax error near unexpected token\n");
 				return (0);
 			}
 		}

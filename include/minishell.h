@@ -68,11 +68,11 @@
 # define PERM_O_RW_G_R_OT_R 0644
 
 /*   ERROR MESSAGES AND SIGNALS   */
-# define ERR_HEREDOC_EOF_WARNING "bash: warning: here-document delimited by \
+# define ERR_HEREDOC_EOF_WARNING "minishell: warning: here-document delimited by \
 end-of-file (wanted `EOF')\n"
 # define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
 # define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
-# define ERR_AMB_REDIRECT "bash: ambiguous redirect\n"
+# define ERR_AMB_REDIRECT "minishell: ambiguous redirect\n"
 # define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
 # define WRITE_ERROR_MSG "write error"
 # define QUIT_MESSAGE "Quit\n"

@@ -56,7 +56,7 @@ void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *d
 {
 	if (lex->next->next)
 	{
-		ft_printf("bash: exit: too many arguments\n");
+		ft_printf("minishell: exit: too many arguments\n");
 		g_globi = 1;
 	}
 	else
@@ -83,7 +83,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 	{
 		if (is_valid_number(lex->next->word))/*         ---> condition non intelligible --> fonction         */
 		{
-			ft_printf("bash: exit: %s: numeric argument required\n", \
+			ft_printf("minishell: exit: %s: numeric argument required\n", \
 			lex->next->word);
 			free_res(fd, data);
 			exit(2);

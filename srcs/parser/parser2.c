@@ -13,14 +13,14 @@ int	pipe_parse2(t_data *data)
 		if ((tmp->word[k] == '>' && tmp->word[k + 1] == '|')
 			|| (tmp->word[k] == '<' && tmp->word[k + 1] == '|'))
 		{
-			printf("KKKKKK zsh: parse error near `|'\n");
+			printf("minishell: parse error near `|'\n");
 			k++;
 			return (0);
 		}
 		if ((tmp->word[k] == '|' && tmp->word[k + 1] == '<')
 			|| (tmp->word[k] == '|' && tmp->word[k + 1] == '>'))
 		{
-			printf("zsh: no such file or directory\n");
+			printf("minishell: no such file or directory\n");
 			k++;
 			return (0);
 		}
@@ -62,12 +62,12 @@ int	pipe_parse(t_data *data)
 		k = 0;
 		if (!ft_chevron(tmp->word) || !ft_chevron(tmp->word))
 		{
-			printf("3 syntax error near unexpected token\n");
+			printf("syntax error near unexpected token\n");
 			return (0);
 		}
 		if (tmp->word[k] == '|' && tmp->word[k + 1] == '|')
 		{
-			printf("3 syntax error near unexpected token\n");
+			printf("syntax error near unexpected token\n");
 			return (0);
 		}
 		if (!pipe_parse2(data))
@@ -118,7 +118,7 @@ int	ft_arrow(t_data *data)
 			tmp = tmp->next;
 			if (tmp == NULL || tmp->token == PIPE || tmp->word[0] == '\0')
 			{
-				printf("6 syntax error near unexpected token\n");
+				printf("syntax error near unexpected token\n");
 				return (0);
 			}
 		}
@@ -126,7 +126,7 @@ int	ft_arrow(t_data *data)
 	}
 	if (!ft_arrow2(data))
 	{
-		printf("4 syntax error near unexpected token\n");
+		printf("syntax error near unexpected token\n");
 		return (0);
 	}
 	tmp = data->lexer_list;

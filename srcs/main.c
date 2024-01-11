@@ -311,7 +311,12 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 	{
 		data->line = tmp;
 		ft_init_lexer_process(data);
-		if (!ft_parser(data))
+		if (!is_a_directory(data))
+		{
+			g_globi = 126;
+			return ;
+		}
+		else if (!ft_parser(data))
 		{
 			g_globi = 2;
 			return ;

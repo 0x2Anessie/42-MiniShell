@@ -753,6 +753,7 @@ int			check_redir(char *str);
 int			base_check(char *str);
 int			ft_cloporte(t_data *data);
 int			ft_parser(t_data *data);
+int 		is_a_directory(t_data *data);
 
 /*   Déclarations des fonctions de parser2.c   */
 int			pipe_parse2(t_data *data);

@@ -22,7 +22,7 @@ int	ft_tiret(char *str) // a corriger
 {
 	if (!stop_pand_slash(str, '/'))
 	{
-		printf ("minishell: %s : is an empty directory\n", str);
+		printf ("minishell: %s: Is a directory\n", str);
 		return (0);
 	}
 	return (1);

@@ -49,6 +49,10 @@
 /*   OUTPUT_FD_VALUE   */
 #define OUTPUT_FD_NOT_CONFIGURED -1
 
+/*   GENERAL   */
+#define NOT_FOUND 0
+#define FOUND 1
+
 /*   CMD   */
 #define CMD_NOT_FOUND 0
 #define CMD_FOUND 1

@@ -169,6 +169,11 @@ int	handle_unfound_expansion_word(char *w, t_quote *state)
 	return (indx);
 }
 
+bool	is_error_code_char_present(t_data *data, int indx)
+{
+	return (data->utils->g_signal_in_char_format[indx]);
+}
+
 /**
  * @nom: append_curnt_error_code_to_expansion_struc
  * @breve_description: Insère le code d'erreur courant dans la structure
@@ -246,20 +251,78 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
 	int	indx;
 
 	indx = -1;
-	while (data->utils->g_signal_in_char_format[++indx])/*         ---> condition non intelligible --> fonction         */
-		exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->utils->g_signal_in_char_format[indx];
+	// while (data->utils->g_signal_in_char_format[++indx])
+	while (is_error_code_char_present(data, ++indx))
+		exp->value_of_expanded_var_from_env[\
+		exp->length_of_expanded_var_value++] = \
+		data->utils->g_signal_in_char_format[indx];
 	exp->var_env_match_found = 1;
 	return (2);
 }
 
-bool	is_matching_env_var_name(char *w, t_data *data, int i, int env_var_char_idx)
+bool	is_matching_env_var_name(\
+char *w, t_data *data, int i, int env_var_char_idx)
 {
     return (w[i] && 
-           data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] &&
-           w[i] == data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] &&
-           w[i] != '=');
+           data->full_env_var_copy_gamma\
+		   [data->env_var_line_idx][env_var_char_idx] \
+		   &&
+           w[i] == \
+		   data->full_env_var_copy_gamma\
+		   [data->env_var_line_idx][env_var_char_idx] \
+		   && w[i] != '=');
 }
 
+bool	is_word_end_or_special(const char *word, int index, t_quote *state)
+{
+    return (word[index] == '\0' || word[index] == '$' \
+	|| is_special_syntax_character(word[index], state));
+}
+
+bool	is_env_var_name_with_equal_sign(t_data *data, int env_var_char_idx)
+{
+    return (data->full_env_var_copy_gamma\
+	[data->env_var_line_idx][env_var_char_idx] \
+	&& \
+	data->full_env_var_copy_gamma\
+	[data->env_var_line_idx][env_var_char_idx] == '=');
+}
+
+bool	is_env_var_value_non_empty(t_data *data, int env_var_char_idx)
+{
+    return (data->full_env_var_copy_gamma\
+	[data->env_var_line_idx][env_var_char_idx] != '\0');
+}
+
+int	find_and_expand_env_var_with_special_char(\
+char *w, t_expand *exp, t_data *data, t_quote *state)
+{
+	int	i;
+	int	env_var_char_idx;
+
+	i = -1;
+	env_var_char_idx = ZERO_INIT;
+	if (w[1] == '?')/*         ---> condition non intelligible --> fonction         */
+		return (append_curnt_error_code_to_expansion_struc(exp, data));
+	i = 1;
+	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
+	{
+		env_var_char_idx++;
+		i++;
+	}
+	if ((w[i] == '\0' \
+	|| w[i] == '$' \
+	|| is_special_syntax_character(w[i], state)) \
+	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
+	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
+	{
+		exp->var_env_match_found = 1;
+		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
+			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
+		return (i);
+	}
+	return (i);
+}
 
 /**
  * @nom: find_and_expand_env_var_with_special_char
@@ -339,50 +402,54 @@ bool	is_matching_env_var_name(char *w, t_data *data, int i, int env_var_char_idx
  *   v
  *   Fin
  */
-int	find_and_expand_env_var_with_special_char(\
-char *w, t_expand *exp, t_data *data, t_quote *state)
-{
-	int	i;
-	int	env_var_char_idx;
+// int	find_and_expand_env_var_with_special_char(\
+// char *w, t_expand *exp, t_data *data, t_quote *state)
+// {
+// 	int	i;
+// 	int	env_var_char_idx;
 
-	i = -1;
-	env_var_char_idx = ZERO_INIT;
-	if (w[1] == '?')/*         ---> condition non intelligible --> fonction         */
-		return (append_curnt_error_code_to_expansion_struc(exp, data));
-	i = 1;
-	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
-	{
-		env_var_char_idx++;
-		i++;
-	}
-	if ((w[i] == '\0' \
-	|| w[i] == '$' \
-	|| is_special_syntax_character(w[i], state)) \
-	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
-	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
-	{
-		exp->var_env_match_found = 1;
-		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
-			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
-		return (i);
-	}
-	return (i);
-}
+// 	i = -1;
+// 	env_var_char_idx = ZERO_INIT;
+// 	if (w[1] == '?')
+// 		return (append_curnt_error_code_to_expansion_struc(exp, data));
+// 	i = 1;
+// 	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
+// 	{
+// 		env_var_char_idx++;
+// 		i++;
+// 	}
+// 	if (is_word_end_or_special(w, i, state) \
+// 	&& is_env_var_name_with_equal_sign(data, env_var_char_idx))
+// 	{
+// 		exp->var_env_match_found = 1;
+// 		while (is_env_var_value_non_empty(data, env_var_char_idx))
+// 			exp->value_of_expanded_var_from_env\
+// 			[exp->length_of_expanded_var_value++] = \
+// 			data->full_env_var_copy_gamma\
+// 			[data->env_var_line_idx][env_var_char_idx];
+// 		return (i);
+// 	}
+// 	return (i);
+// }
 
 bool	is_current_char_question_mark(const char *word, int index)
 {
     return (word[index] == '?');
 }
 
-bool	is_expansion_not_found(const t_expand *exp)
+bool	is_expansion_not_found(t_expand *exp)
 {
-    return (exp->var_env_match_found == 0);
+    return (exp->var_env_match_found == NOT_FOUND);
 }
 bool	is_valid_env_var_entry(t_data *data)
 {
     return (data->full_env_var_copy_gamma[++data->env_var_line_idx] != NULL);
 }
 
+bool	is_expansion_found(t_expand *exp)
+{
+    return (exp->var_env_match_found == FOUND);
+}
 
 /**
  * @nom: expand_env_vars_with_question_mark_handling
@@ -497,10 +564,11 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 		if (is_current_char_question_mark(w, i))
 			return (\
 			find_and_expand_env_var_with_special_char(w, exp, data, state));
-		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], env_var_char_idx))
+		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma\
+		[data->env_var_line_idx], env_var_char_idx))
 		{
 			i = find_and_expand_env_var_with_special_char(w, exp, data, state);
-			if (exp->var_env_match_found == 1)/*         ---> condition non intelligible --> fonction         */
+			if (is_expansion_found(exp))
 				return (i);
 		}
 	}

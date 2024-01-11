@@ -252,6 +252,15 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
 	return (2);
 }
 
+bool	is_matching_env_var_name(char *w, t_data *data, int i, int env_var_char_idx)
+{
+    return (w[i] && 
+           data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] &&
+           w[i] == data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] &&
+           w[i] != '=');
+}
+
+
 /**
  * @nom: find_and_expand_env_var_with_special_char
  * @breve_description: Recherche une correspondance entre une chaîne de
@@ -340,11 +349,12 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	env_var_char_idx = ZERO_INIT;
 	if (w[1] == '?')/*         ---> condition non intelligible --> fonction         */
 		return (append_curnt_error_code_to_expansion_struc(exp, data));
-	i = 0;
-	while (w[i++] && data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
-	&& w[i] == data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
-	&& w[i] != '=')/*         ---> condition non intelligible --> fonction         */
+	i = 1;
+	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
+	{
 		env_var_char_idx++;
+		i++;
+	}
 	if ((w[i] == '\0' \
 	|| w[i] == '$' \
 	|| is_special_syntax_character(w[i], state)) \

@@ -64,7 +64,7 @@
  */
 t_lexer	*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list)
 {
-	while (lexer_list && lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+	while (is_current_token_not_pipe(lexer_list))
 		lexer_list = lexer_list->next;
 	if (lexer_list && lexer_list->token == PIPE)/*         ---> condition non intelligible --> fonction         */
 		lexer_list = lexer_list->next;
@@ -147,7 +147,7 @@ int	count_args_until_pipe_for_cmd_array(t_lexer *lexer_list)
 	int	index;
 
 	index = 1;
-	while (lexer_list && lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+	while (is_current_token_not_pipe(lexer_list))
 	{
 		if (lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
 			index++;

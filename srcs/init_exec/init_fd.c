@@ -656,7 +656,7 @@ void	setup_output_redirection(t_node *node, t_lexer *lex_lst)
 	node->is_output_redirection_feasible = ZERO_INIT;
 	node->output_fd = OUTPUT_FD_NOT_CONFIGURED;
 	node->output_redirection_error_id = 0;
-	while (lex_lst && lex_lst->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+	while (is_current_token_not_pipe(lex_lst))
 	{
 		normal_output_redirection(node, lex_lst);
 		append_output_redirection(\

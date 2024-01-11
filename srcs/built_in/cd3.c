@@ -50,11 +50,11 @@ int	verif_oldpwd(char *str, t_data *data)
 	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var_env_name_and_value, ENV_PREVIOUS_WORKING_DIR,
-				ft_str_len_until_equal(ENV_PREVIOUS_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
+		if (ft_strncmp(tmp->var_env_name_and_value, ENV_SET_OLDPWD, \
+		ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)/*         ---> condition non intelligible --> fonction         */
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
-			ENV_PREVIOUS_WORKING_DIR, str, data);
+			ENV_SET_OLDPWD, str, data);
 			tmp->var_env_name_and_value = create_new_var(s1, data);
 			return (1);
 		}

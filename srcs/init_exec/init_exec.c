@@ -90,6 +90,16 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
 	return (node_lst);
 }
 
+bool is_not_pipe_token(t_lexer *lexer_list)
+{
+    return (lexer_list && lexer_list->token != PIPE);
+}
+
+bool	is_there_more_cmds_to_exec(int index, int total_cmds)
+{
+    return (index < total_cmds);
+}
+
 /**
  * @nom: build_cmd_linked_list
  *
@@ -204,7 +214,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 	int	index;
 
 	index = ZERO_INIT;
-	while (index < utils->cmd_count_pipe_chained)
+	while (is_there_more_cmds_to_exec(index, utils->cmd_count_pipe_chained))
 	{
 		node = ft_malloc_with_tracking(data, sizeof(t_node));
 		if (!node)
@@ -215,7 +225,7 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 		node->next = NULL;
 		node->is_command_present = is_token_type_cmd(data->lexer_list);
 		utils->node = insert_command_at_end_of_linked_list(utils->node, node);
-		while (data->lexer_list && data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+		while (is_not_pipe_token(data->lexer_list))/*         ---> condition non intelligible --> fonction         */
 			data->lexer_list = data->lexer_list->next;
 		if (data->lexer_list)
 			data->lexer_list = data->lexer_list->next;

@@ -77,7 +77,7 @@ char	**extract_paths_from_env(t_env *env_lst, t_data *data)
 	{
 		return (NULL);
 	}
-	while (env_lst)/*         ---> condition non intelligible --> fonction         */
+	while (env_lst)
 	{
 		if (!ft_strncmp(env_lst->var_env_name_and_value, ENV_SET_PATH_PREFIX, ft_strlen(ENV_SET_PATH_PREFIX)))/*         ---> condition non intelligible --> fonction         */
 		{
@@ -413,9 +413,7 @@ char **build_arg_array_from_lexer(t_data *data)
     while (data->lexer_list->next != NULL && index < nb_arg)
     {
         if (data->lexer_list->next->token == ARG)
-        {
             arg[index++] = data->lexer_list->next->cmd_segment;
-        }
         data->lexer_list->next = data->lexer_list->next->next;
     }
     arg[index] = NULL;

@@ -12,6 +12,16 @@ bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
 	&& (strlen2(delimiter) == strlen2(line)));
 }
 
+bool	is_heredoc_ended_by_signal(t_data *data)
+{
+    return (!data->utils->heredoc_input_buffer \
+	&& data->utils->heredoc_ctrl_c_uninterrupted);
+}
+
+bool	is_heredoc_interrupted_for_stdin_restore(t_data *data)
+{
+    return (!data->utils->heredoc_ctrl_c_uninterrupted);
+}
 
 /**
  * @nom: ft_read_input
@@ -122,19 +132,20 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	while (INFINITY_LOOP)
 	{
 		data->utils->heredoc_input_buffer = readline("> ");
-		if (!data->utils->heredoc_input_buffer && data->utils->heredoc_ctrl_c_uninterrupted)/*         ---> condition non intelligible --> fonction         */
+		if (is_heredoc_ended_by_signal(data))/*         ---> condition non intelligible --> fonction         */
 		{
 			write (\
 			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
 			ft_strlen(ERR_HEREDOC_EOF_WARNING));
 			break ;
 		}
-		if (!data->utils->heredoc_ctrl_c_uninterrupted)/*         ---> condition non intelligible --> fonction         */
+		if (is_heredoc_interrupted_for_stdin_restore(data))/*         ---> condition non intelligible --> fonction         */
 		{
 			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
 			break ;
 		}
-		if (is_heredoc_delimiter_matched(lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
+		if (is_heredoc_delimiter_matched(\
+		lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
 				break ;
 		write_line_to_heredoc(data->utils->heredoc_input_buffer, node->here_doc_fd);
 		free(data->utils->heredoc_input_buffer);

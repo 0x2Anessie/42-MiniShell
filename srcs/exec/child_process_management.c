@@ -7,8 +7,8 @@ int	check_for_slash_path_delimiter(t_lexer *lexer)
 	indx = ZERO_INIT;
 	while (lexer->cmd_segment[indx])
 	{
-		if (lexer->cmd_segment[indx++] == '/')
-		{/*         ---> condition non intelligible --> fonction         */
+		if (lexer->cmd_segment[indx++] == '/')/*         ---> condition non intelligible --> fonction         */
+		{
 			return (SLASH_FOUND);
 		}
 	}

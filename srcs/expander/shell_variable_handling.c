@@ -368,6 +368,10 @@ bool	is_expansion_not_found(const t_expand *exp)
 {
     return (exp->var_env_match_found == 0);
 }
+bool	is_valid_env_var_entry(t_data *data)
+{
+    return (data->full_env_var_copy_gamma[++data->env_var_line_idx] != NULL);
+}
 
 
 /**
@@ -476,7 +480,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	i = 1;
 	data->env_var_line_idx = -1;
 	exp->var_env_match_found = ZERO_INIT;
-	while (data->full_env_var_copy_gamma[++data->env_var_line_idx])/*         ---> condition non intelligible --> fonction         */
+	while (is_valid_env_var_entry(data))
 	{
 		env_var_char_idx = 0;
 		i = 1;

@@ -26,7 +26,7 @@ void execute_lexer_command_with_args(t_data *data)
 
 void exec_cmd_with_redirection_and_builtins(\
 t_data *data, int *fd, int count, t_exec utils)
-{
+{	
 	configure_stdin_redirection_for_command(utils, count);
 	configure_stdout_redirection_for_command(utils, fd, count);
 	if (is_built_in_command(data->lexer_list))

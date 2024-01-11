@@ -292,12 +292,10 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 			return (0);
 		if (check_redirection_validity_in_node(data->utils->node))
 		{
-			if (\
-			(is_built_in_command(data->lexer_list)) && data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
+			if ((is_built_in_command(data->lexer_list)) && data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */	
 				ft_exec_single_built_in(data->lexer_list, fd, data);
 			else
-				pid[y[0]++] = create_and_execute_child_process(\
-				data, fd, y[1], *(data->utils));
+				pid[y[0]++] = create_and_execute_child_process(data, fd, y[1], *(data->utils));
 		}
 		data->lexer_list = reaches_next_cmd_preceded_by_pipe(data->lexer_list);
 		close_fds_if_needed(fd, data->utils->previous_fd);
@@ -526,8 +524,7 @@ void	manage_execution_resources(t_data *data)
 	int		y[2];
 
 	init_fd_and_status_vars(fd, y, &wstatus);
-	pid = ft_malloc_with_tracking(\
-	data, sizeof(pid_t) * (data->utils->nb_node));
+	pid = ft_malloc_with_tracking(data, sizeof(pid_t) * (data->utils->nb_node));
 	if (!pid)
 		return ;
 	initialize_pid_array_to_zero(pid, data->utils->nb_node);

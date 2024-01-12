@@ -91,6 +91,18 @@ char	**extract_paths_from_env(t_env *env_lst, t_data *data)
 }
 
 /**
+ * @brief Vérifie si un chemin direct spécifié pour une commande est invalide.
+ *
+ * @param cmd Le chemin de la commande à vérifier.
+ * @return true Si le chemin direct est invalide (non exécutable et commence par un '/'), sinon false.
+ */
+bool is_invalid_direct_path(const char *cmd)
+{
+    return (access(cmd, X_OK) && *cmd == '/');
+}
+
+
+/**
  * @nom: find_command_full_path
  * @brief: Récupère le chemin complet d'une commande en utilisant les variables
  * d'environnement PATH.
@@ -172,7 +184,7 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
 		return (NULL);
 	if (!access(cmd, X_OK))/*         ---> condition non intelligible --> fonction         */
 		return (cmd);
-	else if (access(cmd, X_OK) && *cmd == '/')/*         ---> condition non intelligible --> fonction         */
+	else if (is_invalid_direct_path(cmd))
 		return (NULL);
 	path = extract_paths_from_env(env_lst, data);
 	if (path)
@@ -263,141 +275,23 @@ t_lexer *lexer, t_exec utils, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+bool	is_lexer_token_cmd_arg(t_lexer *lexer_item)
+{
+    return (lexer_item != NULL && lexer_item->token == ARG);
+}
+
 /**
- * @nom: build_arg_array_from_lexer
- * @brief: Construit un tableau de chaînes de caractères à partir des arguments
- * dans une liste de lexèmes.
+ * @brief Vérifie si l'itération dans la liste des lexèmes doit continuer.
  *
- * @description:
- * La fonction 'build_arg_array_from_lexer' parcourt une liste de lexèmes
- * (t_lexer), collecte les mots qui sont marqués comme des arguments (ARG), et
- * les stocke dans un tableau de chaînes de caractères. Ce tableau est utilisé
- * pour passer les arguments aux commandes lors de leur exécution dans un shell.
- *
- * @parametres:
- * - lexer_list: t_lexer *lexer_list, pointeur vers le début de la liste de
- * lexèmes.
- *
- * @pourquoi:
- * - Construction d'Arguments : Permet de collecter et de structurer les
- * arguments d'une commande en vue de leur utilisation lors de l'exécution de
- * cette commande.
- * - Simplification de l'Exécution : Fournit un moyen simple et structuré
- * d'accéder aux arguments d'une commande, ce qui est essentiel pour le
- * traitement et l'exécution des commandes dans un shell.
- *
- * @valeur_de_retour: 
- * Retourne un tableau de chaînes de caractères contenant les arguments de la
- * commande.
- *
- * @erreurs_possibles_et_effets_de_bord: 
- * - En cas d'échec d'allocation mémoire avec 'ft_malloc_with_tracking',
- * retourne NULL.
- *
- * @exemples_utilisation:
- * t_lexer *lexer_list = create_lexer_list("cmd arg1 arg2");
- * char **args = build_arg_array_from_lexer(lexer_list);
- * -------> args contiendra {"arg1", "arg2", NULL}
- *
- * @dependances: 
- * - 'count_args_until_pipe_for_cmd_array' pour déterminer le nombre d'arguments.
- * - 'ft_malloc_with_tracking' pour l'allocation mémoire sécurisée.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Calculer nombre d'arguments (count_args_until_pipe_for_cmd_array)
- *     |
- *     v
- *   Allouer mémoire pour tableau d'arguments
- *     |
- *     v
- *   Initialiser tableau avec premier mot
- *     |
- *     v
- *   Parcourir 'lexer_list' jusqu'à ARG ou PIPE
- *     |
- *     v
- *   'lexer_list' est NULL ou token == PIPE ?
- *  /                      \
- * NON                     OUI
- *  |                       |
- *  v                       |
- * Incrémenter index,       |
- * passer au mot suivant    |
- *     |--------------------/
- *     v
- *   Remplir tableau avec mots ARG
- *     |
- *     v
- *   'lexer_list' est NULL ou index >= nb_arg ?
- *  /                       \
- * NON                      OUI
- *  |                        |
- *  v                        |
- * Ajouter mot à tableau,    |
- * incrémenter index         |
- *     |---------------------/
- *     v
- *   Marquer fin du tableau avec NULL
- *     |
- *     v
- *   Retourner tableau d'arguments
- *     |
- *     v
- *   Fin
+ * @param lexer_item L'élément actuel du lexer à vérifier.
+ * @param current_index L'indice courant dans le processus d'itération.
+ * @param total_args Nombre total d'arguments attendus.
+ * @return true si l'itération doit continuer, sinon false.
  */
-// char	**build_arg_array_from_lexer(t_data *data)
-// {
-// 	char	**arg;
-// 	int		nb_arg;
-// 	int		index;
-
-// 	index = ZERO_INIT;
-// 	nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
-// 	arg = ft_malloc_with_tracking(\
-// 	data, sizeof(char *) * (nb_arg + sizeof('\0')));
-// 	arg[index] = data->lexer_list->word;
-// 	while (\
-// 	data->lexer_list && data->lexer_list->token != ARG \
-// 	&& data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
-// 		data->lexer_list = data->lexer_list->next;
-// 	index++;
-// 	while (\
-// 	data->lexer_list != NULL \
-// 	&& index < nb_arg && data->lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
-// 	{
-// 		arg[index] = data->lexer_list->word;
-// 		data->lexer_list = data->lexer_list->next;
-// 		index++;
-// 	}
-// 	arg[index] = NULL;
-// 	return (arg);
-// }
-
-// char **build_arg_array_from_lexer(t_data *data)
-// {
-//     char **arg;
-//     int nb_arg;
-//     int index;
-
-//     index = ZERO_INIT;
-//     nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
-//     arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
-//     arg[index++] = data->lexer_list->word; // Initialiser arg[0] avec le chemin de la commande
-
-//     while (data->lexer_list->next != NULL && index < nb_arg)
-//     {
-//         if (data->lexer_list->next->token == ARG)
-//         {
-//             arg[index++] = data->lexer_list->next->word;
-//         }
-//         data->lexer_list->next = data->lexer_list->next->next;
-//     }
-//     arg[index] = NULL;
-//     return arg;
-// }
+bool should_continue_lexer_iteration(t_lexer *lexer_item, int current_index, int total_args)
+{
+    return (lexer_item->next != NULL && current_index < total_args);
+}
 
 char **build_arg_array_from_lexer(t_data *data)
 {
@@ -409,10 +303,9 @@ char **build_arg_array_from_lexer(t_data *data)
     nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
     arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
     arg[index++] = data->lexer_list->cmd_segment;
-
-    while (data->lexer_list->next != NULL && index < nb_arg)
+    while (should_continue_lexer_iteration(data->lexer_list, index, nb_arg))
     {
-        if (data->lexer_list->next->token == ARG)
+        if (is_lexer_token_cmd_arg(data->lexer_list->next))
             arg[index++] = data->lexer_list->next->cmd_segment;
         data->lexer_list->next = data->lexer_list->next->next;
     }

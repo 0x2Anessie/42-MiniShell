@@ -706,6 +706,8 @@ void setup_input_redirection(
 void append_output_redirection(
 	t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible);
 
+bool	is_current_token_pipe(t_lexer *lexer_lst);
+
 bool	is_current_token_not_pipe(t_lexer *lexer_lst);
 
 void normal_output_redirection(t_node *node, t_lexer *lex_lst);

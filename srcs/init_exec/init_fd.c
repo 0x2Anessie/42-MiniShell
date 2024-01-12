@@ -137,6 +137,11 @@ bool	is_next_word_existing_and_readable(t_lexer *lexer_lst)
 	&& !access(lexer_lst->next->cmd_segment, R_OK));
 }
 
+bool	is_current_token_pipe(t_lexer *lexer_lst)
+{
+    return (lexer_lst && lexer_lst->token == PIPE);
+}
+
 bool	is_current_token_not_pipe(t_lexer *lexer_lst)
 {
     return (lexer_lst && lexer_lst->token != PIPE);

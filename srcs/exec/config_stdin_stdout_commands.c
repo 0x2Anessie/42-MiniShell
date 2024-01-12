@@ -1,5 +1,16 @@
 #include "../../include/minishell.h"
 
+bool is_fd_valid_for_close(int fd)
+{
+    return (fd > 0);
+}
+
+bool is_fd_set_for_redirection(int fd)
+{
+    return (fd >= 0);
+}
+
+
 /**
  * @nom: configure_stdin_redirection_for_command
  * @brief: Configure la redirection de l'entrée standard pour une commande.
@@ -68,10 +79,10 @@
  */
 void	configure_stdin_redirection_for_command(t_exec utils, int count)
 {
-	if (utils.node->input_fd >= 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_set_for_redirection(utils.node->input_fd))
 	{
 		dup2(utils.node->input_fd, STDIN_FILENO);
-		if (utils.node->input_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_fd_valid_for_close(utils.node->input_fd))
 			close(utils.node->input_fd);
 		if (utils.previous_fd)/*         ---> condition non intelligible --> fonction         */
 			close(utils.previous_fd);
@@ -79,9 +90,14 @@ void	configure_stdin_redirection_for_command(t_exec utils, int count)
 	else if (count)
 	{
 		dup2(utils.previous_fd, STDIN_FILENO);
-		if (utils.previous_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_fd_valid_for_close(utils.previous_fd))
 			close(utils.previous_fd);
 	}
+}
+
+bool is_not_last_command_and_fd_open(int count, int total_cmds, int fd)
+{
+    return (count != total_cmds - 1 && fd > 0);
 }
 
 /**
@@ -159,16 +175,17 @@ void	configure_stdin_redirection_for_command(t_exec utils, int count)
 void	configure_stdout_redirection_for_command(\
 t_exec utils, int *fd, int count)
 {
-	if (utils.node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_valid_for_close(utils.node->output_fd))
 	{
 		dup2(utils.node->output_fd, STDOUT_FILENO);
-		if (utils.node->input_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_fd_valid_for_close(utils.node->input_fd))
 			close (utils.node->input_fd);
 	}
-	else if (count != utils.total_number_of_cmd_find_in_linked_list - 1 && fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
+	else if (is_not_last_command_and_fd_open\
+	(count, utils.total_number_of_cmd_find_in_linked_list, fd[1]))
 		dup2(fd[1], STDOUT_FILENO);
-	if (fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_valid_for_close(fd[1]))
 		close(fd[1]);
-	if (fd[0] > 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_valid_for_close(fd[0]))
 		close (fd[0]);
 }

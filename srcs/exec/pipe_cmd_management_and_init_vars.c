@@ -1,5 +1,10 @@
 #include "../../include/minishell.h"
 
+bool	is_current_token_cmd_arg(t_lexer *lexer_lst)
+{
+    return (lexer_lst && lexer_lst->token == ARG);
+}
+
 /**
  * @nom: reaches_next_cmd_preceded_by_pipe
  * @brief: Avance dans la liste de lexèmes jusqu'à la prochaine commande.
@@ -66,7 +71,7 @@ t_lexer	*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list)
 {
 	while (is_current_token_not_pipe(lexer_list))
 		lexer_list = lexer_list->next;
-	if (lexer_list && lexer_list->token == PIPE)/*         ---> condition non intelligible --> fonction         */
+	if (is_current_token_pipe(lexer_list))/*         ---> condition non intelligible --> fonction         */
 		lexer_list = lexer_list->next;
 	return (lexer_list);
 }
@@ -149,12 +154,18 @@ int	count_args_until_pipe_for_cmd_array(t_lexer *lexer_list)
 	index = 1;
 	while (is_current_token_not_pipe(lexer_list))
 	{
-		if (lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
+		if (is_current_token_cmd_arg(lexer_list))/*         ---> condition non intelligible --> fonction         */
 			index++;
 		lexer_list = lexer_list->next;
 	}
 	return (index);
 }
+
+bool is_index_less_than_num_nodes(int index, int num_nodes)
+{
+    return (index < num_nodes);
+}
+
 
 /**
  * @nom: initialize_pid_array_to_zero
@@ -228,9 +239,9 @@ void	initialize_pid_array_to_zero(pid_t *pid_array, int num_nodes)
 	int	index;
 
 	index = ZERO_INIT;
-	if (!pid_array)/*         ---> condition non intelligible --> fonction         */
+	if (!pid_array)
 		return ;
-	while (index < num_nodes)/*         ---> condition non intelligible --> fonction         */
+	while (is_index_less_than_num_nodes(index, num_nodes))
 	{
 		pid_array[index] = 0;
 		index++;

@@ -1,5 +1,24 @@
 #include "../../include/minishell.h"
 
+bool is_next_char_valid_and_not_single_quote(const char *word, int *indx)
+{
+    return (word[++(*indx)] != '\0' && word[*indx] != '\'');
+}
+
+
+int	append_chars_expnt_until_singl_quot(char *word, t_expand *exp)
+{
+	int	indx;
+
+	indx = -1;
+	while (is_next_char_valid_and_not_single_quote(word, &indx))
+	{
+		exp->value_of_expanded_var_from_env\
+		[exp->length_of_expanded_var_value++] = word[indx];
+	}
+	return (indx);
+}
+
 /**
  * @nom: append_chars_expnt_until_singl_quot
  * @breve_description: Effectue une expansion de chaîne de caractères en tenant
@@ -66,17 +85,23 @@
  *   v
  *   Fin
  */
-int	append_chars_expnt_until_singl_quot(char *word, t_expand *exp)
-{
-	int	indx;
+// int	append_chars_expnt_until_singl_quot(char *word, t_expand *exp)
+// {
+// 	int	indx;
 
-	indx = -1;
-	while (word[++indx] && word[indx] != '\'')/*         ---> condition non intelligible --> fonction         */
-	{
-		exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = word[indx];
-	}
-	return (indx);
+// 	indx = -1;
+// 	while (word[++indx] && word[indx] != '\'')
+// 	{
+// 		exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = word[indx];
+// 	}
+// 	return (indx);
+// }
+
+bool is_not_end_of_string_or_dollar_sign(char char_to_check)
+{
+    return (char_to_check != '\0' && char_to_check != '$');
 }
+
 
 /**
  * @nom: handle_unfound_expansion_word
@@ -159,7 +184,7 @@ int	handle_unfound_expansion_word(char *w, t_quote *state)
 	indx = 1;
 	if (w[indx])
 	{
-		while (w[indx] != '\0' && w[indx] != '$')/*         ---> condition non intelligible --> fonction         */
+		while ((is_not_end_of_string_or_dollar_sign(w[indx])))
 		{
 			if (is_special_syntax_character(w[indx], state))
 				return (indx);
@@ -251,7 +276,6 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
 	int	indx;
 
 	indx = -1;
-	// while (data->utils->g_signal_in_char_format[++indx])
 	while (is_error_code_char_present(data, ++indx))
 		exp->value_of_expanded_var_from_env[\
 		exp->length_of_expanded_var_value++] = \
@@ -291,7 +315,7 @@ bool	is_env_var_name_with_equal_sign(t_data *data, int env_var_char_idx)
 bool	is_env_var_value_non_empty(t_data *data, int env_var_char_idx)
 {
     return (data->full_env_var_copy_gamma\
-	[data->env_var_line_idx][env_var_char_idx] != '\0');
+	[data->env_var_line_idx][env_var_char_idx++] != '\0');
 }
 
 int	find_and_expand_env_var_with_special_char(\
@@ -302,7 +326,7 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 
 	i = -1;
 	env_var_char_idx = ZERO_INIT;
-	if (w[1] == '?')/*         ---> condition non intelligible --> fonction         */
+	if (w[1] == '?')
 		return (append_curnt_error_code_to_expansion_struc(exp, data));
 	i = 1;
 	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
@@ -310,127 +334,19 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 		env_var_char_idx++;
 		i++;
 	}
-	if ((w[i] == '\0' \
-	|| w[i] == '$' \
-	|| is_special_syntax_character(w[i], state)) \
-	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] \
-	&& data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx] == '=')/*         ---> condition non intelligible --> fonction         */
+	if (is_word_end_or_special(w, i, state) \
+	&& is_env_var_name_with_equal_sign(data, env_var_char_idx))
 	{
 		exp->var_env_match_found = 1;
-		while (data->full_env_var_copy_gamma[data->env_var_line_idx][++env_var_char_idx])
-			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = data->full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
+		while (data->full_env_var_copy_gamma[data->env_var_line_idx]\
+		[++env_var_char_idx])
+			exp->value_of_expanded_var_from_env[exp->\
+			length_of_expanded_var_value++] = data->full_env_var_copy_gamma\
+			[data->env_var_line_idx][env_var_char_idx];
 		return (i);
 	}
 	return (i);
 }
-
-/**
- * @nom: find_and_expand_env_var_with_special_char
- * @breve_description: Recherche une correspondance entre une chaîne de
- * caractères et une variable d'environnement.
- * 
- * @param w: char *w, pointeur vers la chaîne de caractères à rechercher.
- * @param exp: t_expand *exp, pointeur vers une structure gérant l'expansion.
- * @param nv: char *nv, pointeur vers la chaîne de caractères représentant une
- * variable d'environnement.
- * @param state: t_quote *state, pointeur vers une structure représentant
- * l'état des guillemets.
- * 
- * @description_detaillee:
- * La fonction 'find_and_expand_env_var_with_special_char' compare la
- * chaîne 'w' avec la variable 'nv' pour trouver une correspondance. Elle
- * gère les cas spéciaux, comme le caractère '?', et vérifie si 'w' correspond
- * à la partie nom de 'nv'. Si une correspondance est trouvée et confirmée par
- * des critères syntaxiques, elle ajoute la valeur de la variable à la
- * structure 'exp'.
- *   
- * Pourquoi comparer les chaînes avec les variables d'environnement ?
- * - Interprétation Correcte des Variables : Essentiel pour remplacer les noms
- * de variables par leurs valeurs dans des contextes comme les shells ou les
- * scripts, garantissant ainsi une exécution précise.
- * - Gestion des Cas Spéciaux : Traite les caractères spéciaux comme '?' de
- * manière appropriée, reflétant leur signification particulière dans certains
- * contextes.
- *
- * @valeur_de_retour: 
- * Retourne l'indice jusqu'où la recherche a été effectuée ou un code
- * spécifique en cas de caractère '?'.
- *
- * @erreurs_possibles_et_effets_de_bord: 
- * - Si 'w' ou 'nv' sont NULL, le comportement est indéfini.
- * - Modifie 'exp' pour indiquer si une correspondance a été trouvée.
- *
- * @exemples_utilisation:
- * char *word = "$HOME";
- * t_expand exp;
- * char *env_var = "HOME=/home/user";
- * t_quote state = {0, 0};
- * int indice = find_and_expand_env_var_with_special_char(word, &exp, env_var,
- * &state);
- *
- * @dependances: 
- * - append_curnt_error_code_to_expansion_struc pour gérer les cas spéciaux.
- * - is_special_syntax_character pour vérifier les caractères syntaxiques.
- *
- * @graphe_de_flux:
- * Début
- *   |
- *   v
- *   - Initialiser les variables 'i' et 'env_var_char_idx'
- *   |
- *   v
- *   - Vérifier si 'w[1]' est le caractère spécial '?'
- *   /       \
- *  OUI      NON
- *   |         |
- *   v         v
- *   - Appeler
- * append_curnt_error_code_to_expansion_struc   - Comparer 
- *                              OUI      NON     les caractères de 'w' et 'nv'
- *   - Retourner le résultat    /       \
- *                               |         |
- *                               v         v
- *   - Vérifier la fin de mot   - Continuer la comparaison
- *   - et correspondance '='    /       \
- *   /       \                 OUI      NON
- *  OUI      NON                |         |
- *   |         |                v         v
- *   v         v            - Ajouter la valeur    - Retourner l'indice 'i'
- *   - Mettre à jour 'exp'   - de 'nv' à 'exp->str'
- *   - Retourner 'i'         - Retourner 'i'
- *   |
- *   v
- *   Fin
- */
-// int	find_and_expand_env_var_with_special_char(\
-// char *w, t_expand *exp, t_data *data, t_quote *state)
-// {
-// 	int	i;
-// 	int	env_var_char_idx;
-
-// 	i = -1;
-// 	env_var_char_idx = ZERO_INIT;
-// 	if (w[1] == '?')
-// 		return (append_curnt_error_code_to_expansion_struc(exp, data));
-// 	i = 1;
-// 	while (is_matching_env_var_name(w, data, i, env_var_char_idx))
-// 	{
-// 		env_var_char_idx++;
-// 		i++;
-// 	}
-// 	if (is_word_end_or_special(w, i, state) \
-// 	&& is_env_var_name_with_equal_sign(data, env_var_char_idx))
-// 	{
-// 		exp->var_env_match_found = 1;
-// 		while (is_env_var_value_non_empty(data, env_var_char_idx))
-// 			exp->value_of_expanded_var_from_env\
-// 			[exp->length_of_expanded_var_value++] = \
-// 			data->full_env_var_copy_gamma\
-// 			[data->env_var_line_idx][env_var_char_idx];
-// 		return (i);
-// 	}
-// 	return (i);
-// }
 
 bool	is_current_char_question_mark(const char *word, int index)
 {

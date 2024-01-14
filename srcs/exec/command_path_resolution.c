@@ -91,18 +91,6 @@ char	**extract_paths_from_env(t_env *env_lst, t_data *data)
 }
 
 /**
- * @brief Vérifie si un chemin direct spécifié pour une commande est invalide.
- *
- * @param cmd Le chemin de la commande à vérifier.
- * @return true Si le chemin direct est invalide (non exécutable et commence par un '/'), sinon false.
- */
-bool is_invalid_direct_path(const char *cmd)
-{
-    return (access(cmd, X_OK) && *cmd == '/');
-}
-
-
-/**
  * @nom: find_command_full_path
  * @brief: Récupère le chemin complet d'une commande en utilisant les variables
  * d'environnement PATH.
@@ -265,32 +253,16 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
 int	check_if_cmd_full_path_exec_is_valid(\
 t_lexer *lexer, t_exec utils, t_data *data)
 {
-	if (!find_command_full_path(lexer->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data))
+	if (!find_command_full_path(\
+	lexer->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data))
 	{
 		write(STDERR_FILENO, lexer->cmd_segment, strlen2(lexer->cmd_segment));
 		write(\
-		STDERR_FILENO, ERR_MSG_CMD_NOT_FOUND, ft_strlen(ERR_MSG_CMD_NOT_FOUND));
+		STDERR_FILENO, ERR_MSG_CMD_NOT_FOUND, \
+		ft_strlen(ERR_MSG_CMD_NOT_FOUND));
 		return (EXIT_FAIL);
 	}
 	return (EXIT_SUCCESS);
-}
-
-bool	is_lexer_token_cmd_arg(t_lexer *lexer_item)
-{
-    return (lexer_item != NULL && lexer_item->token == ARG);
-}
-
-/**
- * @brief Vérifie si l'itération dans la liste des lexèmes doit continuer.
- *
- * @param lexer_item L'élément actuel du lexer à vérifier.
- * @param current_index L'indice courant dans le processus d'itération.
- * @param total_args Nombre total d'arguments attendus.
- * @return true si l'itération doit continuer, sinon false.
- */
-bool should_continue_lexer_iteration(t_lexer *lexer_item, int current_index, int total_args)
-{
-    return (lexer_item->next != NULL && current_index < total_args);
 }
 
 char **build_arg_array_from_lexer(t_data *data)

@@ -2,7 +2,7 @@
 
 bool	is_current_token_cmd_arg(t_lexer *lexer_lst)
 {
-    return (lexer_lst && lexer_lst->token == ARG);
+	return (lexer_lst && lexer_lst->token == ARG);
 }
 
 /**
@@ -71,7 +71,7 @@ t_lexer	*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list)
 {
 	while (is_current_token_not_pipe(lexer_list))
 		lexer_list = lexer_list->next;
-	if (is_current_token_pipe(lexer_list))/*         ---> condition non intelligible --> fonction         */
+	if (is_current_token_pipe(lexer_list))
 		lexer_list = lexer_list->next;
 	return (lexer_list);
 }
@@ -154,18 +154,17 @@ int	count_args_until_pipe_for_cmd_array(t_lexer *lexer_list)
 	index = 1;
 	while (is_current_token_not_pipe(lexer_list))
 	{
-		if (is_current_token_cmd_arg(lexer_list))/*         ---> condition non intelligible --> fonction         */
+		if (is_current_token_cmd_arg(lexer_list))
 			index++;
 		lexer_list = lexer_list->next;
 	}
 	return (index);
 }
 
-bool is_index_less_than_num_nodes(int index, int num_nodes)
+bool	is_index_less_than_num_nodes(int index, int num_nodes)
 {
-    return (index < num_nodes);
+	return (index < num_nodes);
 }
-
 
 /**
  * @nom: initialize_pid_array_to_zero

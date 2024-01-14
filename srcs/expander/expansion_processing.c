@@ -100,8 +100,12 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 		update_quoting_state((*expnd)->cmd_segment[index], state);
 		if (is_current_char_dollar_sign(*expnd, index))
 		{
-			if (is_next_char_end_or_special(&(*expnd)->cmd_segment[index], state))
-				exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+			if (is_next_char_end_or_special(&(*expnd)->cmd_segment[index], state) || (*expnd)->cmd_segment[index + 1] == '\0' || (*expnd)->cmd_segment[index + 1] == ' ' || 
+        (*expnd)->cmd_segment[index + 1] == '-')
+			{
+				exp->value_of_expanded_var_from_env[exp->\
+				length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+			}
 			else if (is_next_char_decimal_digit(&(*expnd)->cmd_segment[index]))
 				index++;
 			else if (is_single_quote_open_and_started(state))
@@ -112,9 +116,19 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 				&(*expnd)->cmd_segment[index], exp, data, state) IDX_ADJUST;
 		}
 		else
-			exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+		{
+			exp->value_of_expanded_var_from_env[exp->\
+			length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+		}
 		index++;
 	}
+}
+
+void	update_lengths_for_dollar_question_mark(\
+int *expanded_length, int *index, t_data *data)
+{
+	*expanded_length += ft_strlen(data->utils->g_signal_in_char_format);
+	*index += SKIP_DOLLAR_QUESTION_MARK;
 }
 
 /**
@@ -205,19 +219,18 @@ t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 	int	index;
 
 	index = ZERO_INIT;
-	while ((*exp)->cmd_segment[index])/*         ---> condition non intelligible --> fonction         */
+	while ((*exp)->cmd_segment[index])
 	{
 		update_quoting_state((*exp)->cmd_segment[index], state);
-		if (is_current_char_dollar_sign(*exp, index)) 
+		if (is_current_char_dollar_sign(*exp, index))
 		{
 			if (is_next_char_question_mark(*exp, index))
-			{
-				(*expanded_length) += ft_strlen(data->utils->g_signal_in_char_format);
-				index += SKIP_DOLLAR_QUESTION_MARK;
-			}
+				update_lengths_for_dollar_question_mark(\
+				expanded_length, &index, data);
 			else
 				index += calculate_expanded_env_var_length(\
-				&(*exp)->cmd_segment[index], data->full_env_var_copy_alpha, state, expanded_length);
+				&(*exp)->cmd_segment[index], \
+				data->full_env_var_copy_alpha, state, expanded_length);
 			if (is_special_char_found_with_state_not_found(*exp, state, index))
 				(*expanded_length)++;
 		}

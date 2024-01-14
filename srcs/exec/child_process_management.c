@@ -13,17 +13,17 @@ int	check_for_slash_path_delimiter(t_lexer *lexer)
 	return (NO_SLASH_FOUND);
 }
 
-bool is_execve_failed(char *command_path, char **arguments, char **env)
+bool	is_execve_failed(char *command_path, char **arguments, char **env)
 {
-    return execve(command_path, arguments, env) == FAIL;
+	return execve(command_path, arguments, env) == FAIL;
 }
 
 void execute_lexer_command_with_args(t_data *data)
 {
-    char **arguments = build_arg_array_from_lexer(data);
+	char **arguments = build_arg_array_from_lexer(data);
 
-    if (is_execve_failed(data->lexer_list->cmd_segment, arguments, data->utils->full_env_var_copy_beta))
-        perror(data->lexer_list->cmd_segment);
+	if (is_execve_failed(data->lexer_list->cmd_segment, arguments, data->utils->full_env_var_copy_beta))
+		perror(data->lexer_list->cmd_segment);
 }
 
 void exec_cmd_with_redirection_and_builtins(\
@@ -36,18 +36,18 @@ t_data *data, int *fd, int count, t_exec utils)
 		ft_exec_single_built_in(data->lexer_list, fd, data);
 		ft_exit_child(fd, data);
 	}
-    if (!check_for_slash_path_delimiter(data->lexer_list))
+	if (!check_for_slash_path_delimiter(data->lexer_list))
 	{
-        execute_lexer_command_with_args(data);
+		execute_lexer_command_with_args(data);
 	}
 	else if (!check_if_cmd_full_path_exec_is_valid(data->lexer_list, utils, data))
 	{
-        char *command_full_path = find_command_full_path(data->lexer_list->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data);
-        char **arguments = build_arg_array_from_lexer(data);
+		char *command_full_path = find_command_full_path(data->lexer_list->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data);
+		char **arguments = build_arg_array_from_lexer(data);
 
-        if (is_execve_failed(command_full_path, arguments, utils.full_env_var_copy_beta))
-            perror(data->lexer_list->cmd_segment);
-    }
+		if (is_execve_failed(command_full_path, arguments, utils.full_env_var_copy_beta))
+			perror(data->lexer_list->cmd_segment);
+	}
 	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(fd, data);
 }

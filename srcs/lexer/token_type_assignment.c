@@ -17,7 +17,8 @@ void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 	{
 		if (tmp->segment_position == 1)
 			first = tmp;
-		if (tmp->segment_position == 1 && tmp->cmd_segment[0] != '<' && tmp->cmd_segment[0] != '>')
+		if (tmp->segment_position == 1 && tmp->cmd_segment[0] != '<' \
+		&& tmp->cmd_segment[0] != '>')
 			tmp->token = CMD;
 		else if (tmp->segment_position == 0)
 			tmp->token = PIPE;

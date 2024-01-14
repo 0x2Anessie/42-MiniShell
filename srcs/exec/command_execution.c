@@ -68,25 +68,19 @@
  */
 void	ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
 {
-	if (\
-	is_exact_command_match(lexer_lst, CMD_EXPORT_VARS, strlen(CMD_EXPORT_VARS)))
+	if (is_cmd_match(lexer_lst, CMD_EXPORT_VARS, strlen(CMD_EXPORT_VARS)))
 		export_things(lexer_lst, data);
-	else if (\
-	is_exact_command_match(lexer_lst, CMD_PRINT_DIRCT, strlen(CMD_PRINT_DIRCT)))
+	else if (is_cmd_match(lexer_lst, CMD_PRINT_DIRCT, strlen(CMD_PRINT_DIRCT)))
 		get_pwd(lexer_lst->cmd_segment, data);
-	else if (is_exact_command_match(lexer_lst, CMD_ECHO, strlen(CMD_ECHO)))
+	else if (is_cmd_match(lexer_lst, CMD_ECHO, strlen(CMD_ECHO)))
 		init_echo(lexer_lst, data);
-	else if (\
-	is_exact_command_match(lexer_lst, CMD_CHANG_DIRCT, strlen(CMD_CHANG_DIRCT)))
+	else if (is_cmd_match(lexer_lst, CMD_CHANG_DIRCT, strlen(CMD_CHANG_DIRCT)))
 		get_cd(lexer_lst, data);
-	else if (\
-	is_exact_command_match(lexer_lst, CMD_ENV_VARS, strlen(CMD_ENV_VARS)))
+	else if (is_cmd_match(lexer_lst, CMD_ENV_VARS, strlen(CMD_ENV_VARS)))
 		get_unset(lexer_lst, data);
-	else if (\
-	is_exact_command_match(lexer_lst, CMD_UNSET_VARS, strlen(CMD_UNSET_VARS)))
+	else if (is_cmd_match(lexer_lst, CMD_UNSET_VARS, strlen(CMD_UNSET_VARS)))
 		get_unset(lexer_lst, data);
-	else if (\
-	is_exact_command_match(lexer_lst, CMD_EXIT_SHELL, strlen(CMD_EXIT_SHELL)))
+	else if (is_cmd_match(lexer_lst, CMD_EXIT_SHELL, strlen(CMD_EXIT_SHELL)))
 		ft_exit(lexer_lst, fd, data);
 	if (data->utils->node->output_fd > 0)
 		close(data->utils->node->output_fd);
@@ -534,6 +528,7 @@ void	manage_execution_resources(t_data *data)
 	handle_process_signal();
 	if (!manage_exec_linked_cmd_sequence(fd, pid, data, y))
 		perror("Pipe ");
-	wait_and_process_child_statuses(pid, &wstatus, data->utils->cmd_count_pipe_chained, data);
+	wait_and_process_child_statuses(\
+	pid, &wstatus, data->utils->cmd_count_pipe_chained, data);
 	close_file_descriptors_in_linked_list(data);
 }

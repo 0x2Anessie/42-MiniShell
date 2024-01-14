@@ -74,6 +74,18 @@ t_data *data, t_lexer *tmp, t_lexer *current, int i)
 	data->lexer_list = current;
 }
 
+void print_lexer_content1(t_data *data)
+{
+    t_lexer *current = data->lexer_list;
+    while (current != NULL)
+    {
+        printf("Token: %d, Cmd Segment: %s, Segment Position: %d\n", 
+               current->token, current->cmd_segment, current->segment_position);
+        current = current->next;
+    }
+}
+
+
 void	ft_init_lexer_process(t_data *data)
 {
 	int		i;
@@ -86,4 +98,5 @@ void	ft_init_lexer_process(t_data *data)
 	data->input_line_word_count = count_words_in_input(data->minishell_input_cmd);
 	i = ZERO_INIT;
 	process_input_string(data, tmp, current, i);
+	print_lexer_content1(data);
 }

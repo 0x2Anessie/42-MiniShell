@@ -24,6 +24,7 @@ int	ft_strcmp(char *s1, char *s2)
 */
 void	display_echo_arg(char **tab, int i, t_data *data)
 {
+	printf("Je suis dans display_echo_arg\n");
 	i = i + 2;
 	if (data->utils->node->output_fd > 0)
 		write_echo_fd(tab, i, data);
@@ -50,6 +51,8 @@ void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 		tab[(*i)++] = lexer_lst->cmd_segment;
 		lexer_lst = lexer_lst->next;
 	}
+
+
 }
 
 /*

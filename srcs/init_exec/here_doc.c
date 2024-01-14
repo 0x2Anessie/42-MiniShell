@@ -6,23 +6,6 @@ void	write_line_to_heredoc(char *line, int heredoc_fd)
 	ft_write_fd("\n", heredoc_fd);
 }
 
-bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
-{
-    return (!ft_strncmp(delimiter, line, strlen2(delimiter)) \
-	&& (strlen2(delimiter) == strlen2(line)));
-}
-
-bool	is_heredoc_ended_by_signal(t_data *data)
-{
-    return (!data->utils->heredoc_input_buffer \
-	&& data->utils->heredoc_ctrl_c_uninterrupted);
-}
-
-bool	is_heredoc_interrupted_for_stdin_restore(t_data *data)
-{
-    return (!data->utils->heredoc_ctrl_c_uninterrupted);
-}
-
 /**
  * @nom: ft_read_input
  *
@@ -41,10 +24,10 @@ bool	is_heredoc_interrupted_for_stdin_restore(t_data *data)
  * - Duplique le descripteur d'entrée standard pour préserver l'état
  * original.
  * - Entre dans une boucle infinie pour lire les lignes d'entrée une par une.
- * - Si `readline` retourne NULL et `heredoc_ctrl_c_uninterrupted` est actif, signale la fin du
- * here-document.
- * - En cas d'interruption (flag `heredoc_ctrl_c_uninterrupted` désactivé), restaure le
- * descripteur d'entrée standard et sort de la boucle.
+ * - Si `readline` retourne NULL et `heredoc_ctrl_c_uninterrupted` est actif,
+ * signale la fin du here-document.
+ * - En cas d'interruption (flag `heredoc_ctrl_c_uninterrupted` désactivé),
+ * restaure le descripteur d'entrée standard et sort de la boucle.
  * - Vérifie si la ligne lue correspond au délimiteur spécifié pour terminer
  * la lecture.
  * - Écrit chaque ligne lue dans un fichier temporaire, suivi d'un saut de
@@ -98,7 +81,8 @@ bool	is_heredoc_interrupted_for_stdin_restore(t_data *data)
  *                OUI             NON
  *                 |               |
  *                 v               v
- *   - Écrire un avertissement          - heredoc_ctrl_c_uninterrupted est-il désactivé ?
+ *                               - heredoc_ctrl_c_uninterrupted est-il
+ *   - Écrire un avertissement            désactivé ?
  *    (ERR_HEREDOC_EOF_WARNING)              /       \
  *   - Sortir de la boucle                  OUI      NON  
  *                                           |        |
@@ -132,31 +116,27 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	while (INFINITY_LOOP)
 	{
 		data->utils->heredoc_input_buffer = readline("> ");
-		if (is_heredoc_ended_by_signal(data))/*         ---> condition non intelligible --> fonction         */
+		if (is_heredoc_ended_by_signal(data))
 		{
 			write (\
 			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
 			ft_strlen(ERR_HEREDOC_EOF_WARNING));
 			break ;
 		}
-		if (is_heredoc_interrupted_for_stdin_restore(data))/*         ---> condition non intelligible --> fonction         */
+		if (is_heredoc_interrupted_for_stdin_restore(data))
 		{
 			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
 			break ;
 		}
 		if (is_heredoc_delimiter_matched(\
 		lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
-				break ;
-		write_line_to_heredoc(data->utils->heredoc_input_buffer, node->here_doc_fd);
+			break ;
+		write_line_to_heredoc(\
+		data->utils->heredoc_input_buffer, node->here_doc_fd);
 		free(data->utils->heredoc_input_buffer);
 	}
 	close(data->utils->stdin_fd_for_heredoc);
 	free(data->utils->heredoc_input_buffer);
-}
-
-bool	is_heredoc_file_opening_failed(int file_descriptor)
-{
-    return (file_descriptor < 0);
 }
 
 /**

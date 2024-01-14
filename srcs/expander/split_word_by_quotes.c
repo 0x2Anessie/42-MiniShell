@@ -224,4 +224,3 @@ char	**split_word_by_quotes(t_data *data, char *word, t_quote *state)
 	arr[j] = NULL;
 	return (arr);
 }
-

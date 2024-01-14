@@ -37,35 +37,35 @@ t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 void	process_lexer_for_expansion(\
 t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme)
 {
-    t_lexer *current = lexeme;
+	t_lexer	*current;
 
-    while (current)
+	current = lexeme;
+	while (current)
 	{
-        if (is_dollar_or_doubl_or_singl_quote(current->cmd_segment))
+		if (is_dollar_or_doubl_or_singl_quote(current->cmd_segment))
 		{
-            if (is_dollar_at_end(current->cmd_segment) \
+			if (is_dollar_at_end(current->cmd_segment) \
 			&& determine_expansion_or_quote_removal(\
 			&current, state, exp, data))/*         ---> condition non intelligible --> fonction         */
-                expand_and_insert_in_lexeme_linked_list(\
+				expand_and_insert_in_lexeme_linked_list(\
 				&current, state, data, exp);
-        }
-        reset_quoting_state(state);
-        current = current->next;
-    }
+		}
+		reset_quoting_state(state);
+		current = current->next;
+	}
 }
 
 void expand(t_quote *state, char **env, t_lexer *tmp, t_data *data)
 {
-    t_expand *exp;
+	t_expand *exp;
 
-    data->full_env_var_copy_gamma = env;
-    state = ft_malloc_with_tracking(data, sizeof(t_quote));
-    if (!state)
-        return;
-    reset_quoting_state(state);
-    exp = ft_malloc_with_tracking(data, sizeof(t_expand));
-    if (!exp)
-        return;
-    process_lexer_for_expansion(state, data, exp, tmp);
+	data->full_env_var_copy_gamma = env;
+	state = ft_malloc_with_tracking(data, sizeof(t_quote));
+	if (!state)
+		return;
+	reset_quoting_state(state);
+	exp = ft_malloc_with_tracking(data, sizeof(t_expand));
+	if (!exp)
+		return;
+	process_lexer_for_expansion(state, data, exp, tmp);
 }
-

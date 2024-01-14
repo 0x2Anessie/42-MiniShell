@@ -1,163 +1,5 @@
 #include "../../include/minishell.h"
 
-bool	is_here_doc_followed_by_delimiter(t_lexer *lexer_lst)
-{
-	return (lexer_lst && lexer_lst->token == HERE_DOC && 
-		   lexer_lst->next && lexer_lst->next->token == DELIMITER);
-}
-
-bool	is_heredoc_tmp_file_exists(t_node *node)
-{
-    return (!access(node->heredoc_tmp_fullname, F_OK));
-}
-
-bool	is_input_fd_ready_for_read(t_node *node)
-{
-    return (node->input_fd > 0);
-}
-
-
-/**
- * @nom: configure_here_doc_input
- *
- * @description:
- * Configure un here-doc comme entrée pour un nœud de commande, basée sur une
- * liste de lexèmes. Cette fonction est essentielle pour gérer les entrées
- * multi-lignes dans un shell, permettant une entrée interactive ou scriptée.
- *
- * @parametres:
- * - node: t_node *node, pointeur vers le nœud de commande.
- * - lex_lst: t_lexer *lex_lst, pointeur vers le début de la liste de lexèmes.
- *
- * @fonctionnement:
- * Vérifie si les lexèmes indiquent un here-doc (HERE_DOC et DELIMITER).
- * Si oui, ferme l'entrée existante, puis appelle `manage_here_doc_process`
- * pour créer le here-doc. Ouvre ensuite le fichier temporaire du here-doc et
- * le configure comme entrée du nœud. Gère les cas d'échec en mettant à jour
- * l'indicateur d'entrée et en supprimant le fichier temporaire.
- * - `ft_read_input` lit l'entrée utilisateur pour le here-doc.
- * - `handle_sig` configure les signaux pendant la lecture du here-doc.
- * - `manage_here_doc_process` orchestre la création du here-doc.
- *
- * Pourquoi configurer un here-doc ?
- * - Entrée multi-lignes : Fournit une méthode pour saisir des entrées sur
- * plusieurs lignes, utile pour les scripts et les commandes interactives.
- * - Flexibilité d'entrée : Permet aux utilisateurs de fournir des données
- * complexes ou volumineuses de manière interactive.
- * - Gestion des signaux : Assure que le processus de saisie du here-doc est
- * interrompu proprement en cas de signaux comme CTRL-C.
- *
- * @valeur_retour: 
- *   Aucune (void). Modifie le nœud de commande en place.
- *
- * @erreurs: 
- *   - Génère un message d'erreur si l'accès au fichier here-doc échoue.
- *
- * @exemple_utilisation:
- *   t_node *node = create_node();
- *   t_lexer *lex_lst = create_lexer_list("commande << DELIMITER");
- *   configure_here_doc_input(node, lex_lst);
- *
- * @dependances: 
- *   - manage_here_doc_process pour la création et gestion du here-doc.
- *   - ft_read_input pour la lecture de l'entrée du here-doc.
- *   - handle_sig pour la gestion des signaux pendant le here-doc.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Vérifier la présence d'un here-doc
- *     |
- *     v
- *   Condition de here-doc remplie ?
- *  /       \
- * OUI      NON
- *  |        |
- *  |        v
- *  |     Fin de la fonction
- *  |
- *  v
- * Fermer l'entrée existante si ouverte
- *  |
- *  v
- * Appeler manage_here_doc_process
- *  |
- *  v
- * Accès au fichier here-doc réussi ?
- *  /       \
- * OUI      NON
- *  |        |
- *  |        v
- *  |     Générer message d'erreur
- *  |        |
- *  |        v
- *  |     Mettre à jour node->input_fd
- *  |        |
- *  |        v
- *  |     Supprimer le fichier here-doc
- *  | 
- *  v
- * Ouvrir et configurer le fichier here-doc comme entrée
- *  |
- *  v
- * Fin
- */
-void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
-{
-	if (is_here_doc_followed_by_delimiter(lex_lst))
-	{
-		if (is_input_fd_ready_for_read(node))
-			close (node->input_fd);
-		manage_here_doc_process(node, lex_lst, data);
-		if (is_heredoc_tmp_file_exists(node))
-		{
-			node->input_fd = open(node->heredoc_tmp_fullname, O_RDONLY);
-			unlink(node->heredoc_tmp_fullname);
-		}
-		else
-		{
-			node->input_fd = INPUT_FD_REDIRECTION_FAIL;
-			unlink(node->heredoc_tmp_fullname);
-			perror(node->heredoc_tmp_fullname);
-		}
-	}
-}
-
-bool	is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst)
-{
-	return (lexer_lst && lexer_lst->token == REDIRECT_IN && 
-		   lexer_lst->next->token == FD);
-}
-
-bool	is_next_word_existing_and_readable(t_lexer *lexer_lst)
-{
-	return (lexer_lst->next \
-	&& lexer_lst->next->cmd_segment \
-	&& !access(lexer_lst->next->cmd_segment, R_OK));
-}
-
-bool	is_current_token_pipe(t_lexer *lexer_lst)
-{
-    return (lexer_lst && lexer_lst->token == PIPE);
-}
-
-bool	is_current_token_not_pipe(t_lexer *lexer_lst)
-{
-    return (lexer_lst && lexer_lst->token != PIPE);
-}
-
-bool	is_input_fd_open(t_node *node)
-{
-    return (node->input_fd > 0);
-}
-
-bool	is_next_word_missing(t_lexer *lexer_lst)
-{
-    return (!lexer_lst->next->cmd_segment);
-}
-
-
 /**
  * @nom: setup_input_redirection
  *
@@ -259,33 +101,6 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 		lexer_lst = lexer_lst->next;
 	}
 }
-
-bool	is_append_out_followed_by_fd_token(t_lexer *lex_lst)
-{
-	return (lex_lst && lex_lst->next && 
-		   lex_lst->token == APPEND_OUT && 
-		   lex_lst->next->token == FD);
-}
-
-bool	is_output_append_redirection_error_detected(\
-t_node *node, t_lexer *lex_lst)
-{
-	return (node->output_redirection_error_id != \
-	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
-	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
-	|| !access(lex_lst->next->cmd_segment, F_OK)));
-}
-
-bool	is_output_fd_open_for_closure(t_node *node)
-{
-    return (node->output_fd > 0);
-}
-
-bool	is_next_lexeme_word_existing(t_lexer *lex_lst)
-{
-    return (lex_lst->next && lex_lst->next->cmd_segment);
-}
-
 
 /**
  * @nom: append_output_redirection
@@ -392,7 +207,8 @@ t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 			close (node->output_fd);
 		if (is_next_lexeme_word_existing(lex_lst))
 			node->output_fd = open(\
-			lex_lst->next->cmd_segment, append_to_file_flags(), PERM_O_RW_G_R_OT_R);
+			lex_lst->next->cmd_segment, append_to_file_flags(), \
+			PERM_O_RW_G_R_OT_R);
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
@@ -406,36 +222,9 @@ t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 	}
 }
 
-bool	is_redirect_out_followed_by_fd_token(t_lexer *lex_lst)
-{
-	return (lex_lst && lex_lst->next && 
-		   lex_lst->token == REDIRECT_OUT && 
-		   lex_lst->next->token == FD);
-}
-
-bool	is_normal_output_redirection_error_detected(\
-t_node *node, t_lexer *lex_lst)
-{
-	return (node->output_redirection_error_id != \
-	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE \
-	&& (node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
-	|| !access(lex_lst->next->cmd_segment, W_OK)));
-}
-
 bool	is_next_command_segment_present(t_lexer *lex_lst)
 {
-    return (lex_lst->next && lex_lst->next->cmd_segment);
-}
-
-/**
- * Vérifie si le descripteur de fichier de sortie est ouvert et prêt à être fermé.
- * 
- * @param node Le nœud contenant le descripteur de fichier de sortie à vérifier.
- * @return true si le descripteur de fichier de sortie est ouvert, false sinon.
- */
-bool	is_output_fd_open_for_closing(t_node *node)
-{
-    return (node->output_fd > 0);
+	return (lex_lst->next && lex_lst->next->cmd_segment);
 }
 
 /**
@@ -534,11 +323,12 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 {
 	if (is_redirect_out_followed_by_fd_token(lex_lst))
 	{
-		if (is_output_fd_open_for_closing(node))/*         ---> condition non intelligible --> fonction         */
+		if (is_output_fd_open_for_closing(node))
 			close (node->output_fd);
-		if (is_next_command_segment_present(lex_lst))/*         ---> condition non intelligible --> fonction         */
+		if (is_next_command_segment_present(lex_lst))
 			node->output_fd = open(\
-			lex_lst->next->cmd_segment, out_to_file_flags(), PERM_O_RW_G_R_OT_R);
+			lex_lst->next->cmd_segment, out_to_file_flags(), \
+			PERM_O_RW_G_R_OT_R);
 		else
 		{
 			ft_write_fd(ERR_AMB_REDIRECT, STDERR_FILENO);
@@ -551,16 +341,6 @@ void	normal_output_redirection(t_node *node, t_lexer *lex_lst)
 		node->is_output_redirection_feasible = TRUE;
 	}
 }
-
-bool	is_output_redirection_error_detected(t_node *node)
-{
-	return (node->is_output_redirection_feasible \
-	&& node->output_fd == OUTPUT_FD_NOT_CONFIGURED \
-	&& node->input_fd != INPUT_FD_REDIRECTION_FAIL \
-	&& node->output_redirection_error_id != \
-	OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE);
-}
-
 
 /**
  * @nom: setup_output_redirection

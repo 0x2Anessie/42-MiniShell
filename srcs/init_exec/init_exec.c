@@ -92,7 +92,7 @@ t_node	*insert_command_at_end_of_linked_list(t_node *node_lst, t_node *new)
 
 bool	is_there_more_cmds_to_exec(int index, int total_cmds)
 {
-    return (index < total_cmds);
+	return (index < total_cmds);
 }
 
 /**
@@ -214,13 +214,12 @@ void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils)
 		node = ft_malloc_with_tracking(data, sizeof(t_node));
 		if (!node)
 			return ;
-		// node->index = index;
 		setup_input_redirection(node, data->lexer_list, data);
 		setup_output_redirection(node, data->lexer_list);
 		node->next = NULL;
 		node->is_command_present = is_token_type_cmd(data->lexer_list);
 		utils->node = insert_command_at_end_of_linked_list(utils->node, node);
-		while (is_current_token_not_pipe(data->lexer_list))/*         ---> condition non intelligible --> fonction         */
+		while (is_current_token_not_pipe(data->lexer_list))
 			data->lexer_list = data->lexer_list->next;
 		if (data->lexer_list)
 			data->lexer_list = data->lexer_list->next;
@@ -233,7 +232,6 @@ bool	is_env_var_list_uninitialized(t_exec *utils)
 {
 	return (utils->head_of_linked_list_env_var == NULL);
 }
-
 
 /**
  * @nom: ft_init_exec

@@ -174,7 +174,7 @@ int	calculate_length_until_single_quote(char *word, int *length)
 bool	is_char_matching_env_var(\
 char *word, int word_index, char *env_var, int env_var_index)
 {
-    return (word[word_index] == env_var[env_var_index]);
+	return (word[word_index] == env_var[env_var_index]);
 }
 
 

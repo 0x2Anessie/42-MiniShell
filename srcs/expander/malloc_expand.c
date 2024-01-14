@@ -71,7 +71,6 @@ char	*malloc_copy_string_excluding_inactive_quotes(\
 int len, char *old, t_quote *state, t_data *data)
 {
 	char	*nw;
-
 	nw = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	if (!nw)
 		return (NULL);
@@ -181,9 +180,13 @@ char *old, t_quote *state, t_data *data)
 	len = ZERO_INIT;
 	state->singl_quot_status = 0;
 	state->doubl_quot_status = 0;
+	printf("Début de traitement: '%s'\n", old); // Affiche la chaîne originale
 	while (old[++i])
 	{
 		update_quoting_state(old[i], state);
+		printf("Char: %c, Single quote: %d, Double quote: %d\n", 
+               old[i], state->singl_quot_status, state->doubl_quot_status); // Affiche le caractère actuel et l'état des guillemets
+
 		if (is_both_quotes_on(state))
 			len++;
 		if (old[i] == '"' && is_single_quote_closed(state))/*         ---> condition non intelligible --> fonction         */
@@ -192,6 +195,7 @@ char *old, t_quote *state, t_data *data)
 			continue ;
 		len++;
 	}
+	printf("Longueur finale de la chaîne sans guillemets inactifs: %d\n", len); // Affiche la longueur calculée
 	return (\
 	malloc_copy_string_excluding_inactive_quotes(len, old, state, data));
 }

@@ -1,15 +1,14 @@
 #include "../../include/minishell.h"
 
-bool is_fd_valid_for_close(int fd)
+bool	is_fd_valid_for_close(int fd)
 {
-    return (fd > 0);
+	return (fd > 0);
 }
 
-bool is_fd_set_for_redirection(int fd)
+bool	is_fd_set_for_redirection(int fd)
 {
-    return (fd >= 0);
+	return (fd >= 0);
 }
-
 
 /**
  * @nom: configure_stdin_redirection_for_command
@@ -84,7 +83,7 @@ void	configure_stdin_redirection_for_command(t_exec utils, int count)
 		dup2(utils.node->input_fd, STDIN_FILENO);
 		if (is_fd_valid_for_close(utils.node->input_fd))
 			close(utils.node->input_fd);
-		if (utils.previous_fd)/*         ---> condition non intelligible --> fonction         */
+		if (utils.previous_fd)
 			close(utils.previous_fd);
 	}
 	else if (count)
@@ -95,9 +94,9 @@ void	configure_stdin_redirection_for_command(t_exec utils, int count)
 	}
 }
 
-bool is_not_last_command_and_fd_open(int count, int total_cmds, int fd)
+bool	is_not_last_command_and_fd_open(int count, int total_cmds, int fd)
 {
-    return (count != total_cmds - 1 && fd > 0);
+	return (count != total_cmds - 1 && fd > 0);
 }
 
 /**
@@ -181,8 +180,8 @@ t_exec utils, int *fd, int count)
 		if (is_fd_valid_for_close(utils.node->input_fd))
 			close (utils.node->input_fd);
 	}
-	else if (is_not_last_command_and_fd_open\
-	(count, utils.total_number_of_cmd_find_in_linked_list, fd[1]))
+	else if (is_not_last_command_and_fd_open(\
+	count, utils.total_number_of_cmd_find_in_linked_list, fd[1]))
 		dup2(fd[1], STDOUT_FILENO);
 	if (is_fd_valid_for_close(fd[1]))
 		close(fd[1]);

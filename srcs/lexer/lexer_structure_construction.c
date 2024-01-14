@@ -79,8 +79,8 @@ void print_lexer_content1(t_data *data)
     t_lexer *current = data->lexer_list;
     while (current != NULL)
     {
-        printf("Token: %d, Cmd Segment: %s, Segment Position: %d\n", 
-               current->token, current->cmd_segment, current->segment_position);
+        // printf("Token: %d, Cmd Segment: %s, Segment Position: %d\n", 
+        //        current->token, current->cmd_segment, current->segment_position);
         current = current->next;
     }
 }

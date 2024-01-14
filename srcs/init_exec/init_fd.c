@@ -88,7 +88,7 @@ void	setup_input_redirection(t_node *node, t_lexer *lexer_lst, t_data *data)
 	{
 		if (is_input_redirection_followed_by_token_fd(lexer_lst))
 		{
-			if (is_input_fd_open(node))
+			if (is_input_fd_open_ready_for_read(node))
 				close(node->input_fd);
 			if (is_next_word_missing(lexer_lst))
 				node->is_input_redirection_failed = TRUE;
@@ -203,7 +203,7 @@ t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible)
 {
 	if (is_append_out_followed_by_fd_token(lex_lst))
 	{
-		if (is_output_fd_open_for_closure(node))
+		if (is_output_fd_open_for_closing(node))
 			close (node->output_fd);
 		if (is_next_lexeme_word_existing(lex_lst))
 			node->output_fd = open(\

@@ -100,8 +100,11 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 		update_quoting_state((*expnd)->cmd_segment[index], state);
 		if (is_current_char_dollar_sign(*expnd, index))
 		{
-			if (is_next_char_end_or_special(&(*expnd)->cmd_segment[index], state) || (*expnd)->cmd_segment[index + 1] == '\0' || (*expnd)->cmd_segment[index + 1] == ' ' || 
-        (*expnd)->cmd_segment[index + 1] == '-')
+			if (is_next_char_end_or_special(\
+			&(*expnd)->cmd_segment[index], state) \
+			|| (*expnd)->cmd_segment[index + 1] == '\0' \
+			|| (*expnd)->cmd_segment[index + 1] == ' ' \
+			|| (*expnd)->cmd_segment[index + 1] == '-')
 			{
 				exp->value_of_expanded_var_from_env[exp->\
 				length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];

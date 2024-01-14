@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/10 00:31:38 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/14 02:29:21 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,12 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 	{
 		data->minishell_input_cmd = tmp;
 		ft_init_lexer_process(data);
-		if (!ft_parser(data))
+		if (!is_a_directory(data))
+		{
+			g_signal_received = 126;
+			return ;
+		}
+		else if (!ft_parser(data))
 		{
 			g_signal_received = 2;
 			return ;

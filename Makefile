@@ -60,7 +60,7 @@ OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD
-LIBFT = ./Lib/lib42.a
+LIBFT = ./lib/lib42.a
 
 # Directory creation command
 DIR_DUP = mkdir -p $(@D)
@@ -82,7 +82,7 @@ all: 			$(NAME)
 				@echo "                                                                    ";
 
 $(NAME): $(OBJS)
-	@cd Lib && make > /dev/null
+	@cd lib && make > /dev/null
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -lreadline
 	@echo ""
 

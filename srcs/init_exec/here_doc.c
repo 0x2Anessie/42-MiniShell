@@ -118,13 +118,6 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 		data->utils->heredoc_input_buffer = readline("> ");
 		if (is_heredoc_ended_by_signal(data))
 		{
-			write (\
-			STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
-			ft_strlen(ERR_HEREDOC_EOF_WARNING));
-			break ;
-		}
-		if (is_heredoc_interrupted_for_stdin_restore(data))
-		{
 			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
 			break ;
 		}

@@ -103,7 +103,7 @@ void	configure_here_doc_input(t_node *node, t_lexer *lex_lst, t_data *data)
 {
 	if (is_here_doc_followed_by_delimiter(lex_lst))
 	{
-		if (is_input_fd_ready_for_read(node))
+		if (is_input_fd_open_ready_for_read(node))
 			close (node->input_fd);
 		manage_here_doc_process(node, lex_lst, data);
 		if (is_heredoc_tmp_file_exists(node))

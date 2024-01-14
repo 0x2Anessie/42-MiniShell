@@ -5,7 +5,7 @@
 #include <readline/readline.h>
 #include <stdio.h>
 #include <readline/history.h>
-#include "../Lib/includes/lib.h"
+#include "../lib/includes/lib.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
@@ -72,11 +72,11 @@
 #define PERM_O_RW_G_R_OT_R 0644
 
 /*   ERROR MESSAGES AND SIGNALS   */
-#define ERR_HEREDOC_EOF_WARNING "bash: warning: here-document delimited by \
+#define ERR_HEREDOC_EOF_WARNING "minishell: warning: here-document delimited by \
 end-of-file (wanted `EOF')\n"
 #define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
 #define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
-#define ERR_AMB_REDIRECT "bash: ambiguous redirect\n"
+#define ERR_AMB_REDIRECT "minishell: ambiguous redirect\n"
 #define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
 #define WRITE_ERROR_MSG "write error"
 #define QUIT_MESSAGE "Quit\n"
@@ -763,10 +763,9 @@ bool	is_current_token_pipe(t_lexer *lexer_lst);
 bool	is_current_token_not_pipe(t_lexer *lexer_lst);
 
 /*   Fonctions de init_fd_condition.c   */
-bool	is_input_fd_ready_for_read(t_node *node);
-bool	is_input_fd_open(t_node *node);
+bool	is_input_fd_open_ready_for_read(t_node *node);
 bool	is_append_out_followed_by_fd_token(t_lexer *lex_lst);
-bool	is_output_fd_open_for_closure(t_node *node);
+bool	is_output_fd_open_for_closing(t_node *node);
 bool	is_output_fd_open_for_closing(t_node *node);
 
 /*   Fonctions de init_fd_heredoc_condition.c  */
@@ -861,6 +860,7 @@ int ft_arrow(t_data *data);
 int stop_pand_slash(char *str, char c);
 int ft_tiret(char *str);
 int chevron_pipe(char *str);
+int	is_a_directory(t_data *data);
 
 /*   Fonctions de rm_para_quote.c   */
 char *parse_quote(t_data *data, char *tmp);
@@ -875,7 +875,7 @@ void rm_para_quote2(t_data *data);
 
 /*   Fonctions de ctrl_c_signals.c   */
 void ctrl_c_handler(int sig);
-void ctrl_c_handler_here_doc(int sig, t_data *data);
+void ctrl_c_handler_here_doc(int sig);
 void handle_sig(t_data *data);
 
 /*   Fonctions de error_signals.cc   */

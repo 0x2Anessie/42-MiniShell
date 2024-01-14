@@ -1,5 +1,12 @@
 #include "../../include/minishell.h"
 
+int	is_a_directory(t_data *data)
+{
+	if (!ft_tiret(data->minishell_input_cmd))
+		return (0);
+	return (1);
+}
+
 int	stop_pand_slash(char *str, char c)
 {
 	int	i;
@@ -8,10 +15,11 @@ int	stop_pand_slash(char *str, char c)
 	while (str[i])
 	{
 		if ((str[0] == c && str[1] == '\0'))
-		{
-			printf("salut22222\n");
 			return (0);
-		}
+		if ((str[0] == c && str[1] == c))
+			return (0);
+		if ((str[0] == c && str[1] == '.'))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -21,7 +29,7 @@ int	ft_tiret(char *str) // a corriger
 {
 	if (!stop_pand_slash(str, '/'))
 	{
-		printf ("bash: %s : is an empty directory\n", str);
+		printf ("minishell: %s: Is a directory\n", str);
 		return (0);
 	}
 	return (1);
@@ -40,7 +48,7 @@ int	chevron_pipe(char *str)
 		{
 			if (str[i - 1] == '>' && str[i + 1] == '<')
 			{
-				printf("TTTTTT zsh: parse error near `|'\n");
+				printf("minishell: parse error near `|'\n");
 				return (0);
 			}
 		}

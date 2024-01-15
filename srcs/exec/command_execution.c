@@ -150,9 +150,9 @@ void	ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data)
  */
 void	close_fds_if_needed(int *fd, int previous_fd)
 {
-	if (fd[1] > 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_valid_for_close(fd[1]))
 		close(fd[1]);
-	if (previous_fd > 0)/*         ---> condition non intelligible --> fonction         */
+	if (is_fd_valid_for_close(previous_fd))
 		close(previous_fd);
 }
 

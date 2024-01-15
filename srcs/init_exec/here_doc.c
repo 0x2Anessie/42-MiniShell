@@ -1,11 +1,5 @@
 #include "../../include/minishell.h"
 
-void	write_line_to_heredoc(char *line, int heredoc_fd)
-{
-	ft_write_fd(line, heredoc_fd);
-	ft_write_fd("\n", heredoc_fd);
-}
-
 /**
  * @nom: ft_read_input
  *
@@ -110,23 +104,192 @@ void	write_line_to_heredoc(char *line, int heredoc_fd)
  *   v
  *   Fin
  */
-void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
+// void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
+// {
+// 	data->utils->stdin_fd_for_heredoc = dup(0);
+// 	while (INFINITY_LOOP)
+// 	{
+// 		data->utils->heredoc_input_buffer = readline("> ");
+// 		if (is_heredoc_ended_by_signal(data))
+// 		{
+// 			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
+// 			break ;
+// 		}
+// 		if (is_heredoc_delimiter_matched(\
+// 		lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
+// 			break ;
+// 		write_line_to_heredoc(\
+// 		data->utils->heredoc_input_buffer, node->here_doc_fd);
+// 		free(data->utils->heredoc_input_buffer);
+// 	}
+// 	close(data->utils->stdin_fd_for_heredoc);
+// 	free(data->utils->heredoc_input_buffer);
+// }
+
+void	write_line_to_heredoc(char *line, int heredoc_fd)
 {
-	data->utils->stdin_fd_for_heredoc = dup(0);
-	while (INFINITY_LOOP)
+	ft_write_fd(line, heredoc_fd);
+	ft_write_fd("\n", heredoc_fd);
+}
+
+bool is_valid_variable_char(char c)
+{
+    return isalnum(c) || c == '_'; // Les noms de variables peuvent inclure des lettres, des chiffres et des underscores
+}
+
+char* get_variable_value(const char *var_name, t_data *data)
+{
+    if (!var_name || !data) {
+        return NULL;
+    }
+
+    // Supposons que data->full_env_var_copy_alpha est un tableau de chaînes de caractères
+    // où chaque entrée est de la forme "NOM_VARIABLE=valeur"
+    for (int i = 0; data->full_env_var_copy_alpha[i] != NULL; i++) {
+        char *env_entry = data->full_env_var_copy_alpha[i];
+
+        // Trouver le signe égal qui sépare le nom de la variable et sa valeur
+        char *separator = strchr(env_entry, '=');
+
+        // Si aucun signe égal n'est trouvé, passer à l'entrée suivante
+        if (!separator) {
+            continue;
+        }
+
+        // Calculer la longueur du nom de la variable dans l'entrée
+        int name_length = separator - env_entry;
+
+        // Comparer le nom de la variable avec le nom recherché
+		if (strncmp(var_name, env_entry, name_length) == 0 && strlen(var_name) == (size_t)name_length) {
+            // Retourner la valeur de la variable (tout ce qui suit le signe égal)
+            return separator + 1;
+        }
+    }
+
+    // Si la variable n'a pas été trouvée
+    return NULL;
+}
+
+int	is_backslash_at_end(char *str)
+{
+	int	index;
+
+	index = ZERO_INIT;
+	while (str[index])
+		index++;
+	if (str[--index] == '\\')
+		return (CHAR_IS_DOLLAR);
+	return (CHAR_IS_NOT_DOLLAR);
+}
+
+void remove_escape_character(char **line, int index)
+{
+    // Décale le contenu de la chaîne vers la gauche pour supprimer le caractère d'échappement.
+    // N'oubliez pas de réajuster la fin de la chaîne avec un caractère nul.
+    int i;
+    for (i = index; (*line)[i]; i++)
+    {
+        (*line)[i] = (*line)[i + 1];
+    }
+    (*line)[i] = '\0'; // S'assurer que la chaîne est correctement terminée.
+}
+
+/**
+ * Vérifie si le caractère à l'index donné doit être échappé.
+ */
+int is_escaped(const char *line, int index)
+{
+    return (index > 0 && line[index - 1] == '\\');
+}
+
+void expand_variable(char **line, int index, t_data *data)
+{
+    // Extrait le nom de la variable après le signe '$'
+    int var_name_start = index + 1;
+    int var_name_length = 0;
+
+    while ((*line)[var_name_start + var_name_length] && 
+           is_valid_variable_char((*line)[var_name_start + var_name_length]))
 	{
-		data->utils->heredoc_input_buffer = readline("> ");
-		if (is_heredoc_ended_by_signal(data))
+        var_name_length++;
+    }
+
+    if (var_name_length == 0)
+	{
+        return; // Pas de nom de variable valide après '$'
+    }
+
+    // Copie le nom de la variable
+    char var_name[var_name_length + 1];
+    strncpy(var_name, *line + var_name_start, var_name_length);
+    var_name[var_name_length] = '\0';
+
+    // Obtient la valeur de la variable
+    char *var_value = get_variable_value(var_name, data); // Implémentez cette fonction
+
+    if (!var_value)
+	{
+        var_value = ""; // Si la variable n'est pas trouvée, utilisez une chaîne vide
+    }
+
+    // Construit la nouvelle ligne
+    int new_line_length = strlen(*line) - var_name_length - 1 + strlen(var_value);
+    char *new_line = malloc(new_line_length + 1);
+    if (!new_line) {
+        return; // Gestion d'erreur d'allocation mémoire
+    }
+
+    // Copie le début de la ligne
+    strncpy(new_line, *line, index);
+    // Copie la valeur de la variable
+    strcpy(new_line + index, var_value);
+    // Copie le reste de la ligne
+    strcpy(new_line + index + strlen(var_value), *line + var_name_start + var_name_length);
+
+    free(*line);
+    *line = new_line;
+}
+
+/**
+Traite une ligne lue dans un heredoc pour l'expansion des variables et la gestion des échappements.
+*/
+void process_heredoc_line(char **line, t_data *data)
+{
+	for (int i = 0; (*line)[i]; ++i)
+	{
+		if ((*line)[i] == '$' && !is_escaped(*line, i))
 		{
-			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
-			break ;
+			// Expansion de la variable
+			expand_variable(line, i, data);
+		} 
+		else if (is_escaped(*line, i))
+		{
+			// Suppression du caractère d'échappement
+			remove_escape_character(line, i);
 		}
-		if (is_heredoc_delimiter_matched(\
-		lexer_lst->next->cmd_segment, data->utils->heredoc_input_buffer))
-			break ;
-		write_line_to_heredoc(\
-		data->utils->heredoc_input_buffer, node->here_doc_fd);
-		free(data->utils->heredoc_input_buffer);
+	}
+}
+
+void ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
+{
+    data->utils->stdin_fd_for_heredoc = dup(0);
+    while (INFINITY_LOOP)
+    {
+        char *line = readline("> ");
+        if (line == NULL && data->utils->heredoc_ctrl_c_uninterrupted)
+        {
+			// Gestion de la fin du heredoc ou de l'interruption
+			dup2(data->utils->stdin_fd_for_heredoc, STDIN_FILENO);
+			break;
+		}
+		if (is_heredoc_delimiter_matched(lexer_lst->next->cmd_segment, line))
+		{
+			free(line);
+			break;
+		}
+		process_heredoc_line(&line, data); // Expansion des var et les échap
+		write_line_to_heredoc(line, node->here_doc_fd);
+		free(line);
 	}
 	close(data->utils->stdin_fd_for_heredoc);
 	free(data->utils->heredoc_input_buffer);

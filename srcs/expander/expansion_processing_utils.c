@@ -7,8 +7,8 @@ int	append_chars_expnt_until_singl_quot(char *word, t_expand *exp)
 	indx = -1;
 	while (is_next_char_valid_and_not_single_quote(word, &indx))
 	{
-		exp->value_of_expanded_var_from_env\
-		[exp->length_of_expanded_var_value++] = word[indx];
+		exp->value_of_expanded_var_from_env[\
+		exp->length_of_expanded_var_value++] = word[indx];
 	}
 	return (indx);
 }
@@ -167,11 +167,12 @@ int	append_curnt_error_code_to_expansion_struc(t_expand *exp, t_data *data)
  *   v         v
  *   - Appeler
  * find_and_expand_env_var_with_special_char       - Comparer
- *   - Retourner le résultat                          'w[i]' avec 'nv[x][env_var_char_idx]'
- *     /       \
- *                               OUI      NON
- *                                |         |
- *                                v         v
+ *   - Retourner le résultat                        'w[i]' avec 
+ *      /            \                              'nv[x][env_var_char_idx]'
+ *     /              \
+ *   OUI              NON
+ *    |               |
+ *    v               v
  *   - Appeler        - Continuer avec la prochaine variable dans 'nv'
  *     find_and_expand_env_var_with_special_char
  *   - Vérifier si 'exp->found' est à 1
@@ -209,10 +210,11 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 		env_var_char_idx = 0;
 		i = 1;
 		if (is_current_char_question_mark(w, i))
-			return (\
-			find_and_expand_env_var_with_special_char(w, exp, data, state));
-		if (is_char_matching_env_var(w, i, data->full_env_var_copy_gamma\
-		[data->env_var_line_idx], env_var_char_idx))
+			return (find_and_expand_env_var_with_special_char(\
+			w, exp, data, state));
+		if (is_char_matching_env_var(\
+		w, i, data->full_env_var_copy_gamma[data->env_var_line_idx], \
+		env_var_char_idx))
 		{
 			i = find_and_expand_env_var_with_special_char(w, exp, data, state);
 			if (is_expansion_found(exp))

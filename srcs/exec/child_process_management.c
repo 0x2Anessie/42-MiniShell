@@ -7,28 +7,28 @@ int	check_for_slash_path_delimiter(t_lexer *lexer)
 	indx = ZERO_INIT;
 	while (lexer->cmd_segment[indx])
 	{
-		if (lexer->cmd_segment[indx++] == '/')/*         ---> condition non intelligible --> fonction         */
+		if (lexer->cmd_segment[indx++] == '/')
 			return (SLASH_FOUND);
 	}
 	return (NO_SLASH_FOUND);
 }
 
-bool	is_execve_failed(char *command_path, char **arguments, char **env)
+void	execute_lexer_command_with_args(t_data *data)
 {
-	return execve(command_path, arguments, env) == FAIL;
-}
+	char	**arguments;
 
-void execute_lexer_command_with_args(t_data *data)
-{
-	char **arguments = build_arg_array_from_lexer(data);
-
-	if (is_execve_failed(data->lexer_list->cmd_segment, arguments, data->utils->full_env_var_copy_beta))
+	arguments = build_arg_array_from_lexer(data);
+	if (is_execve_failed(data->lexer_list->cmd_segment, arguments, \
+	data->utils->full_env_var_copy_beta))
 		perror(data->lexer_list->cmd_segment);
 }
 
-void exec_cmd_with_redirection_and_builtins(\
+void	exec_cmd_with_redirection_and_builtins(\
 t_data *data, int *fd, int count, t_exec utils)
 {
+	char	*command_full_path;
+	char	**arguments;
+
 	configure_stdin_redirection_for_command(utils, count);
 	configure_stdout_redirection_for_command(utils, fd, count);
 	if (is_built_in_command(data->lexer_list))
@@ -37,15 +37,15 @@ t_data *data, int *fd, int count, t_exec utils)
 		ft_exit_child(fd, data);
 	}
 	if (!check_for_slash_path_delimiter(data->lexer_list))
-	{
 		execute_lexer_command_with_args(data);
-	}
-	else if (!check_if_cmd_full_path_exec_is_valid(data->lexer_list, utils, data))
+	else if (!check_if_cmd_full_path_exec_is_valid(\
+	data->lexer_list, utils, data))
 	{
-		char *command_full_path = find_command_full_path(data->lexer_list->cmd_segment, utils.linked_list_full_env_var_copy_alpha, data);
-		char **arguments = build_arg_array_from_lexer(data);
-
-		if (is_execve_failed(command_full_path, arguments, utils.full_env_var_copy_beta))
+		command_full_path = find_command_full_path(data->lexer_list->\
+		cmd_segment, utils.linked_list_full_env_var_copy_alpha, data);
+		arguments = build_arg_array_from_lexer(data);
+		if (is_execve_failed(\
+		command_full_path, arguments, utils.full_env_var_copy_beta))
 			perror(data->lexer_list->cmd_segment);
 	}
 	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
@@ -131,12 +131,12 @@ t_data *data, int *fd, int count, t_exec utils)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == FORK_FAILURE)/*         ---> condition non intelligible --> fonction         */
+	if (pid == FORK_FAILURE)
 	{
 		perror("Fork");
 		return (FT_FAILURE_EXIT);
 	}
-	if (pid == CHILD_PROCESS)/*         ---> condition non intelligible --> fonction         */
+	if (pid == CHILD_PROCESS)
 		exec_cmd_with_redirection_and_builtins(data, fd, count, utils);
 	return (pid);
 }

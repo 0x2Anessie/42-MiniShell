@@ -172,19 +172,12 @@ typedef enum s_token
 	PIPE,
 } t_token;
 
-// typedef struct s_list_node
-// {
-// 	char				*data;
-// 	struct s_list_node	*next;
-// }						t_list_node;
-
 typedef struct s_node
 {
 	int input_fd;
 	int output_fd;
 	char *heredoc_tmp_fullname;
 	int here_doc_fd;
-	// int index;
 	int is_command_present;
 	int is_output_redirection_feasible;
 	int is_input_redirection_failed;
@@ -230,7 +223,6 @@ typedef struct s_expand
 	int var_env_match_found;
 	int dollar_sign_present;
 	int sing_or_doub_quote_in_env_expansion;
-	// int i;
 } t_expand;
 
 typedef struct s_export
@@ -246,19 +238,16 @@ typedef struct s_exec
 	int stdin_fd_for_heredoc;
 	int is_this_an_exec_in_heredoc;
 	char **full_env_var_copy_beta;
-	// int				err;
 	t_env *linked_list_full_env_var_copy_alpha;
 	int total_number_of_cmd_find_in_linked_list;
 	int cmd_count_pipe_chained;
 	char *g_signal_in_char_format;
-	// int				ret;
 	int previous_fd;
 	char *name_of_var_env_to_del;
 	t_node *head_cmd_lst;
 	t_lexer *head_lexer_lst;
 	t_env *head_env_lst;
 	t_export *head_of_linked_list_env_var;
-	// t_export		*head_export_lst;
 	struct s_node *node;
 	struct s_exec *next;
 	struct s_exec *prev;
@@ -272,7 +261,6 @@ typedef struct s_trash_memory
 
 typedef struct s_data
 {
-	// char			*test;
 	int env_var_line_idx;
 	int is_sing_quot;
 	int is_doub_quot;
@@ -282,15 +270,10 @@ typedef struct s_data
 	char **full_env_var_copy_alpha;
 	char **full_env_var_copy_gamma;
 	char *minishell_input_cmd;
-	// int			index;
-	// char		**allcommand;
-	// char		**envpaths;
-	// char		*finalpath;
 	t_exec *utils;
 	t_trash_memory *trash_memory;
 	t_lexer *lexer_list;
 	t_quote *quote;
-	// t_list_node	*envp;
 	t_expand *expand;
 
 } t_data;
@@ -446,9 +429,11 @@ void ft_putstr_fd_mini(char *s1, char *s2, int fd, t_data *data);
 /*                                      EXEC                                     */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
+/*   Fonctions de child_process_management_condtion.c   */
+bool	is_execve_failed(char *command_path, char **arguments, char **env);
+
 /*   Fonctions de child_process_management.c   */
 int	check_for_slash_path_delimiter(t_lexer *lexer);
-bool	is_execve_failed(char *command_path, char **arguments, char **env);
 void execute_lexer_command_with_args(t_data *data);
 void exec_cmd_with_redirection_and_builtins(\
 t_data *data, int *fd, int count, t_exec utils);
@@ -459,6 +444,15 @@ t_data *data, int *fd, int count, t_exec utils);
 /*   Fonctions de close_pipes_and_fds.c   */
 int	closes_ends_of_pipe(int *fd);
 int	close_file_descriptors_in_linked_list(t_data *data);
+
+/*   Fonctions de cmd_exec_condition.c   */
+bool	is_pipe_creation_failed(int *fd, int total_number_of_cmd);
+bool	is_single_command_in_list(t_data *data);
+bool	is_single_builtin_command(t_data *data);
+
+/*   Fonctions de cmd_path_resltion_condtion.c   */
+bool	is_env_var_path_name(t_env *env);
+bool	is_invalid_direct_path(const char *cmd);
 
 /*   Fonctions de command_analysis.c   */
 int	is_cmd_match(\
@@ -480,9 +474,6 @@ void	manage_execution_resources(t_data *data);
 
 /*   Fonctions de command_path_resolution_condition.c   */
 bool	is_invalid_direct_path(const char *cmd);
-bool	is_lexer_token_cmd_arg(t_lexer *lexer_item);
-bool	should_continue_lexer_iteration(\
-t_lexer *lexer_item, int current_index, int total_args);
 
 /*   Fonctions de command_path_resolution.c   */
 char	**extract_paths_from_env(t_env *env_lst, t_data *data);
@@ -501,12 +492,23 @@ void	configure_stdout_redirection_for_command(\
 t_exec utils, int *fd, int count);
 
 /*   Fonctions de pipe_cmd_management_and_init_vars.c  */
-bool	is_current_token_cmd_arg(t_lexer *lexer_lst);
 t_lexer	*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list);
 int	count_args_until_pipe_for_cmd_array(t_lexer *lexer_list);
-bool	is_index_less_than_num_nodes(int index, int num_nodes);
 void	initialize_pid_array_to_zero(pid_t *pid_array, int num_nodes);
 void	init_fd_and_status_vars(int *fd, int *y, int *wstatus);
+
+/*   Fonctions de pipe_cmd_management_and_init_vars_condition.c   */
+bool	is_current_token_cmd_arg(t_lexer *lexer_lst);
+bool	is_index_less_than_num_nodes(int index, int num_nodes);
+
+/*   Fonctions de command_path_resolution_condition.c   */
+bool	is_cmd_empty_or_null(char *cmd);
+bool	is_cmd_executable(char *command);
+bool	is_lexer_token_cmd_arg(t_lexer *lexer_item);
+bool	should_continue_lexer_iteration(\
+t_lexer *lexer_item, int current_index, int total_args);
+
+bool	is_env_list_empty_or_null(t_env *env_lst);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                    EXPANDER                                   */
@@ -598,6 +600,12 @@ char	*copy_string_excluding_quotes(\
 char *original_cmd_with_quotes, \
 char *cmd_without_quotes_ready_for_expand, t_quote *state);
 
+/*     Fonctions de malloc_expand_condtion.c    */
+bool	is_char_non_space_and_copyable(char current_char);
+bool    is_next_char_non_space(char *word, int index);
+bool    is_next_char_present(char *word, int index);
+bool    is_start_of_word(char *word, int index);
+
 /*     Fonctions de malloc_expand.c    */
 char *malloc_copy_string_excluding_inactive_quotes(
 	int len, char *old, t_quote *state, t_data *data);
@@ -605,26 +613,39 @@ char *malloc_copy_string_excluding_inactive_quotes(
 char *create_cleaned_str_excluding_inactive_quots(
 	char *old, t_quote *state, t_data *data);
 
-int is_start_word_considering_quotes(
+int		is_start_word_considering_quotes(
 	char *word, int index, t_quote *state);
 
-char *copy_alloc_memory_excluding_inactive_quot(
+char	*copy_alloc_memory_excluding_inactive_quot(
 	char *word, t_quote *state, char *str);
 
-char *alloc_copy_word_excluding_quot_with_tracking(
+char	*alloc_copy_word_excluding_quot_with_tracking(
 	char *word, t_quote *state, t_data *data);
 
 /*     Fonctions de quot_state_validations.c   */
-int is_single_quote_started(t_quote *state);
-int is_single_quote_started_double_quote_closed(t_quote *state);
-int is_single_quote_open_and_started(t_quote *state);
+int		is_single_quote_started(t_quote *state);
+int		is_single_quote_started_double_quote_closed(t_quote *state);
+int		is_single_quote_open_and_started(t_quote *state);
+
+/*     Fonctions de quote_management_and_expander_utils.c   */
+
 
 /*     Fonctions de quote_management_and_expander_utils.c   */
 void	update_quoting_state(char c, t_quote *state);
-int	is_char_cmd_separator(char c);
+int		is_char_cmd_separator(char c);
 bool	is_cmd_separator_and_quotes_off(char c, t_quote *state);
-int	is_end_of_command_word(char *cmd, int i, t_quote *state);
-int	count_string_array_elements(char **arr);
+int		is_end_of_command_word(char *cmd, int i, t_quote *state);
+int		count_string_array_elements(char **arr);
+
+/*     Fonctions de quote_state_checks.c   */
+bool	is_quote_not_part_of_string(char current_char, t_quote *state);
+bool	is_single_quote_with_double_quote_closed(\
+char current_char, t_quote *state);
+
+bool    is_double_quote_with_single_quote_closed(\
+char current_char, t_quote *state);
+
+bool	is_quote_char_with_closed_state(char current_char, t_quote *state);
 
 /*     Fonctions de shell_variable_handling_env_condition.c  */
 bool	is_matching_env_var_name(\
@@ -642,7 +663,7 @@ bool	is_the_token_a_delimiter(t_token token);
 bool	is_word_non_empty(const char *word);
 
 /*     Fonctions de shell_word_expansion.c   */
-int determine_expansion_or_quote_removal(
+int		determine_expansion_or_quote_removal(
 	t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data);
 
 bool	should_expand(
@@ -651,9 +672,9 @@ bool	should_expand(
 void expand(t_quote *state, char **env, t_lexer *tmp, t_data *data);
 
 /*     Fonctions de singular_quote_status_utils.c     */
-int is_single_quote_open(t_quote *state);
-int is_single_quote_closed(t_quote *state);
-int is_doubl_quote_open(t_quote *state);
+int		is_single_quote_open(t_quote *state);
+int		is_single_quote_closed(t_quote *state);
+int		is_doubl_quote_open(t_quote *state);
 int is_doubl_quote_closed(t_quote *state);
 
 /*     Fonctions de special_char_handling.c     */
@@ -771,7 +792,7 @@ bool	is_output_fd_open_for_closing(t_node *node);
 /*   Fonctions de init_fd_heredoc_condition.c  */
 bool	is_here_doc_followed_by_delimiter(t_lexer *lexer_lst);
 bool	is_heredoc_tmp_file_exists(t_node *node);
-void configure_here_doc_input(
+void	configure_here_doc_input(
 	t_node *node, t_lexer *lex_lst, t_data *data);
 
 

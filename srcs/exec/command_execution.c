@@ -244,14 +244,15 @@ void	close_fds_if_needed(int *fd, int previous_fd)
  * l'exécution
  *   |
  *   v
- * (is_built_in_command(lex_lst)) et (data->utils->total_number_of_cmd_find_in_linked_list == 1) ?
+ * (is_built_in_command(lex_lst))
+ * et (data->utils->total_number_of_cmd_find_in_linked_list == 1) ?
  *  /       \
  * OUI      NON
  *  |         |
  *  |         |
  *  v         v
- * Exécuter   Créer un processus enfant avec create_and_execute_child_process et
- * ft_exec_single_built_in  stocker le PID dans pid[y[0]++]
+ * Exécuter   Créer un processus enfant avec create_and_execute_child_process
+ * et ft_exec_single_built_in  stocker le PID dans pid[y[0]++]
  *   |
  *   v
  * Passer à la prochaine commande avec reaches_next_cmd_preceded_by_pipe
@@ -282,12 +283,12 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 	{
 		data->lexer_list = find_next_command_in_lexer(data->lexer_list);
 		data->utils->previous_fd = fd[0];
-		if (data->utils->total_number_of_cmd_find_in_linked_list >= 1 && pipe(fd) < 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_pipe_creation_failed(\
+		fd, data->utils->total_number_of_cmd_find_in_linked_list))
 			return (0);
 		if (check_redirection_validity_in_node(data->utils->node))
 		{
-			if (\
-			(is_built_in_command(data->lexer_list)) && data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
+			if (is_single_builtin_command(data))
 				ft_exec_single_built_in(data->lexer_list, fd, data);
 			else
 				pid[y[0]++] = create_and_execute_child_process(\
@@ -299,6 +300,16 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 	}
 	closes_ends_of_pipe(fd);
 	return (1);
+}
+
+bool	is_pid_array_null(pid_t *pid)
+{
+	return (pid == NULL);
+}
+
+bool	is_process_pid_valid_for_wait(pid_t pid)
+{
+    return (pid > 0);
 }
 
 /**
@@ -332,7 +343,8 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  * @erreurs_possibles_et_effets_de_bord:
  * - Si 'pid' est NULL, la fonction retourne immédiatement sans attendre aucun
  * processus.
- * - La fonction dépend de 'data->utils->heredoc_ctrl_c_uninterrupted' et 'data->utils->total_number_of_cmd_find_in_linked_list' pour
+ * - La fonction dépend de 'data->utils->heredoc_ctrl_c_uninterrupted' et
+ * 'data->utils->total_number_of_cmd_find_in_linked_list' pour
  * déterminer si elle doit continuer à attendre les processus.
  *
  * @exemples_utilisation:
@@ -362,7 +374,9 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
  *   |         |
  *   |         v
  *   |       Entrer dans la boucle tant que 'nb_node' > 0,
- *   |       'data->utils->heredoc_ctrl_c_uninterrupted' et 'data->utils->total_number_of_cmd_find_in_linked_list' sont vrais
+ *   |       'data->utils->heredoc_ctrl_c_uninterrupted' 
+ *   |       et 'data->utils->total_number_of_cmd_find_in_linked_list'
+ *   |       sont vrais
  *   |         |
  *   |         v
  *   |       pid[index] est-il supérieur à 0 ?
@@ -403,11 +417,11 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 	int	index;
 
 	index = ZERO_INIT;
-	if (!pid)/*         ---> condition non intelligible --> fonction         */
+	if (is_pid_array_null(pid))
 		return ;
 	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
-		if (pid[index] > 0)/*         ---> condition non intelligible --> fonction         */
+		if (is_process_pid_valid_for_wait(pid))
 		{
 			waitpid(pid[index], wstatus, 0);
 			if (WIFEXITED(*wstatus))/*         ---> condition non intelligible --> fonction         */
@@ -492,7 +506,8 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
  *         |         |
  *         v         v
  *       Afficher   Est-ce une commande intégrée unique ?
- *       l'erreur    avec 'is_built_in_command' et 'data->utils->total_number_of_cmd_find_in_linked_list'
+ *       l'erreur    avec 'is_built_in_command'
+ *          |        et 'data->utils->total_number_of_cmd_find_in_linked_list'
  *          |        /              \
  *          |      NON             OUI
  *          |        |              |

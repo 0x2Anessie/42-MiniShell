@@ -180,22 +180,17 @@ char *old, t_quote *state, t_data *data)
 	len = ZERO_INIT;
 	state->singl_quot_status = 0;
 	state->doubl_quot_status = 0;
-	printf("Début de traitement: '%s'\n", old); // Affiche la chaîne originale
 	while (old[++i])
 	{
 		update_quoting_state(old[i], state);
-		printf("Char: %c, Single quote: %d, Double quote: %d\n", 
-               old[i], state->singl_quot_status, state->doubl_quot_status); // Affiche le caractère actuel et l'état des guillemets
-
 		if (is_both_quotes_on(state))
 			len++;
-		if (old[i] == '"' && is_single_quote_closed(state))/*         ---> condition non intelligible --> fonction         */
+		if (is_double_quote_with_single_quote_closed(old[i], state))
 			continue ;
-		if (old[i] == '\'' && is_doubl_quote_closed(state))/*         ---> condition non intelligible --> fonction         */
+		if (is_single_quote_with_double_quote_closed(old[i], state))
 			continue ;
 		len++;
 	}
-	printf("Longueur finale de la chaîne sans guillemets inactifs: %d\n", len); // Affiche la longueur calculée
 	return (\
 	malloc_copy_string_excluding_inactive_quotes(len, old, state, data));
 }
@@ -276,13 +271,12 @@ char *old, t_quote *state, t_data *data)
  */
 int	is_start_word_considering_quotes(char *word, int index, t_quote *state)
 {
-	if (word[index] != ' ' && (index == 0 || word[index - 1] == ' '))/*         ---> condition non intelligible --> fonction         */
+	if (is_start_of_word(word, index))
 	{
-		if (is_doubl_quote_closed(state) \
-		&& (word[index] == '"' || word[index] == '\''))/*         ---> condition non intelligible --> fonction         */
+		if (is_quote_char_with_closed_state(word[index], state))
 		{
-			if (word[index + 1])/*         ---> condition non intelligible --> fonction         */
-				if (word[index + 1] != ' ')/*         ---> condition non intelligible --> fonction         */
+			if (is_next_char_present(word, index))
+				if (is_next_char_non_space(word, index))
 					return (1);
 		}
 		else
@@ -390,10 +384,9 @@ char *word, t_quote *state, char *str)
 
 	i = ZERO_INIT;
 	j = ZERO_INIT;
-	while (word[i] && word[i] != ' ')/*         ---> condition non intelligible --> fonction         */
+	while (is_char_non_space_and_copyable(word[i]))
 	{
-		if ((word[i] == '"' && is_single_quote_closed(state)) \
-		|| (word[i] == '\'' && is_doubl_quote_closed(state)))/*     ---> condition trop longue --> fonction     */
+		if (is_quote_not_part_of_string(word[i], state))
 			i++;
 		else
 		{
@@ -494,10 +487,9 @@ char *word, t_quote *state, t_data *data)
 
 	i = ZERO_INIT;
 	j = ZERO_INIT;
-	while (word[i] && word[i] != ' ')/*         ---> condition non intelligible --> fonction         */
+	while (is_char_non_space_and_copyable(word[i]))
 	{
-		if ((word[i] == '"' && is_single_quote_closed(state))
-			|| (word[i] == '\'' && is_doubl_quote_closed(state)))/*     ---> condition trop longue --> fonction     */
+		if (is_quote_not_part_of_string(word[i], state))
 			i++;
 		else
 		{

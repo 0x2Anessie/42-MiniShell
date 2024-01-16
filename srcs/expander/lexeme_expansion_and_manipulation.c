@@ -219,9 +219,6 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 	exp->length_of_expanded_var_value = ZERO_INIT;
 	data->utils->g_signal_in_char_format = \
 	convert_int_to_string_with_tracking(data, g_signal_received);
-	
-	printf("g_signal_in_char_format: %s\n", data->utils->g_signal_in_char_format);
-
 	exp->value_of_expanded_var_from_env = \
 	allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
 	if (!exp->value_of_expanded_var_from_env)/*         ---> condition non intelligible --> fonction         */
@@ -229,37 +226,20 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 		printf("Échec de l'allocation de mémoire pour value_of_expanded_var_from_env\n");
 		return ;
 	}
-
-	printf("Value of expanded var from env: %s\n", exp->value_of_expanded_var_from_env);
-
-
 	st->singl_quot_status = ZERO_INIT;
 	st->doubl_quot_status = ZERO_INIT;
-    printf("Avant expand_variables_and_handle_special_chars, valeur : %s\n", exp->value_of_expanded_var_from_env);
 	expand_variables_and_handle_special_chars(expnd, st, exp, data);
-    printf("Apres expand_variables_and_handle_special_chars, valeur : %s\n", exp->value_of_expanded_var_from_env);
 	exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value] = '\0';
 	if (is_expansion_required_and_unquoted(exp))
 	{
 		expanded = split_word_by_quotes(data, exp->value_of_expanded_var_from_env, st);
-		printf("Avant . Cmd_segment: %s\n", (*expnd)->cmd_segment);
 	}
 	else
 	{
-		printf("Aucune create_cleaned_str_excluding_inactive_quots. Cmd_segment: %s\n", (*expnd)->cmd_segment);
 		(*expnd)->cmd_segment = \
 		create_cleaned_str_excluding_inactive_quots(exp->value_of_expanded_var_from_env, st, data);
-		printf("Aucune expansion requise ou quotée. Cmd_segment: %s\n", (*expnd)->cmd_segment);
 		return ;
 	}
-    // Ajouter un printf pour afficher le contenu de expanded après la division
-    if (expanded)
-    {
-        for (int i = 0; expanded[i] != NULL; i++)
-        {
-            printf("expanded[%d]: %s\n", i, expanded[i]);
-        }
-    }
 	replace_and_extend_chained_list_lexeme(expnd, expanded, data);
 }
 

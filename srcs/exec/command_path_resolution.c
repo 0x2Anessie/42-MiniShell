@@ -73,16 +73,16 @@ char	**extract_paths_from_env(t_env *env_lst, t_data *data)
 	char	**path;
 
 	path = NULL;
-	if (!env_lst || !env_lst->var_env_name_and_value)/*         ---> condition non intelligible --> fonction         */
+	if (is_env_list_empty_or_null(env_lst))
 	{
 		return (NULL);
 	}
 	while (env_lst)
 	{
-		if (!ft_strncmp(env_lst->var_env_name_and_value, ENV_SET_PATH_PREFIX, ft_strlen(ENV_SET_PATH_PREFIX)))/*         ---> condition non intelligible --> fonction         */
+		if (is_env_var_path_name(env_lst))
 		{
-			path = ft_split_mini(\
-			env_lst->var_env_name_and_value + ft_strlen(ENV_SET_PATH_PREFIX), ':', data);
+			path = ft_split_mini(env_lst->var_env_name_and_value \
+			+ ft_strlen(ENV_SET_PATH_PREFIX), ':', data);
 			return (path);
 		}
 		env_lst = env_lst->next_var_env_name_and_value;
@@ -168,16 +168,16 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
 	char	**path;
 
 	index = ZERO_INIT;
-	if (!cmd | !cmd[0])/*         ---> condition non intelligible --> fonction         */
+	if (is_cmd_empty_or_null(cmd))
 		return (NULL);
-	if (!access(cmd, X_OK))/*         ---> condition non intelligible --> fonction         */
+	if (is_cmd_executable(cmd))
 		return (cmd);
 	else if (is_invalid_direct_path(cmd))
 		return (NULL);
 	path = extract_paths_from_env(env_lst, data);
 	if (path)
 	{
-		while (path && path[index])/*         ---> condition non intelligible --> fonction         */
+		while (path && path[index])
 		{
 			tmp = ft_strjoin2_mini(path[index], "/", data);
 			tmp = ft_strjoin2_mini(tmp, cmd, data);
@@ -265,23 +265,22 @@ t_lexer *lexer, t_exec utils, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-char **build_arg_array_from_lexer(t_data *data)
+char	**build_arg_array_from_lexer(t_data *data)
 {
-    char **arg;
-    int nb_arg;
-    int index;
+	char	**arg;
+	int		nb_arg;
+	int		index;
 
-    index = ZERO_INIT;
-    nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
-    arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
-    arg[index++] = data->lexer_list->cmd_segment;
-    while (should_continue_lexer_iteration(data->lexer_list, index, nb_arg))
-    {
-        if (is_lexer_token_cmd_arg(data->lexer_list->next))
-            arg[index++] = data->lexer_list->next->cmd_segment;
-        data->lexer_list->next = data->lexer_list->next->next;
-    }
-    arg[index] = NULL;
-    return arg;
+	index = ZERO_INIT;
+	nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
+	arg = ft_malloc_with_tracking(data, sizeof(char *) * (nb_arg + 1));
+	arg[index++] = data->lexer_list->cmd_segment;
+	while (should_continue_lexer_iteration(data->lexer_list, index, nb_arg))
+	{
+		if (is_lexer_token_cmd_arg(data->lexer_list->next))
+			arg[index++] = data->lexer_list->next->cmd_segment;
+		data->lexer_list->next = data->lexer_list->next->next;
+	}
+	arg[index] = NULL;
+	return (arg);
 }
-

@@ -133,7 +133,7 @@ int	is_built_in_command(t_lexer *lexer_lst)
 {
 	if (lexer_lst->cmd_segment == NULL)
 		return (0);
-	return (is_cmd_match(
+	return (is_cmd_match(\
 	lexer_lst, CMD_PRINT_DIRCT, ft_strlen(CMD_PRINT_DIRCT)) \
 	|| is_cmd_match(\
 	lexer_lst, CMD_ECHO, ft_strlen(CMD_ECHO)) \
@@ -163,7 +163,8 @@ int	is_built_in_command(t_lexer *lexer_lst)
  * La fonction 'should_continue_execution' évalue plusieurs conditions pour
  * décider si le processus d'exécution doit se poursuivre. Elle vérifie
  * l'existence et l'état de 'node' dans data->utils', si 'node' a une commande 
- * à exécuter ('is_command_present'), et si 'heredoc_ctrl_c_uninterrupted' dans data->utils' est vrai.
+ * à exécuter ('is_command_present'),
+ * et si 'heredoc_ctrl_c_uninterrupted' dans data->utils' est vrai.
  * De plus, elle incrémente la valeur pointée par 'y[1]' et vérifie si elle est
  * supérieure ou égale à 0.
  *   
@@ -265,7 +266,8 @@ int	should_continue_execution(t_data *data, int *y)
  *   Début
  *     |
  *     v
- *   node->input_fd != INVALID_PIPE et node->out_fail != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE ?
+ *   node->input_fd != INVALID_PIPE
+ * et node->out_fail != OUTPUT_ABSENCE_OF_TARGET_ERROR_CODE ?
  *  /        \
  * VRAI      FAUX
  *  |         \
@@ -334,7 +336,7 @@ int	check_redirection_validity_in_node(t_node *node)
  */
 t_lexer	*find_next_command_in_lexer(t_lexer *lexer_list)
 {
-	while (lexer_list && lexer_list->token != CMD)/*         ---> condition non intelligible --> fonction         */
+	while (lexer_list && lexer_list->token != CMD)
 		lexer_list = lexer_list->next;
 	return (lexer_list);
 }

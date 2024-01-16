@@ -1,10 +1,5 @@
 #include "../../include/minishell.h"
 
-bool	is_current_token_cmd_arg(t_lexer *lexer_lst)
-{
-	return (lexer_lst && lexer_lst->token == ARG);
-}
-
 /**
  * @nom: reaches_next_cmd_preceded_by_pipe
  * @brief: Avance dans la liste de lexèmes jusqu'à la prochaine commande.
@@ -159,11 +154,6 @@ int	count_args_until_pipe_for_cmd_array(t_lexer *lexer_list)
 		lexer_list = lexer_list->next;
 	}
 	return (index);
-}
-
-bool	is_index_less_than_num_nodes(int index, int num_nodes)
-{
-	return (index < num_nodes);
 }
 
 /**

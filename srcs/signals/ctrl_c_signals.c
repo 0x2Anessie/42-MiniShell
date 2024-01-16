@@ -74,7 +74,7 @@ void	ctrl_c_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_signal_received = exit_stat_ctrl_c_sigint();
+	g_globi = exit_stat_ctrl_c_sigint();
 }
 
 /**
@@ -148,7 +148,7 @@ void	ctrl_c_handler_here_doc(int sig)
 	(void)sig;
 	close(0);
 	ft_putchar('\n');
-	g_signal_received = exit_stat_ctrl_c_sigint();
+	g_globi = exit_stat_ctrl_c_sigint();
 }
 
 /**
@@ -227,7 +227,7 @@ void	handle_sig(t_data *data)
 	if (data->utils->is_this_an_exec_in_heredoc)/*         ---> condition non intelligible --> fonction         */
 	{	
 		signal(SIGINT, &ctrl_c_handler_here_doc);
-		if (g_signal_received == 130)
+		if (g_globi == 130)
 		{
 			data->utils->is_this_an_exec_in_heredoc = 0;
 			data->utils->heredoc_ctrl_c_uninterrupted = 0;

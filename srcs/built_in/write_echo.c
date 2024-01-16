@@ -33,7 +33,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 		{
 			if (ft_write_fd(" ", data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 			{
-				g_signal_received = 1;
+				g_globi = 1;
 				return (-1);
 			}
 			ft_write_fd(tab[i++], data->utils->node->output_fd);
@@ -42,7 +42,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 		{
 			if (ft_write_fd(tab[i++], data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
 			{
-				g_signal_received = 1;
+				g_globi = 1;
 				return (-1);
 			}
 			j++;

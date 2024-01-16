@@ -57,7 +57,7 @@ void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *d
 	if (lex->next->next)
 	{
 		ft_printf("minishell: exit: too many arguments\n");
-		g_signal_received = 1;
+		g_globi = 1;
 	}
 	else
 	{

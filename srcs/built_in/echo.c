@@ -75,7 +75,7 @@ void	process_echo(char **tab, int i, t_data *data)
 	}
 	else
 		procc_in_echo_std(tab, i, data);
-	g_signal_received = 0;
+	g_globi = 0;
 }
 
 /*

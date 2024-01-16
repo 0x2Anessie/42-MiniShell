@@ -40,11 +40,11 @@
  * - Stockage Temporaire : Écrit les entrées dans un fichier temporaire pour
  * un traitement ultérieur.
  *
- * @valeur_retour: 
+ * @valeur_retour:
  * Aucune (void). La fonction lit l'entrée et met à jour le fichier
  * temporaire et les utilitaires globaux.
  *
- * @erreurs: 
+ * @erreurs:
  * - Gère les cas où l'entrée est interrompue ou le délimiteur n'est pas
  * trouvé.
  *
@@ -53,7 +53,7 @@
  * t_lexer *lexer_lst = create_lexer_list("<< EOF");
  * ft_read_input(node, lexer_lst);
  *
- * @dependances: 
+ * @dependances:
  * - ft_write_fd pour l'écriture dans le fichier temporaire.
  * - readline pour la lecture de l'entrée utilisateur.
  *
@@ -78,12 +78,12 @@
  *                               - heredoc_ctrl_c_uninterrupted est-il
  *   - Écrire un avertissement            désactivé ?
  *    (ERR_HEREDOC_EOF_WARNING)              /       \
- *   - Sortir de la boucle                  OUI      NON  
+ *   - Sortir de la boucle                  OUI      NON
  *                                           |        |
  *                                           v        v
  *   - Restaurer le descripteur              - La ligne correspond-elle
  *     d'entrée standard (dup2)   			 au délimiteur ?
- *   - Sortir de la boucle                     /         \     
+ *   - Sortir de la boucle                     /         \
  *                                            OUI       NON
  *                                             |         |
  *                                             v         v
@@ -137,36 +137,20 @@ bool    is_valid_variable_char(char c)
 	return isalnum(c) || c == '_'; // Les noms de variables peuvent inclure des lettres, des chiffres et des underscores
 }
 
-char*   get_variable_value(const char *var_name, t_data *data)
+char*   get_variable_value(char *var_name, t_data *data)
 {
-	if (!var_name || !data) {
+	if (!var_name || !data)
 		return NULL;
-	}
-
-	// Supposons que data->full_env_var_copy_alpha est un tableau de chaînes de caractères
-	// où chaque entrée est de la forme "NOM_VARIABLE=valeur"
-	for (int i = 0; data->full_env_var_copy_alpha[i] != NULL; i++) {
+	for (int i = 0; data->full_env_var_copy_alpha[i] != NULL; i++)
+	{
 		char *env_entry = data->full_env_var_copy_alpha[i];
-
-		// Trouver le signe égal qui sépare le nom de la variable et sa valeur
-		char *separator = strchr(env_entry, '=');
-
-		// Si aucun signe égal n'est trouvé, passer à l'entrée suivante
-		if (!separator) {
+		char *separator = ft_strchr(env_entry, '=');
+		if (!separator)
 			continue;
-		}
-
-		// Calculer la longueur du nom de la variable dans l'entrée
 		int name_length = separator - env_entry;
-
-		// Comparer le nom de la variable avec le nom recherché
-		if (strncmp(var_name, env_entry, name_length) == 0 && strlen(var_name) == (size_t)name_length) {
-			// Retourner la valeur de la variable (tout ce qui suit le signe égal)
+		if (ft_strncmp(var_name, env_entry, name_length) == 0 && strlen2(var_name) == name_length)
 			return separator + 1;
-		}
 	}
-
-	// Si la variable n'a pas été trouvée
 	return NULL;
 }
 
@@ -197,7 +181,7 @@ void    remove_escape_character(char **line, int index)
 /**
  * Vérifie si le caractère à l'index donné doit être échappé.
  */
-int is_escaped(const char *line, int index)
+int is_escaped(char *line, int index)
 {
 	return (index > 0 && line[index - 1] == '\\');
 }
@@ -208,7 +192,7 @@ void    expand_variable(char **line, int index, t_data *data)
 	int var_name_start = index + 1;
 	int var_name_length = 0;
 
-	while ((*line)[var_name_start + var_name_length] && 
+	while ((*line)[var_name_start + var_name_length] &&
 		   is_valid_variable_char((*line)[var_name_start + var_name_length]))
 	{
 		var_name_length++;
@@ -261,7 +245,7 @@ void    process_heredoc_line(char **line, t_data *data)
 		{
 			// Expansion de la variable
 			expand_variable(line, i, data);
-		} 
+		}
 		else if (is_escaped(*line, i))
 		{
 			// Suppression du caractère d'échappement
@@ -326,11 +310,11 @@ void    ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
  * - Gestion des Signaux : Assure que les signaux comme Ctrl-C sont gérés
  * adéquatement pendant la saisie du here-document.
  *
- * @valeur_retour: 
+ * @valeur_retour:
  * Aucune (void). La fonction effectue des opérations et met à jour le nœud et
  * les utilitaires globaux.
  *
- * @erreurs: 
+ * @erreurs:
  * - Gère les erreurs d'ouverture de fichier et de lecture d'entrée, modifiant
  * les états d'erreur au besoin.
  *
@@ -339,7 +323,7 @@ void    ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
  * t_lexer *lexer_lst = create_lexer_list("<< EOF");
  * manage_here_doc_process(node, lexer_lst);
  *
- * @dependances: 
+ * @dependances:
  *   - ft_read_input pour lire l'entrée utilisateur.
  *   - handle_sig pour configurer les gestionnaires de signaux.
  *

@@ -7,7 +7,7 @@ int	change_directory(char *dir)
 	if (chdir(dir) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
-		g_signal_received = 1;
+		g_globi = 1;
 		return (0);
 	}
 	return (1);
@@ -19,7 +19,7 @@ int	change_directory_for_oldpwd(t_env *tmp, t_data *data)
 	if (chdir(get_old_pwd(tmp, data) + 7) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
-		g_signal_received = 1;
+		g_globi = 1;
 		return (0);
 	}
 	return (1);

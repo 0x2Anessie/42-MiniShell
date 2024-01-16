@@ -101,6 +101,6 @@ int	get_unset(t_lexer *lexer_lst, t_data *data)
 			remove_node_export(data->utils->name_of_var_env_to_del, data);
 		}
 	}
-	g_signal_received = 0;
+	g_globi = 0;
 	return (0);
 }

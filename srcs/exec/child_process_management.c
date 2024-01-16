@@ -45,6 +45,7 @@ t_data *data, int *fd, int count, t_exec utils)
             perror(data->lexer_list->word);
     }
 	g_globi = ERR_CODE_CMD_NOT_FOUND;
+	printf("exec_cmd_with_redirection_and_builtins: %u\n", g_globi);
 	ft_exit_child(fd, data);
 }
 
@@ -127,12 +128,15 @@ t_data *data, int *fd, int count, t_exec utils)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == FORK_FAILURE)
+	if (pid < 0)
 	{
 		perror("Fork");
-		return (FT_FAILURE_EXIT);
+		return (0);
 	}
-	if (pid == CHILD_PROCESS)
+	if (pid == 0)
+	{
 		exec_cmd_with_redirection_and_builtins(data, fd, count, utils);
+	}
+	printf("create_and_execute_child_process: %u\n", g_globi);
 	return (pid);
 }

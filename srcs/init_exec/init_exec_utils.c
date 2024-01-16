@@ -2,9 +2,8 @@
 
 bool	is_first_input_redirection_error(t_node *node)
 {
-    return (!node->is_input_redirection_failed);
+	return (!node->is_input_redirection_failed);
 }
-
 
 /**
  * @nom: handle_redirect_input_error
@@ -19,8 +18,8 @@ bool	is_first_input_redirection_error(t_node *node)
  * - lexer_lst: t_lexer *lexer_lst, pointeur vers la liste de lexèmes actuelle.
  *
  * @fonctionnement:
- * - Examine l'état de `node->is_input_redirection_failed` pour vérifier si une erreur de
- * redirection a déjà été signalée.
+ * - Examine l'état de `node->is_input_redirection_failed` pour vérifier si une 
+ * erreur de redirection a déjà été signalée.
  * - Si aucune erreur précédente n'a été signalée, utilise `perror` pour
  * afficher un message d'erreur lié au fichier spécifié dans le lexème.
  * - Si une erreur a déjà été signalée, utilise `ft_write_fd` pour afficher un
@@ -199,7 +198,7 @@ char	*ft_strdup(t_data *data, char *src)
 
 bool	is_current_lexer_token_cmd(t_lexer *current_lexer)
 {
-    return (current_lexer->token == CMD);
+	return (current_lexer->token == CMD);
 }
 
 /**
@@ -372,7 +371,7 @@ int	count_cmd_in_lexer_linked_list(t_lexer *lexer_list)
 
 bool	is_pipe_or_end_of_lexer_linked_list(t_lexer *element)
 {
-    return (element->token == PIPE || element->next == NULL);
+	return (element->token == PIPE || element->next == NULL);
 }
 
 /**

@@ -8,9 +8,9 @@ void	write_line_to_heredoc(char *line, int heredoc_fd)
 
 bool	is_heredoc_delimiter_matched(char *delimiter, char *line)
 {
-    return (!ft_strncmp(delimiter, line, strlen2(delimiter)) && (strlen2(delimiter) == strlen2(line)));
+	return (!ft_strncmp(delimiter, line, strlen2(delimiter)) \
+	&& (strlen2(delimiter) == strlen2(line)));
 }
-
 
 /**
  * @nom: ft_read_input
@@ -121,20 +121,14 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 	while (INFINITY_LOOP)
 	{
 		data->utils->line = readline("> ");
-		// if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
-		// {
-		// 	write (\
-		// 	STDERR_FILENO, ERR_HEREDOC_EOF_WARNING, \
-		// 	ft_strlen(ERR_HEREDOC_EOF_WARNING));
-		// 	break ;
-		// }
-		if (!data->utils->line && data->utils->can_run)/*         ---> condition non intelligible --> fonction         */
+		if (!data->utils->line && data->utils->can_run)
 		{
-			dup2(data->utils->dupin, STDIN_FILENO);		
+			dup2(data->utils->dupin, STDIN_FILENO);
 			break ;
 		}
-		if (is_heredoc_delimiter_matched(lexer_lst->next->word, data->utils->line))
-				break ;
+		if (is_heredoc_delimiter_matched \
+		(lexer_lst->next->word, data->utils->line))
+			break ;
 		write_line_to_heredoc(data->utils->line, node->here_doc_fd);
 		free(data->utils->line);
 	}
@@ -144,7 +138,7 @@ void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 
 bool	is_heredoc_file_opening_failed(int file_descriptor)
 {
-    return (file_descriptor < 0);
+	return (file_descriptor < 0);
 }
 
 /**
@@ -239,7 +233,8 @@ void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 	data->utils->is_this_an_exec_in_heredoc = TRUE;
 	handle_sig(data);
 	node->heredoc_tmp_fullname = HEREDOC_TEMP_FILE;
-	node->here_doc_fd = open(node->heredoc_tmp_fullname, heredoc_tmp_file_flags(), PERM_RWX_ALL);
+	node->here_doc_fd = open(node->heredoc_tmp_fullname, \
+	heredoc_tmp_file_flags(), PERM_RWX_ALL);
 	if (is_heredoc_file_opening_failed(node->here_doc_fd))
 		return ;
 	ft_read_input(node, lexer_lst, data);

@@ -14,7 +14,6 @@ char *current_value, char *next_value)
 	return (ft_strcmp(current_value, next_value) > 0);
 }
 
- 
 /**
  * @nom: sort_linked_list_env_var
  *
@@ -208,7 +207,8 @@ t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, t_export *new)
 	new = (t_export *)ft_malloc_with_tracking(data, sizeof(t_export));
 	if (!new)
 		return (NULL);
-	new->value = ft_strdup(data, data->utils->linked_list_full_env_var_copy_alpha->var_env_name_and_value);
+	new->value = ft_strdup(data, \
+		data->utils->linked_list_full_env_var_copy_alpha->var_env_name_and_value);
 	new->next = NULL;
 	return (new);
 }
@@ -293,7 +293,8 @@ t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, t_export *new)
  *             v
  *            Fin
  */
-t_export	*ft_buil_sorted_linked_list_env_var(t_data *data, t_export *head_of_linked_list_env_var)
+t_export	*ft_buil_sorted_linked_list_env_var(t_data *data, \
+	t_export *head_of_linked_list_env_var)
 {
 	t_export	*new;
 	t_export	*current_new;
@@ -312,7 +313,8 @@ t_export	*ft_buil_sorted_linked_list_env_var(t_data *data, t_export *head_of_lin
 			current_new->next = new;
 			current_new = current_new->next;
 		}
-		data->utils->linked_list_full_env_var_copy_alpha = data->utils->linked_list_full_env_var_copy_alpha->next_var_env_name_and_value;
+		data->utils->linked_list_full_env_var_copy_alpha = \
+		data->utils->linked_list_full_env_var_copy_alpha->next_var_env_name_and_value;
 	}
 	sort_linked_list_env_var(&head_of_linked_list_env_var);
 	data->utils->linked_list_full_env_var_copy_alpha = data->utils->head_env_lst;

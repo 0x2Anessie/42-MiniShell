@@ -421,7 +421,7 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 		return ;
 	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
-		if (is_process_pid_valid_for_wait(pid))
+		if (is_process_pid_valid_for_wait(*pid))
 		{
 			waitpid(pid[index], wstatus, 0);
 			if (WIFEXITED(*wstatus))/*         ---> condition non intelligible --> fonction         */

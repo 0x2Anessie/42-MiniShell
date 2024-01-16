@@ -8,7 +8,7 @@ int	change_directory_for_pwd(t_env *tmp, t_data *data)
 	if (chdir(get_pwd_env(tmp, data) + 4) == -1)/*         ---> condition non intelligible --> fonction         */
 	{
 		perror(CMD_CHANGE_DIRECTORY);
-		g_signal_received = 1;
+		g_globi = 1;
 		return (0);
 	}
 	return (1);
@@ -85,7 +85,7 @@ int	wrong_cd(t_lexer *lexer_lst)
 	if (lexer_lst->next)
 	{
 		write (STDERR_FILENO, "minishell: cd: trop d'arguments\n", 27);
-		g_signal_received = 1;
+		g_globi = 1;
 		return (0);
 	}
 	return (1);
@@ -116,7 +116,7 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);
-			g_signal_received = 0;
+			g_globi = 0;
 		}
 	}
 	return (1);

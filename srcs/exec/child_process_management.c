@@ -48,7 +48,7 @@ t_data *data, int *fd, int count, t_exec utils)
 		command_full_path, arguments, utils.full_env_var_copy_beta))
 			perror(data->lexer_list->cmd_segment);
 	}
-	g_signal_received = ERR_CODE_CMD_NOT_FOUND;
+	g_globi = ERR_CODE_CMD_NOT_FOUND;
 	ft_exit_child(fd, data);
 }
 

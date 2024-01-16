@@ -3,14 +3,14 @@
 void	handle_ctrl_c(int sig)
 {
 	(void)sig;
-	g_signal_received = exit_stat_ctrl_c_sigint();
+	g_globi = exit_stat_ctrl_c_sigint();
 	ft_putchar(NEWLINE);
 }
 
 void	handle_ctrl_backslash(int sig)
 {
 	(void)sig;
-	g_signal_received = exit_stat_ctrl_backslash_sigquit();
+	g_globi = exit_stat_ctrl_backslash_sigquit();
 	write(STDERR_FILENO, QUIT_MESSAGE, ft_strlen(QUIT_MESSAGE));
 }
 

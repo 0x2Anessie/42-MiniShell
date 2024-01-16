@@ -20,7 +20,8 @@ int	check_parsing_char(char *str, int i)
 		|| str[i] == '/' || str[i] == ':' || str[i] == ',' || str[i] == '\''
 		|| str[i] == '\"')/*         ---> condition non intelligible --> fonction         */
 	{
-		ft_printf("export : `%s': not a valid identifier\n", str);
+		g_globi = 1;
+		ft_printf("minishell: export : `%s': not a valid identifier\n", str);
 		return (1);
 	}
 	return (0);
@@ -40,8 +41,8 @@ int	check_parsing_error(char *str)
 		if (str[i] == '!' || str[i] == '$')/*         ---> condition non intelligible --> fonction         */
 		{
 			str += i;
-			g_globi = 1;
-			ft_printf("export: %s event not found", str);
+			g_globi = 0;
+			ft_printf("minishell: %s event not found\n", str);
 			return (1);
 		}
 		if (check_parsing_char(str, i) == 1)/*         ---> condition non intelligible --> fonction         */
@@ -50,7 +51,7 @@ int	check_parsing_error(char *str)
 					&& str[1] == '\'')) && str[2] == '\0')/*         ---> condition non intelligible --> fonction         */
 		{
 			g_globi = 1;
-			ft_printf("export : `': not a valid identifier\n");
+			ft_printf("minishell: export : `%s': not a valid identifier\n", str);
 			return (1);
 		}
 		i++;
@@ -70,13 +71,13 @@ int	check_parsing_export(char *str)
 		|| (*str == '-' && !str[1]))/*         ---> condition non intelligible --> fonction         */
 	{
 		g_globi = 1;
-		ft_printf("export : `%s': not a valid identifier\n", str);
+		ft_printf("minishell: export : `%s': not a valid identifier\n", str);
 		return (1);
 	}
 	else if (*str == '-')
 	{
 		g_globi = 2;
-		ft_printf("export : %c%c: invalid option\n", str[0], str[1]);
+		ft_printf("minishell: export: %c%c: invalid option\n", str[0], str[1]);
 		return (1);
 	}
 	if (check_parsing_error(str) == 1)

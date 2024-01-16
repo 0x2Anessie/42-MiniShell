@@ -256,6 +256,7 @@ void    process_heredoc_line(char **line, t_data *data)
 
 void    ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
+	data->utils->heredoc_nbr = 1;
 	data->utils->stdin_fd_for_heredoc = dup(0);
 	while (INFINITY_LOOP)
 	{

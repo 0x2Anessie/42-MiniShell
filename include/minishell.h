@@ -234,6 +234,7 @@ typedef struct s_export
 typedef struct s_exec
 {
 	int heredoc_ctrl_c_uninterrupted;
+	int heredoc_nbr;
 	char *heredoc_input_buffer;
 	int stdin_fd_for_heredoc;
 	int is_this_an_exec_in_heredoc;

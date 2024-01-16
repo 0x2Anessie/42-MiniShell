@@ -421,11 +421,17 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 		return ;
 	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
 	{
+		printf("%d\n", g_globi);
 		if (is_process_pid_valid_for_wait(*pid))
 		{
 			waitpid(pid[index], wstatus, 0);
-			if (WIFEXITED(*wstatus))/*         ---> condition non intelligible --> fonction         */
-				g_globi = WEXITSTATUS(*wstatus);
+			if (data->utils->heredoc_nbr == 1)
+			{
+				g_globi = 0;
+				data->utils->heredoc_nbr = 0;
+			}
+			else/*         ---> condition non intelligible --> fonction         */
+				g_globi = 127;
 		}
 		index++;
 		nb_node--;

@@ -250,8 +250,7 @@ char	*find_command_full_path(char *cmd, t_env *env_lst, t_data *data)
  *               v
  *             Fin
  */
-int	check_if_cmd_full_path_exec_is_valid(\
-t_lexer *lexer, t_exec utils, t_data *data)
+int	check_if_cmd_full_path_exec_is_valid(t_lexer *lexer, t_exec utils, t_data *data)
 {
 	if (!find_command_full_path(lexer->word, utils.linked_list_full_env_var_copy_alpha, data))
 	{
@@ -356,22 +355,30 @@ char	**build_arg_array_from_lexer(t_data *data)
 
 	index = ZERO_INIT;
 	nb_arg = count_args_until_pipe_for_cmd_array(data->lexer_list);
-	arg = ft_malloc_with_tracking(\
-	data, sizeof(char *) * (nb_arg + sizeof('\0')));
-	arg[index] = data->lexer_list->word;
-	while (\
-	data->lexer_list && data->lexer_list->token != ARG \
-	&& data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
-		data->lexer_list = data->lexer_list->next;
-	index++;
-	while (\
-	data->lexer_list != NULL \
-	&& index < nb_arg && data->lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
-	{
-		arg[index] = data->lexer_list->word;
-		data->lexer_list = data->lexer_list->next;
-		index++;
-	}
-	arg[index] = NULL;
-	return (arg);
+	arg = ft_malloc_with_tracking(data, sizeof(char *) * \
+	(nb_arg + 1));
+	arg[index++] = data->lexer_list->word;
+	// while (data->lexer_list && data->lexer_list->token != ARG \
+	// && data->lexer_list->token != PIPE)/*         ---> condition non intelligible --> fonction         */
+	// 	data->lexer_list = data->lexer_list->next;
+	// index++;
+	// while (data->lexer_list != NULL \
+	// && index < nb_arg && data->lexer_list->token == ARG)/*         ---> condition non intelligible --> fonction         */
+	// {
+	// 	arg[index] = data->lexer_list->word;
+	// 	data->lexer_list = data->lexer_list->next;
+	// 	index++;
+	// }
+	// arg[index] = NULL;
+	// return (arg);
+	while (data->lexer_list->next != NULL && index < nb_arg)
+    {
+        if (data->lexer_list->next->token == ARG)
+        {
+            arg[index++] = data->lexer_list->next->word;
+        }
+        data->lexer_list->next = data->lexer_list->next->next;
+    }
+    arg[index] = NULL;
+    return arg;
 }

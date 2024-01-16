@@ -6,7 +6,7 @@
 /*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/10 17:03:43 by acatusse         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:24:32 by acatusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,12 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 	{
 		data->line = tmp;
 		ft_init_lexer_process(data);
-		if (!ft_parser(data))
+		if (!is_a_directory(data))
+		{
+			g_globi = 126;
+			return ;
+		}
+		else if (!ft_parser(data))
 		{
 			g_globi = 2;
 			return ;

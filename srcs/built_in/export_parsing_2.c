@@ -20,6 +20,7 @@ int	check_parsing_char(char *str, int i)
 		|| str[i] == '/' || str[i] == ':' || str[i] == ',' || str[i] == '\''
 		|| str[i] == '\"')
 	{
+		g_globi = 1;
 		ft_printf("export : `%s': not a valid identifier\n", str);
 		return (1);
 	}
@@ -41,7 +42,7 @@ int	check_parsing_error(char *str)
 		{
 			str += i;
 			g_globi = 1;
-			ft_printf("export: %s event not found", str);
+			ft_printf("export: %s event not found\n", str);
 			return (1);
 		}
 		if (check_parsing_char(str, i) == 1)/*         ---> condition non intelligible --> fonction         */

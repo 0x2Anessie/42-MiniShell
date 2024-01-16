@@ -271,6 +271,7 @@ typedef struct s_data
 {
 	// char			*test;
 	int				env_var_line_idx;
+	int				is_cmd_not_found_err;
 	int				is_sing_quot;
 	int				is_doub_quot;
 	int				command_line_arg_count;
@@ -289,7 +290,6 @@ typedef struct s_data
 	t_quote			*quote;
 	// t_list_node	*envp;
 	t_expand		*expand;
-
 }			t_data;
 
 extern unsigned int	g_globi;
@@ -753,6 +753,7 @@ int			check_redir(char *str);
 int			base_check(char *str);
 int			ft_cloporte(t_data *data);
 int			ft_parser(t_data *data);
+int 		is_a_directory(t_data *data);
 
 /*   Déclarations des fonctions de parser2.c   */
 int			pipe_parse2(t_data *data);

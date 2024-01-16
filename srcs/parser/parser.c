@@ -113,3 +113,10 @@ int	ft_parser(t_data *data)
 		return (0);
 	return (1);
 }
+
+int is_a_directory(t_data *data)
+{
+	if (!ft_tiret(data->line))
+		return (0);
+	return (1);
+}

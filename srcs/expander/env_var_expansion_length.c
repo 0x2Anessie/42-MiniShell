@@ -78,12 +78,10 @@ char *word, int *length, char *env_var, t_quote *state)
 
 	i = ZERO_INIT;
 	y = ZERO_INIT;
-	while (word[i++] && env_var[y] \
-	&& env_var[y] != '=' \
+	while (word[i++] && env_var[y] && env_var[y] != '=' \
 	&& word[i] == env_var[y])/*         ---> condition non intelligible --> fonction         */
 		y++;
-	if ((word[i] == '\0' \
-	|| is_special_syntax_character(\
+	if ((word[i] == '\0' || is_special_syntax_character(\
 	word[i], state) || word[i] == '$') && env_var[y]
 		&& y != 0 && env_var[y] == '=')/*         ---> condition non intelligible --> fonction         */
 	{

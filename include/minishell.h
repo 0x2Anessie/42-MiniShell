@@ -463,7 +463,16 @@ int	should_continue_execution(t_data *data, int *y);
 int	check_redirection_validity_in_node(t_node *node);
 t_lexer	*find_next_command_in_lexer(t_lexer *lexer_list);
 
-/*   Fonctions de command_analysis.c   */
+
+/*   Fonctions de command_execution_condtion.c   */
+bool	is_pid_array_null(pid_t *pid);
+bool	is_process_pid_valid_for_wait(pid_t pid);
+bool	is_child_process_exited_cleanly(int status);
+bool    should_continue_waiting_for_child_processes(int nb_node, t_data *data);
+
+
+
+/*   Fonctions de command_execution.c   */
 void	ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data);
 void	close_fds_if_needed(int *fd, int previous_fd);
 int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y);

@@ -6,7 +6,7 @@
 /*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 17:54:00 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/07 03:15:38 by raveriss         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:20:22 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,8 @@ int	is_char_cmd_separator(char c)
 
 bool	is_cmd_separator_and_quotes_off(char c, t_quote *state)
 {
-    return (is_char_cmd_separator(c) && is_both_quotes_off(state));
+	return (is_char_cmd_separator(c) && is_both_quotes_off(state));
 }
-
 
 /**
  * @fonction: is_end_of_command_word

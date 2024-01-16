@@ -191,7 +191,7 @@ char *word, char **env_var, t_quote *state, int *length)
 	else
 	{
 		env_var_index = ZERO_INIT;
-		while (env_var[env_var_index])/*         ---> condition non intelligible --> fonction         */
+		while (env_var[env_var_index])
 		{
 			y = ZERO_INIT;
 			word_index = 1;
@@ -199,7 +199,7 @@ char *word, char **env_var, t_quote *state, int *length)
 			{
 				word_index = get_env_var_expansion_length(\
 				word, length, env_var[env_var_index], state);
-				if (state->var_env_match_confirmed == 1)/*         ---> condition non intelligible --> fonction         */
+				if (state->var_env_match_confirmed == 1)
 					return (word_index);
 			}
 			env_var_index++;

@@ -302,16 +302,6 @@ int	manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, t_data *data, int *y)
 	return (1);
 }
 
-bool	is_pid_array_null(pid_t *pid)
-{
-	return (pid == NULL);
-}
-
-bool	is_process_pid_valid_for_wait(pid_t pid)
-{
-    return (pid > 0);
-}
-
 /**
  * @fonction: wait_and_process_child_statuses
  * @breve_description: Attend la terminaison des processus enfants spécifiés.
@@ -419,12 +409,12 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 	index = ZERO_INIT;
 	if (is_pid_array_null(pid))
 		return ;
-	while (nb_node > 0 && data->utils->heredoc_ctrl_c_uninterrupted && data->utils->total_number_of_cmd_find_in_linked_list)/*         ---> condition non intelligible --> fonction         */
+	while (should_continue_waiting_for_child_processes(nb_node, data))
 	{
 		if (is_process_pid_valid_for_wait(*pid))
 		{
 			waitpid(pid[index], wstatus, 0);
-			if (WIFEXITED(*wstatus))/*         ---> condition non intelligible --> fonction         */
+			if (is_child_process_exited_cleanly(*wstatus))
 				g_globi = WEXITSTATUS(*wstatus);
 		}
 		index++;

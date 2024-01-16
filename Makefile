@@ -24,6 +24,7 @@ SRC_EXEC = $(addprefix exec/, child_process_management_condtion.c \
 				cmd_exec_condition.c \
 				cmd_path_resltion_condtion.c \
 				command_analysis.c \
+				command_execution_condtion.c \
 				command_execution.c \
 				command_path_resolution_condition.c \
 				command_path_resolution.c \

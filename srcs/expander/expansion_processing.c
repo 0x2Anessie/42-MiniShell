@@ -1,10 +1,5 @@
 #include "../../include/minishell.h"
 
-bool	is_current_char_dollar_sign(t_lexer *exp, int index)
-{
-	return (exp->cmd_segment[index] == '$');
-}
-
 /**
  * @nom: expand_variables_and_handle_special_chars
  * @brief: Calcule la longueur totale de la chaîne après expansion.
@@ -89,6 +84,50 @@ bool	is_current_char_dollar_sign(t_lexer *exp, int index)
  *                      Incrémenter 'index'
  * Fin
  */
+// void	expand_variables_and_handle_special_chars(\
+// t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
+// {
+// 	int	index;
+
+// 	index = ZERO_INIT;
+// 	while ((*expnd)->cmd_segment[index])
+// 	{
+// 		update_quoting_state((*expnd)->cmd_segment[index], state);
+// 		if (is_current_char_dollar_sign(*expnd, index))
+// 		{
+// 			if (is_next_char_end_or_special(\
+// 			&(*expnd)->cmd_segment[index], state) \
+// 			|| (*expnd)->cmd_segment[index + 1] == '\0' \
+// 			|| (*expnd)->cmd_segment[index + 1] == ' ' \
+// 			|| (*expnd)->cmd_segment[index + 1] == '-')
+// 			{
+// 				exp->value_of_expanded_var_from_env[exp->\
+// 				length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+// 			}
+// 			else if (is_next_char_decimal_digit(&(*expnd)->cmd_segment[index]))
+// 				index++;
+// 			else if (is_single_quote_open_and_started(state))
+// 				index += append_chars_expnt_until_singl_quot(\
+// 				&(*expnd)->cmd_segment[index], exp) IDX_ADJUST;
+// 			else
+// 				index += expand_env_vars_with_question_mark_handling(\
+// 				&(*expnd)->cmd_segment[index], exp, data, state) IDX_ADJUST;
+// 		}
+// 		else
+// 		{
+// 			exp->value_of_expanded_var_from_env[exp->\
+// 			length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
+// 		}
+// 		index++;
+// 	}
+// }
+
+void	add_char_to_expanded_variable(t_expand *exp, t_lexer *expnd, int index)
+{
+	exp->value_of_expanded_var_from_env[exp->\
+	length_of_expanded_var_value++] = expnd->cmd_segment[index];
+}
+
 void	expand_variables_and_handle_special_chars(\
 t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 {
@@ -100,15 +139,8 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 		update_quoting_state((*expnd)->cmd_segment[index], state);
 		if (is_current_char_dollar_sign(*expnd, index))
 		{
-			if (is_next_char_end_or_special(\
-			&(*expnd)->cmd_segment[index], state) \
-			|| (*expnd)->cmd_segment[index + 1] == '\0' \
-			|| (*expnd)->cmd_segment[index + 1] == ' ' \
-			|| (*expnd)->cmd_segment[index + 1] == '-')
-			{
-				exp->value_of_expanded_var_from_env[exp->\
-				length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
-			}
+			if (is_next_char_end_space_dash_or_special(*expnd, state, index))
+				add_char_to_expanded_variable(exp, *expnd, index);
 			else if (is_next_char_decimal_digit(&(*expnd)->cmd_segment[index]))
 				index++;
 			else if (is_single_quote_open_and_started(state))
@@ -119,10 +151,7 @@ t_lexer **expnd, t_quote *state, t_expand *exp, t_data *data)
 				&(*expnd)->cmd_segment[index], exp, data, state) IDX_ADJUST;
 		}
 		else
-		{
-			exp->value_of_expanded_var_from_env[exp->\
-			length_of_expanded_var_value++] = (*expnd)->cmd_segment[index];
-		}
+			add_char_to_expanded_variable(exp, *expnd, index);
 		index++;
 	}
 }

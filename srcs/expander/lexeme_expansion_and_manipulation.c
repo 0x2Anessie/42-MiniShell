@@ -216,20 +216,13 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 {
 	char	**expanded;
 
-	exp->length_of_expanded_var_value = ZERO_INIT;
-	data->utils->g_signal_in_char_format = \
-	convert_int_to_string_with_tracking(data, g_globi);
-	exp->value_of_expanded_var_from_env = \
-	allocate_memory_for_expanded_word(expnd, st, data->\
-	full_env_var_copy_gamma, data);
+	initialize_expansion_parameters(exp, data, expnd, st);
 	if (!exp->value_of_expanded_var_from_env)
-	{	
-		printf("Échec de l'allocation de mémoire pour \
-		value_of_expanded_var_from_env\n");
+	{
+		printf(ERR_MEMORY_ALLOCATION_FAILURE);
 		return ;
 	}
-	st->singl_quot_status = ZERO_INIT;
-	st->doubl_quot_status = ZERO_INIT;
+	reset_quote_states(st);
 	expand_variables_and_handle_special_chars(expnd, st, exp, data);
 	exp->value_of_expanded_var_from_env[\
 	exp->length_of_expanded_var_value] = '\0';

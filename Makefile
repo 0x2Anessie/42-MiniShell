@@ -35,12 +35,15 @@ SRC_EXPANDER = $(addprefix expander/, \
 					char_validation_utils.c \
 					dual_quote_status_utils.c \
 					env_var_expansion_length.c \
+					env_var_expansion_length_condtion.c \
 					expand_utils.c \
+					expansion_processing_condtion.c \
 					expansion_processing_utils.c \
 					expansion_processing.c \
 					expansion_search_utils.c \
 					expansion_validation_utils.c \
 					lexeme_expansion_and_manipulation_condition.c \
+					lexeme_expansion_and_manipulation_utils.c \
 					lexeme_expansion_and_manipulation.c \
 					malloc_expand_condtion.c \
 					malloc_expand.c \

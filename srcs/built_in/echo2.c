@@ -1,10 +1,9 @@
-
 #include "../../include/minishell.h"
 
 /*
-	parcour la list du lexer pour compter le nombre d'arg ou cmd puis allou un tableau avec
-	le nombre d'elem trouver puis appel get_words pour remplir le tableau
-	puis une fois pret appel sim_echo3
+	parcour la list du lexer pour compter le nombre d'arg ou cmd puis
+	allou un tableau avec le nombre d'elem trouver puis appel get_words
+	pour remplir le tableau puis une fois pret appel sim_echo3
 */
 void	init_echo(t_lexer *lexer_lst, t_data *data)
 {
@@ -15,7 +14,7 @@ void	init_echo(t_lexer *lexer_lst, t_data *data)
 	i = ZERO_INIT;
 	tab = NULL;
 	head = lexer_lst;
-	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))/*         ---> condition non intelligible --> fonction         */
+	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))
 	{
 		lexer_lst = lexer_lst->next;
 		i++;
@@ -50,8 +49,8 @@ int	check_n(char *str)
 /*
 	commence par verifier si il y a un -n apres echo
 	puis si il un -n appel display_echo_arg et sinon apell process echo
-	enfin si nous somme dans aucun des deux cas la fonction ecrit elle meme le retour
-	a la ligne sur la sorti use
+	enfin si nous somme dans aucun des deux cas la fonction ecrit elle
+	meme le retour a la ligne sur la sorti use
 */
 void	simulate_echo(char **tab, t_data *data)
 {
@@ -59,17 +58,17 @@ void	simulate_echo(char **tab, t_data *data)
 	int	ncount;
 
 	i = ZERO_INIT;
-	if (tab && tab[i] && tab[i + 1])/*         ---> condition non intelligible --> fonction         */
+	if (tab && tab[i] && tab[i + 1])
 		ncount = check_n(tab[i + 1]);
 	if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
-		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')/*         ---> condition non intelligible --> fonction         */
+		&& tab[i + 1][0] != '-' && tab[i + 1][1] != 'n')
 		process_echo(tab, ++i, data);
 	else if (tab[i] && tab[i + 1] && !ft_strcmp(tab[i], CMD_ECHO)
-		&& ncount)/*         ---> condition non intelligible --> fonction         */
+		&& ncount)
 		display_echo_arg(tab, i, data);
 	else
 	{
-		if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (data->utils->node->output_fd > 0)
 			ft_write_fd("\n", data->utils->node->output_fd);
 		else
 			printf("\n");

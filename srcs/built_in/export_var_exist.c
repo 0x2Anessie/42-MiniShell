@@ -1,11 +1,10 @@
-
 #include "../../include/minishell.h"
 
 /*
-	elle verifi si une variable specifier par str existe dans la head_of_linked_list_env_var en
-	comparant str avec la valeur de chaque noeud
-	si une variable est trouver et que str contient un = l valeur de la variable
-	est mis a jour avec str
+	elle verifi si une variable specifier par str existe dans
+	la head_of_linked_list_env_var en comparant str avec la valeur
+	de chaque noeudsi une variable est trouver et que str contient
+	un = l valeur de la variable est mis a jour avec str
 */
 int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 {
@@ -14,13 +13,15 @@ int	verif_var_exist_export(t_exec *utils, char *str, t_data *data)
 	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (tmp->env_var_name_and_value && ((ft_strncmp(tmp->env_var_name_and_value, str, \
-			ft_str_len_until_equal(tmp->env_var_name_and_value))) == 0 \
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value))))/*         ---> condition non intelligible --> fonction         */
+		if (tmp->env_var_name_and_value && (\
+		(ft_strncmp(tmp->env_var_name_and_value, str, \
+		ft_str_len_until_equal(tmp->env_var_name_and_value))) == 0 \
+		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(\
+		tmp->env_var_name_and_value))))
 		{
-			if (verif_equal(str, '=')
-				&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value)))/*         ---> condition non intelligible --> fonction         */
-			tmp->env_var_name_and_value = case_egale(str, data);
+			if (verif_equal(str, '=') && (ft_str_len_until_equal(\
+			str) == ft_str_len_until_equal(tmp->env_var_name_and_value)))
+				tmp->env_var_name_and_value = case_egale(str, data);
 			return (1);
 		}
 		tmp = tmp->next_env_var_name_and_value;
@@ -57,7 +58,7 @@ int	verif_var_exist(t_exec *utils, char *str)
 		if (tmp->var_env_name_and_value && !(ft_strncmp
 				(tmp->var_env_name_and_value, str, ft_str_len_until_equal(tmp
 						->var_env_name_and_value))) && (ft_str_len_until_equal
-				(str) == ft_str_len_until_equal(tmp->var_env_name_and_value)))/*         ---> condition non intelligible --> fonction         */
+				(str) == ft_str_len_until_equal(tmp->var_env_name_and_value)))
 		{
 			tmp->var_env_name_and_value = str;
 			tmp = utils->linked_list_full_env_var_copy_alpha;
@@ -68,7 +69,8 @@ int	verif_var_exist(t_exec *utils, char *str)
 	return (0);
 }
 
-// comme celle d'avant mais ne met pas a jour la variable et parcour la head_of_linked_list_env_var
+/* comme celle d'avant mais ne met pas a jour la variable et parcour
+la head_of_linked_list_env_var*/
 int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 {
 	t_export	*tmp;
@@ -76,9 +78,11 @@ int	verif_var_exist_export_not_maj(t_exec *utils, char *str)
 	tmp = utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (tmp->env_var_name_and_value && ((ft_strncmp(tmp->env_var_name_and_value, str, \
+		if (tmp->env_var_name_and_value \
+		&& ((ft_strncmp(tmp->env_var_name_and_value, str, \
 		ft_str_len_until_equal(tmp->env_var_name_and_value))) == 0 \
-		&& (ft_str_len_until_equal(str) == ft_str_len_until_equal(tmp->env_var_name_and_value))))/*         ---> condition non intelligible --> fonction         */
+		&& (ft_str_len_until_equal(str) \
+		== ft_str_len_until_equal(tmp->env_var_name_and_value))))
 		{
 			return (1);
 		}

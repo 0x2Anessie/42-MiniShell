@@ -20,11 +20,11 @@ char *w, t_expand *exp, t_data *data, t_quote *state)
 	&& is_env_var_name_with_equal_sign(data, env_var_char_idx))
 	{
 		exp->var_env_match_found = 1;
-		while (data->full_env_var_copy_gamma[data->\
-		env_var_line_idx][++env_var_char_idx])
+		while (data->full_env_var_copy_gamma[data->env_var_line_idx]\
+		[++env_var_char_idx])
 			exp->value_of_expanded_var_from_env[exp->\
-			length_of_expanded_var_value++] = data->\
-			full_env_var_copy_gamma[data->env_var_line_idx][env_var_char_idx];
+			length_of_expanded_var_value++] = data->full_env_var_copy_gamma\
+			[data->env_var_line_idx][env_var_char_idx];
 		return (i);
 	}
 	return (i);

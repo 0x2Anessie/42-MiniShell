@@ -71,7 +71,6 @@ char	*malloc_copy_string_excluding_inactive_quotes(\
 int len, char *old, t_quote *state, t_data *data)
 {
 	char	*nw;
-
 	nw = ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
 	if (!nw)
 		return (NULL);

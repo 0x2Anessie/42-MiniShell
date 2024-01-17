@@ -21,3 +21,8 @@ bool	is_heredoc_file_opening_failed(int file_descriptor)
 {
 	return (file_descriptor < 0);
 }
+
+bool	is_valid_variable_char(char c)
+{
+	return (isalnum(c) || c == '_');
+}

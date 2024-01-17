@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /*
@@ -16,7 +15,7 @@ int	verif_pwd(char *str, t_data *data)
 	{
 		if (ft_strncmp(\
 		tmp->var_env_name_and_value, ENV_SET_CURRENT_WORKING_DIR, \
-		ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
+		ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_CURRENT_WORKING_DIR, str, data);
@@ -29,14 +28,15 @@ int	verif_pwd(char *str, t_data *data)
 }
 
 /*
-	cherche HOME dans les variable d'env et la retourne si elle est trouver ou NULL sinon
+	cherche HOME dans les variable d'env et la retourne si elle est trouver
+	ou NULL sinon
 */
 char	*get_home(t_env	*tmp, t_data *data)
 {
 	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->var_env_name_and_value, 5))/*         ---> condition non intelligible --> fonction         */
+		if (!strncmp(ENV_SET_USER_HOME_DIR, tmp->var_env_name_and_value, 5))
 			return (tmp->var_env_name_and_value);
 		tmp = tmp->next_var_env_name_and_value;
 	}
@@ -51,7 +51,7 @@ char	*get_old_pwd(t_env	*tmp, t_data *data)
 	tmp = data->utils->linked_list_full_env_var_copy_alpha;
 	while (tmp)
 	{
-		if (!strncmp(ENV_SET_OLDPWD, tmp->var_env_name_and_value, 6))/*         ---> condition non intelligible --> fonction         */
+		if (!strncmp(ENV_SET_OLDPWD, tmp->var_env_name_and_value, 6))
 			return (tmp->var_env_name_and_value);
 		tmp = tmp->next_var_env_name_and_value;
 	}
@@ -71,7 +71,7 @@ int	verif_home(char *str, t_data *data)
 	{
 		if (ft_strncmp(\
 		tmp->var_env_name_and_value, ENV_SET_USER_HOME_DIR, \
-		ft_str_len_until_equal(ENV_SET_USER_HOME_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
+		ft_str_len_until_equal(ENV_SET_USER_HOME_DIR)) == 0)
 		{
 			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
 			ENV_SET_USER_HOME_DIR, str, data);
@@ -88,7 +88,7 @@ int	verif_home(char *str, t_data *data)
 */
 int	change_directory_for_home(t_env *tmp, t_data *data)
 {
-	if (chdir(get_home(tmp, data) + 5) == -1)/*         ---> condition non intelligible --> fonction         */
+	if (chdir(get_home(tmp, data) + 5) == -1)
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_globi = 1;

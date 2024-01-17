@@ -16,6 +16,31 @@ int	is_special_syntax_character(char c, t_quote *st)
 	return (CHAR_IS_NOT_SPECIAL);
 }
 
+// int is_special_syntax_character(char c, t_quote *st) {
+//     char special_chars[] = ":=%^+~/'\"@]";
+//     int index;
+
+//     index = ZERO_INIT;
+
+//     // Si on est à l'intérieur de guillemets, certains caractères ne sont pas considérés comme spéciaux
+//     if (st->singl_quot_status == SINGLE_QUOTE_STARTED || st->doubl_quot_status == DOUBL_QUOT_OPEN) {
+//         char reduced_special_chars[] = "%^~@]";
+//         for (index = 0; reduced_special_chars[index]; index++) {
+//             if (c == reduced_special_chars[index])
+//                 return CHAR_IS_SPECIAL;
+//         }
+//         return CHAR_IS_NOT_SPECIAL;
+//     }
+
+//     // Comportement par défaut hors des guillemets
+//     for (index = 0; special_chars[index]; index++) {
+//         if (c == special_chars[index])
+//             return CHAR_IS_SPECIAL;
+//     }
+//     return CHAR_IS_NOT_SPECIAL;
+// }
+
+
 /**
  * @nom: is_special_syntax_character
  * @brief: Vérifie si un caractère est un caractère spécial de syntaxe.
@@ -168,7 +193,7 @@ int	is_dollar_or_doubl_or_singl_quote(char *word)
 	index = ZERO_INIT;
 	while (word[index])
 	{
-		if (word[index] == '$' || word[index] == '"' || word [index] == '\'')
+		if (word[index] == '$' || word[index] == '"' || word [index] == '\'')/*         ---> condition non intelligible --> fonction         */
 			return (CHAR_IS_SPECIAL);
 		index++;
 	}

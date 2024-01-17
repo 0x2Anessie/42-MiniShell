@@ -237,7 +237,7 @@ void    expand_variable(char **line, int index, t_data *data)
 /**
 Traite une ligne lue dans un heredoc pour l'expansion des variables et la gestion des échappements.
 */
-void    process_heredoc_line(char **line, t_data *data)
+void	process_heredoc_line(char **line, t_data *data)
 {
 	for (int i = 0; (*line)[i]; ++i)
 	{
@@ -254,8 +254,9 @@ void    process_heredoc_line(char **line, t_data *data)
 	}
 }
 
-void    ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
+void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
+	data->utils->heredoc_nbr = 1;
 	data->utils->stdin_fd_for_heredoc = dup(0);
 	while (INFINITY_LOOP)
 	{

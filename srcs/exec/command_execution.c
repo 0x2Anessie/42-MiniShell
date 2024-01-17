@@ -414,8 +414,13 @@ pid_t *pid, int *wstatus, int nb_node, t_data *data)
 		if (is_process_pid_valid_for_wait(*pid))
 		{
 			waitpid(pid[index], wstatus, 0);
-			if (is_child_process_exited_cleanly(*wstatus))
-				g_globi = WEXITSTATUS(*wstatus);
+			if (data->utils->heredoc_nbr == 1)
+			{
+				g_globi = 0;
+				data->utils->heredoc_nbr = 0;
+			}
+			else
+				g_globi = 127;
 		}
 		index++;
 		nb_node--;

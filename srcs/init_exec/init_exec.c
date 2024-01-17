@@ -348,6 +348,7 @@ void	ft_init_exec(t_data *data)
 	data->utils->node = NULL;
 	data->utils->is_this_an_exec_in_heredoc = 1;
 	data->utils->heredoc_ctrl_c_uninterrupted = 1;
+	data->utils->heredoc_nbr = 0;
 	data->utils->heredoc_input_buffer = NULL;
 	data->utils->total_number_of_cmd_find_in_linked_list = \
 	count_cmd_in_lexer_linked_list(data->lexer_list);

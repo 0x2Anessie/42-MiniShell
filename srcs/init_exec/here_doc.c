@@ -132,29 +132,37 @@ void	write_line_to_heredoc(char *line, int heredoc_fd)
 	ft_write_fd("\n", heredoc_fd);
 }
 
-bool    is_valid_variable_char(char c)
+bool	is_valid_variable_char(char c)
 {
-	return isalnum(c) || c == '_'; // Les noms de variables peuvent inclure des lettres, des chiffres et des underscores
+	return (isalnum(c) || c == '_');
 }
 
-char*   get_variable_value(char *var_name, t_data *data)
+char	*get_variable_value(char *var_name, t_data *data)
 {
+	int		i;
+	char	*env_entry;
+	char	*separator;
+	int		name_length;
+
+	i = 0;
 	if (!var_name || !data)
-		return NULL;
-	for (int i = 0; data->full_env_var_copy_alpha[i] != NULL; i++)
+		return (NULL);
+	while (data->full_env_var_copy_alpha[i] != NULL)
 	{
-		char *env_entry = data->full_env_var_copy_alpha[i];
-		char *separator = ft_strchr(env_entry, '=');
+		env_entry = data->full_env_var_copy_alpha[i];
+		separator = ft_strchr(env_entry, '=');
 		if (!separator)
-			continue;
-		int name_length = separator - env_entry;
-		if (ft_strncmp(var_name, env_entry, name_length) == 0 && strlen2(var_name) == name_length)
-			return separator + 1;
+			continue ;
+		name_length = separator - env_entry;
+		if (ft_strncmp(var_name, env_entry, name_length) == 0 && \
+			strlen2(var_name) == name_length)
+			return (separator + 1);
+		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 
-int is_backslash_at_end(char *str)
+int	is_backslash_at_end(char *str)
 {
 	int	index;
 
@@ -166,70 +174,59 @@ int is_backslash_at_end(char *str)
 	return (CHAR_IS_NOT_DOLLAR);
 }
 
-void    remove_escape_character(char **line, int index)
+void	remove_escape_character(char **line, int index)
 {
-	// Décale le contenu de la chaîne vers la gauche pour supprimer le caractère d'échappement.
-	// N'oubliez pas de réajuster la fin de la chaîne avec un caractère nul.
-	int i;
-	for (i = index; (*line)[i]; i++)
+	int	i;
+
+	i = index;
+	while ((*line)[i])
 	{
 		(*line)[i] = (*line)[i + 1];
+		i++;
 	}
-	(*line)[i] = '\0'; // S'assurer que la chaîne est correctement terminée.
+	(*line)[i] = '\0';
 }
 
 /**
  * Vérifie si le caractère à l'index donné doit être échappé.
  */
-int is_escaped(char *line, int index)
+int	is_escaped(char *line, int index)
 {
 	return (index > 0 && line[index - 1] == '\\');
 }
 
-void    expand_variable(char **line, int index, t_data *data)
+char *extract_and_get_var_value(char **line, int var_name_start, int var_name_length, t_data *data)
 {
-	// Extrait le nom de la variable après le signe '$'
+    char var_name[var_name_length + 1];
+    strncpy(var_name, *line + var_name_start, var_name_length);
+    var_name[var_name_length] = '\0';
+    return get_variable_value(var_name, data);
+}
+
+void expand_variable(char **line, int index, t_data *data)
+{
 	int var_name_start = index + 1;
 	int var_name_length = 0;
+	int new_line_length;
+	char *new_line;
+	char *var_value;
 
 	while ((*line)[var_name_start + var_name_length] &&
-		   is_valid_variable_char((*line)[var_name_start + var_name_length]))
-	{
+		is_valid_variable_char((*line)[var_name_start + var_name_length]))
 		var_name_length++;
-	}
-
 	if (var_name_length == 0)
-	{
-		return; // Pas de nom de variable valide après '$'
-	}
-
-	// Copie le nom de la variable
-	char var_name[var_name_length + 1];
-	strncpy(var_name, *line + var_name_start, var_name_length);
-	var_name[var_name_length] = '\0';
-
-	// Obtient la valeur de la variable
-	char *var_value = get_variable_value(var_name, data); // Implémentez cette fonction
-
+		return;
+	var_value = extract_and_get_var_value(line, var_name_start, var_name_length, data);
 	if (!var_value)
-	{
-		var_value = ""; // Si la variable n'est pas trouvée, utilisez une chaîne vide
-	}
-
-	// Construit la nouvelle ligne
-	int new_line_length = strlen(*line) - var_name_length - 1 + strlen(var_value);
-	char *new_line = malloc(new_line_length + 1);
-	if (!new_line) {
-		return; // Gestion d'erreur d'allocation mémoire
-	}
-
-	// Copie le début de la ligne
+		var_value = "";
+	new_line_length = strlen2(*line) - var_name_length - 1 + strlen2(var_value);
+	new_line = malloc(new_line_length + 1);
+	if (!new_line)
+		return;
 	strncpy(new_line, *line, index);
-	// Copie la valeur de la variable
-	strcpy(new_line + index, var_value);
-	// Copie le reste de la ligne
-	strcpy(new_line + index + strlen(var_value), *line + var_name_start + var_name_length);
-
+	ft_strcpy(new_line + index, var_value);
+	ft_strcpy(new_line +
+	index + strlen2(var_value), *line + var_name_start + var_name_length);
 	free(*line);
 	*line = new_line;
 }
@@ -237,26 +234,23 @@ void    expand_variable(char **line, int index, t_data *data)
 /**
 Traite une ligne lue dans un heredoc pour l'expansion des variables et la gestion des échappements.
 */
-void    process_heredoc_line(char **line, t_data *data)
+void	process_heredoc_line(char **line, t_data *data)
 {
-	for (int i = 0; (*line)[i]; ++i)
+	int	i;
+
+	i = 0;
+	while ((*line)[i])
 	{
 		if ((*line)[i] == '$' && !is_escaped(*line, i))
-		{
-			// Expansion de la variable
 			expand_variable(line, i, data);
-		}
 		else if (is_escaped(*line, i))
-		{
-			// Suppression du caractère d'échappement
 			remove_escape_character(line, i);
-		}
+		i++;
 	}
 }
 
-void    ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
+void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data)
 {
-	data->utils->heredoc_nbr = 1;
 	data->utils->stdin_fd_for_heredoc = dup(0);
 	while (INFINITY_LOOP)
 	{
@@ -380,3 +374,4 @@ void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data)
 	handle_sig(data);
 	close(node->here_doc_fd);
 }
+

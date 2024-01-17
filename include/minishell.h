@@ -619,279 +619,279 @@ int		is_single_quote_started_double_quote_closed(t_quote *state);
 int		is_single_quote_open_and_started(t_quote *state);
 
 /*     Fonctions de quote_management_and_expander_utils.c   */
-int		is_char_cmd_separator(char c);
-int		is_end_of_command_word(char *cmd, int i, t_quote *state);
-int		count_string_array_elements(char **arr);
-void	update_quoting_state(char c, t_quote *state);
-bool	is_cmd_separator_and_quotes_off(char c, t_quote *state);
+int			is_char_cmd_separator(char c);
+int			is_end_of_command_word(char *cmd, int i, t_quote *state);
+int			count_string_array_elements(char **arr);
+void		update_quoting_state(char c, t_quote *state);
+bool		is_cmd_separator_and_quotes_off(char c, t_quote *state);
 
 /*     Fonctions de quote_state_checks.c   */
-bool	is_quote_not_part_of_string(char current_char, t_quote *state);
-bool	is_single_quote_with_double_quote_closed( \
-		char current_char, t_quote *state);
-bool	is_double_quote_with_single_quote_closed(\
-		char current_char, t_quote *state);
-bool	is_quote_char_with_closed_state(char current_char, t_quote *state);
+bool		is_quote_not_part_of_string(char current_char, t_quote *state);
+bool		is_single_quote_with_double_quote_closed( \
+			char current_char, t_quote *state);
+bool		is_double_quote_with_single_quote_closed(\
+			char current_char, t_quote *state);
+bool		is_quote_char_with_closed_state(char current_char, t_quote *state);
 
 /*     Fonctions de shell_variable_handling_env_condition.c  */
-bool	is_matching_env_var_name(\
-		char *w, t_data *data, int i, int env_var_char_idx);
-bool	is_valid_env_var_entry(t_data *data);
-bool	is_env_var_value_non_empty(t_data *data, int env_var_char_idx);
-bool	is_env_var_name_with_equal_sign(t_data *data, int env_var_char_idx);
+bool		is_matching_env_var_name(\
+			char *w, t_data *data, int i, int env_var_char_idx);
+bool		is_valid_env_var_entry(t_data *data);
+bool		is_env_var_value_non_empty(t_data *data, int env_var_char_idx);
+bool		is_env_var_name_with_equal_sign(t_data *data, int env_var_char_idx);
 
 /*     Fonctions de shell_word_expansion_conditions.c   */
-bool	is_expansion_not_required_and_quoted(t_expand *exp);
-bool	is_singl_or_doubl_quote(char character);
-bool	is_dollar_sign(char character);
-bool	is_the_token_a_delimiter(t_token token);
-bool	is_word_non_empty(const char *word);
+bool		is_expansion_not_required_and_quoted(t_expand *exp);
+bool		is_singl_or_doubl_quote(char character);
+bool		is_dollar_sign(char character);
+bool		is_the_token_a_delimiter(t_token token);
+bool		is_word_non_empty(const char *word);
 
 /*     Fonctions de shell_word_expansion.c   */
-int		determine_expansion_or_quote_removal(\
-		t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data);
-void	process_lexer_for_expansion(\
-		t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme);
-void	expand(t_quote *state, char **env, t_lexer *tmp, t_data *data);
+int			determine_expansion_or_quote_removal(\
+			t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data);
+void		process_lexer_for_expansion(\
+			t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme);
+void		expand(t_quote *state, char **env, t_lexer *tmp, t_data *data);
 
 /*     Fonctions de singular_quote_status_utils.c     */
-int		is_single_quote_open(t_quote *state);
-int		is_single_quote_closed(t_quote *state);
-int		is_doubl_quote_open(t_quote *state);
-int		is_doubl_quote_closed(t_quote *state);
+int			is_single_quote_open(t_quote *state);
+int			is_single_quote_closed(t_quote *state);
+int			is_doubl_quote_open(t_quote *state);
+int			is_doubl_quote_closed(t_quote *state);
 
 /*     Fonctions de special_char_handling.c     */
-int		is_next_char_end_or_special(char *word, t_quote *state);
-int		is_next_char_decimal_digit(char *word);
-int		is_special_char_found_with_state_not_found(\
-		t_lexer *exp, t_quote *state, int index);
-int		is_next_char_question_mark(t_lexer *exp, int index);
+int			is_next_char_end_or_special(char *word, t_quote *state);
+int			is_next_char_decimal_digit(char *word);
+int			is_special_char_found_with_state_not_found(\
+			t_lexer *exp, t_quote *state, int index);
+int			is_next_char_question_mark(t_lexer *exp, int index);
 
 /*     Fonctions de special_character_checks.c    */
-int		is_special_syntax_character(char c, t_quote *st);
-int		is_dollar_or_doubl_or_singl_quote(char *word);
-int		is_dollar_at_end(char *str);
+int			is_special_syntax_character(char c, t_quote *st);
+int			is_dollar_or_doubl_or_singl_quote(char *word);
+int			is_dollar_at_end(char *str);
 
 /*     Fonctions de split_word_by_quotes.c     */
-int		count_subwords_with_quote_states(char *word, t_quote *state);
-char	**split_word_by_quotes(t_data *data, char *word, t_quote *state);
+int			count_subwords_with_quote_states(char *word, t_quote *state);
+char		**split_word_by_quotes(t_data *data, char *word, t_quote *state);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                   FREE                                    */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*     Fonctions de free.c    */
-int		ft_exit_child(int *fd, t_data *data);
-void	add_to_trash_memory(t_data *data, void *add);
-void	*ft_malloc_with_tracking(t_data *data, size_t size);
-void	ft_free(void *add, t_data *date);
-void	ft_free_all(t_data *data);
+int			ft_exit_child(int *fd, t_data *data);
+void		add_to_trash_memory(t_data *data, void *add);
+void		*ft_malloc_with_tracking(t_data *data, size_t size);
+void		ft_free(void *add, t_data *date);
+void		ft_free_all(t_data *data);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                INIT_ENV                                   */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*     Fonctions de init_env_list.c    */
-int		env_size(char **env);
-void	ft_env_lst_add_to_end(t_env *lst, t_env *new);
-t_env	*create_and_init_env_var_node(t_data *data, char *env);
-t_env	*create_env_list_from_array(t_data *data, char **env);
+int			env_size(char **env);
+void		ft_env_lst_add_to_end(t_env *lst, t_env *new);
+t_env		*create_and_init_env_var_node(t_data *data, char *env);
+t_env		*create_env_list_from_array(t_data *data, char **env);
 
 /*     Fonctions de init_env.c   */
-void	malloc_no_env_initial_node(t_data *data, char *str, t_env **env);
-t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final);
-t_exec	*init_env(t_data *data, char **env);
+void		malloc_no_env_initial_node(t_data *data, char *str, t_env **env);
+t_env		*init_env_list_with_pwd_if_empty(t_data *data, t_env *final);
+t_exec		*init_env(t_data *data, char **env);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                               INIT_EXEC                                   */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*   Fonctions de file_flags.c   */
-int		out_to_file_flags(void);
-int		append_to_file_flags(void);
-int		heredoc_tmp_file_flags(void);
+int			out_to_file_flags(void);
+int			append_to_file_flags(void);
+int			heredoc_tmp_file_flags(void);
 
 /*   Fonctions de here_doc_condition.c   */
-bool	is_heredoc_delimiter_matched(char *delimiter, char *line);
-bool	is_heredoc_ended_by_signal(t_data *data);
-bool	is_heredoc_interrupted_for_stdin_restore(t_data *data);
-bool	is_heredoc_file_opening_failed(int file_descriptor);
-bool	is_valid_variable_char(char c);
+bool		is_heredoc_delimiter_matched(char *delimiter, char *line);
+bool		is_heredoc_ended_by_signal(t_data *data);
+bool		is_heredoc_interrupted_for_stdin_restore(t_data *data);
+bool		is_heredoc_file_opening_failed(int file_descriptor);
+bool		is_valid_variable_char(char c);
 
 /*   Fonctions de here_doc.c   */
-char	*extract_and_get_var_value(char **line, int var_name_start, \
-		int var_name_length, t_data *data);
-void	expand_variable(char **line, int index, t_data *data);
-void	process_heredoc_line(char **line, t_data *data);
-void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data);
+char		*extract_and_get_var_value(char **line, int var_name_start, \
+			int var_name_length, t_data *data);
+void		expand_variable(char **line, int index, t_data *data);
+void		process_heredoc_line(char **line, t_data *data);
+void		ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data);
 
 /*   Fonctions de here_doc_2.c   */
-int		is_backslash_at_end(char *str);
-int		is_escaped(char *line, int index);
-char	*get_variable_value(char *var_name, t_data *data);
-void	write_line_to_heredoc(char *line, int heredoc_fd);
-void	remove_escape_character(char **line, int index);
+int			is_backslash_at_end(char *str);
+int			is_escaped(char *line, int index);
+char		*get_variable_value(char *var_name, t_data *data);
+void		write_line_to_heredoc(char *line, int heredoc_fd);
+void		remove_escape_character(char **line, int index);
 
 /*   Fonctions de here_doc_3.c   */
-void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data);
+void		manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data);
 
 /*   Fonctions de init_exec_utils_condition.c   */
-bool	is_first_input_redirection_error(t_node *node);
-bool	is_current_lexer_token_cmd(t_lexer *current_lexer);
-bool	is_pipe_or_end_of_lexer_linked_list(t_lexer *element);
+bool		is_first_input_redirection_error(t_node *node);
+bool		is_current_lexer_token_cmd(t_lexer *current_lexer);
+bool		is_pipe_or_end_of_lexer_linked_list(t_lexer *element);
 
 /*   Fonctions de init_exec_utils.c   */
-int		is_token_type_cmd(t_lexer *lexer_lst);
-int		count_pipe_or_end_in_lexer_linked_list(t_lexer *lexer_list);
-int		count_cmd_in_lexer_linked_list(t_lexer *lexer_list);
-char	*ft_strdup(t_data *data, char *src);
-void	handle_redirect_input_error(t_node *node, t_lexer *lexer_lst);
+int			is_token_type_cmd(t_lexer *lexer_lst);
+int			count_pipe_or_end_in_lexer_linked_list(t_lexer *lexer_list);
+int			count_cmd_in_lexer_linked_list(t_lexer *lexer_list);
+char		*ft_strdup(t_data *data, char *src);
+void		handle_redirect_input_error(t_node *node, t_lexer *lexer_lst);
 
 /*   Fonctions de init_exec.c   */
-void	ft_init_exec(t_data *data);
-void	build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils);
-bool	is_there_more_cmds_to_exec(int index, int total_cmds);
-bool	is_env_var_list_uninitialized(t_exec *utils);
-t_node	*insert_command_at_end_of_linked_list(\
-		t_node *node_lst, t_node *new);
+void		ft_init_exec(t_data *data);
+void		build_cmd_linked_list(t_node *node, t_data *data, t_exec *utils);
+bool		is_there_more_cmds_to_exec(int index, int total_cmds);
+bool		is_env_var_list_uninitialized(t_exec *utils);
+t_node		*insert_command_at_end_of_linked_list(\
+			t_node *node_lst, t_node *new);
 
 /*   Fonctions de init_export_condition.c   */
-bool	is_sorting_linked_list_env_var_unnecessary(\
-		t_export **head_of_linked_list_env_var);
-bool	is_current_value_greater_than_next(\
-char *current_value, char *next_value);
+bool		is_sorting_linked_list_env_var_unnecessary(\
+			t_export **head_of_linked_list_env_var);
+bool		is_current_value_greater_than_next(\
+char 		*current_value, char *next_value);
 
-bool	next_element_exists_for_sorting(t_export *current);
-bool	is_linked_list_env_var_empty(t_export *head_of_linked_list_env_var);
-bool	exist_linked_list_env_var_to_process(t_exec *utils);
+bool		next_element_exists_for_sorting(t_export *current);
+bool		is_linked_list_env_var_empty(t_export *head_of_linked_list_env_var);
+bool		exist_linked_list_env_var_to_process(t_exec *utils);
 
 /*   Fonctions de init_export.c   */
-void	sort_linked_list_env_var(t_export **head_of_linked_list_env_var);
+void		sort_linked_list_env_var(t_export **head_of_linked_list_env_var);
 t_export	*ft_new_variable_to_linked_list_env_var(t_data *data, \
 			t_export *new);
 t_export	*ft_buil_sorted_linked_list_env_var(\
 			t_data *data, t_export *head_of_linked_list_env_var);
 
 /*   Fonctions de init_fd_condition_pipe.c   */
-bool	is_current_token_pipe(t_lexer *lexer_lst);
-bool	is_current_token_not_pipe(t_lexer *lexer_lst);
+bool		is_current_token_pipe(t_lexer *lexer_lst);
+bool		is_current_token_not_pipe(t_lexer *lexer_lst);
 
 /*   Fonctions de init_fd_condition.c   */
-bool	is_input_fd_open_ready_for_read(t_node *node);
-bool	is_append_out_followed_by_fd_token(t_lexer *lex_lst);
-bool	is_output_fd_open_for_closing(t_node *node);
-bool	is_output_fd_open_for_closing(t_node *node);
+bool		is_input_fd_open_ready_for_read(t_node *node);
+bool		is_append_out_followed_by_fd_token(t_lexer *lex_lst);
+bool		is_output_fd_open_for_closing(t_node *node);
+bool		is_output_fd_open_for_closing(t_node *node);
 
 /*   Fonctions de init_fd_heredoc_condition.c  */
-bool	is_here_doc_followed_by_delimiter(t_lexer *lexer_lst);
-bool	is_heredoc_tmp_file_exists(t_node *node);
-void	configure_here_doc_input(\
-		t_node *node, t_lexer *lex_lst, t_data *data);
+bool		is_here_doc_followed_by_delimiter(t_lexer *lexer_lst);
+bool		is_heredoc_tmp_file_exists(t_node *node);
+void		configure_here_doc_input(\
+			t_node *node, t_lexer *lex_lst, t_data *data);
 
 /*   Fonctions de init_fd_redirect_condition.c  */
-bool	is_redirect_out_followed_by_fd_token(t_lexer *lex_lst);
-bool	is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst);
-bool	is_output_redirection_error_detected(t_node *node);
-bool	is_normal_output_redirection_error_detected(\
-t_node *node, t_lexer *lex_lst);
+bool		is_redirect_out_followed_by_fd_token(t_lexer *lex_lst);
+bool		is_input_redirection_followed_by_token_fd(t_lexer *lexer_lst);
+bool		is_output_redirection_error_detected(t_node *node);
+bool		is_normal_output_redirection_error_detected(\
+t_node 		*node, t_lexer *lex_lst);
 
-bool	is_output_append_redirection_error_detected(\
-		t_node *node, t_lexer *lex_lst);
+bool		is_output_append_redirection_error_detected(\
+			t_node *node, t_lexer *lex_lst);
 
 /*   Fonctions de init_fd_word_condition.c  */
-bool	is_next_word_existing_and_readable(t_lexer *lexer_lst);
-bool	is_next_word_missing(t_lexer *lexer_lst);
-bool	is_next_lexeme_word_existing(t_lexer *lex_lst);
+bool		is_next_word_existing_and_readable(t_lexer *lexer_lst);
+bool		is_next_word_missing(t_lexer *lexer_lst);
+bool		is_next_lexeme_word_existing(t_lexer *lex_lst);
 
 /*   Fonctions de init_fd.c   */
-void	setup_input_redirection(\
-		t_node *node, t_lexer *lexer_lst, t_data *data);
-void	append_output_redirection(\
-		t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible);
-void	normal_output_redirection(t_node *node, t_lexer *lex_lst);
-void	setup_output_redirection(t_node *node, t_lexer *lexer_lst);
-bool	is_next_command_segment_present(t_lexer *lex_lst);
+void		setup_input_redirection(\
+			t_node *node, t_lexer *lexer_lst, t_data *data);
+void		append_output_redirection(\
+			t_node *node, t_lexer *lex_lst, int *is_output_redirection_feasible);
+void		normal_output_redirection(t_node *node, t_lexer *lex_lst);
+void		setup_output_redirection(t_node *node, t_lexer *lexer_lst);
+bool		is_next_command_segment_present(t_lexer *lex_lst);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                  LEXER                                    */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*   Fonctions de lex.c   */
-int		ft_write_fd(char *str, int fd);
-void	add_lexer_to_end(t_data *data, char *str);
-void	process_lexer_input(char *str, int *i, int *j, t_quote *state);
+int			ft_write_fd(char *str, int fd);
+void		add_lexer_to_end(t_data *data, char *str);
+void		process_lexer_input(char *str, int *i, int *j, t_quote *state);
 
 /*   Fonctions de lexer_utils.c   */
-int		check_redir_error(t_lexer *tmp);
-int		count_words_in_input(char *str);
-void	assign_command_or_argument_token(t_lexer *tmp, t_lexer *first);
-t_lexer	*create_new_lexer(t_data *data, char *str);
-t_token	which_redir(t_lexer *tmp);
+int			check_redir_error(t_lexer *tmp);
+int			count_words_in_input(char *str);
+void		assign_command_or_argument_token(t_lexer *tmp, t_lexer *first);
+t_lexer		*create_new_lexer(t_data *data, char *str);
+t_token		which_redir(t_lexer *tmp);
 
 /*   Fonctions de lexer.c   */
-int		get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp);
-void	get_data_in_node(t_lexer **lexer_list);
-void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp);
-void	ft_init_lexer_process(t_data *data);
-void	process_input_string(\
-		t_data *data, t_lexer *tmp, t_lexer *current, int i);
+int			get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp);
+void		get_data_in_node(t_lexer **lexer_list);
+void		get_token_in_node(t_lexer **lexer_list, t_lexer *tmp);
+void		ft_init_lexer_process(t_data *data);
+void		process_input_string(\
+			t_data *data, t_lexer *tmp, t_lexer *current, int i);
 
 /*   Fonctions divers de lexer   */
-int		is_white_space(char c);
+int			is_white_space(char c);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                 PARSER                                    */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*   Fonctions de parser_utils.c   */
-int		is_space(char *str, char c);
-char	*ft_substr(\
-		t_data *data, char const *s, unsigned int start, size_t len);
-size_t	ft_strlen3_mini(char const *s);
+int			is_space(char *str, char c);
+char		*ft_substr(\
+			t_data *data, char const *s, unsigned int start, size_t len);
+size_t		ft_strlen3_mini(char const *s);
 
 /*   Fonctions de parser.c   */
-int		ft_check_quotes(char *str, t_data *data);
-int		check_redir(char *str);
-int		base_check(char *str);
-int		ft_cloporte(t_data *data);
-int		ft_parser(t_data *data);
+int			ft_check_quotes(char *str, t_data *data);
+int			check_redir(char *str);
+int			base_check(char *str);
+int			ft_cloporte(t_data *data);
+int			ft_parser(t_data *data);
 
 /*   Fonctions de parser2.c   */
-int		pipe_parse2(t_data *data);
-int		ft_chevron(char *str);
-int		pipe_parse(t_data *data);
-int		ft_arrow2(t_data *data);
-int		ft_arrow(t_data *data);
+int			pipe_parse2(t_data *data);
+int			ft_chevron(char *str);
+int			pipe_parse(t_data *data);
+int			ft_arrow2(t_data *data);
+int			ft_arrow(t_data *data);
 
 /*   Fonctions de parser4.c   */
-int		stop_pand_slash(char *str, char c);
-int		ft_tiret(char *str);
-int		chevron_pipe(char *str);
-int		is_a_directory(t_data *data);
+int			stop_pand_slash(char *str, char c);
+int			ft_tiret(char *str);
+int			chevron_pipe(char *str);
+int			is_a_directory(t_data *data);
 
 /*   Fonctions de rm_para_quote.c   */
-char	*parse_quote(t_data *data, char *tmp);
-char	*parse_quote2(t_data *data, char *tmp);
-char	*parse_para(t_data *data, char *tmp);
-void	rm_para_quote(t_data *data);
-void	rm_para_quote2(t_data *data);
+char		*parse_quote(t_data *data, char *tmp);
+char		*parse_quote2(t_data *data, char *tmp);
+char		*parse_para(t_data *data, char *tmp);
+void		rm_para_quote(t_data *data);
+void		rm_para_quote2(t_data *data);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                 SIGNALS                                   */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
 /*   Fonctions de ctrl_c_signals.c   */
-void	ctrl_c_handler(int sig);
-void	ctrl_c_handler_here_doc(int sig);
-void	handle_sig(t_data *data);
+void		ctrl_c_handler(int sig);
+void		ctrl_c_handler_here_doc(int sig);
+void		handle_sig(t_data *data);
 
 /*   Fonctions de error_signals.cc   */
-void	handle_process_signal(void);
+void		handle_process_signal(void);
 
 /*   Fonctions de signal_exits.c   */
-int		exit_stat_ctrl_c_sigint(void);
-int		exit_stat_ctrl_backslash_sigquit(void);
-void	handle_ctrl_c(int sig);
-void	handle_ctrl_backslash(int sig);
+int			exit_stat_ctrl_c_sigint(void);
+int			exit_stat_ctrl_backslash_sigquit(void);
+void		handle_ctrl_c(int sig);
+void		handle_ctrl_backslash(int sig);
 
 #endif

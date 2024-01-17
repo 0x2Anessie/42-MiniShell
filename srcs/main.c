@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/16 17:41:20 by lgoure           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/minishell.h"
 #include <stdio.h>
 #include <readline/readline.h>
@@ -77,10 +65,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->trash_memory = NULL;
 	data->utils = NULL;
 	data->minishell_input_cmd = NULL;
-	// data->allcommand = NULL;
-	// data->envpaths = NULL;
 	data->lexer_list = NULL;
-	// data->index = ZERO_INIT;
 }
 
 /**

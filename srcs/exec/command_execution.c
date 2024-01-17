@@ -407,8 +407,6 @@ bool	is_process_pid_valid_for_wait(pid_t pid)
  *   |                     |
  *   |                     v
  *   |                  Retour à la condition de la boucle
- *   |
- *   v
  * Fin
  */
 void	wait_and_process_child_statuses(\

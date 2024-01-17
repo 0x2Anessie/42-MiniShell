@@ -55,7 +55,8 @@ SRC_EXPANDER = $(addprefix expander/, \
 					split_word_by_quotes.c)
 SRC_FREE_ALL = 		$(addprefix free_all/, free1.c)
 SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_condition.c \
-						here_doc.c init_exec_utils_condition.c \
+						here_doc.c here_doc_2.c here_doc_3.c \
+						init_exec_utils_condition.c \
 						init_exec_utils.c init_exec.c \
 						init_export_condition.c \
 						init_export.c init_fd_condition_pipe.c \
@@ -137,6 +138,8 @@ endef
 
 # Other rules (clean, fclean, re)
 clean:
+	make clean -C lib/
+	@clear
 	$(eval CURRENT_COUNT=0)
 	@$(foreach obj,$(OBJS) $(DEPS),rm -f $(obj); $(call clean_progress);)
 	@rm -rf $(OBJ_DIR)
@@ -165,7 +168,7 @@ endef
 fclean:
 	$(eval CURRENT_COUNT=0)
 	@$(MAKE) clean > /dev/null
-	@rm -f $(NAME)
+	@rm -f $(NAME) lib/lib42.a
 	@$(call fclean_progress)
 	@echo "                                                                            ";
 	@echo "                                                                            ";

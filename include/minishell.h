@@ -735,12 +735,24 @@ bool	is_heredoc_delimiter_matched(char *delimiter, char *line);
 bool	is_heredoc_ended_by_signal(t_data *data);
 bool	is_heredoc_interrupted_for_stdin_restore(t_data *data);
 bool	is_heredoc_file_opening_failed(int file_descriptor);
+bool	is_valid_variable_char(char c);
 
 /*   Fonctions de here_doc.c   */
-void write_line_to_heredoc(char *line, int heredoc_fd);
-void ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data);
-void manage_here_doc_process(
-	t_node *node, t_lexer *lexer_lst, t_data *data);
+char	*extract_and_get_var_value(char **line, int var_name_start,
+	int var_name_length, t_data *data);
+void	expand_variable(char **line, int index, t_data *data);
+void	process_heredoc_line(char **line, t_data *data);
+void	ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data);
+
+/*   Fonctions de here_doc_2.c   */
+void	write_line_to_heredoc(char *line, int heredoc_fd);
+char	*get_variable_value(char *var_name, t_data *data);
+int		is_backslash_at_end(char *str);
+void	remove_escape_character(char **line, int index);
+int		is_escaped(char *line, int index);
+
+/*   Fonctions de here_doc_3.c   */
+void	manage_here_doc_process(t_node *node, t_lexer *lexer_lst, t_data *data);
 
 /*   Fonctions de init_exec_utils_condition.c   */
 bool	is_first_input_redirection_error(t_node *node);

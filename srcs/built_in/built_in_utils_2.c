@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	ft_string_length(char *s)

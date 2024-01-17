@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /*
@@ -14,13 +13,14 @@ void	print_export(t_export *head_of_linked_list_env_var, t_data *data)
 	current = head_of_linked_list_env_var;
 	while (current != NULL)
 	{
-		if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+		if (data->utils->node->output_fd > 0)
 		{
 			ft_write_fd("declare -x ", data->utils->node->output_fd);
-			ft_write_fd(current->env_var_name_and_value, data->utils->node->output_fd);
+			ft_write_fd(current->env_var_name_and_value, \
+			data->utils->node->output_fd);
 			ft_write_fd("\n", data->utils->node->output_fd);
 		}
-		else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
+		else if (!data->utils->node->output_redirection_error_id)
 		{
 			printf("declare -x ");
 			printf("%s\n", current->env_var_name_and_value);
@@ -37,7 +37,7 @@ int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
-		if (check_parsing_export(tmp->cmd_segment) == 1)/*         ---> condition non intelligible --> fonction         */
+		if (check_parsing_export(tmp->cmd_segment) == 1)
 			return (1);
 		tmp = tmp->next;
 	}
@@ -58,26 +58,33 @@ void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 	if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0
 		&& verif_equal(tmp->cmd_segment, '=') == 0
 		&& verif_var_exist_export_not_maj(data->utils, tmp->cmd_segment) == 0)
-		lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
+		lst_add_back_export(&(data->utils->head_of_linked_list_env_var), \
+		tmp->cmd_segment, data);
 	else if (check_case(tmp->cmd_segment)
 		&& verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
 	{
 		tmp->cmd_segment = case_egale(tmp->cmd_segment, data);
 		if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), \
+			tmp->cmd_segment, data);
 	}
 	else if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0)
 	{
 		if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 0
 			&& verif_equal(tmp->cmd_segment, '=') == 1)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
-		else if (verif_var_exist_export(data->utils, tmp->cmd_segment, data) == 1)
-			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), tmp->cmd_segment, data);
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), \
+			tmp->cmd_segment, data);
+		else if (verif_var_exist_export(\
+		data->utils, tmp->cmd_segment, data) == 1)
+			lst_add_back_export(&(data->utils->head_of_linked_list_env_var), \
+			tmp->cmd_segment, data);
 	}
 }
 
-// gere les arg de export, elle appel export_parsing_syntaxe pour check la syntaxe
-// puis pour chaque token use process_word_add_export si c'est un argument
+/*
+	gere les arg de export, elle appel export_parsing_syntaxe pour check la syntaxe
+	puis pour chaque token use process_word_add_export si c'est un argument
+*/
 void	export_remaining(t_lexer *tmp, t_data *data)
 {
 	if (export_parsing_syntaxe(tmp, data))
@@ -85,7 +92,7 @@ void	export_remaining(t_lexer *tmp, t_data *data)
 	tmp = data->utils->head_lexer_lst;
 	while (tmp)
 	{
-		if (tmp->token == ARG)/*         ---> condition non intelligible --> fonction         */
+		if (tmp->token == ARG)
 			process_word_and_add_export(tmp, data);
 		tmp = tmp->next;
 	}
@@ -106,14 +113,15 @@ int	export_things(t_lexer *lexer_lst, t_data *data)
 	tmp = lexer_lst;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) && !(tmp->next && tmp->next->cmd_segment
-				&& !(tmp->next->cmd_segment[0] == '\0')))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) && \
+		!(tmp->next && tmp->next->cmd_segment && \
+		!(tmp->next->cmd_segment[0] == '\0')))
 			print_export(data->utils->head_of_linked_list_env_var, data);
 		else if (!ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) && tmp->next
-			&& tmp->next->token != ARG)/*         ---> condition non intelligible --> fonction         */
+			&& tmp->next->token != ARG)
 			print_export(data->utils->head_of_linked_list_env_var, data);
-		else if ((ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) == 0) && (tmp->next
-				&& tmp->next->token == ARG))/*         ---> condition non intelligible --> fonction         */
+		else if ((ft_strcmp(tmp->cmd_segment, CMD_EXPORT_VARS) == 0) \
+		&& (tmp->next && tmp->next->token == ARG))
 		{
 			tmp = tmp->next;
 			export_remaining(tmp, data);

@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
@@ -6,10 +5,10 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = ZERO_INIT;
-	if (!s1 || !s2 || !s1[i] || !s2[i])/*         ---> condition non intelligible --> fonction         */
+	if (!s1 || !s2 || !s1[i] || !s2[i])
 		return (1);
 	while (s1 && s2 && s1[i] && s2[i]
-		&& s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])/*         ---> condition non intelligible --> fonction         */
+		&& s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
 	{
 		i++;
 	}
@@ -28,7 +27,7 @@ void	display_echo_arg(char **tab, int i, t_data *data)
 	i = i + 2;
 	if (data->utils->node->output_fd > 0)
 		write_echo_fd(tab, i, data);
-	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		while (tab[i])
 		{
@@ -43,16 +42,17 @@ void	display_echo_arg(char **tab, int i, t_data *data)
 	}
 }
 
-// regarde tout les arguments et cherche un CMD ou un ARG puis quand c'est trouver passe au prochain
+/*
+	regarde tout les arguments et cherche un CMD ou un ARG puis quand
+	c'est trouver passe au prochain
+*/
 void	get_words(t_lexer *lexer_lst, char **tab, int *i)
 {
-	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))/*         ---> condition non intelligible --> fonction         */
+	while ((lexer_lst) && (lexer_lst->token == CMD || lexer_lst->token == ARG))
 	{
 		tab[(*i)++] = lexer_lst->cmd_segment;
 		lexer_lst = lexer_lst->next;
 	}
-
-
 }
 
 /*
@@ -67,7 +67,7 @@ void	process_echo(char **tab, int i, t_data *data)
 	int	j;
 
 	j = ZERO_INIT;
-	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+	if (data->utils->node->output_fd > 0)
 	{
 		if (procc_in_echo_fd(tab, i, j, data) == -1)
 			return ;
@@ -79,8 +79,8 @@ void	process_echo(char **tab, int i, t_data *data)
 }
 
 /*
-	la fonction ecri chaque argument apres le premier et ajoute un espace entre chaque
-	argument qui suivent
+	la fonction ecri chaque argument apres le premier et ajoute un
+	espace entre chaque argument qui suivent
 	puis ajoute une nouvelle ligne a la fin
 */
 void	procc_in_echo_std(char **tab, int i, t_data *data)

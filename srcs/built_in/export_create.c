@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /*
@@ -34,10 +33,11 @@ void	lst_add_back_export(t_export **head, char *str, t_data *data)
 	else
 	{
 		current = *head;
-		while (current->next_env_var_name_and_value != NULL)/*         ---> condition non intelligible --> fonction         */
+		while (current->next_env_var_name_and_value != NULL)
 		{
 			current = current->next_env_var_name_and_value;
 		}
-		current->next_env_var_name_and_value = create_node_str_export(str, data);
+		current->next_env_var_name_and_value = \
+		create_node_str_export(str, data);
 	}
 }

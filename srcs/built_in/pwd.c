@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /*
@@ -10,7 +9,7 @@ int	get_pwd(char *tab, t_data *data)
 	char	**str;
 
 	str = ft_split_mini(tab, ' ', data);
-	if (tab && strcmp(str[0], CMD_PRINT_DIRCT) == 0)/*         ---> condition non intelligible --> fonction         */
+	if (tab && strcmp(str[0], CMD_PRINT_DIRCT) == 0)
 	{
 		if (str[1] == NULL)
 			display_pwd(data);
@@ -37,12 +36,12 @@ void	display_pwd(t_data *data)
 		free(tmp);
 		return ;
 	}
-	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+	if (data->utils->node->output_fd > 0)
 	{
 		ft_write_fd(tmp, data->utils->node->output_fd);
 		ft_write_fd("\n", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		printf("%s\n", tmp);
 	}
@@ -53,11 +52,11 @@ void	display_pwd(t_data *data)
 // affiche une erreur si pwd est use avec des arugument
 void	display_pwd_error(t_data *data)
 {
-	if (data->utils->node->output_fd > 0)/*         ---> condition non intelligible --> fonction         */
+	if (data->utils->node->output_fd > 0)
 	{
 		ft_write_fd("pwd: too many arguments", data->utils->node->output_fd);
 	}
-	else if (!data->utils->node->output_redirection_error_id)/*         ---> condition non intelligible --> fonction         */
+	else if (!data->utils->node->output_redirection_error_id)
 	{
 		printf("pwd: too many arguments");
 	}
@@ -66,8 +65,10 @@ void	display_pwd_error(t_data *data)
 
 /*
 	OLDPWD stock le chemin du dernier repertoire de travail
-	parcour la list des variable d'env et change de repertoire si il trouve OLDPWD
-	OLDPWD se souvient de ou tu es avant de faire pwd, pour y revenir si on fait un cd
+	parcour la list des variable d'env et change de repertoire si
+	il trouve OLDPWD
+	OLDPWD se souvient de ou tu es avant de faire pwd,
+	pour y revenir si on fait un cd
 */
 void	find_old_pwd(t_env *env, t_data *data)
 {
@@ -76,7 +77,8 @@ void	find_old_pwd(t_env *env, t_data *data)
 	tmp = env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var_env_name_and_value, ENV_PREVIOUS_WORKING_DIR, 6))/*         ---> condition non intelligible --> fonction         */
+		if (!ft_strncmp(tmp->var_env_name_and_value, \
+		ENV_PREVIOUS_WORKING_DIR, 6))
 		{
 			change_directory_for_oldpwd(env, data);
 			break ;

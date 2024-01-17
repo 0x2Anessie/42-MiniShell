@@ -1,15 +1,15 @@
 #include "../../include/minishell.h"
 
 /*
-	ecri dans la sortie les argument apres verif qu'il soit pas un -n puis ecrit un espace
-	entre les argument
-	elle est utiliser quand echo doit etre afficher ailleurs que dans la sorti standard
+	ecri dans la sortie les argument apres verif qu'il soit pas un -n puis
+	ecrit un espace entre les argumen ,elle est utiliser quand echo doit etre
+	afficher ailleurs que dans la sorti standard
 */
 void	write_echo_fd(char **tab, int i, t_data *data)
 {
 	while (tab[i])
 	{
-		if (ft_strcmp(tab[i], "-n"))/*         ---> condition non intelligible --> fonction         */
+		if (ft_strcmp(tab[i], "-n"))
 		{
 			ft_write_fd(tab[i], data->utils->node->output_fd);
 			if (tab[i + 1])
@@ -31,7 +31,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 	{
 		if (j)
 		{
-			if (ft_write_fd(" ", data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
+			if (ft_write_fd(" ", data->utils->node->output_fd))
 			{
 				g_globi = 1;
 				return (-1);
@@ -40,7 +40,7 @@ int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 		}
 		else
 		{
-			if (ft_write_fd(tab[i++], data->utils->node->output_fd))/*         ---> condition non intelligible --> fonction         */
+			if (ft_write_fd(tab[i++], data->utils->node->output_fd))
 			{
 				g_globi = 1;
 				return (-1);

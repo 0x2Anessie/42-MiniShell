@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 /*
@@ -16,9 +15,11 @@ int	verif_oldpwd_export(char *str, t_data *data)
 	tmp = data->utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->env_var_name_and_value, ENV_SET_OLDPWD, ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)/*         ---> condition non intelligible --> fonction         */
+		if (ft_strncmp(tmp->env_var_name_and_value, ENV_SET_OLDPWD, \
+		ft_str_len_until_equal(ENV_SET_OLDPWD)) == 0)
 		{
-			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_OLDPWD, str, data);
+			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
+			ENV_SET_OLDPWD, str, data);
 			tmp->env_var_name_and_value = create_new_var(s1, data);
 			tmp->env_var_name_and_value = case_egale(s1, data);
 			return (1);
@@ -37,9 +38,12 @@ int	verif_pwd_export(char *str, t_data *data)
 	tmp = data->utils->head_of_linked_list_env_var;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->env_var_name_and_value, ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(ENV_SET_CURRENT_WORKING_DIR)) == 0)/*         ---> condition non intelligible --> fonction         */
+		if (ft_strncmp(tmp->env_var_name_and_value, \
+		ENV_SET_CURRENT_WORKING_DIR, ft_str_len_until_equal(\
+		ENV_SET_CURRENT_WORKING_DIR)) == 0)
 		{
-			s1 = ft_strjoin_free_arg2_with_memory_tracking(ENV_SET_CURRENT_WORKING_DIR, str, data);
+			s1 = ft_strjoin_free_arg2_with_memory_tracking(\
+			ENV_SET_CURRENT_WORKING_DIR, str, data);
 			tmp->env_var_name_and_value = create_new_var(s1, data);
 			tmp->env_var_name_and_value = case_egale(s1, data);
 			return (1);

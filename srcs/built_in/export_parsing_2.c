@@ -1,4 +1,3 @@
-
 #include "../../include/minishell.h"
 
 int	is_number(char c)
@@ -18,7 +17,7 @@ int	check_parsing_char(char *str, int i)
 		|| str[i] == '$' || str[i] == '(' || str[i] == ')' || str[i] == '='
 		|| str[i] == '+' || str[i] == '<' || str[i] == '>' || str[i] == '?'
 		|| str[i] == '/' || str[i] == ':' || str[i] == ',' || str[i] == '\''
-		|| str[i] == '\"')/*         ---> condition non intelligible --> fonction         */
+		|| str[i] == '\"')
 	{
 		g_globi = 1;
 		ft_printf("minishell: export : `%s': not a valid identifier\n", str);
@@ -38,17 +37,17 @@ int	check_parsing_error(char *str)
 	i = ZERO_INIT;
 	while (str[i] && str[i] != '=')
 	{
-		if (str[i] == '!' || str[i] == '$')/*         ---> condition non intelligible --> fonction         */
+		if (str[i] == '!' || str[i] == '$')
 		{
 			str += i;
 			g_globi = 0;
 			ft_printf("minishell: %s event not found\n", str);
 			return (1);
 		}
-		if (check_parsing_char(str, i) == 1)/*         ---> condition non intelligible --> fonction         */
+		if (check_parsing_char(str, i) == 1)
 			return (1);
 		if (((str[0] == '"' && str[1] == '"') || (str[0] == '\''
-					&& str[1] == '\'')) && str[2] == '\0')/*         ---> condition non intelligible --> fonction         */
+					&& str[1] == '\'')) && str[2] == '\0')
 		{
 			g_globi = 1;
 			ft_printf("minishell: export : `%s': not a valid identifier\n", str);
@@ -68,7 +67,7 @@ int	check_parsing_export(char *str)
 {
 	if (*str == '=' || *str == '/' || *str == ' ' || *str == '.'
 		|| is_number(*str) || *str == '+' || *str == '%' || *str == '?'
-		|| (*str == '-' && !str[1]))/*         ---> condition non intelligible --> fonction         */
+		|| (*str == '-' && !str[1]))
 	{
 		g_globi = 1;
 		ft_printf("minishell: export : `%s': not a valid identifier\n", str);

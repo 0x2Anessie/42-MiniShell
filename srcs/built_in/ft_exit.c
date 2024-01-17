@@ -1,7 +1,8 @@
-
 #include "../../include/minishell.h"
 
-// check si le nombre est superieur a 19 ou au long long puis renvoie une erreur si cest le cas
+/*check si le nombre est superieur a 19 ou au long long puis renvoie
+une erreur si cest le cas
+*/
 int	is_valid_number2(int neg, char *str, int i)
 {
 	if (str[0] == '+' || str[0] == '-')
@@ -10,11 +11,11 @@ int	is_valid_number2(int neg, char *str, int i)
 		return (1);
 	if (i == 19)
 	{
-		if (str[0] == '-' || str[0] == '+')/*         ---> condition non intelligible --> fonction         */
+		if (str[0] == '-' || str[0] == '+')
 			str++;
-		if (neg && ft_strcmp(str, "9223372036854775808") > 0)/*         ---> condition non intelligible --> fonction         */
+		if (neg && ft_strcmp(str, "9223372036854775808") > 0)
 			return (1);
-		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)/*         ---> condition non intelligible --> fonction         */
+		if (!neg && ft_strcmp(str, "9223372036854775807") > 0)
 			return (1);
 	}
 	return (0);
@@ -30,12 +31,12 @@ int	is_valid_number(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (!i && str[i] == '-')/*         ---> condition non intelligible --> fonction         */
+		if (!i && str[i] == '-')
 		{
 			neg = 1;
 			continue ;
 		}
-		if (!i && str[i] == '+')/*         ---> condition non intelligible --> fonction         */
+		if (!i && str[i] == '+')
 			continue ;
 		if ((str[i] < '0' || str[i] > '9'))
 			return (1);
@@ -52,7 +53,8 @@ void	free_res(int *fd, t_data *data)
 }
 
 // check i il y a trop d'argument et sinons'occupe de sortir
-void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *data)
+void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code,
+	t_data *data)
 {
 	if (lex->next->next)
 	{
@@ -68,8 +70,10 @@ void	ft_exit_with_code(t_lexer *lex, int *fd, unsigned char exit_code, t_data *d
 }
 
 /*
-	fait l'exit, affiche exit si c le seul shell en cour d'execution puis verifie si le code
-	de sorti est correct puis envoie a exit_with_code pour quitter avec le bon code de sorti ou 0 si
+	fait l'exit, affiche exit si c le seul shell en cour d'execution puis
+	 verifie si le code
+	de sorti est correct puis envoie a exit_with_code pour quitter avec le
+	bon code de sorti ou 0 si
 	aucun code specifier
 */
 void	ft_exit(t_lexer *lex, int *fd, t_data *data)
@@ -77,7 +81,7 @@ void	ft_exit(t_lexer *lex, int *fd, t_data *data)
 	unsigned char	exit_code;
 
 	exit_code = 0;
-	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)/*         ---> condition non intelligible --> fonction         */
+	if (data->utils->total_number_of_cmd_find_in_linked_list == 1)
 		write(1, "exit\n", 5);
 	if (lex->next)
 	{

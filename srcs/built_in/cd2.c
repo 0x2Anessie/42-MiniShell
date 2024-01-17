@@ -1,11 +1,13 @@
-
 #include "../../include/minishell.h"
 
-// change le repertoire courant par celui indiquer par pwd toujours avec chdir et ca gestion d'err
+/*
+change le repertoire courant par celui indiquer par pwd toujours avec chdir
+et ca gestion d'err
+*/
 int	change_directory_for_pwd(t_env *tmp, t_data *data)
 {
 	printf("get_pwd_env(tmp) + 4) %s\n", get_pwd_env(tmp, data) + 4);
-	if (chdir(get_pwd_env(tmp, data) + 4) == -1)/*         ---> condition non intelligible --> fonction         */
+	if (chdir(get_pwd_env(tmp, data) + 4) == -1)
 	{
 		perror(CMD_CHANGE_DIRECTORY);
 		g_globi = 1;
@@ -64,7 +66,7 @@ void	get_cd(t_lexer *lexer_lst, t_data *data)
 	if (lexer_lst)
 	{
 		if ((ft_strcmp(lexer_lst->cmd_segment, CMD_CHANG_DIRCT) == 0)
-			&& lexer_lst->next == NULL)/*         ---> condition non intelligible --> fonction         */
+			&& lexer_lst->next == NULL)
 		{
 			if (change_directory_for_home(env, data))
 			{
@@ -98,21 +100,22 @@ int	wrong_cd(t_lexer *lexer_lst)
 int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
 	if (((ft_strcmp(data->lexer_list->cmd_segment, CMD_CHANG_DIRCT) == 0)
-			&& data->lexer_list->next->cmd_segment))/*         ---> condition non intelligible --> fonction         */
+			&& data->lexer_list->next->cmd_segment))
 	{
 		if (data->lexer_list->next)
 				data->lexer_list = data->lexer_list->next;
 		old = getcwd(old, *i);
 		if (!old)
 		{
-			find_old_pwd(data->utils->linked_list_full_env_var_copy_alpha, data);
+			find_old_pwd(\
+			data->utils->linked_list_full_env_var_copy_alpha, data);
 			return (0);
 		}
 		else
 			verif_oldpwd(old, data);
-		if (!wrong_cd(data->lexer_list))/*         ---> condition non intelligible --> fonction         */
+		if (!wrong_cd(data->lexer_list))
 			return (0);
-		if (change_directory(data->lexer_list->cmd_segment))/*         ---> condition non intelligible --> fonction         */
+		if (change_directory(data->lexer_list->cmd_segment))
 		{
 			path = getcwd(path, *i);
 			verif_pwd(path, data);

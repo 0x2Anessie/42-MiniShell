@@ -46,7 +46,7 @@ void	expand_variable(char **line, int index, t_data *data)
 	new_line = malloc(new_line_length + 1);
 	if (!new_line)
 		return ;
-	strncpy(new_line, *line, index);
+	ft_strncpy(new_line, *line, index);
 	ft_strcpy(new_line + index, var_value);
 	ft_strcpy(new_line + index + strlen2(var_value), *line + var_name_start
 		+ var_name_length);
@@ -55,7 +55,7 @@ void	expand_variable(char **line, int index, t_data *data)
 }
 
 /*
-	Traite une ligne lue dans un heredoc pour l'expansion des variables et 
+	Traite une ligne lue dans un heredoc pour l'expansion des variables et
 	la gestion des échappements.
 */
 void	process_heredoc_line(char **line, t_data *data)

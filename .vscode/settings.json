@@ -1,0 +1,11 @@
+{
+    "editor.tokenColorCustomizations": {
+        "comments": "",
+        "textMateRules": []
+    },
+    "files.associations": {
+        "signal.h": "c",
+        "minishell.h": "c",
+        "stdbool.h": "c"
+    }
+}

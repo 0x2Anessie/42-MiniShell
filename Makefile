@@ -7,38 +7,67 @@ OBJ_DIR = objs
 # Définition des sources par répertoire
 SRC_LEXER = 		$(addprefix lexer/, lex.c lexer_structure_construction.c \
 						lexer_utils.c token_type_assignment.c)
-SRC_PARSER = 		$(addprefix parser/, parser2.c parser4.c parser.c parser_utils.c \
-        				rm_para_quote.c)
+SRC_PARSER = 		$(addprefix parser/, parser2.c parser4.c parser.c \
+						parser_utils.c rm_para_quote.c)
 SRC_INIT_ENV = 		$(addprefix init_env/, init_env_list.c init_env.c)
-SRC_SIGNALS = 		$(addprefix signals/, ctrl_c_signals.c error_signals.c signal_exits.c)
-SRC_BUILT_IN = 		$(addprefix built_in/, built_in_utils_2.c built_in_utils.c \
-						cd2.c cd3.c cd.c echo2.c echo.c echo_split.c env.c \
-						env_create.c env_things.c export.c export_checking.c \
-						export_create.c export_parsing_2.c export_parsing.c \
-						export_var_exist.c ft_exit.c path_cd.c pwd.c write_echo.c)
-SRC_EXEC = $(addprefix exec/, child_process_management.c close_pipes_and_fds.c \
-			 command_analysis.c command_execution.c command_path_resolution.c \
-			 config_stdin_stdout_commands.c pipe_cmd_management_and_init_vars.c)
+SRC_SIGNALS = 		$(addprefix signals/, ctrl_c_signals.c error_signals.c \
+						signal_exits.c)
+SRC_BUILT_IN = 		$(addprefix built_in/, built_in_utils_2.c \
+						built_in_utils.c cd2.c cd3.c cd.c echo2.c echo.c \
+						echo_split.c env.c env_create.c env_things.c export.c \
+						export_checking.c export_create.c export_parsing_2.c \
+						export_parsing.c export_var_exist.c ft_exit.c \
+						path_cd.c pwd.c write_echo.c)
+SRC_EXEC = $(addprefix exec/, child_process_management_condtion.c \
+				child_process_management.c \
+				close_pipes_and_fds.c \
+				cmd_exec_condition.c \
+				cmd_path_resltion_condtion.c \
+				command_analysis.c \
+				command_execution_condtion.c \
+				command_execution.c \
+				command_path_resolution_condition.c \
+				command_path_resolution.c \
+				config_stdin_stdout_commands.c \
+				pipe_cmd_management_and_init_vars_condition.c \
+				pipe_cmd_management_and_init_vars.c)
 SRC_EXPANDER = $(addprefix expander/, \
-				dual_quote_status_utils.c \
-				env_var_expansion_length.c \
-				expand_utils.c \
-				expansion_processing.c \
-				lexeme_expansion_and_manipulation_condition.c \
-				lexeme_expansion_and_manipulation.c \
-				malloc_expand.c \
-				quot_state_validations.c \
-				quote_management_and_expander_utils.c \
-				shell_variable_handling.c \
-				shell_word_expansion_conditions.c \
-				shell_word_expansion.c \
-				singular_quote_status_utils.c \
-				special_char_handling.c \
-				special_character_checks.c \
-				split_word_by_quotes.c)
+					char_validation_utils.c \
+					dual_quote_status_utils.c \
+					env_var_expansion_length.c \
+					env_var_expansion_length_condtion.c \
+					expand_utils.c \
+					expansion_processing_condtion.c \
+					expansion_processing_utils.c \
+					expansion_processing.c \
+					expansion_search_utils.c \
+					expansion_validation_utils.c \
+					lexeme_expansion_and_manipulation_condition.c \
+					lexeme_expansion_and_manipulation_utils.c \
+					lexeme_expansion_and_manipulation.c \
+					malloc_expand_condtion.c \
+					malloc_expand.c \
+					quot_state_validations.c \
+					quote_management_and_expander_utils.c \
+					quote_state_checks.c \
+					shell_variable_handling_env_condition.c \
+					shell_word_expansion_conditions.c \
+					shell_word_expansion.c \
+					singular_quote_status_utils.c \
+					special_char_handling.c \
+					special_character_checks.c \
+					split_word_by_quotes.c)
 SRC_FREE_ALL = 		$(addprefix free_all/, free1.c)
-SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc.c init_exec.c \
-						init_exec_utils.c init_export.c init_fd.c)
+SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_2.c \
+						here_doc_3.c here_doc_condition.c \
+						here_doc.c init_exec_utils_condition.c \
+						init_exec_utils.c init_exec.c \
+						init_export_condition.c \
+						init_export.c init_fd_condition_pipe.c \
+						init_fd_condition.c \
+						init_fd_heredoc_condition.c \
+						init_fd_redirect_condition.c \
+						init_fd_word_condition.c init_fd.c)
 
 # Combinaison de tous les fichiers sources
 SRCS = main.c \

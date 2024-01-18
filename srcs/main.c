@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgoure <lgoure@student.42.fr>              +#+  +:+       +#+        */
+/*   By: raveriss <raveriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:32:12 by raveriss          #+#    #+#             */
-/*   Updated: 2024/01/16 17:41:20 by lgoure           ###   ########.fr       */
+/*   Updated: 2024/01/18 01:34:10 by raveriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->trash_memory = NULL;
 	data->utils = NULL;
 	data->minishell_input_cmd = NULL;
-	// data->allcommand = NULL;
-	// data->envpaths = NULL;
 	data->lexer_list = NULL;
-	// data->index = ZERO_INIT;
 }
 
 /**

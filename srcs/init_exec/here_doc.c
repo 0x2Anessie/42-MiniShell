@@ -9,7 +9,7 @@ int var_name_length, t_data *data)
 	var_name = malloc(sizeof(char *) * (var_name_length + 1));
 	if (!var_name)
 		return (NULL);
-	strncpy(var_name, *line + var_name_start, var_name_length);
+	ft_strncpy(var_name, *line + var_name_start, var_name_length);
 	var_name[var_name_length] = '\0';
 	value = get_variable_value(var_name, data);
 	free (var_name);

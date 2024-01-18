@@ -45,12 +45,12 @@ int	export_parsing_syntaxe(t_lexer *tmp, t_data *data)
 }
 
 /*
-	Traite chaque argument passé à export et décide de l'ajouter ou non à la liste
-	des variables exporter
-	elle appel supp_quote_and_add_env pour traiter les caractere speciaux
-	Vérifie si la variable existe déjà et si elle doit être ajoutée à la liste des
-	variables exportées. Utilise des fonctions comme verif_var_exist_export et
-	lst_add_back_export pour cette gestion.
+	Traite chaque argument passé à export et décide de l'ajouter ou non à la
+	liste des variables exporter elle appel supp_quote_and_add_env pour traiter
+	les caractere speciaux.
+	Vérifie si la variable existe déjà et si elle doit être ajoutée à la liste
+	des variables exportées. Utilise des fonctions comme
+	verif_var_exist_export et lst_add_back_export pour cette gestion.
 */
 void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 {
@@ -82,8 +82,9 @@ void	process_word_and_add_export(t_lexer *tmp, t_data *data)
 }
 
 /*
-	gere les arg de export, elle appel export_parsing_syntaxe pour check la syntaxe
-	puis pour chaque token use process_word_add_export si c'est un argument
+	gere les arg de export, elle appel export_parsing_syntaxe pour check la
+	syntaxe puis pour chaque token use process_word_add_export si c'est un
+	argument
 */
 void	export_remaining(t_lexer *tmp, t_data *data)
 {

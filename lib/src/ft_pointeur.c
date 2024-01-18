@@ -10,7 +10,7 @@ static long unsigned	ft_strlenbase(char *base)
 	while (base[i])
 		i++;
 	return (i);
-}	
+}
 
 void	ft_putbase(unsigned long nbr2, char *base)
 {

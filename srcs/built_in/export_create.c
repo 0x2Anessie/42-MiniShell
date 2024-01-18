@@ -19,8 +19,8 @@ t_export	*create_node_str_export(char *str, t_data *data)
 }
 
 /*
-	ajoute un nouveau noeud a la fin de la liste, sauf si c'est le premier elle cree
-	avec create_node_str et en fait la premiere
+	ajoute un nouveau noeud a la fin de la liste, sauf si c'est le premier elle
+	cree avec create_node_str et en fait la premiere
 */
 void	lst_add_back_export(t_export **head, char *str, t_data *data)
 {

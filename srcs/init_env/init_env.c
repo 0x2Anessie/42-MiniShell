@@ -1,12 +1,11 @@
-
 // env est determiné par le 3e argument du main "char **env", qui permet 
 // d'accéder aux variables globales définies par le système d'exploitation.
 
 #include "../../include/minishell.h"
 
 /*
-	Utilisé dans la fonction init_env_list_with_pwd_if_empty, il crée un nouveau noeud pour
-	une variable OLDPWD.
+	Utilisé dans la fonction init_env_list_with_pwd_if_empty, il crée un
+	nouveau noeud pour une variable OLDPWD.
 */
 void	malloc_no_env_initial_node(t_data *data, char *str, t_env **env)
 {
@@ -45,32 +44,36 @@ t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final)
  * @nom: init_env
  *
  * @description:
- *   Initialise et configure une structure t_exec pour l'environnement d'exécution. 
- *   Cette fonction alloue et prépare une structure contenant les informations 
- *   essentielles pour la gestion de l'environnement d'exécution, y compris les 
+ *   Initialise et configure une structure t_exec pour l'environnement
+ *   d'exécution.
+ *   Cette fonction alloue et prépare une structure contenant les informations
+ *   essentielles pour la gestion de l'environnement d'exécution, y compris les
  *   variables d'environnement et les indicateurs d'état.
  *
  * @pourquoi:
- *   - Création d'un environnement d'exécution structuré : La structure t_exec 
- *     fournit un moyen organisé de stocker et de gérer les informations nécessaires 
- *     à l'exécution du programme, telles que les variables d'environnement et 
- *     divers indicateurs d'état.
- *   - Facilitation de l'accès et de la modification : Avec toutes les informations 
- *     pertinentes regroupées dans une seule structure, il est plus facile d'y 
- *     accéder, de les modifier et de les transmettre entre les fonctions.
- *   - Préparation pour les opérations futures : L'initialisation des variables et 
- *     des listes dans cette structure prépare le terrain pour les opérations 
- *     ultérieures, telles que la manipulation des variables d'environnement et 
- *     la gestion des erreurs.
+ *   - Création d'un environnement d'exécution structuré : La structure t_exec
+ *     fournit un moyen organisé de stocker et de gérer les informations
+ *     nécessaires à l'exécution du programme, telles que les variables
+ *     d'environnement et divers indicateurs d'état.
+ *   - Facilitation de l'accès et de la modification : Avec toutes les
+ *     informations pertinentes regroupées dans une seule structure, il est
+ *     plus facile d'y accéder, de les modifier et de les transmettre entre
+ *     les fonctions.
+ *   - Préparation pour les opérations futures : L'initialisation des variables
+ * 	   et des listes dans cette structure prépare le terrain pour les
+ *     opérations ultérieures, telles que la manipulation des variables
+ *     d'environnement et la gestion des erreurs.
  *
  * @parametres:
- *   - env: Un tableau de pointeurs vers des chaînes de caractères, représentant les 
+ *   - env: Un tableau de pointeurs vers des chaînes de caractères, représentant
+ * 		les 
  *     variables d'environnement du programme.
  *
  * @fonctionnement:
  *   - Alloue de la mémoire pour une nouvelle structure t_exec.
  *   - Si l'allocation échoue, retourne NULL.
- *   - Initialise les variables de la structure, y compris env_lst, head_env_lst, 
+ *   - Initialise les variables de la structure, y compris env_lst,
+ * 		head_env_lst, 
  *     err, ret et in_here_doc_mode.
  *   - Si 'env' est non-NULL, remplit env_lst avec les variables d'environnement 
  *     en utilisant create_env_list_from_array.
@@ -89,7 +92,8 @@ t_env	*init_env_list_with_pwd_if_empty(t_data *data, t_env *final)
  *
  * @dependances:
  *   - ft_malloc_with_tracking: Alloue de la mémoire avec suivi.
- *   - create_env_list_from_array: Crée une liste chaînée à partir d'un tableau d'environnements.
+ *   - create_env_list_from_array: Crée une liste chaînée à partir d'un tableau
+ * d'environnements.
  *
  * @graphe_de_flux:
  *   Début
@@ -128,10 +132,9 @@ t_exec	*init_env(t_data *data, char **env)
 		return (NULL);
 	utils->linked_list_full_env_var_copy_alpha = NULL;
 	if (env)
-		utils->linked_list_full_env_var_copy_alpha = create_env_list_from_array(data, env);
+		utils->linked_list_full_env_var_copy_alpha = \
+		create_env_list_from_array(data, env);
 	utils->head_env_lst = utils->linked_list_full_env_var_copy_alpha;
-	// utils->err = ZERO_INIT;
-	// utils->ret = ZERO_INIT;
 	utils->is_this_an_exec_in_heredoc = ZERO_INIT;
 	return (utils);
 }

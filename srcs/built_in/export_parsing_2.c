@@ -27,8 +27,8 @@ int	check_parsing_char(char *str, int i)
 }
 
 /*
-	parcour la chaine jusqu'a un = et use checl_parsing_char pour verif chaque char
-	et gere les erreurs comme chaine vide ou contenant juste des guillemet
+	parcour la chaine jusqu'a un = et use checl_parsing_char pour verif chaque
+	char et gere les erreurs comme chaine vide ou contenant juste des guillemet
 */
 int	check_parsing_error(char *str)
 {
@@ -50,7 +50,8 @@ int	check_parsing_error(char *str)
 					&& str[1] == '\'')) && str[2] == '\0')
 		{
 			g_globi = 1;
-			ft_printf("minishell: export : `%s': not a valid identifier\n", str);
+			ft_printf(\
+			"minishell: export : `%s': not a valid identifier\n", str);
 			return (1);
 		}
 		i++;

@@ -9,16 +9,17 @@
  *   élément NULL, indiquant la fin du tableau, et compte le nombre d'éléments.
  *
  * @pourquoi:
- *   - Détermination de la taille de l'environnement : Savoir combien de variables 
- *     d'environnement sont présentes est essentiel pour diverses opérations, 
- *     telles que l'initialisation de listes chaînées ou les boucles de traitement.
- *   - Base pour les opérations dynamiques : En connaissant la taille de l'environnement, 
- *     les fonctions peuvent allouer correctement la mémoire et éviter les 
- *     dépassements de tableau, ce qui est crucial pour la stabilité et la sécurité 
- *     du programme.
- *   - Compatibilité avec les structures de données : Cette taille est utilisée pour 
- *     créer des structures qui représentent l'environnement de manière plus 
- *     structurée et manipulable, comme des listes chaînées.
+ *   - Détermination de la taille de l'environnement : Savoir combien de
+ *     variables d'environnement sont présentes est essentiel pour diverses
+ *     opérations, telles que l'initialisation de listes chaînées ou les
+ *     boucles de traitement.
+ *   - Base pour les opérations dynamiques : En connaissant la taille de
+ *     l'environnement, les fonctions peuvent allouer correctement la mémoire
+ *     et éviter les dépassements de tableau, ce qui est crucial pour la
+ *     stabilité et la sécurité du programme.
+ *   - Compatibilité avec les structures de données : Cette taille est utilisée
+ *     pour créer des structures qui représentent l'environnement de manière
+ *     plus structurée et manipulable, comme des listes chaînées.
  *
  * @parametres:
  *   - env: Un tableau de pointeurs vers des chaînes de caractères, chacune 
@@ -28,14 +29,16 @@
  *   - Initialise un compteur (index) à zéro.
  *   - Parcourt le tableau 'env' jusqu'à un élément NULL.
  *   - Incrémente le compteur pour chaque élément non-NULL.
- *   - Retourne la valeur du compteur, représentant le nombre d'éléments dans 'env'.
+ *   - Retourne la valeur du compteur, représentant le nombre d'éléments dans
+ *     'env'.
  *
  * @valeur_de_retour:
- *   - Retourne le nombre d'éléments dans le tableau 'env' avant le premier élément NULL.
+ *   - Retourne le nombre d'éléments dans le tableau 'env' avant le premier
+ *     élément NULL.
  *
  * @erreurs_et_effets_de_bord:
- *   - Si 'env' est NULL, la fonction retourne 0. La fonction suppose que 'env' est 
- *     correctement initialisé et terminé par un élément NULL.
+ *   - Si 'env' est NULL, la fonction retourne 0. La fonction suppose que 'env'
+ *     est correctement initialisé et terminé par un élément NULL.
  *
  * @exemples_utilisation:
  *   - env_size(environ) pour obtenir le nombre de variables d'environnement 
@@ -77,25 +80,27 @@ int	env_size(char **env)
  * @nom: create_and_init_env_var_node
  *
  * @description:
- *   Crée un nouvel élément de type t_env pour une variable d'environnement. Cette 
- *   fonction alloue de la mémoire pour un nouvel élément, copie la variable 
- *   d'environnement fournie dans 'content' et initialise le pointeur 'next' à NULL.
+ *   Crée un nouvel élément de type t_env pour une variable d'environnement.
+ *   Cette fonction alloue de la mémoire pour un nouvel élément, copie la
+ *   variable d'environnement fournie dans 'content' et initialise le pointeur
+ *   'next' à NULL.
  *
  * @pourquoi:
- *   - Création d'éléments pour la liste chaînée : La création d'éléments individuels 
- *     est une étape nécessaire pour construire une liste chaînée représentant les 
- *     variables d'environnement. Cela permet de gérer les variables d'environnement 
- *     de manière structurée et dynamique.
- *   - Isolation et gestion des variables : Chaque variable d'environnement est 
- *     encapsulée dans sa propre structure, facilitant les opérations telles que 
- *     l'ajout, la suppression ou la modification de variables individuelles sans 
- *     affecter les autres.
- *   - Allocation mémoire contrôlée : L'utilisation de 'ft_malloc_with_tracking' 
- *     pour l'allocation permet un suivi et une gestion plus précise de la mémoire, 
- *     notamment pour éviter les fuites de mémoire dans des programmes de longue durée.
+ *   - Création d'éléments pour la liste chaînée : La création d'éléments
+ *     individuels est une étape nécessaire pour construire une liste chaînée
+ *     représentant les variables d'environnement. Cela permet de gérer les
+ *     variables d'environnement de manière structurée et dynamique.
+ *   - Isolation et gestion des variables : Chaque variable d'environnement est
+ *     encapsulée dans sa propre structure, facilitant les opérations telles
+ *     que l'ajout, la suppression ou la modification de variables
+ *     individuelles sans affecter les autres.
+ *   - Allocation mémoire contrôlée : L'utilisation de 'ft_malloc_with_tracking'
+ *     pour l'allocation permet un suivi et une gestion plus précise de la
+ *     mémoire, notamment pour éviter les fuites de mémoire dans des programmes
+ *     de longue durée.
  *
  * @parametres:
- *   - env: Une chaîne de caractères représentant la variable d'environnement à 
+ *   - env: Une chaîne de caractères représentant la variable d'environnement à
  *     encapsuler dans la nouvelle structure t_env.
  *
  * @fonctionnement:
@@ -114,8 +119,8 @@ int	env_size(char **env)
  *     de nouvel élément.
  *
  * @exemples_utilisation:
- *   - create_and_init_env_var_node("PATH=/usr/bin") pour créer un élément contenant la variable 
- *     d'environnement PATH.
+ *   - create_and_init_env_var_node("PATH=/usr/bin") pour créer un élément
+ *     contenant la variable d'environnement PATH.
  *
  * @dependances:
  *   - ft_malloc_with_tracking: Alloue de la mémoire avec suivi.
@@ -156,29 +161,33 @@ t_env	*create_and_init_env_var_node(t_data *data, char *env)
  * @nom: ft_env_lst_add_to_end
  *
  * @description:
- *   Ajoute un nouvel élément à la fin d'une liste chaînée de type t_env. Cette 
- *   fonction parcourt la liste jusqu'à atteindre le dernier élément, puis y attache 
- *   le nouvel élément, permettant l'extension dynamique de la liste.
+ *   Ajoute un nouvel élément à la fin d'une liste chaînée de type t_env. Cette
+ *   fonction parcourt la liste jusqu'à atteindre le dernier élément, puis y
+ *   attache le nouvel élément, permettant l'extension dynamique de la liste.
  *
  * @pourquoi:
- *   - Extension dynamique de la liste : La capacité d'ajouter de nouveaux éléments 
- *     à la fin de la liste permet une gestion flexible des variables d'environnement, 
- *     ce qui est crucial dans les contextes où ces variables peuvent changer ou 
- *     être étendues au fil de l'exécution.
- *   - Maintien de l'ordre des éléments : Ajouter de nouveaux éléments à la fin 
- *     préserve l'ordre initial des variables d'environnement, ce qui peut être 
- *     important pour certaines applications qui dépendent de l'ordre de ces variables.
- *   - Simplicité et efficacité : Cette méthode d'ajout est simple et efficace, 
- *     évitant la complexité et le coût potentiel de réorganiser ou de réallouer 
- *     des structures de données plus grandes.
+ *   - Extension dynamique de la liste : La capacité d'ajouter de nouveaux
+ *     éléments à la fin de la liste permet une gestion flexible des variables
+ *     d'environnement, ce qui est crucial dans les contextes où ces variables
+ *     peuvent changer ou être étendues au fil de l'exécution.
+ *   - Maintien de l'ordre des éléments : Ajouter de nouveaux éléments à la fin
+ *     préserve l'ordre initial des variables d'environnement, ce qui peut être
+ *     important pour certaines applications qui dépendent de l'ordre de ces
+ *     variables.
+ *   - Simplicité et efficacité : Cette méthode d'ajout est simple et efficace,
+ *     évitant la complexité et le coût potentiel de réorganiser ou de
+ *     réallouer des structures de données plus grandes.
  *
  * @parametres:
- *   - lst: Un pointeur sur le premier élément de la liste chaînée de type t_env.
- *   - new: Un pointeur sur l'élément de type t_env à ajouter à la fin de la liste.
+ *   - lst: Un pointeur sur le premier élément de la liste chaînée de type
+ *     t_env.
+ *   - new: Un pointeur sur l'élément de type t_env à ajouter à la fin de la
+ *     liste.
  *
  * @fonctionnement:
  *   - Initialise un pointeur temporaire (tmp) pour parcourir la liste.
- *   - Parcourt la liste jusqu'à atteindre le dernier élément (tmp->next est NULL).
+ *   - Parcourt la liste jusqu'à atteindre le dernier élément (tmp->next est
+ *     NULL).
  *   - Lie le dernier élément de la liste (tmp) au nouvel élément (new).
  *
  * @valeur_de_retour:
@@ -231,22 +240,23 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  * @nom: create_env_list_from_array
  *
  * @description:
- *   Crée une liste chaînée à partir d'un tableau d'environnements. Cette fonction 
- *   convertit les variables d'environnement fournies sous forme de tableau de 
- *   chaînes en une liste chaînée de type t_env, facilitant leur manipulation et 
- *   leur accès au sein du programme.
+ *   Crée une liste chaînée à partir d'un tableau d'environnements.
+ *   Cette fonction convertit les variables d'environnement fournies sous forme
+ *   de tableau de chaînes en une liste chaînée de type t_env, facilitant leur
+ *   manipulation et leur accès au sein du programme.
  *
  * @pourquoi:
- *   - Structuration des données d'environnement : La conversion d'un tableau en 
- *     liste chaînée permet une gestion plus flexible et structurée des variables 
- *     d'environnement, en particulier pour les opérations d'ajout, de suppression 
- *     ou de recherche.
- *   - Facilité de manipulation : Les listes chaînées sont souvent plus pratiques 
- *     pour manipuler des ensembles de données dynamiques, comme l'est l'environnement 
- *     dans un shell ou une application similaire.
- *   - Prise en charge des environnements vides : En initialisant une liste avec la 
- *     variable PWD si l'environnement est vide, la fonction assure que le programme 
- *     a toujours accès à au moins une variable d'environnement essentielle.
+ *   - Structuration des données d'environnement : La conversion d'un tableau
+ *     en liste chaînée permet une gestion plus flexible et structurée des
+ *     variables d'environnement, en particulier pour les opérations d'ajout,
+ *     de suppression ou de recherche.
+ *   - Facilité de manipulation : Les listes chaînées sont souvent plus
+ *     pratiques pour manipuler des ensembles de données dynamiques, comme
+ *     l'est l'environnement dans un shell ou une application similaire.
+ *   - Prise en charge des environnements vides : En initialisant une liste
+ *     avec la variable PWD si l'environnement est vide, la fonction assure que
+ *     le programme a toujours accès à au moins une variable d'environnement
+ *     essentielle.
  *
  * @parametres:
  *   - env: Un tableau de chaînes de caractères représentant les variables 
@@ -266,13 +276,13 @@ void	ft_env_lst_add_to_end(t_env *lst, t_env *new)
  *     initialisé.
  *
  * @erreurs_et_effets_de_bord:
- *   - Si l'allocation mémoire pour un nouvel élément échoue, la fonction continue 
- *     avec les éléments suivants, potentiellement aboutissant à une liste 
- *     incomplète.
+ *   - Si l'allocation mémoire pour un nouvel élément échoue, la fonction
+ *     continue avec les éléments suivants, potentiellement aboutissant à une
+ *     liste incomplète.
  *
  * @exemples_utilisation:
- *   - create_env_list_from_array(envp) dans un programme où envp est le tableau de variables 
- *     d'environnement passé au main.
+ *   - create_env_list_from_array(envp) dans un programme où envp est le
+ *     tableau de variables d'environnement passé au main.
  *
  * @dependances:
  *   - env_size: Calcule la taille du tableau d'environnement.

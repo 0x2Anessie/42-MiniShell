@@ -16,6 +16,7 @@ int			length_of_number_for_string_conversion(long n);
 char		*ft_is_neg(char *res, long n, int i);
 char		*ft_itoa(int n);
 long long	ft_atoll(const char *str);
-char        *ft_strncpy(char *dest, const char *src, size_t n);
+char		*ft_strncpy(char *dest, const char *src, size_t n);
+int			ft_isalnum(int c);
 
 #endif

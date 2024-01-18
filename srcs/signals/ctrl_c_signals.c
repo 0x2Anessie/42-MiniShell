@@ -4,10 +4,10 @@
  * @nom: ctrl_c_handler
  *
  * @description:
- * Gestionnaire de signal pour CTRL-C (SIGINT) utilisé dans un contexte général 
- * du programme. Cette fonction définit la réponse du programme à l'interruption 
- * par CTRL-C, typiquement utilisée pour interrompre des opérations en cours et 
- * réinitialiser l'interface utilisateur.
+ * Gestionnaire de signal pour CTRL-C (SIGINT) utilisé dans un contexte général
+ * du programme. Cette fonction définit la réponse du programme à
+ * l'interruption par CTRL-C, typiquement utilisée pour interrompre des
+ * opérations en cours et réinitialiser l'interface utilisateur.
  *
  * @pourquoi:
  * - Réponse standard à l'interruption : Le traitement de CTRL-C dans ce
@@ -38,7 +38,7 @@
  * Aucune valeur de retour (fonction void).
  *
  * @erreurs_et_effets_de_bord:
- * - Les appels aux fonctions de réinitialisation et d'affichage de la ligne de 
+ * - Les appels aux fonctions de réinitialisation et d'affichage de la ligne de
  * commande pourraient échouer, mais la fonction ne gère pas ces cas d'erreur.
  *
  * @exemples_utilisation:
@@ -49,8 +49,8 @@
  * @dependances:
  * - g_all: Structure globale contenant l'état du programme.
  * - ft_putchar: Fonction pour écrire un caractère sur la sortie standard.
- * - rl_on_new_line, rl_replace_line, rl_redisplay: Fonctions de la bibliothèque 
- * readline pour gérer l'affichage de la ligne de commande.
+ * - rl_on_new_line, rl_replace_line, rl_redisplay: Fonctions de la
+ * bibliothèque readline pour gérer l'affichage de la ligne de commande.
  *
  * @graphe_de_flux:
  * Début
@@ -81,7 +81,7 @@ void	ctrl_c_handler(int sig)
  * @nom: ctrl_c_handler_here_doc
  *
  * @description:
- * Gestionnaire de signal pour le signal CTRL-C (SIGINT) spécifique au contexte 
+ * Gestionnaire de signal pour le signal CTRL-C (SIGINT) spécifique au contexte
  * des 'here documents'. Cette fonction définit la manière dont le programme
  * doit réagir lorsque CTRL-C est pressé pendant la lecture d'un
  * 'here document'.
@@ -107,8 +107,9 @@ void	ctrl_c_handler(int sig)
  * - Ferme l'entrée standard (file descriptor 0) pour interrompre la lecture du 
  * 'here document'.
  * - Écrit un retour à la ligne (FT_NEWLINE) sur STDERR.
- * - Met à jour les variables dans la structure globale 'g_all.utils', notamment 
- * 'in_here_doc_mode' à 0, 'heredoc_ctrl_c_uninterrupted' à 0 et 'err' à EXIT_STAT_CTRL_C_SIGINT.
+ * - Met à jour les variables dans la structure globale 'g_all.utils',
+ * notamment 'in_here_doc_mode' à 0, 'heredoc_ctrl_c_uninterrupted' à 0 et
+ * 'err' à EXIT_STAT_CTRL_C_SIGINT.
  *
  * @valeur_de_retour:
  * Aucune valeur de retour (fonction void).
@@ -118,8 +119,8 @@ void	ctrl_c_handler(int sig)
  * échouer, mais la fonction ne gère pas ces cas d'erreur.
  *
  * @exemples_utilisation:
- * - Configurée comme gestionnaire de signal pour SIGINT pendant la lecture d'un 
- * 'here document'.
+ * - Configurée comme gestionnaire de signal pour SIGINT pendant la lecture
+ * d'un 'here document'.
  *
  * @dependances:
  * - g_all: Structure globale contenant l'état du programme.
@@ -138,7 +139,8 @@ void	ctrl_c_handler(int sig)
  * Écrire FT_NEWLINE sur STDERR
  *   |
  *   v
- * Mettre à jour g_all.utils (in_here_doc_mode, heredoc_ctrl_c_uninterrupted, err)
+ * Mettre à jour g_all.utils
+ * (in_here_doc_mode, heredoc_ctrl_c_uninterrupted, err)
  *   |
  *   v
  * Fin
@@ -179,12 +181,12 @@ void	ctrl_c_handler_here_doc(int sig)
  *
  * @fonctionnement:
  * - Vérifie l'état 'in_here_doc_mode' dans la structure globale 'g_all.utils'.
- * - Si 'in_here_doc_mode' est vrai, configure le signal CTRL_C_SIGINT pour utiliser
- * le gestionnaire ctrl_c_handler_here_doc, spécifique au contexte 
+ * - Si 'in_here_doc_mode' est vrai, configure le signal CTRL_C_SIGINT pour
+ * utiliser le gestionnaire ctrl_c_handler_here_doc, spécifique au contexte 
  * 'here document'.
- * - Si 'in_here_doc_mode' est faux, configure le signal CTRL_C_SIGINT pour utiliser
- * le gestionnaire ctrl_c_handler standard et le signal CTRL_BACKSLSH pour 
- * ignorer l'action (IGNORE_SIG_ACTION).
+ * - Si 'in_here_doc_mode' est faux, configure le signal CTRL_C_SIGINT pour
+ * utiliser le gestionnaire ctrl_c_handler standard et le signal CTRL_BACKSLSH
+ * pour ignorer l'action (IGNORE_SIG_ACTION).
  *
  * @valeur_de_retour:
  * Aucune valeur de retour (fonction void).
@@ -224,8 +226,8 @@ void	ctrl_c_handler_here_doc(int sig)
  */
 void	handle_sig(t_data *data)
 {
-	if (data->utils->is_this_an_exec_in_heredoc)/*         ---> condition non intelligible --> fonction         */
-	{	
+	if (data->utils->is_this_an_exec_in_heredoc)
+	{
 		signal(SIGINT, &ctrl_c_handler_here_doc);
 		if (g_globi == 130)
 		{

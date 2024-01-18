@@ -23,7 +23,8 @@ void	write_echo_fd(char **tab, int i, t_data *data)
 	elle est apeller dans process_echo si il y a besoin d'use une sorti special
 	si j n'est pas nul la fonction va ecrire un space pour separer les argument
 	et n'ecrit rien si j est nul
-	procc_in_echo_fd ecrit les argument de echo si il y a besoin d'une redirection
+	procc_in_echo_fd ecrit les argument de echo si il y a besoin d'une
+	redirection
 */
 int	procc_in_echo_fd(char **tab, int i, int j, t_data *data)
 {

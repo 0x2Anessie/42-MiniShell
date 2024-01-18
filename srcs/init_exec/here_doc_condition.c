@@ -24,5 +24,5 @@ bool	is_heredoc_file_opening_failed(int file_descriptor)
 
 bool	is_valid_variable_char(char c)
 {
-	return (isalnum(c) || c == '_');
+	return (ft_isalnum(c) || c == '_');
 }

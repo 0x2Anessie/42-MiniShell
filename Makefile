@@ -58,7 +58,8 @@ SRC_EXPANDER = $(addprefix expander/, \
 					special_character_checks.c \
 					split_word_by_quotes.c)
 SRC_FREE_ALL = 		$(addprefix free_all/, free1.c)
-SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_condition.c \
+SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_2.c \
+						here_doc_3.c here_doc_condition.c \
 						here_doc.c init_exec_utils_condition.c \
 						init_exec_utils.c init_exec.c \
 						init_export_condition.c \

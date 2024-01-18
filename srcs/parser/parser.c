@@ -97,7 +97,6 @@ int	ft_cloporte(t_data *data)
 
 int	ft_parser(t_data *data)
 {
-
 	if (!ft_check_quotes(data->minishell_input_cmd, data))
 		return (0);
 	if (!base_check(data->minishell_input_cmd))

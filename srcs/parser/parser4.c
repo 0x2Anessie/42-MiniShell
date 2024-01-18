@@ -3,7 +3,10 @@
 int	is_a_directory(t_data *data)
 {
 	if (!ft_tiret(data->minishell_input_cmd))
+	{
+		g_globi = 126;
 		return (0);
+	}
 	return (1);
 }
 
@@ -25,7 +28,7 @@ int	stop_pand_slash(char *str, char c)
 	return (1);
 }
 
-int	ft_tiret(char *str) // a corriger
+int	ft_tiret(char *str)
 {
 	if (!stop_pand_slash(str, '/'))
 	{

@@ -13,7 +13,7 @@ t_lexer	*create_new_lexer(t_data *data, char *str)
 	return (new);
 }
 
-int	check_redir_error(t_lexer *tmp)
+int	check_redir_error(t_lexer *tmp) // je pense que ca sert a rein a tester
 {
 	int	i;
 

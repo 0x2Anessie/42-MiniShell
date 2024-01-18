@@ -10,7 +10,7 @@ static int	ft_strlenbase(char *base)
 	while (base[i])
 		i++;
 	return (i);
-}	
+}
 
 int	ft_putnbr_base_hex(unsigned int nbr, char *base)
 {

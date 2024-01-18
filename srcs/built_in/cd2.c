@@ -94,8 +94,9 @@ int	wrong_cd(t_lexer *lexer_lst)
 }
 
 /*
-	traite cd avec des arguments, recupere le repertoire courant et le stock dans le
-	OLDPWD et si les arguments sont valid, change le repertoire et met a jour PWD
+	traite cd avec des arguments, recupere le repertoire courant et le stock
+	dans le OLDPWD et si les arguments sont valid, change le repertoire et met
+	a jour PWD
 */
 int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 {
@@ -103,7 +104,7 @@ int	cd_with_arg(t_data *data, char *path, char *old, int *i)
 			&& data->lexer_list->next->cmd_segment))
 	{
 		if (data->lexer_list->next)
-				data->lexer_list = data->lexer_list->next;
+			data->lexer_list = data->lexer_list->next;
 		old = getcwd(old, *i);
 		if (!old)
 		{

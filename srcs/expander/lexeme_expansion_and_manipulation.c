@@ -216,28 +216,26 @@ t_lexer **expnd, t_quote *st, t_data *data, t_expand *exp)
 {
 	char	**expanded;
 
-	exp->length_of_expanded_var_value = ZERO_INIT;
-	data->utils->g_signal_in_char_format = \
-	convert_int_to_string_with_tracking(data, g_globi);
-	exp->value_of_expanded_var_from_env = \
-	allocate_memory_for_expanded_word(expnd, st, data->full_env_var_copy_gamma, data);
-	if (!exp->value_of_expanded_var_from_env)/*         ---> condition non intelligible --> fonction         */
-	{	
-		printf("Échec de l'allocation de mémoire pour value_of_expanded_var_from_env\n");
+	initialize_expansion_parameters(exp, data, expnd, st);
+	if (!exp->value_of_expanded_var_from_env)
+	{
+		printf(ERR_MEMORY_ALLOCATION_FAILURE);
 		return ;
 	}
-	st->singl_quot_status = ZERO_INIT;
-	st->doubl_quot_status = ZERO_INIT;
+	reset_quote_states(st);
 	expand_variables_and_handle_special_chars(expnd, st, exp, data);
-	exp->value_of_expanded_var_from_env[exp->length_of_expanded_var_value] = '\0';
+	exp->value_of_expanded_var_from_env[\
+	exp->length_of_expanded_var_value] = '\0';
 	if (is_expansion_required_and_unquoted(exp))
 	{
-		expanded = split_word_by_quotes(data, exp->value_of_expanded_var_from_env, st);
+		expanded = split_word_by_quotes(\
+		data, exp->value_of_expanded_var_from_env, st);
 	}
 	else
 	{
 		(*expnd)->cmd_segment = \
-		create_cleaned_str_excluding_inactive_quots(exp->value_of_expanded_var_from_env, st, data);
+		create_cleaned_str_excluding_inactive_quots(exp->\
+		value_of_expanded_var_from_env, st, data);
 		return ;
 	}
 	replace_and_extend_chained_list_lexeme(expnd, expanded, data);
@@ -353,7 +351,7 @@ char **insert, t_lexer *back, t_data *data, int len)
 			return ;
 		if (back)
 			back->next = tmp;
-		if (data->lexer_list->next)/*         ---> condition non intelligible --> fonction         */
+		if (data->lexer_list->next)
 			data->lexer_list->next->prev = tmp;
 		tmp->prev = back;
 		tmp->next = data->lexer_list->next;

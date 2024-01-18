@@ -57,8 +57,8 @@ t_data *data, t_lexer *tmp, t_lexer *current, int i)
 	{
 		j = 0;
 		while (data->minishell_input_cmd[i] == ' ' || \
-		(data->minishell_input_cmd[i] >= TAB && \
-		data->minishell_input_cmd[i] <= SHIFT_OUT))
+		(data->minishell_input_cmd[i] >= TAB \
+		&& data->minishell_input_cmd[i] <= SHIFT_OUT))
 			i++;
 		if (!data->minishell_input_cmd || !data->minishell_input_cmd[i])
 		{

@@ -3,7 +3,10 @@
 int	is_a_directory(t_data *data)
 {
 	if (!ft_tiret(data->minishell_input_cmd))
+	{
+		g_globi = 126;
 		return (0);
+	}
 	return (1);
 }
 

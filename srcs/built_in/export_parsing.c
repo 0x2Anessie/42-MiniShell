@@ -12,8 +12,8 @@ void	initialize_data(t_stringdata *data, char *str)
 /*
 	 conçue pour extraire le contenu d'une chaîne de caractères entre guillemets
 	 simples ('), en tenant compte des caractères échappés. Elle parcourt la
-	 chaîne et copie les caractères dans la même chaîne en éliminant les guillemets
-	  simples et les caractères d'échappement.
+	 chaîne et copie les caractères dans la même chaîne en éliminant les
+	 guillemets simples et les caractères d'échappement.
 */
 void	extract_within_quotes(t_stringdata *data, char *str)
 {

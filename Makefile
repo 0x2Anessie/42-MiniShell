@@ -24,6 +24,7 @@ SRC_EXEC = $(addprefix exec/, child_process_management_condtion.c \
 				cmd_exec_condition.c \
 				cmd_path_resltion_condtion.c \
 				command_analysis.c \
+				command_execution_condtion.c \
 				command_execution.c \
 				command_path_resolution_condition.c \
 				command_path_resolution.c \
@@ -34,12 +35,15 @@ SRC_EXPANDER = $(addprefix expander/, \
 					char_validation_utils.c \
 					dual_quote_status_utils.c \
 					env_var_expansion_length.c \
+					env_var_expansion_length_condtion.c \
 					expand_utils.c \
+					expansion_processing_condtion.c \
 					expansion_processing_utils.c \
 					expansion_processing.c \
 					expansion_search_utils.c \
 					expansion_validation_utils.c \
 					lexeme_expansion_and_manipulation_condition.c \
+					lexeme_expansion_and_manipulation_utils.c \
 					lexeme_expansion_and_manipulation.c \
 					malloc_expand_condtion.c \
 					malloc_expand.c \
@@ -54,9 +58,9 @@ SRC_EXPANDER = $(addprefix expander/, \
 					special_character_checks.c \
 					split_word_by_quotes.c)
 SRC_FREE_ALL = 		$(addprefix free_all/, free1.c)
-SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_condition.c \
-						here_doc.c here_doc_2.c here_doc_3.c \
-						init_exec_utils_condition.c \
+SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_2.c \
+						here_doc_3.c here_doc_condition.c \
+						here_doc.c init_exec_utils_condition.c \
 						init_exec_utils.c init_exec.c \
 						init_export_condition.c \
 						init_export.c init_fd_condition_pipe.c \

@@ -97,19 +97,27 @@ int	ft_cloporte(t_data *data)
 
 int	ft_parser(t_data *data)
 {
+	int	count;
+
+	count = 1;
 	if (!ft_check_quotes(data->minishell_input_cmd, data))
+		count = 0;
+	else if (!base_check(data->minishell_input_cmd))
+		count = 0;
+	else if (!pipe_parse(data))
+		count = 0;
+	else if (!ft_cloporte(data))
+		count = 0;
+	else if (!ft_arrow(data))
+		count = 0;
+	else if (!ft_tiret(data->minishell_input_cmd))
+		count = 0;
+	else if (!chevron_pipe(data->minishell_input_cmd))
+		count = 0;
+	if (count == 0)
+	{
+		g_globi = 2;
 		return (0);
-	if (!base_check(data->minishell_input_cmd))
-		return (0);
-	if (!pipe_parse(data))
-		return (0);
-	if (!ft_cloporte(data))
-		return (0);
-	if (!ft_arrow(data))
-		return (0);
-	if (!ft_tiret(data->minishell_input_cmd))
-		return (0);
-	if (!chevron_pipe(data->minishell_input_cmd))
-		return (0);
+	}
 	return (1);
 }

@@ -1,7 +1,7 @@
-#include "../include/minishell.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "../include/minishell.h"
 
 unsigned int	g_globi = ZERO_INIT;
 
@@ -309,15 +309,9 @@ void	prompt_loop(char *tmp, t_data *data, char **env)
 		data->minishell_input_cmd = tmp;
 		ft_init_lexer_process(data);
 		if (!is_a_directory(data))
-		{
-			g_globi = 126;
 			return ;
-		}
 		else if (!ft_parser(data))
-		{
-			g_globi = 2;
 			return ;
-		}
 		tmp_lex = data->lexer_list;
 		new_env = get_new_env(\
 		data, data->utils->linked_list_full_env_var_copy_alpha);

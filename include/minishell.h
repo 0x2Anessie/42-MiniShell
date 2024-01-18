@@ -72,14 +72,17 @@
 # define PERM_O_RW_G_R_OT_R 0644
 
 /*   ERROR MESSAGES AND SIGNALS   */
-# define ERR_HEREDOC_EOF_WARNING "minishell: warning: here-document delimited by \
-end-of-file (wanted `EOF')\n"
+# define ERR_HEREDOC_EOF_WARNING "minishell: warning: here-document delimited \
+by end-of-file (wanted `EOF')\n"
 # define ERR_WRIT_NO_SPAC_LEFT_DEVC "write error: no space left on device\n"
 # define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
 # define ERR_AMB_REDIRECT "minishell: ambiguous redirect\n"
 # define ERR_MEMORY_ALLOCATION "Erreur lors de l'allocation de mémoire"
 # define WRITE_ERROR_MSG "write error"
 # define QUIT_MESSAGE "Quit\n"
+
+# define ERR_MEMORY_ALLOCATION_FAILURE "Échec de l'allocation de mémoire pour \
+value_of_expanded_var_from_env\n"
 
 /*   PIPE AND PROCESS CONSTANTS   */
 # define PIPE_READ_END 0
@@ -461,7 +464,14 @@ int			should_continue_execution(t_data *data, int *y);
 int			check_redirection_validity_in_node(t_node *node);
 t_lexer		*find_next_command_in_lexer(t_lexer *lexer_list);
 
-/*   Fonctions de command_analysis.c   */
+/*   Fonctions de command_execution_condtion.c   */
+bool		is_pid_array_null(pid_t *pid);
+bool		is_process_pid_valid_for_wait(pid_t pid);
+bool		is_child_process_exited_cleanly(int status);
+bool		should_continue_waiting_for_child_processes(\
+int nb_node, t_data *data);
+
+/*   Fonctions de command_execution.c   */
 int			manage_exec_linked_cmd_sequence(int *fd, pid_t *pid, \
 			t_data *data, int *y);
 void		ft_exec_single_built_in(t_lexer *lexer_lst, int *fd, t_data *data);
@@ -542,6 +552,11 @@ char		*convert_negative_int_to_string_with_tracking( \
 char		*convert_int_to_string_with_tracking(t_data *data, int n);
 void		reset_quoting_state(t_quote *state);
 
+/*     Fonctions de expansion_processing_condtion.c     */
+bool		is_current_char_dollar_sign(t_lexer *exp, int index);
+bool		is_next_char_end_space_dash_or_special(\
+t_lexer *expnd, t_quote *state, int index);
+
 /*     Fonctions de expansion_processing_utils.c     */
 int			append_chars_expnt_until_singl_quot(char *word, t_expand *exp);
 int			append_curnt_error_code_to_expansion_struc( \
@@ -566,6 +581,11 @@ int			handle_unfound_expansion_word(char *w, t_quote *state);
 bool		is_word_end_or_special(const char *word, int index, t_quote *state);
 bool		is_expansion_not_found(t_expand *exp);
 bool		is_expansion_found(t_expand *exp);
+
+/*     Fonctions de lexeme_expansion_and_manipulation_utils.c   */
+void		reset_quote_states(t_quote *st);
+void		initialize_expansion_parameters(\
+t_expand *exp, t_data *data, t_lexer **expnd, t_quote *st);
 
 /*     Fonctions de lexeme_expansion_and_manipulation_condition.c   */
 bool		is_expansion_required_and_unquoted(t_expand *exp);
@@ -703,6 +723,17 @@ int			out_to_file_flags(void);
 int			append_to_file_flags(void);
 int			heredoc_tmp_file_flags(void);
 
+/*   Fonctions de here_doc_2.c   */
+int			is_backslash_at_end(char *str);
+int			is_escaped(char *line, int index);
+char		*get_variable_value(char *var_name, t_data *data);
+void		write_line_to_heredoc(char *line, int heredoc_fd);
+void		remove_escape_character(char **line, int index);
+
+/*   Fonctions de here_doc_3.c   */
+void		manage_here_doc_process(t_node *node, t_lexer *lexer_lst, \
+			t_data *data);
+
 /*   Fonctions de here_doc_condition.c   */
 bool		is_heredoc_delimiter_matched(char *delimiter, char *line);
 bool		is_heredoc_ended_by_signal(t_data *data);
@@ -716,17 +747,6 @@ char		*extract_and_get_var_value(char **line, int var_name_start, \
 void		expand_variable(char **line, int index, t_data *data);
 void		process_heredoc_line(char **line, t_data *data);
 void		ft_read_input(t_node *node, t_lexer *lexer_lst, t_data *data);
-
-/*   Fonctions de here_doc_2.c   */
-int			is_backslash_at_end(char *str);
-int			is_escaped(char *line, int index);
-char		*get_variable_value(char *var_name, t_data *data);
-void		write_line_to_heredoc(char *line, int heredoc_fd);
-void		remove_escape_character(char **line, int index);
-
-/*   Fonctions de here_doc_3.c   */
-void		manage_here_doc_process(t_node *node, t_lexer *lexer_lst, \
-			t_data *data);
 
 /*   Fonctions de init_exec_utils_condition.c   */
 bool		is_first_input_redirection_error(t_node *node);

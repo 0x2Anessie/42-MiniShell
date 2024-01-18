@@ -119,7 +119,7 @@ int	ft_arrow(t_data *data)
 			if (tmp == NULL || tmp->token == PIPE \
 			|| tmp->cmd_segment[0] == '\0')
 			{
-				printf("6 syntax error near unexpected token\n");
+				printf("syntax error near unexpected token\n");
 				return (0);
 			}
 		}

@@ -23,7 +23,6 @@ int	ft_strcmp(char *s1, char *s2)
 */
 void	display_echo_arg(char **tab, int i, t_data *data)
 {
-	printf("Je suis dans display_echo_arg\n");
 	i = i + 2;
 	if (data->utils->node->output_fd > 0)
 		write_echo_fd(tab, i, data);

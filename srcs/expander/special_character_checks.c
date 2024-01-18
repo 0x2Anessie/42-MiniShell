@@ -2,18 +2,16 @@
 
 int	is_special_syntax_character(char c, t_quote *st)
 {
-	static const char	special_chars[] = ":=%^+~/'\"@]";
-	int					index;
-
-	index = ZERO_INIT;
 	(void)st;
-	while (special_chars[index])
+	if (c)
 	{
-		if (c == special_chars[index])
-			return (CHAR_IS_SPECIAL);
-		index++;
+		if (c == ':' || c == '=' || c == '%' || c == '^' || c == '+' || c == '~'
+			|| c == '/' || c == ' '
+			|| ((c == '"' || c == '\''))
+			|| c == ']' || c == '@' || c == ',')
+			return (1);
 	}
-	return (CHAR_IS_NOT_SPECIAL);
+	return (0);
 }
 
 /**
@@ -29,9 +27,9 @@ int	is_special_syntax_character(char c, t_quote *st)
  *
  * @param c:
  * char c, le caractère à vérifier.
- * 
- * @param st: 
- * t_quote *st, pointeur vers une structure représentant l'état des guillemets 
+ *
+ * @param st:
+ * t_quote *st, pointeur vers une structure représentant l'état des guillemets
  * (non utilisé dans cette fonction, inclus pour la compatibilité d'interface).
  *
  * @pourquoi:
@@ -46,16 +44,16 @@ int	is_special_syntax_character(char c, t_quote *st)
  * Retourne CHAR_IS_SPECIAL si 'c' est un caractère spécial, sinon
  * CHAR_IS_NOT_SPECIAL.
  *
- * @erreurs_possibles_et_effets_de_bord: 
+ * @erreurs_possibles_et_effets_de_bord:
  * - La fonction ne modifie aucun paramètre et n'a pas d'effet de bord.
  *
  * @exemples_utilisation:
  * char c1 = '%';
- * int result1 = is_special_syntax_character(c1, NULL); 
+ * int result1 = is_special_syntax_character(c1, NULL);
  *       |
  *        \
  *         ---- > Retourne CHAR_IS_SPECIAL
- *   
+ *
  *   char c2 = 'a';
  *   int result2 = is_special_syntax_character(c2, NULL);
  *       |
@@ -106,7 +104,7 @@ int	is_special_syntax_character(char c, t_quote *st)
  *
  * @description:
  * Parcourt une chaîne de caractères pour vérifier la présence de
- * caractères spéciaux 
+ * caractères spéciaux
  * tels que le dollar ('$'), les guillemets doubles ('"') ou les guillemets
  * simples ('\''). Cette fonction est utilisée pour identifier les chaînes
  * nécessitant une interprétation ou un traitement spéciaux, comme dans le
@@ -126,7 +124,7 @@ int	is_special_syntax_character(char c, t_quote *st)
  * Retourne CHAR_IS_SPECIAL si un caractère spécial est trouvé, sinon
  * CHAR_IS_NOT_SPECIAL.
  *
- * @erreurs_possibles_et_effets_de_bord: 
+ * @erreurs_possibles_et_effets_de_bord:
  * - Si 'word' est NULL, le comportement est indéfini.
  * - La fonction ne modifie pas 'word'.
  *
@@ -134,7 +132,7 @@ int	is_special_syntax_character(char c, t_quote *st)
  * char *example1 = "echo $VAR";
  * int result1 = is_dollar_or_doubl_or_singl_quote(example1);
  * ----------> Retourne CHAR_IS_SPECIAL
- *   
+ *
  * char *example2 = "echo text";
  * int result2 = is_dollar_or_doubl_or_singl_quote(example2);
  * ----------> Retourne CHAR_IS_NOT_SPECIAL
@@ -200,14 +198,14 @@ int	is_dollar_or_doubl_or_singl_quote(char *word)
  * Retourne CHAR_IS_DOLLAR si un dollar est trouvé à la fin, sinon
  * CHAR_IS_NOT_DOLLAR.
  *
- * @erreurs_possibles_et_effets_de_bord: 
+ * @erreurs_possibles_et_effets_de_bord:
  * - Si 'str' est NULL ou vide, la fonction retournera CHAR_IS_NOT_DOLLAR.
  * - La fonction ne modifie pas la chaîne d'entrée.
  *
  * @exemples_utilisation:
  * char *example1 = "text$";
  * int result1 = is_dollar_at_end(example1); // Retourne CHAR_IS_DOLLAR
- *   
+ *
  * char *example2 = "text";
  * int result2 = is_dollar_at_end(example2); // Retourne CHAR_IS_NOT_DOLLAR
  *

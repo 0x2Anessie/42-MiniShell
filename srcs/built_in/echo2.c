@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo2.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:19:47 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 17:19:48 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -19,7 +31,7 @@ void	init_echo(t_lexer *lexer_lst, t_data *data)
 		lexer_lst = lexer_lst->next;
 		i++;
 	}
-	tab = ft_malloc_with_tracking(data, sizeof(char *) * (i + 1));
+	tab = malloc_track(data, sizeof(char *) * (i + 1));
 	if (!tab)
 		return ;
 	lexer_lst = head;
@@ -72,5 +84,6 @@ void	simulate_echo(char **tab, t_data *data)
 			ft_write_fd("\n", data->utils->node->output_fd);
 		else
 			printf("\n");
+		g_globi = 0;
 	}
 }

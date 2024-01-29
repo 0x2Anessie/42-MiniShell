@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/23 11:57:58 by pabeaude          #+#    #+#             */
+/*   Updated: 2024/01/23 11:57:59 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
@@ -8,7 +20,7 @@
 # include <unistd.h>
 # include <stdio.h>
 
-# ifndef BUFFER_SIZE	
+# ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
 

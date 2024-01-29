@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion_processing.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: polo <polo@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:23:02 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 01:46:10 by polo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 void	add_char_to_expanded_variable(t_expand *exp, t_lexer *expnd, int index)
@@ -41,88 +53,6 @@ int *expanded_length, int *index, t_data *data)
 	*index += SKIP_DOLLAR_QUESTION_MARK;
 }
 
-/**
- * @fonction: length_of_env_variable_value
- * @brief: Calcule la longueur totale après expansion pour un mot spécifique.
- * 
- * Cette fonction évalue un mot dans une structure lexer pour calculer la
- * longueur totale après expansion en tenant compte des variables
- * d'environnement et des règles d'expansion spéciales, comme le traitement des
- * erreurs et des caractères spéciaux.
- * 
- * @pourquoi:
- * - Précision dans le Calcul de Longueur : Cette fonction assure une
- * évaluation précise de la longueur nécessaire pour stocker un mot après son
- * expansion. Cela est crucial pour éviter les dépassements de mémoire et
- * garantir que l'espace alloué est adéquat.
- * - Gestion des Variables et Caractères Spéciaux : Prend en compte les
- * variables d'environnement et les caractères spéciaux (comme '$' et '?'),
- * qui peuvent modifier significativement la longueur du mot après expansion.
- * - Flexibilité et Fidélité d'Expansion : Fournit une base fiable pour
- * l'expansion de mots, en respectant les règles et les cas spéciaux du shell,
- * permettant ainsi de refléter fidèlement la manière dont le shell
- * interpréterait et étendrait une commande.
-
- * 
- * @param exp: Pointeur sur un lexer (t_lexer) à traiter.
- * @param state: État actuel des guillemets (t_quote).
- * @param env: Tableau de chaînes de caractères représentant les variables
- * d'environnement.
- * @param expanded_length: Pointeur sur un entier pour stocker la longueur
- * calculée.
- * 
- * @erreur: Aucune erreur spécifique n'est définie pour cette fonction.
- * 
- * @effet_de_bord: Modifie la valeur pointée par 'expanded_length'.
- * 
- * @exemple: length_of_env_variable_value(&lexer, state, env, &length)
- * calcule la longueur d'expansion pour 'lexer'.
- * 
- * @dependances: 'update_quoting_state', 'calculate_expanded_env_var_length',
- * 'is_special_syntax_character'.
- * 
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Parcourir 'word' dans 'exp'
- *     |
- *     v
- *   Caractère courant == '$' ?
- *  /         \
- * VRAI       FAUX
- *  |           \
- *  |            \
- *  v             v
- * Traitement    Incrémenter 'expanded_length'
- * du caractère  et 'index'
- * '$'
- *  |
- *  v
- * Prochain caractère == '?' ?
- *  /         \
- * VRAI       FAUX
- *  |           \
- *  |            \
- *  v             v
- * Ajouter la   Appeler 'calculate_expanded_env_var_length'
- * longueur     pour chercher dans 'env'
- * d'erreur     et mettre à jour 'expanded_length'
- * à 'expanded_length'
- *  |             |
- *  |             v
- *  |          'state->found' == 0 et caractère spécial ?
- *  |         /         \
- *  |       VRAI       FAUX
- *  |        |           \
- *  |        |            \
- *  |        v             v
- *  |    Incrémenter    Continuer la boucle
- *  |    'expanded_length'   sur 'word'
- *  | 
- *  v
- * Fin de la fonction
- */
 void	length_of_env_variable_value(\
 t_lexer **exp, t_quote *state, t_data *data, int *expanded_length)
 {

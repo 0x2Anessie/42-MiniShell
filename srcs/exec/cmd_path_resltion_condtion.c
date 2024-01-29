@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_path_resltion_condtion.c                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:21:15 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 19:23:16 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 bool	is_env_var_path_name(t_env *env)
@@ -7,13 +19,6 @@ bool	is_env_var_path_name(t_env *env)
 	ft_strlen(ENV_SET_PATH_PREFIX)));
 }
 
-/**
- * @brief Vérifie si un chemin direct spécifié pour une commande est invalide.
- *
- * @param cmd Le chemin de la commande à vérifier.
- * @return true Si le chemin direct est invalide (non exécutable et commence
- * par un '/'), sinon false.
- */
 bool	is_invalid_direct_path(const char *cmd)
 {
 	return (access(cmd, X_OK) && *cmd == '/');

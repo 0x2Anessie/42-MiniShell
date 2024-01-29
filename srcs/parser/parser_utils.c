@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:22:28 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:38:36 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 size_t	ft_strlen3_mini(char const *s)
@@ -17,14 +29,14 @@ char	*ft_substr(t_data *data, char const *s, unsigned int start, size_t len)
 
 	if (s && start >= ft_strlen3_mini(s))
 	{
-		nouveau = ft_malloc_with_tracking(data, sizeof(char));
+		nouveau = malloc_track(data, sizeof(char));
 		if (!nouveau)
 			return (NULL);
 		nouveau[0] = '\0';
 		return (nouveau);
 	}
 	nouveau = \
-	ft_malloc_with_tracking(data, sizeof(char) * (len + sizeof('\0')));
+	malloc_track(data, sizeof(char) * (len + sizeof('\0')));
 	i = 0;
 	if (!nouveau || !s)
 		return (NULL);

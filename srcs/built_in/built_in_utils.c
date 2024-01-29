@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_in_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:19:22 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 17:19:23 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 char	*ft_strcpy(char *dest, const char *src)
@@ -19,7 +31,7 @@ char	*add_quotes_string(char *str, t_data *data)
 	char	*quoted_str;
 
 	len = (size_t)ft_strlen(str);
-	quoted_str = ft_malloc_with_tracking(data, sizeof(char)
+	quoted_str = malloc_track(data, sizeof(char)
 			*(len + 3));
 	if (!quoted_str)
 		return (NULL);

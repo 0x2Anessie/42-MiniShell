@@ -7,11 +7,10 @@ OBJ_DIR = objs
 # Définition des sources par répertoire
 SRC_LEXER = 		$(addprefix lexer/, lex.c lexer_structure_construction.c \
 						lexer_utils.c token_type_assignment.c)
-SRC_PARSER = 		$(addprefix parser/, parser2.c parser4.c parser.c \
-						parser_utils.c rm_para_quote.c)
+SRC_PARSER = 		$(addprefix parser/, parser_1.c parser_2.c parser_3.c \
+						parser_utils.c token_remover.c)
 SRC_INIT_ENV = 		$(addprefix init_env/, init_env_list.c init_env.c)
-SRC_SIGNALS = 		$(addprefix signals/, ctrl_c_signals.c error_signals.c \
-						signal_exits.c)
+SRC_SIGNALS = 		$(addprefix signals/, signal_heredoc.c signals_handler.c)
 SRC_BUILT_IN = 		$(addprefix built_in/, built_in_utils_2.c \
 						built_in_utils.c cd2.c cd3.c cd.c echo2.c echo.c \
 						echo_split.c env.c env_create.c env_things.c export.c \
@@ -71,6 +70,7 @@ SRC_INIT_EXEC = 	$(addprefix init_exec/, file_flags.c here_doc_2.c \
 
 # Combinaison de tous les fichiers sources
 SRCS = main.c \
+       main_utils.c \
        $(SRC_LEXER) \
        $(SRC_PARSER) \
        $(SRC_INIT_ENV) \
@@ -99,6 +99,7 @@ CURRENT_FILE := 0
 
 # Main targets
 all: 			$(NAME)
+				@clear
 				@echo "               _____   __        __        __            __   __    ";
 				@echo "              /     \ |__| ____ |__| _____|  |__   ____ |  | |  |   ";
 				@echo "             /  \ /  \|  |/    \|  |/  ___/  |  \_/ __ \|  | |  |   ";
@@ -116,9 +117,9 @@ $(NAME): $(OBJS)
 define update_progress
     $(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE)+1))))
     $(eval PERCENT=$(shell echo $$((($(CURRENT_FILE)*100)/$(TOTAL_FILES)))))
-    @printf "\r  make minishell : ["
-    @printf "%-50s" "$$(printf '#%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
-    @printf "] %d%%" $(PERCENT)
+	@printf "\r	   \033[0;32m["
+    @printf "%-50s" "$$(printf '/%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
+	@printf "] %d%%\033[0m" $(PERCENT)
 endef
 
 # Rule for object files
@@ -135,9 +136,9 @@ define clean_progress
 	$(eval TOTAL_COUNT=$(words $(OBJS) $(DEPS) 1)) # +1 for the objs directory
 	$(eval CURRENT_COUNT=$(shell echo $$(($(CURRENT_COUNT)+1))))
 	$(eval PERCENT=$(shell echo $$((($(CURRENT_COUNT)*100)/$(TOTAL_COUNT)))))
-	@printf "\r clean minishell : ["
-	@printf "%-50s" "$$(printf '#%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
-	@printf "] %d%%" $(PERCENT)
+	@printf "\r	   \033[0;32m["
+	@printf "%-50s" "$$(printf '/%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
+	@printf "] %d%%\033[0m" $(PERCENT)
 endef
 
 # Other rules (clean, fclean, re)
@@ -148,24 +149,23 @@ clean:
 	@$(foreach obj,$(OBJS) $(DEPS),rm -f $(obj); $(call clean_progress);)
 	@rm -rf $(OBJ_DIR)
 	@$(call clean_progress) # This will now correctly show 100%
-	@echo "                                                                      ";
-	@echo "                                                                      ";
+	@echo "                                                                           ";
 	@echo "             /\                __              __                          ";
 	@echo "       ____  )/ ____   _______/  |_      ____ |  |   ____  _____    ____   ";
 	@echo "     /  ___\  /  __ \ /  ___/\   __\   /  ___\|  | /  __ \ \__  \  /    \  ";
 	@echo "     \  \___  \  ___/ \___ \  |  |     \  \___|  |_\  ___/ / __  \|   |  \ ";
 	@echo "      \____ >  \____ >_____ > |__|      \____ >____/\____> ____  / ___|  / ";
 	@echo "                                                               \/      \/  ";
-	@echo "                                                                      ";
+	@echo "                                                                           ";
 
 # Fonction pour mettre à jour et afficher la barre de progression sur une seule ligne pour fclean
 define fclean_progress
 	$(eval TOTAL_COUNT=1) # Only for the minishell executable
 	$(eval CURRENT_COUNT=$(shell echo $$(($(CURRENT_COUNT)+1))))
 	$(eval PERCENT=$(shell echo $$((($(CURRENT_COUNT)*100)/$(TOTAL_COUNT)))))
-	@printf "\rfclean minishell : ["
-	@printf "%-50s" "$$(printf '#%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
-	@printf "] %d%%" $(PERCENT)
+	@printf "\r	   \033[0;32m["
+	@printf "%-50s" "$$(printf '/%.0s' $$(seq 1 $$(($(PERCENT)/2))))"
+	@printf "] %d%%\033[0m" $(PERCENT)
 endef
 
 # Other rules (clean, fclean, re)
@@ -174,15 +174,14 @@ fclean:
 	@$(MAKE) clean > /dev/null
 	@rm -f $(NAME) lib/lib42.a
 	@$(call fclean_progress)
-	@echo "                                                                            ";
-	@echo "                                                                            ";
+	@echo "                                                                              ";
 	@echo "          /\                __        _____       __                          ";
 	@echo "    ____  )/ ____   _______/  |_    _/ ____\____ |  |   ____  _____    ____   ";
 	@echo "  /  ___\  /  __ \ /  ___/\   __\   \  __\/  ___\|  | /  __ \ \__  \  /    \  ";
 	@echo "  \  \___  \  ___/ \___ \  |  |      |  | \  \___|  |_\  ___/  / __ \|   |  \ ";
 	@echo "   \____ >  \____> _____ > |__|      |__|  \____ >____/\____ > ____  /___|  / ";
 	@echo "                                                                   \/     \/  ";
-	@echo "                                                                      ";
+	@echo "                                                                              ";
 
 re: fclean all
 

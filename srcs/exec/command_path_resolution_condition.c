@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_path_resolution_condition.c                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:21:30 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 19:18:14 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 bool	is_cmd_empty_or_null(char *cmd)
@@ -15,13 +27,8 @@ bool	is_lexer_token_cmd_arg(t_lexer *lexer_item)
 	return (lexer_item != NULL && lexer_item->token == ARG);
 }
 
-/**
- * @brief Vérifie si l'itération dans la liste des lexèmes doit continuer.
- *
- * @param lexer_item L'élément actuel du lexer à vérifier.
- * @param current_index L'indice courant dans le processus d'itération.
- * @param total_args Nombre total d'arguments attendus.
- * @return true si l'itération doit continuer, sinon false.
+/*
+ Vérifie si l'itération dans la liste des lexèmes doit continuer.
  */
 bool	should_continue_lexer_iteration(\
 t_lexer *lexer_item, int current_index, int total_args)

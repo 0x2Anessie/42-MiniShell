@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_create.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:19:51 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 17:19:53 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -15,7 +27,7 @@ t_env	*create_node_str(char *str, t_data *data)
 {
 	t_env	*node;
 
-	node = ft_malloc_with_tracking(data, sizeof(t_env));
+	node = malloc_track(data, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	node->var_env_name_and_value = str;

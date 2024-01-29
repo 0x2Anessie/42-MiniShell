@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_word_expansion.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: polo <polo@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:24:13 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 01:53:16 by polo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 int	determine_expansion_or_quote_removal(\
@@ -26,14 +38,6 @@ t_lexer **to_check, t_quote *state, t_expand *exp, t_data *data)
 	return (NO_ACTION_REQUIRED);
 }
 
-/**
- * @brief Traite chaque lexème pour une éventuelle expansion.
- *
- * @param state Pointeur vers l'état des guillemets.
- * @param data Pointeur vers la structure de données du shell.
- * @param exp Pointeur vers la structure d'expansion.
- * @param lexeme Pointeur vers le lexème actuel à traiter.
- */
 void	process_lexer_for_expansion(\
 t_quote *state, t_data *data, t_expand *exp, t_lexer *lexeme)
 {
@@ -60,11 +64,11 @@ void	expand(t_quote *state, char **env, t_lexer *tmp, t_data *data)
 	t_expand	*exp;
 
 	data->full_env_var_copy_gamma = env;
-	state = ft_malloc_with_tracking(data, sizeof(t_quote));
+	state = malloc_track(data, sizeof(t_quote));
 	if (!state)
 		return ;
 	reset_quoting_state(state);
-	exp = ft_malloc_with_tracking(data, sizeof(t_expand));
+	exp = malloc_track(data, sizeof(t_expand));
 	if (!exp)
 		return ;
 	process_lexer_for_expansion(state, data, exp, tmp);

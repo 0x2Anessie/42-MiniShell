@@ -1,6 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:22:17 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:55:49 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int	pipe_parse2(t_data *data)
+/*
+	Parcourt la liste des tokens et vérifie la syntaxe autour des pipes,
+	comme >| ou |<, qui sont incorrects.
+*/
+int	invalid_pipes_check(t_data *data)
 {
 	int		k;
 	t_lexer	*tmp;
@@ -29,7 +45,10 @@ int	pipe_parse2(t_data *data)
 	return (1);
 }
 
-int	ft_chevron(char *str)
+/*
+	Vérifie qu'il n'y ait pas plus de deux chevrons à la suite.
+*/
+int	nb_brack(char *str)
 {
 	int	i;
 	int	k;
@@ -49,7 +68,10 @@ int	ft_chevron(char *str)
 	return (1);
 }
 
-int	pipe_parse(t_data *data)
+/*
+	Affiche les messages d'erreurs relatifs eux chevrons et aux pipe.
+*/
+int	token_error_check(t_data *data)
 {
 	int		k;
 	t_lexer	*tmp;
@@ -60,7 +82,7 @@ int	pipe_parse(t_data *data)
 	while (tmp)
 	{
 		k = 0;
-		if (!ft_chevron(tmp->cmd_segment) || !ft_chevron(tmp->cmd_segment))
+		if (!nb_brack(tmp->cmd_segment) || !nb_brack(tmp->cmd_segment))
 		{
 			printf("syntax error near unexpected token\n");
 			return (0);
@@ -70,7 +92,7 @@ int	pipe_parse(t_data *data)
 			printf("syntax error near unexpected token\n");
 			return (0);
 		}
-		if (!pipe_parse2(data))
+		if (!invalid_pipes_check(data))
 			return (0);
 		tmp = tmp->next;
 	}
@@ -78,7 +100,11 @@ int	pipe_parse(t_data *data)
 	return (1);
 }
 
-int	ft_arrow2(t_data *data)
+/*
+	Vérifie les combinaisons de tokens invalides relatives aux redirections
+	et aux heredoc.
+*/
+int	invalid_tokens_check(t_data *data)
 {
 	t_lexer	*tmp;
 
@@ -106,7 +132,10 @@ int	ft_arrow2(t_data *data)
 	return (1);
 }
 
-int	ft_arrow(t_data *data)
+/*
+	Vérifie les combinaisons de tokens invalides relatives aux pipes.
+*/
+int	invalid_tokens_check_2(t_data *data)
 {
 	t_lexer	*tmp;
 
@@ -125,7 +154,7 @@ int	ft_arrow(t_data *data)
 		}
 		tmp = tmp->next;
 	}
-	if (!ft_arrow2(data))
+	if (!invalid_tokens_check(data))
 	{
 		printf("syntax error near unexpected token\n");
 		return (0);

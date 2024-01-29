@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:24:12 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:55:49 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -134,32 +146,6 @@ value_of_expanded_var_from_env\n"
 # define ENV_CURRENT_WORKING_DIR "PWD"
 # define ENV_USER_HOME_DIR "HOME"
 
-# define WELCOME_MSG "\
-\n\033[93m\
-╔════════════════════════════════════════════════════════════════════════════╗\n\
-║                                                                            ║\n\33[93m\
-║                 \033[31m▄▀▄ █▄ █ ▄▀▄ █ █▀    █   █ █ █▄▀ ▄▀▄ █▀                    \033[93m║\n\
-║                 \033[31m█▀█ █ ▀█ █▀█ █ ▄█ ▄  █▄▄ █▄█ █▀▄ █▀█ ▄█                    \033[93m║\n\
-║                                   \033[31m▄▀                                       \033[93m║\n\
-║                                                                            \033[93m║\n\
-║                 \033[31m█▀█ ▄▀▄ █ █ █      █▀▄ ▄▀▄ ▄▀▀ ▄▀▄ █▀▀ █                   \033[93m║\n\
-║                 \033[31m█▀▀ █▀█ █▄█ █▄▄ ▄  █▀▄ █▀█ █▀▀ █▀█ ██▄ █▄▄                 \033[93m║\n\
-║                                \033[31m▄▀                                          \033[93m║\n\
-║                                                                            \033[93m║\n\
-║                         \033[31m█▀█ █▀▄ █▀▀ █▀ █▀▀ █▄░█ ▀█▀                        \033[93m║\n\
-║                         \033[31m█▀▀ █▀▄ ██▄ ▄█ ██▄ █░▀█ ░█                         \033[93m║\n\
-║                                                                            \033[93m║\n\
-║                                                                            \033[93m║\n\
-║     \033[34m███╗░░░███╗██╗███╗░░██╗██╗░██████╗██╗░░██╗███████╗██╗░░░░░██╗░░░░░     \033[93m║\n\
-║     \033[34m████╗░████║██║████╗░██║██║██╔════╝██║░░██║██╔════╝██║░░░░░██║░░░░░     \033[93m║\n\
-║     \033[34m██╔████╔██║██║██╔██╗██║██║╚█████╗░███████║█████╗░░██║░░░░░██║░░░░░     \033[93m║\n\
-║     \033[34m██║╚██╔╝██║██║██║╚████║██║░╚═══██╗██╔══██║██╔══╝░░██║░░░░░██║░░░░░     \033[93m║\n\
-║     \033[34m██║░╚═╝░██║██║██║░╚███║██║██████╔╝██║░░██║███████╗███████╗███████╗     \033[93m║\n\
-║     \033[34m╚═╝░░░░░╚═╝╚═╝╚═╝░░╚══╝╚═╝╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚══════╝     \033[93m║\n\
-║                                                                            \033[93m║\n\
-╚════════════════════════════════════════════════════════════════════════════╝\
-\n\033[m"
-
 typedef enum s_token
 {
 	CMD,
@@ -240,8 +226,8 @@ typedef struct s_exec
 	int				heredoc_nbr;
 	int				stdin_fd_for_heredoc;
 	int				is_this_an_exec_in_heredoc;
-	int				total_number_of_cmd_find_in_linked_list;
-	int				cmd_count_pipe_chained;
+	int				nb_cmd_in_lst;
+	int				cmd_nb_pipe;
 	int				previous_fd;
 	char			**full_env_var_copy_beta;
 	char			*heredoc_input_buffer;
@@ -290,6 +276,14 @@ extern unsigned int	g_globi;
 
 /*   Fonctions de main.c   */
 void		prompt_loop(char *tmp, t_data *data, char **env);
+
+/*   Fonctions de main_utils.c   */
+int			is_operator(char c);
+int			is_double_operator(const char *command, size_t pos);
+size_t		calculate_new_length(const char *command);
+void		fill_command_with_spaces(const char *command, char *new_command, \
+			t_quote *state, size_t i);
+char		*add_spaces_around_operators(t_data *data, const char *command);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                BUILT_IN                                   */
@@ -695,7 +689,7 @@ char		**split_word_by_quotes(t_data *data, char *word, t_quote *state);
 /*     Fonctions de free.c    */
 int			ft_exit_child(int *fd, t_data *data);
 void		add_to_trash_memory(t_data *data, void *add);
-void		*ft_malloc_with_tracking(t_data *data, size_t size);
+void		*malloc_track(t_data *data, size_t size);
 void		ft_free(void *add, t_data *date);
 void		ft_free_all(t_data *data);
 
@@ -864,48 +858,44 @@ char		*ft_substr(\
 size_t		ft_strlen3_mini(char const *s);
 
 /*   Fonctions de parser.c   */
-int			ft_check_quotes(char *str, t_data *data);
-int			check_redir(char *str);
-int			base_check(char *str);
-int			ft_cloporte(t_data *data);
+int			quotes_check(char *str, t_data *data);
+int			redirection_check(char *str);
+int			cmd_start_check(char *str);
+int			redir_arg_check(t_data *data);
 int			ft_parser(t_data *data);
 
 /*   Fonctions de parser2.c   */
-int			pipe_parse2(t_data *data);
-int			ft_chevron(char *str);
-int			pipe_parse(t_data *data);
-int			ft_arrow2(t_data *data);
-int			ft_arrow(t_data *data);
+int			invalid_pipes_check(t_data *data);
+int			nb_brack(char *str);
+int			token_error_check(t_data *data);
+int			invalid_tokens_check(t_data *data);
+int			invalid_tokens_check_2(t_data *data);
 
 /*   Fonctions de parser4.c   */
-int			stop_pand_slash(char *str, char c);
-int			ft_tiret(char *str);
-int			chevron_pipe(char *str);
-int			is_a_directory(t_data *data);
+int			slash_check(char *str, char c);
+int			directory_check(char *str);
+int			pipe_bracket_check(char *str);
+int			err_code_directory(t_data *data);
 
-/*   Fonctions de rm_para_quote.c   */
-char		*parse_quote(t_data *data, char *tmp);
-char		*parse_quote2(t_data *data, char *tmp);
-char		*parse_para(t_data *data, char *tmp);
-void		rm_para_quote(t_data *data);
-void		rm_para_quote2(t_data *data);
+/*   Fonctions de token_remover.c   */
+char		*remove_dbl_quotes(t_data *data, char *tmp);
+char		*remove_spl_quotes(t_data *data, char *tmp);
+char		*remove_parenthesis(t_data *data, char *tmp);
+void		token_remover(t_data *data);
+void		token_remover_2(t_data *data);
 
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 /*                                 SIGNALS                                   */
 /*   -'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-',-'   */
 
-/*   Fonctions de ctrl_c_signals.c   */
+/*   Fonctions de signal_heredoc.c   */
 void		ctrl_c_handler(int sig);
 void		ctrl_c_handler_here_doc(int sig);
 void		handle_sig(t_data *data);
 
-/*   Fonctions de error_signals.cc   */
-void		handle_process_signal(void);
-
-/*   Fonctions de signal_exits.c   */
-int			exit_stat_ctrl_c_sigint(void);
-int			exit_stat_ctrl_backslash_sigquit(void);
+/*   Fonctions de signal_handler.c   */
 void		handle_ctrl_c(int sig);
 void		handle_ctrl_backslash(int sig);
+void		handle_process_signal(void);
 
 #endif

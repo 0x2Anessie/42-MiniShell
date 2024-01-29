@@ -1,12 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free1.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:24:02 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 16:24:04 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 int	ft_exit_child(int *fd, t_data *data)
 {
+	int	return_value;
+
+	return_value = g_globi;
 	if (fd)
 		closes_ends_of_pipe(fd);
 	close_file_descriptors_in_linked_list(data);
 	ft_free_all(data);
-	exit(0);
+	exit(return_value);
 }
 
 void	add_to_trash_memory(t_data *data, void *add)
@@ -30,7 +45,7 @@ void	add_to_trash_memory(t_data *data, void *add)
 	}
 }
 
-void	*ft_malloc_with_tracking(t_data *data, size_t size)
+void	*malloc_track(t_data *data, size_t size)
 {
 	void	*add;
 

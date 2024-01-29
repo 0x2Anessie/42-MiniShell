@@ -1,10 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:23:25 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:39:47 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
+/*
+	Alloue de l'espace mémoire pour un nouveau lexer et nitialise le lexer
+	avec la chaîne str.
+*/
 t_lexer	*create_new_lexer(t_data *data, char *str)
 {
 	t_lexer	*new;
 
-	new = ft_malloc_with_tracking(data, sizeof(t_lexer));
+	new = malloc_track(data, sizeof(t_lexer));
 	if (!new)
 		return (NULL);
 	new->cmd_segment = str;
@@ -13,6 +29,9 @@ t_lexer	*create_new_lexer(t_data *data, char *str)
 	return (new);
 }
 
+/*
+	Vérifie la validité des symboles de redirection dans un segment de commande.
+*/
 int	check_redir_error(t_lexer *tmp)
 {
 	int	i;
@@ -36,6 +55,10 @@ int	check_redir_error(t_lexer *tmp)
 	return (0);
 }
 
+/*
+	Utilise check_redir_error pour valider le token, et identifie le type de
+	redirection (sortie, entrée, append, etc.) basé sur le contenu du token.
+*/
 t_token	which_redir(t_lexer *tmp)
 {
 	if (!check_redir_error(tmp))
@@ -56,6 +79,10 @@ t_token	which_redir(t_lexer *tmp)
 	return (-1);
 }
 
+/*
+	Attribue un token CMD si le premier token n'est pas une commande,
+	sinon attribue ARG.
+*/
 void	assign_command_or_argument_token(t_lexer *tmp, t_lexer *first)
 {
 	if (first->token != CMD)
@@ -64,6 +91,9 @@ void	assign_command_or_argument_token(t_lexer *tmp, t_lexer *first)
 		tmp->token = ARG;
 }
 
+/*
+	Parcourt la chaîne en comptant les mots, délimités par des espaces.
+*/
 int	count_words_in_input(char *str)
 {
 	int	i;

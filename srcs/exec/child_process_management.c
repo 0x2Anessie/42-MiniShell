@@ -1,5 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   child_process_management.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:21:02 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 18:34:08 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
+/*
+	cherche si il y a un "/" au qu'elle cas c'est un chemain absolu
+*/
 int	check_for_slash_path_delimiter(t_lexer *lexer)
 {
 	int		indx;
@@ -13,6 +28,11 @@ int	check_for_slash_path_delimiter(t_lexer *lexer)
 	return (NO_SLASH_FOUND);
 }
 
+/*
+	execute une commande avec ces arguments
+	construit un tab d'arg a part de la lexer_lst et appel
+	is_execve_failed pour savoir si l'exec c bien passer
+*/
 void	execute_lexer_command_with_args(t_data *data)
 {
 	char	**arguments;
@@ -23,6 +43,12 @@ void	execute_lexer_command_with_args(t_data *data)
 		perror(data->lexer_list->cmd_segment);
 }
 
+/*
+	execute des commandes en gerant les redirection et commande integrer
+	elle configure les redirection d'entree et de sortie
+	puis execute direct si c un built_in ou utilise execve
+	pour les autres
+*/
 void	exec_cmd_with_redirection_and_builtins(\
 t_data *data, int *fd, int count, t_exec utils)
 {
@@ -48,90 +74,22 @@ t_data *data, int *fd, int count, t_exec utils)
 		command_full_path, arguments, utils.full_env_var_copy_beta))
 			perror(data->lexer_list->cmd_segment);
 	}
-	g_globi = ERR_CODE_CMD_NOT_FOUND;
+	g_globi = 127;
 	ft_exit_child(fd, data);
 }
 
-/**
- * @nom: create_and_execute_child_process
- * @brief: Crée un processus enfant pour exécuter une commande.
- *
- * @description:
- * La fonction 'create_and_execute_child_process' utilise 'fork' pour créer un
- * nouveau processus enfant. Si le processus enfant est créé avec succès, il
- * exécute la commande spécifiée dans 'lexer_list' en appelant
- * 'exec_cmd_with_redirection_and_builtins'. Cette fonction est utilisée dans
- * les environnements de shell pour gérer l'exécution de commandes dans des
- * processus séparés.
- *
- * @parametres:
- * - lexer_list: t_lexer *lexer_list, pointeur vers la liste de lexèmes
- * représentant la commande à exécuter.
- * - fd: int *fd, tableau de descripteurs de fichier pour la gestion des pipes.
- * - count: int count, l'index de la commande en cours dans la séquence de
- * commandes.
- * - utils: t_exec utils, structure contenant les informations sur l'exécution
- * de la commande.
- *
- * @pourquoi:
- * - Séparation des Processus : Créer un processus enfant pour chaque commande
- * permet une exécution isolée et sécurisée, évitant les interférences entre
- * les commandes.
- * - Gestion Flexible des Commandes : Permet au shell de continuer à recevoir
- * et à traiter d'autres commandes pendant que la commande actuelle est en
- * cours d'exécution.
- *
- * @valeur_de_retour: 
- * Retourne l'ID du processus enfant (pid_t) en cas de succès, ou
- * FT_FAILURE_EXIT en cas d'échec de 'fork'.
- *
- * @erreurs_possibles_et_effets_de_bord: 
- * - En cas d'échec de 'fork', un message d'erreur est affiché et la fonction
- * retourne une valeur d'échec.
- *
- * @exemples_utilisation:
- * t_lexer *lexer_list = create_lexer_list("ls -l");
- * int fd[2];
- * t_exec utils;
- * pid_t child_pid = create_and_execute_child_process(lexer_list, fd, 0, utils);
- *
- * @dependances: 
- * - Utilise 'fork' pour créer un processus enfant.
- * - 'exec_cmd_with_redirection_and_builtins' pour l'exécution de la commande
- *   dans le processus enfant.
- * - 'perror' pour afficher les erreurs.
- *
- * @graphe_de_flux:
- *   Début
- *     |
- *     v
- *   Créer un processus enfant (fork)
- *     |
- *     v
- *   'fork' a-t-il réussi ?
- *  /       \
- * NON      OUI
- *  |         |
- *  v         v
- * Afficher  Est-ce le processus enfant ?
- * un message  /       \
- * d'erreur  OUI      NON
- *  |         |         |
- *  v         v         v
- * Retourner  Exécuter  Retourner l'ID
- * FT_FAILURE_EXIT  la commande  du processus enfant
- *               avec exec_cmd_with_redirection_and_builtins
- *                    |
- *                    v
- *                  Fin
- */
+/*
+	cree un procesus enfant pour executer une commande
+	si fork reussit appel exec_cmd_with_redirection_and_builtin
+	pour executer la commande
+*/
 pid_t	create_and_execute_child_process(\
 t_data *data, int *fd, int count, t_exec utils)
 {
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == FORK_FAILURE)
+	if (pid < 0)
 	{
 		perror("Fork");
 		return (FT_FAILURE_EXIT);

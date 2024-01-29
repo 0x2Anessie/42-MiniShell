@@ -1,5 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_type_assignment.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:23:30 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:40:03 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
+/*
+	Retourne vrai si le token précédent est un type de redirection.
+*/
 int	is_previous_token_redirection(t_lexer *token)
 {
 	return (token->prev->token == APPEND_OUT \
@@ -8,6 +23,11 @@ int	is_previous_token_redirection(t_lexer *token)
 		|| token->prev->token == REDIRECT_INOUT);
 }
 
+/*
+	Parcourt la liste des lexers et assigne un type de token (commande,
+	argument, redirection, etc.) à chaque lexer en fonction de son contenu
+	et de sa position.
+*/
 void	get_token_in_node(t_lexer **lexer_list, t_lexer *tmp)
 {
 	t_lexer	*first;

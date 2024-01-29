@@ -1,5 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_structure_construction.c                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:23:19 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:39:31 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
+/*
+	Parcourt la liste des lexers et affecte une position à chaque segment,
+	en réinitialisant le compteur après chaque pipe.
+*/
 void	get_data_in_node(t_lexer **lexer_list)
 {
 	t_lexer	*tmp;
@@ -17,6 +33,13 @@ void	get_data_in_node(t_lexer **lexer_list)
 	}
 }
 
+/*
+	Objectif: Extraire un mot de la chaîne d'entrée et l'ajouter à la
+	liste des lexers.
+	Utilise process_lexer_input pour déterminer la longueur du mot.
+	Alloue l'espace pour le mot et le copie depuis la chaîne d'entrée.
+	Ajoute le mot à la liste des lexers avec add_lexer_to_end.
+*/
 int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 {
 	char	*word;
@@ -25,7 +48,7 @@ int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 	int		x;
 	t_quote	*state;
 
-	state = ft_malloc_with_tracking(data, sizeof(t_quote));
+	state = malloc_track(data, sizeof(t_quote));
 	if (!state)
 		return (0);
 	word = NULL;
@@ -34,7 +57,7 @@ int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 	j = 0;
 	reset_quoting_state(state);
 	process_lexer_input(str, &i, &j, state);
-	word = ft_malloc_with_tracking(data, sizeof(char) * (j + sizeof('\0')));
+	word = malloc_track(data, sizeof(char) * (j + sizeof('\0')));
 	if (!word)
 		return (0);
 	word[j] = '\0';
@@ -46,6 +69,9 @@ int	get_word_in_list(char *str, int i, t_data *data, t_lexer *tmp)
 	return (j);
 }
 
+/*
+	Transforme une chaîne de commande brute en une série structurée de tokens.
+*/
 void	process_input_string(\
 t_data *data, t_lexer *tmp, t_lexer *current, int i)
 {
@@ -75,6 +101,9 @@ t_data *data, t_lexer *tmp, t_lexer *current, int i)
 	data->lexer_list = current;
 }
 
+/*
+	Parcourt et affiche chaque lexer de la liste.
+*/
 void	print_lexer_content1(t_data *data)
 {
 	t_lexer	*current;
@@ -86,6 +115,10 @@ void	print_lexer_content1(t_data *data)
 	}
 }
 
+/*
+	Point d'entrée pour le processus de lexing. Son rôle est d'initialiser
+	et de coordonner les différentes étapes du lexing.
+*/
 void	ft_init_lexer_process(t_data *data)
 {
 	int		i;

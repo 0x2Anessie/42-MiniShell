@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_in_utils_2.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:19:18 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 17:19:19 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 int	ft_string_length(char *s)
@@ -22,7 +34,7 @@ char	*ft_strjoin_with_memory_tracking(char *s1, char *s2, t_data *data)
 	j = -1;
 	if (!s1 || !s2 || !s1[0] || !s2[0])
 		return (NULL);
-	s3 = ft_malloc_with_tracking(\
+	s3 = malloc_track(\
 	data, sizeof(char) * (ft_string_length(s1) + ft_string_length(s2) + 1));
 	if (!s3)
 		return (NULL);
@@ -62,7 +74,7 @@ char *s1, char *s2, t_data *data)
 		return (ft_strdup(data, s2));
 	if (!s2)
 		return (NULL);
-	str = (char *)ft_malloc_with_tracking(data, sizeof(char)
+	str = (char *)malloc_track(data, sizeof(char)
 			*(ft_string_length(s1) + ft_string_length(s2) + 1));
 	if (str == NULL)
 		return (NULL);

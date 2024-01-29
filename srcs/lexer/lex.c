@@ -1,5 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lex.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 16:23:15 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/23 11:39:10 by pabeaude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
+/*
+	Objectif: Écrire une chaîne de caractères dans un file descriptor spécifié.
+	Elle utilise write pour écrire la chaîne dans le file descriptor.
+	En cas d'erreur, affiche le message d'erreur "no space left on device"
+	et met à jour la variable globale g_globi.
+*/
 int	ft_write_fd(char *str, int fd)
 {
 	int	i;
@@ -16,6 +34,14 @@ int	ft_write_fd(char *str, int fd)
 	return (0);
 }
 
+/*
+	Objectif: Ajouter un nouveau token à la fin de la liste des lexers.
+	Crée un nouveau lexer avec create_new_lexer.
+	Si la liste des lexers est vide, le nouveau lexer devient le premier
+	élément.
+	Sinon, parcourt la liste pour trouver le dernier élément et y ajoute
+	le nouveau lexer.
+*/
 void	add_lexer_to_end(t_data *data, char *str)
 {
 	t_lexer	*new;
@@ -40,6 +66,11 @@ void	add_lexer_to_end(t_data *data, char *str)
 	return ;
 }
 
+/*
+	Objectif: Identifier les limites des mots ou des segments dans la commande
+	de l'utilisateur, tout en gérant correctement les cas spéciaux liés aux
+	citations.
+*/
 void	process_lexer_input(char *str, int *i, int *j, t_quote *state)
 {
 	while (str[*i])

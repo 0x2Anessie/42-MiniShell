@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_create.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/22 17:20:09 by acatusse          #+#    #+#             */
+/*   Updated: 2024/01/22 17:20:10 by acatusse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -9,7 +21,7 @@ t_export	*create_node_str_export(char *str, t_data *data)
 {
 	t_export	*node;
 
-	node = ft_malloc_with_tracking(data, sizeof(t_export));
+	node = malloc_track(data, sizeof(t_export));
 	if (node)
 	{
 		node->env_var_name_and_value = str;

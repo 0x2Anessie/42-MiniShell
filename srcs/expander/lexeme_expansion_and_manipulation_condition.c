@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexeme_expansion_and_manipulation_condition        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:23:18 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 17:23:20 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 bool	is_expansion_required_and_unquoted(t_expand *exp)

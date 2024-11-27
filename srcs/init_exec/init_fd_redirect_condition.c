@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_fd_redirect_condition.c                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:25:37 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 17:25:39 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 bool	is_redirect_out_followed_by_fd_token(t_lexer *lex_lst)

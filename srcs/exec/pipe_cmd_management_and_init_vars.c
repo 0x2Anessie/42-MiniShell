@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe_cmd_management_and_init_vars.c                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pabeaude <pabeaude@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:21:49 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 19:18:55 by pabeaude         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 t_lexer	*reaches_next_cmd_preceded_by_pipe(t_lexer *lexer_list)

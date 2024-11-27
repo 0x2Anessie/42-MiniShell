@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo2.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:19:47 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 17:19:48 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 /*
@@ -84,6 +72,5 @@ void	simulate_echo(char **tab, t_data *data)
 			ft_write_fd("\n", data->utils->node->output_fd);
 		else
 			printf("\n");
-		g_globi = 0;
 	}
 }

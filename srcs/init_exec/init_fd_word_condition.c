@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_fd_word_condition.c                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:25:41 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 17:25:45 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 bool	is_next_word_existing_and_readable(t_lexer *lexer_lst)

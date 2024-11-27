@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expansion_processing_condtion.c                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acatusse <acatusse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 17:22:51 by acatusse          #+#    #+#             */
-/*   Updated: 2024/01/22 17:22:53 by acatusse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 bool	is_current_char_dollar_sign(t_lexer *exp, int index)
